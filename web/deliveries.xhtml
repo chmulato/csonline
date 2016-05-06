@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:p="http://primefaces.org/ui"
+		template="template.xhtml">
+	
+		<ui:define name="body">
+			<p:panel id="panel_id">
+				<h:form id="form">
+					
+					<p:messages showDetail="true" />
+					
+					<p:panel id="panel_id2" header="#{rotulo.deliveries}:" style="width:100%;">
+					
+						<h:outputText id="msg_id" value="#{rotulo.no_items_registered}" rendered="#{deliveriesMB.no_items}" />
+
+						<h:panelGrid id="grid_id" columns="1" rendered="#{not empty deliveriesMB.results}">
+							<p:dataTable id="table_id" rendered="#{not empty deliveriesMB.results}" var="vo" value="#{deliveriesMB.results}" paginator="true" rows="5" style="width:100%;"
+		                 		paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+		                 		rowsPerPageTemplate="5,15,30">					
+		
+								<f:facet name="header"></f:facet> 
+		
+						        <p:column rendered="#{!deliveriesMB.courier_profile}">  
+						            <f:facet name="header">  
+						                <h:outputText value="" />  
+						            </f:facet>  
+									<p:commandLink action="#{deliveriesMB.delete}" value="#{rotulo.delete}" onclick="javascript:if (!confirm('Deseja deletar?')) return false;" ajax="true" disabled="#{vo.received}">
+										<f:param name="id" value="#{vo.id}" />
+										<f:param name="type" value="id" />
+									</p:commandLink>
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="" />  
+						            </f:facet>  
+									<p:commandLink action="#{deliveriesMB.edit}" value="#{rotulo.edit}" onclick="if(document.getElementById('form').target=='_blank') {document.getElementById('form').target='_self'}" ajax="true" >
+										<f:param name="id" value="#{vo.id}" />
+										<f:param name="type" value="id" />
+									</p:commandLink>
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.business}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.business.name}" />
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.customer}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.customer.name}" />
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.courier}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.courier.name}" />
+						        </p:column>  
+		
+						        <p:column rendered="#{deliveriesMB.business_profile}">  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.sms}" />  
+						            </f:facet>  
+									<p:commandLink action="#{deliveriesMB.editSMS}" value="#{rotulo.edit}" onclick="if(document.getElementById('form').target=='_blank') {document.getElementById('form').target='_self'}" ajax="true" rendered="#{not empty vo.courier.id}">
+										<f:param name="id" value="#{vo.courier.id}" />
+										<f:param name="type" value="id" />
+									</p:commandLink>
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.datetime}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.datetime}" >
+										<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="#{initParam.timezone}" locale="#{initParam.locale}" />
+									</h:outputText>
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.start}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.start}" />
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.destination}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.destination}" />
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.contact}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.contact}" />
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.description}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.description}" />
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.weight}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.weight}" />
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.volume}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.volume}" />
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.km}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.km}" />
+						        </p:column>  
+		
+						        <p:column rendered="#{!deliveriesMB.courier_profile}">  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.additional}" />
+						            </f:facet>  
+									<h:outputText value="#{vo.additionalCost}" converter="BigDecimalConverter" />
+						        </p:column>  
+		
+						        <p:column rendered="#{!deliveriesMB.courier_profile}">  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.cost}" />
+						            </f:facet>  
+									<h:outputText value="#{vo.cost}" converter="BigDecimalConverter" />
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.received}" />  
+						            </f:facet>  
+									<h:outputText value="#{rotulo.yes}" rendered="#{vo.received}" />
+									<h:outputText value="#{rotulo.non}" rendered="#{!vo.received}" />
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.completed}" />  
+						            </f:facet>  
+									<h:outputText value="#{rotulo.yes}" rendered="#{vo.completed}" />
+									<h:outputText value="#{rotulo.non}" rendered="#{!vo.completed}" />
+						        </p:column>  
+		
+								<f:facet name="footer"/>
+								 
+						    </p:dataTable>
+		
+						</h:panelGrid>
+					
+					</p:panel>
+						
+					<p:separator />
+					
+					<h:panelGrid id="grid_add_id">
+						<p:commandButton id="button_id" action="#{deliveriesMB.add}" value="#{rotulo.add}" immediate="false" rendered="#{(!deliveriesMB.courier_profile)}" icon="ui-icon-arrowreturnthick-1-w" ajax="false" />
+					</h:panelGrid>
+					
+			</h:form>
+		</p:panel>
+	</ui:define>
+</ui:composition>

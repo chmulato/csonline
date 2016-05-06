@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+   <f:view contentType="text/html" locale="#{i18nMB.locale}">
+        <f:loadBundle basename="Rotulos" var="rotulo" />
+
+		<h:head>
+			<meta http-equiv="X-UA-Compatible" content="IE=8" />			
+			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+			<link type="images/x-icon" rel="SHORTCUT ICON" href="#{facesContext.externalContext.requestContextPath}/images/favicon.ico" />
+			<link type="text/css" rel="stylesheet" href="resources/styles.css" />
+			<script>
+			  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+			
+			  ga('create', 'UA-6101461-10', 'auto');
+			  ga('send', 'pageview');
+			</script>
+			<title>#{rotulo.aplicacao}</title>
+		</h:head>
+
+		<body>
+			<h:form id="form">
+				<h:panelGrid columns="1" style="margin-left: 35%; margin-right: 40%; margin-top: 10%">
+					<p:graphicImage value="/images/logo.gif" style="margin-left: 15%;"/>
+					<p:panel id="panelHeader" header="#{rotulo.aplicacao} - #{rotulo.titulo_area}">
+						<h:panelGrid columns="1">
+							<h:panelGrid columns="3">
+	                            
+	                            <h:outputLabel value="#{rotulo.usuario}:" />
+								<p:inputText id="username" label="#{loginMB.username}" value="#{loginMB.username}" />
+								<p:spacer height="20px"/>
+	
+	                            <h:outputLabel value="#{rotulo.senha}:" />
+								<p:password id="senha" label="#{loginMB.password}" value="#{loginMB.password}" feedback="false" maxlength="15" 
+											promptLabel="#{rotulo.entreSenha}" weakLabel="#{rotulo.fraca}" goodLabel="#{rotulo.normal}" strongLabel="#{rotulo.forte}" inline="true" />
+								<p:spacer height="20px"/>
+										
+								<p:spacer />
+								<h:panelGrid columns="2">
+									<p:commandButton id="login_id" action="#{loginMB.login}" value="#{rotulo.login}" label="#{rotulo.login}" ajax="false" icon="ui-icon-home" />						
+									<p:commandButton id="cancel_id" type="Reset" actionListener="#{loginMB.reset}" value="#{rotulo.cancel}" label="#{rotulo.cancel}" update="panelHeader" ajax="true" icon="ui-icon-close" />						
+								</h:panelGrid>							
+								<p:spacer height="20px"/>
+	
+								<p:spacer />
+								<p:messages showDetail="true"/> 
+								<p:spacer height="20px"/>
+	
+								<h:outputText value="#{rotulo.theme}:" />
+								<p:selectOneMenu id="theme" label="#{rotulo.theme}" value="#{themeMB.theme}" valueChangeListener="#{loginMB.changeTheme}" onchange="this.form.submit();" >  
+		                        	<f:selectItems value="#{themeMB.themesList}"  />
+								</p:selectOneMenu> 
+								<p:spacer height="20px"/>
+
+								<p:tooltip for="theme" value="#{rotulo.escolherTheme}" showEffect="fade" hideEffect="fade" />
+								
+							</h:panelGrid>
+						</h:panelGrid>
+					</p:panel>
+				</h:panelGrid>
+			</h:form>
+		</body>
+
+    </f:view>
+</html>

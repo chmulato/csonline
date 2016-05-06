@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:p="http://primefaces.org/ui"
+		template="template.xhtml">
+	
+		<ui:define name="body">
+			<p:panel id="panel_id">
+				<h:form id="form">
+					
+					<p:messages showDetail="true"/> 
+					
+					<p:panel id="panel_id2" header="#{priceMB.label}:" style="width:100%;">
+						<h:panelGrid id="grid_id" columns="2">
+							<h:inputHidden value="#{priceMB.id}" />
+							<p:spacer />
+
+							<h:inputHidden value="#{priceMB.idBusiness}" />
+							<p:spacer />
+	
+							<h:outputLabel id="business_id" for="business" value="#{rotulo.business}:" />
+							<p:inputText id="business" label="#{rotulo.business}" value="#{priceMB.business}" readonly="true" style="width:320px;text-align:left;" />
+							
+							<h:outputLabel id="table_id" for="table" value="#{rotulo.table}:" />
+							<h:selectOneMenu id="table" required="true" value="#{priceMB.idTable}" style="width:120px;text-align:left;">
+	                  			<f:selectItems value="#{priceMB.tables}" /> 
+							</h:selectOneMenu>
+
+							<h:outputLabel id="vehicle_id" for="vehicle" value="#{rotulo.vehicle}:" />
+							<h:selectOneMenu id="vehicle" required="true" value="#{priceMB.idVehicle}" style="width:120px;text-align:left;">
+	                  			<f:selectItems value="#{priceMB.vehicles}" /> 
+							</h:selectOneMenu>
+
+							<h:outputLabel id="local_id" for="local" value="#{rotulo.local}:" />
+							<p:inputText id="local" label="#{rotulo.local}" value="#{priceMB.local}" required="true" style="width:320px;text-align:left;" />
+
+							<h:outputLabel id="price_id" for="price" value="#{rotulo.price}:" />
+							<p:inputText id="price" label="#{rotulo.price}" value="#{priceMB.price}" converter="BigDecimalConverter" style="width:100px;text-align:right;" />
+						</h:panelGrid>
+					</p:panel>
+						
+					<p:separator />
+					
+					<h:panelGrid id="buttom_id" columns="4">
+						<p:commandButton id="salve_id"  action="#{priceMB.save}"   value="#{rotulo.save}"   immediate="false" icon="ui-icon-arrowreturnthick-1-w" ajax="false" />
+						<p:commandButton id="cancel_id" action="#{priceMB.cancel}" value="#{rotulo.cancel}" immediate="true"  icon="ui-icon-arrowreturnthick-1-w" ajax="false" />
+					</h:panelGrid>
+				
+				</h:form>
+			</p:panel>
+		</ui:define>
+	</ui:composition>

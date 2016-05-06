@@ -1,0 +1,1893 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">   
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:view contentType="text/html" locale="#{i18nMB.locale}">
+        <f:loadBundle basename="Rotulos" var="rotulo" />
+
+		<h:head>
+			<meta http-equiv="X-UA-Compatible" content="IE=8" />
+			<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />			
+			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+			<link type="images/x-icon" rel="SHORTCUT ICON" href="#{facesContext.externalContext.requestContextPath}/images/saquenet.ico" />
+			<link type="text/css" rel="stylesheet" href="resources/styles.css" />
+			<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/jquery/jquery.maskedinput-1.2.2.min.js" />
+			<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/jquery/jquery.maskMoney.js" />
+			<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/jquery/functions.js" />
+			<title>#{rotulo.aplicacao}</title>
+		</h:head>
+
+		<body>
+			<p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+			<p:dialog id="dialog_id" widgetVar="statusDialog" header="#{rotulo.status}" draggable="true" closable="false" modal="true" resizable="false" >
+				<h:panelGrid id="grid_id" columns="1" >
+					<p:graphicImage value="/images/ajaxloadingbar.gif" style="vertical-align: middle;" />
+					<h:outputLabel value="#{rotulo.carregando}" style="font-size: 12px; text-align: center;" />
+				</h:panelGrid>
+			</p:dialog>
+		
+			<p:layout fullPage="true">
+				
+				<p:layoutUnit position="north" height="130" header="#{loginMB.profile}" resizable="false" closable="false" collapsible="false">
+					<table width="100%" >
+					  <tr>
+					    <td style="width:320px;">
+					    	<h:graphicImage value="/images/logo.gif" />
+					    </td>
+					    <td>
+					    	<p:panel style="width:40%;">
+					    		<h:panelGrid id="grid_profile_id" columns="1">
+						    		<h:outputLabel value="#{rotulo.user}: #{loginMB.username}" />
+						    		<h:outputLabel value="#{rotulo.role}: #{loginMB.profile}"  />
+					    		</h:panelGrid>
+					    	</p:panel>
+					    </td>
+					  </tr>
+					</table>					
+				</p:layoutUnit>
+				
+				<p:layoutUnit position="west" width="380" header="#{rotulo.menu}" resizable="false" closable="false" collapsible="false">
+					<ui:include src="menu.xhtml" />
+				</p:layoutUnit>
+
+				<p:layoutUnit position="center" header="#{rotulo.timeSystem}: #{loginMB.timeSystem}" footer="#{rotulo.copyright}">
+					<ui:insert name="body" />
+				</p:layoutUnit>
+			</p:layout>
+			
+		</body>
+	</f:view>
+</html>	
+#####################
+	<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:p="http://primefaces.org/ui"
+		template="template.xhtml">
+	
+		<ui:define name="body">
+			<p:panel id="panel_id">
+				<h:form id="form">
+					
+					<p:messages showDetail="true"/> 
+					
+					<p:panel id="panel_id2" header="#{courierMB.label}:" style="width:100%;">
+						<h:panelGrid id="grid_id" columns="2">
+							<h:inputHidden value="#{courierMB.id}" />
+							<p:spacer />
+							
+							<h:outputLabel id="role_id" for="role" value="#{rotulo.role}:" />
+							<p:inputText id="role" label="#{rotulo.role}" value="#{courierMB.role}" readonly="true" style="width:120px;text-align:left;" />
+	
+							<h:outputLabel id="name_id" for="name" value="#{rotulo.name}:" />
+							<p:inputText id="name" label="#{rotulo.name}" value="#{courierMB.name}" readonly="#{courier.readonly}" style="width:320px;text-align:left;" />
+
+							<h:outputLabel id="email_id" for="email" value="#{rotulo.email}:" />
+							<p:inputText id="email" label="#{rotulo.email}" value="#{courierMB.email}" readonly="#{courier.readonly}" style="width:320px;text-align:left;" />
+
+							<h:outputLabel id="login_id" for="login" value="#{rotulo.login}:" />
+							<p:inputText id="login" label="#{rotulo.login}" value="#{courierMB.login}" readonly="#{courier.readonly}" style="width:120px;text-align:left;" />
+
+							<h:outputLabel id="password_id" for="password" value="#{rotulo.password}:" rendered="#{courierMB.insert}" />
+							<p:inputText id="password" label="#{rotulo.password}" value="#{courierMB.password}" rendered="#{courierMB.insert}" type="password" style="width:120px;text-align:left;" />
+
+							<h:outputLabel id="repeat_id" for="repeat" value="#{rotulo.repeat}:" rendered="#{courierMB.insert}" />
+							<p:inputText id="repeat" label="#{rotulo.repeat}" value="#{courierMB.repeat}" rendered="#{courierMB.insert}" type="password" style="width:120px;text-align:left;" />
+
+							<h:outputLabel id="email2_id" for="email" value="#{rotulo.email2}:" />
+							<p:inputText id="email2" label="#{rotulo.email2}" value="#{courierMB.email2}" readonly="#{courier.readonly}" style="width:320px;text-align:left;" />
+
+							<h:outputLabel id="address_id" for="address" value="#{rotulo.address}:" />
+							<p:inputText id="address" label="#{rotulo.address}" value="#{courierMB.address}" readonly="#{courier.readonly}" style="width:320px;text-align:left;" />
+
+							<h:outputLabel id="mobile_id" for="mobile" value="#{rotulo.mobile}:" />
+							<p:inputText id="mobile" label="#{rotulo.mobile}" value="#{courierMB.mobile}" readonly="#{courier.readonly}" style="width:120px;text-align:left;" />
+
+							<h:inputHidden value="#{courierMB.businessId}" />
+							<p:spacer />
+
+							<h:outputLabel id="business_id" for="business" value="#{rotulo.business}:" />
+							<p:inputText id="business" label="#{rotulo.business}" value="#{courierMB.business}" readonly="true" style="width:120px;text-align:left;" />
+
+							<h:outputLabel id="factor_id" for="factor" value="#{rotulo.factor_courier}:" />
+							<p:inputText id="factor" label="#{rotulo.factor_courier}" value="#{courierMB.factor_courier}" readonly="#{courier.readonly}" style="width:120px;text-align:right;" />							
+						</h:panelGrid>
+					</p:panel>
+						
+					<p:separator />
+					
+					<h:panelGrid id="buttom_id" columns="3">
+						<p:commandButton id="salve_id" action="#{courierMB.save}" value="#{rotulo.save}" immediate="false" rendered="#{!courierMB.courier_profile}" icon="ui-icon-arrowreturnthick-1-w" ajax="false" />
+						<p:commandButton id="cancel_co" action="#{courierMB.cancel_courier}" value="#{rotulo.cancel}" immediate="true" rendered="#{courierMB.courier_profile}" icon="ui-icon-arrowreturnthick-1-w" ajax="false" />
+						<p:commandButton id="cancel_id" action="#{courierMB.cancel}" value="#{rotulo.cancel}" immediate="true" rendered="#{!courierMB.courier_profile}" icon="ui-icon-arrowreturnthick-1-w" ajax="false" />
+					</h:panelGrid>
+				
+				</h:form>
+			</p:panel>
+		</ui:define>
+	</ui:composition>
+########################
+<?xml version="1.0" encoding="UTF-8"?>
+	<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:p="http://primefaces.org/ui"
+		template="template.xhtml">
+	
+		<ui:define name="body">
+			<p:panel id="panel_id">
+				<h:form id="form">
+					
+					<p:messages showDetail="true"/> 
+					
+					<p:panel id="panel_id2" header="#{deliveryCuMB.label}:" style="width:100%;">
+						<h:panelGrid id="grid_id" columns="2">
+							<h:inputHidden value="#{deliveryCuMB.id}" />
+							<p:spacer />
+
+							<h:inputHidden value="#{deliveryCuMB.idBusiness}" />
+							<p:spacer />
+
+							<h:inputHidden value="#{deliveryCuMB.idCustomer}" rendered="#{deliveryCuMB.insert}" />
+							<p:spacer rendered="#{deliveryCuMB.insert}" />
+	
+							<h:outputLabel id="business_name_id" for="business_name" value="#{rotulo.business}:" />
+							<p:inputText id="business_name" label="#{rotulo.business}" value="#{deliveryCuMB.business_name}" readonly="true" style="width:320px;text-align:left;" />
+	
+							<h:outputLabel id="customer_name_id" for="customer_name" value="#{rotulo.customer}:" rendered="#{deliveryCuMB.insert}"/>
+							<p:inputText id="customer_name" label="#{rotulo.customer}" value="#{deliveryCuMB.customer_name}" readonly="true" style="width:320px;text-align:left;" rendered="#{deliveryCuMB.insert}" />
+								
+							<h:outputLabel id="customer_id" for="customer" value="#{rotulo.customer}:" rendered="#{!deliveryCuMB.insert}"/>
+							<h:selectOneMenu id="customer" required="true" value="#{deliveryCuMB.idCustomer}" readonly="true" style="width:320px;text-align:left;" rendered="#{!deliveryCuMB.insert}">
+	                  			<f:selectItems value="#{deliveryCuMB.customers}" /> 
+							</h:selectOneMenu>
+
+							<h:outputLabel id="courier_id" for="courier" value="#{rotulo.courier}:" rendered="#{!deliveryCuMB.insert}" />
+							<h:selectOneMenu id="courier" required="true" value="#{deliveryCuMB.idCourier}" readonly="true" style="width:320px;text-align:left;" rendered="#{!deliveryCuMB.insert}">
+	                  			<f:selectItems value="#{deliveryCuMB.couriers}" /> 
+							</h:selectOneMenu>
+	
+							<h:outputLabel id="datetime_id" for="datetime" value="#{rotulo.datetime}:" rendered="#{!deliveryCuMB.insert}" />
+							<h:outputText id="datetime" value="#{deliveryCuMB.datetime}" readonly="true" style="width:320px;text-align:left;" rendered="#{!deliveryCuMB.insert}">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="#{initParam.timezone}" locale="#{initParam.locale}" />
+							</h:outputText>
+	
+							<h:outputLabel id="start_id" for="start" value="#{rotulo.start}:" />
+							<p:inputText id="start" label="#{rotulo.start}" value="#{deliveryCuMB.start}" readonly="#{!deliveryCuMB.insert}" style="width:320px;text-align:left;" />
+
+							<h:outputLabel id="destination_id" for="destination" value="#{rotulo.destination}:" />
+							<p:inputText id="destination" label="#{rotulo.destination}" value="#{deliveryCuMB.destination}" readonly="#{!deliveryCuMB.insert}" style="width:320px;text-align:left;" />
+
+							<h:outputLabel id="contact_id" for="contact" value="#{rotulo.contact}:" />
+							<p:inputText id="contact" label="#{rotulo.contact}" value="#{deliveryCuMB.contact}" readonly="#{!deliveryCuMB.insert}" style="width:120px;text-align:left;" />
+
+							<h:outputLabel id="packet_id" for="packet" value="#{rotulo.packet}:" />
+							<p:inputText id="packet" label="#{rotulo.packet}" value="#{deliveryCuMB.packet}" readonly="#{!deliveryCuMB.insert}" style="width:320px;text-align:left;" />
+
+							<h:outputLabel id="volume_id" for="volume" value="#{rotulo.volume}:" />
+							<p:inputText id="volume" label="#{rotulo.volume}" value="#{deliveryCuMB.volume}" readonly="#{!deliveryCuMB.insert}" style="width:100px;text-align:right;" />
+
+							<h:outputLabel id="weight_id" for="weight" value="#{rotulo.weight}:" />
+							<p:inputText id="weight" label="#{rotulo.weight}" value="#{deliveryCuMB.weight}" readonly="#{!deliveryCuMB.insert}" style="width:100px;text-align:right;" />
+
+							<h:outputLabel id="km_id" for="km" value="#{rotulo.km}:" />
+							<p:inputText id="km" label="#{rotulo.km}" value="#{deliveryCuMB.km}" readonly="#{!deliveryCuMB.insert}" style="width:100px;text-align:right;" />
+
+							<h:outputLabel id="cost_id" for="cost" value="#{rotulo.cost}:" />
+							<p:inputText id="cost" label="#{rotulo.cost}" value="#{deliveryCuMB.cost}" readonly="#{!deliveryCuMB.insert}" style="width:100px;text-align:right;" />
+
+							<h:outputLabel id="received_id" value="#{rotulo.received}:" rendered="#{!deliveryCuMB.insert}" />
+							<h:outputText value="#{rotulo.yes}" rendered="#{(!deliveryCuMB.insert) and (deliveryCuMB.received)}" />
+							<h:outputText value="#{rotulo.non}" rendered="#{(!deliveryCuMB.insert) and (!deliveryCuMB.received)}" />
+
+							<h:outputLabel id="completed_id" value="#{rotulo.completed}:" rendered="#{!deliveryCuMB.insert}" />
+							<h:outputText value="#{rotulo.yes}" rendered="#{(!deliveryCuMB.insert) and (deliveryCuMB.completed)}" />
+							<h:outputText value="#{rotulo.non}" rendered="#{(!deliveryCuMB.insert) and (!deliveryCuMB.completed)}" />
+						</h:panelGrid>
+					</p:panel>
+						
+					<p:separator />
+					
+					<h:panelGrid id="buttom_id" columns="3">
+						<p:commandButton id="salve_id"  action="#{deliveryCuMB.save}"   value="#{rotulo.save}"   immediate="false" rendered="#{deliveryCuMB.insert}" icon="ui-icon-arrowreturnthick-1-w" ajax="false" />
+						<p:commandButton id="cancel_id" action="#{deliveryCuMB.cancel}" value="#{rotulo.cancel}" immediate="true"  icon="ui-icon-arrowreturnthick-1-w" ajax="false" />
+					</h:panelGrid>
+				
+				</h:form>
+			</p:panel>
+		</ui:define>
+	</ui:composition>
+###########################
+<?xml version="1.0" encoding="UTF-8"?>
+	<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:p="http://primefaces.org/ui"
+		template="template.xhtml">
+	
+		<ui:define name="body">
+			<p:panel id="panel_id">
+				<h:form id="form">
+					
+					<p:messages showDetail="true"/> 
+					
+					<p:panel id="panel_id2" header="#{rotulo.edit}:" style="width:100%;">
+						<h:panelGrid id="grid_id" columns="2">
+							<h:inputHidden value="#{deliveryCoMB.id}" />
+							<p:spacer />
+
+							<h:inputHidden value="#{deliveryCoMB.idBusiness}" />
+							<p:spacer />
+	
+							<h:outputLabel id="business_name_id" for="business_name" value="#{rotulo.business}:" />
+							<p:inputText id="business_name" label="#{rotulo.business}" value="#{deliveryCoMB.business_name}" readonly="true" style="width:320px;text-align:left;" />
+							
+							<h:outputLabel id="customer_id" for="customer" value="#{rotulo.customer}:" />
+							<h:selectOneMenu id="customer" required="true" value="#{deliveryCoMB.idCustomer}" readonly="true" style="width:320px;text-align:left;">
+	                  			<f:selectItems value="#{deliveryCoMB.customers}" /> 
+							</h:selectOneMenu>
+
+							<h:outputLabel id="courier_id" for="courier" value="#{rotulo.courier}:" />
+							<h:selectOneMenu id="courier" required="true" value="#{deliveryCoMB.idCourier}" readonly="true" style="width:320px;text-align:left;">
+	                  			<f:selectItems value="#{deliveryCoMB.couriers}" /> 
+							</h:selectOneMenu>
+		
+							<h:outputLabel id="datetime_id" for="datetime" value="#{rotulo.datetime}:" />
+							<h:outputText id="datetime" value="#{deliveryCoMB.datetime}" readonly="true">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="#{initParam.timezone}" locale="#{initParam.locale}" />
+							</h:outputText>
+	
+							<h:outputLabel id="start_id" for="start" value="#{rotulo.start}:" />
+							<p:inputText id="start" label="#{rotulo.start}" value="#{deliveryCoMB.start}" readonly="true" style="width:320px;text-align:left;" />
+
+							<h:outputLabel id="destination_id" for="destination" value="#{rotulo.destination}:" />
+							<p:inputText id="destination" label="#{rotulo.destination}" value="#{deliveryCoMB.destination}" readonly="true" style="width:320px;text-align:left;" />
+
+							<h:outputLabel id="contact_id" for="contact" value="#{rotulo.contact}:" />
+							<p:inputText id="contact" label="#{rotulo.contact}" value="#{deliveryCoMB.contact}" readonly="true" style="width:120px;text-align:left;" />
+
+							<h:outputLabel id="packet_id" for="packet" value="#{rotulo.packet}:" />
+							<p:inputText id="packet" label="#{rotulo.packet}" value="#{deliveryCoMB.packet}" readonly="true" style="width:320px;text-align:left;" />
+
+							<h:outputLabel id="volume_id" for="volume" value="#{rotulo.volume}:" />
+							<p:inputText id="volume" label="#{rotulo.volume}" value="#{deliveryCoMB.volume}" readonly="true" style="width:100px;text-align:right;" />
+
+							<h:outputLabel id="weight_id" for="weight" value="#{rotulo.weight}:" />
+							<p:inputText id="weight" label="#{rotulo.weight}" value="#{deliveryCoMB.weight}" readonly="true" style="width:100px;text-align:right;" />
+
+							<h:outputLabel id="km_id" for="km" value="#{rotulo.km}:" />
+							<p:inputText id="km" label="#{rotulo.km}" value="#{deliveryCoMB.km}" readonly="true" style="width:100px;text-align:right;" />
+
+							<h:outputLabel id="cost_id" for="cost" value="#{rotulo.cost}:" />
+							<p:inputText id="cost" label="#{rotulo.cost}" value="#{deliveryCoMB.cost}" readonly="true" style="width:100px;text-align:right;" />
+
+							<h:outputLabel id="received_id" value="#{rotulo.received}:" />
+							<h:outputText value="#{rotulo.yes}" rendered="#{deliveryCuMB.received}" />
+							<h:outputText value="#{rotulo.non}" rendered="#{!deliveryCuMB.received}" />
+
+							<h:outputLabel id="completed_id" for="completed" value="#{rotulo.completed}:" />
+							<p:selectBooleanCheckbox id="completed" label="#{rotulo.completed}" value="#{deliveryCoMB.completed}" />
+						</h:panelGrid>
+					</p:panel>
+						
+					<p:separator />
+					
+					<h:panelGrid id="buttom_id" columns="3">
+						<p:commandButton id="salve_id"  action="#{deliveryCoMB.save}"   value="#{rotulo.save}"   immediate="false" icon="ui-icon-arrowreturnthick-1-w" ajax="false" />
+						<p:commandButton id="cancel_id" action="#{deliveryCoMB.cancel}" value="#{rotulo.cancel}" immediate="true"  icon="ui-icon-arrowreturnthick-1-w" ajax="false" />
+					</h:panelGrid>
+				
+				</h:form>
+			</p:panel>
+		</ui:define>
+	</ui:composition>
+####################
+<?xml version="1.0" encoding="UTF-8"?>
+	<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:p="http://primefaces.org/ui"
+		template="template.xhtml">
+	
+		<ui:define name="body">
+			<p:panel id="panel_id">
+				<h:form id="form">
+					
+					<p:messages showDetail="true"/>
+					
+					<p:panel id="panel_id2" header="#{rotulo.deliveries}:" style="width:100%;">
+					
+						<h:outputText id="msg_id" value="#{rotulo.no_items_registered}" rendered="#{deliveriesMB.no_items}" />
+
+						<h:panelGrid id="grid_id" columns="1" rendered="#{not empty deliveriesMB.results}">
+							<p:dataTable id="table_id" rendered="#{not empty deliveriesMB.results}" var="vo" value="#{deliveriesMB.results}" paginator="true" rows="5" style="width:100%;"
+		                 		paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+		                 		rowsPerPageTemplate="5,15,30">					
+		
+								<f:facet name="header"></f:facet> 
+		
+						        <p:column rendered="#{!deliveriesMB.courier_profile}">  
+						            <f:facet name="header">  
+						                <h:outputText value="" />  
+						            </f:facet>  
+									<p:commandLink action="#{deliveriesMB.delete}" value="#{rotulo.delete}" onclick="javascript:if (!confirm('Deseja deletar?')) return false;" icon="ui-icon-pencil" ajax="true" >
+										<f:param name="id" value="#{vo.id}" />
+										<f:param name="type" value="id" />
+									</p:commandLink>
+						        </p:column>  
+		
+						        <p:column rendered="#{deliveriesMB.business_profile}">  
+						            <f:facet name="header">  
+						                <h:outputText value="" />  
+						            </f:facet>  
+									<p:commandLink action="#{deliveriesMB.edit}" value="#{rotulo.edit}" onclick="if(document.getElementById('form').target=='_blank') {document.getElementById('form').target='_self'}" icon="ui-icon-pencil" ajax="true" >
+										<f:param name="id" value="#{vo.id}" />
+										<f:param name="type" value="id" />
+									</p:commandLink>
+						        </p:column>  
+		
+						        <p:column rendered="#{!deliveriesMB.business_profile}">  
+						            <f:facet name="header">  
+						                <h:outputText value="" />  
+						            </f:facet>  
+									<p:commandLink action="#{deliveriesMB.edit}" value="#{rotulo.view}" onclick="if(document.getElementById('form').target=='_blank') {document.getElementById('form').target='_self'}" icon="ui-icon-pencil" ajax="true" >
+										<f:param name="id" value="#{vo.id}" />
+										<f:param name="type" value="id" />
+									</p:commandLink>
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.business}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.business.name}" />
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.customer}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.customer.name}" />
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.courier}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.courier.name}" />
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.datetime}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.datetime}" >
+										<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="#{initParam.timezone}" locale="#{initParam.locale}" />
+									</h:outputText>
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.start}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.start}" />
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.destination}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.destination}" />
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.contact}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.contact}" />
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.packet}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.packet}" />
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.weight}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.weight}" />
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.volume}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.volume}" />
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.km}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.km}" />
+						        </p:column>  
+		
+						        <p:column rendered="#{!deliveriesMB.courier_profile}">  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.cost}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.cost}" />
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.received}" />  
+						            </f:facet>  
+									<h:outputText value="#{rotulo.yes}" rendered="#{vo.received}" />
+									<h:outputText value="#{rotulo.non}" rendered="#{!vo.received}" />
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.completed}" />  
+						            </f:facet>  
+									<h:outputText value="#{rotulo.yes}" rendered="#{vo.completed}" />
+									<h:outputText value="#{rotulo.non}" rendered="#{!vo.completed}" />
+						        </p:column>  
+		
+								<f:facet name="footer"/>
+								 
+						    </p:dataTable>
+		
+						</h:panelGrid>
+					
+					</p:panel>
+						
+					<p:separator />
+					
+					<h:panelGrid id="grid_add_id">
+						<p:commandButton id="button_id" action="#{deliveriesMB.add}" value="#{rotulo.add}" immediate="false" rendered="#{(!deliveriesMB.courier_profile)}" icon="ui-icon-arrowreturnthick-1-w" ajax="false" />
+					</h:panelGrid>
+					
+			</h:form>
+		</p:panel>
+	</ui:define>
+</ui:composition>
+#####################
+<?xml version="1.0" encoding="UTF-8"?>
+	<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:p="http://primefaces.org/ui"
+		template="template.xhtml">
+	
+		<ui:define name="body">
+			<p:panel id="panel_id">
+				<h:form id="form">
+					
+					<p:messages showDetail="true"/>
+					
+					<p:panel id="panel_id2" header="#{rotulo.deliveries}:" style="width:100%;">
+					
+						<h:outputText id="msg_id" value="#{rotulo.no_items_registered}" rendered="#{deliveriesCoMB.no_items}" />
+
+						<h:panelGrid id="grid_id" columns="1" rendered="#{not empty deliveriesCoMB.results}">
+							<p:dataTable id="table_id" rendered="#{not empty deliveriesCoMB.results}" var="vo" value="#{deliveriesCoMB.results}" paginator="true" rows="5" style="width:100%;"
+		                 		paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+		                 		rowsPerPageTemplate="5,15,30">					
+		
+								<f:facet name="header"></f:facet> 
+
+						        <p:column rendered="#{deliveriesCoMB.business_profile}">  
+						            <f:facet name="header">  
+						                <h:outputText value="" />  
+						            </f:facet>  
+									<p:commandLink action="#{deliveriesCoMB.edit}" value="#{rotulo.edit}" onclick="if(document.getElementById('form').target=='_blank') {document.getElementById('form').target='_self'}" icon="ui-icon-pencil" ajax="true" >
+										<f:param name="id" value="#{vo.id}" />
+										<f:param name="type" value="id" />
+									</p:commandLink>
+						        </p:column>  
+		
+						        <p:column rendered="#{!deliveriesCoMB.business_profile}">  
+						            <f:facet name="header">  
+						                <h:outputText value="" />  
+						            </f:facet>  
+									<p:commandLink action="#{deliveriesCoMB.edit}" value="#{rotulo.view}" onclick="if(document.getElementById('form').target=='_blank') {document.getElementById('form').target='_self'}" icon="ui-icon-pencil" ajax="true" >
+										<f:param name="id" value="#{vo.id}" />
+										<f:param name="type" value="id" />
+									</p:commandLink>
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.business}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.business.name}" />
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.customer}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.customer.name}" />
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.courier}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.courier.name}" />
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.datetime}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.datetime}" >
+										<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="#{initParam.timezone}" locale="#{initParam.locale}" />
+									</h:outputText>
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.start}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.start}" />
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.destination}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.destination}" />
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.contact}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.contact}" />
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.packet}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.packet}" />
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.weight}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.weight}" />
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.volume}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.volume}" />
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.km}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.km}" />
+						        </p:column>  
+		
+						        <p:column rendered="#{!deliveriesCoMB.courier_profile}">  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.cost}" />  
+						            </f:facet>  
+									<h:outputText value="#{vo.cost}" />
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.received}" />  
+						            </f:facet>  
+									<h:outputText value="#{rotulo.yes}" rendered="#{vo.received}" />
+									<h:outputText value="#{rotulo.non}" rendered="#{!vo.received}" />
+						        </p:column>  
+		
+						        <p:column>  
+						            <f:facet name="header">  
+						                <h:outputText value="#{rotulo.completed}" />  
+						            </f:facet>  
+									<h:outputText value="#{rotulo.yes}" rendered="#{vo.completed}" />
+									<h:outputText value="#{rotulo.non}" rendered="#{!vo.completed}" />
+						        </p:column>  
+		
+								<f:facet name="footer"/>
+								 
+						    </p:dataTable>
+		
+						</h:panelGrid>
+					
+					</p:panel>
+					
+			</h:form>
+		</p:panel>
+	</ui:define>
+</ui:composition>
+########################
+<?xml version="1.0" encoding="UTF-8"?>
+	<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:p="http://primefaces.org/ui"
+		template="template.xhtml">
+	
+		<ui:define name="body">
+			<p:panel id="panel_id">
+				<h:form id="form">
+					
+					<p:messages showDetail="true"/> 
+					
+					<p:panel id="panel_id2" header="#{rotulo.view}:" style="width:100%;">
+						<h:panelGrid id="grid_id" columns="2">
+							<h:inputHidden value="#{deliveryViewMB.id}" />
+							<p:spacer />
+
+							<h:inputHidden value="#{deliveryViewMB.idBusiness}" />
+							<p:spacer />
+	
+							<h:outputLabel id="business_name_id" for="business_name" value="#{rotulo.business}:" />
+							<p:inputText id="business_name" label="#{rotulo.business}" value="#{deliveryViewMB.business_name}" readonly="true" style="width:320px;text-align:left;" />
+							
+							<h:outputLabel id="customer_id" for="customer" value="#{rotulo.customer}:" />
+							<h:selectOneMenu id="customer" required="true" value="#{deliveryViewMB.idCustomer}" readonly="true" style="width:320px;text-align:left;">
+	                  			<f:selectItems value="#{deliveryViewMB.customers}" /> 
+							</h:selectOneMenu>
+
+							<h:outputLabel id="courier_id" for="courier" value="#{rotulo.courier}:" />
+							<h:selectOneMenu id="courier" required="true" value="#{deliveryViewMB.idCourier}" readonly="true" style="width:320px;text-align:left;">
+	                  			<f:selectItems value="#{deliveryViewMB.couriers}" /> 
+							</h:selectOneMenu>
+		
+							<h:outputLabel id="datetime_id" for="datetime" value="#{rotulo.datetime}:" />
+							<h:outputText id="datetime" value="#{deliveryViewMB.datetime}" readonly="true">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="#{initParam.timezone}" locale="#{initParam.locale}" />
+							</h:outputText>
+	
+							<h:outputLabel id="start_id" for="start" value="#{rotulo.start}:" />
+							<p:inputText id="start" label="#{rotulo.start}" value="#{deliveryViewMB.start}" readonly="true" style="width:320px;text-align:left;" />
+
+							<h:outputLabel id="destination_id" for="destination" value="#{rotulo.destination}:" />
+							<p:inputText id="destination" label="#{rotulo.destination}" value="#{deliveryViewMB.destination}" readonly="true" style="width:320px;text-align:left;" />
+
+							<h:outputLabel id="contact_id" for="contact" value="#{rotulo.contact}:" />
+							<p:inputText id="contact" label="#{rotulo.contact}" value="#{deliveryViewMB.contact}" readonly="true" style="width:120px;text-align:left;" />
+
+							<h:outputLabel id="packet_id" for="packet" value="#{rotulo.packet}:" />
+							<p:inputText id="packet" label="#{rotulo.packet}" value="#{deliveryViewMB.packet}" readonly="true" style="width:320px;text-align:left;" />
+
+							<h:outputLabel id="volume_id" for="volume" value="#{rotulo.volume}:" />
+							<p:inputText id="volume" label="#{rotulo.volume}" value="#{deliveryViewMB.volume}" readonly="true" style="width:100px;text-align:right;" />
+
+							<h:outputLabel id="weight_id" for="weight" value="#{rotulo.weight}:" />
+							<p:inputText id="weight" label="#{rotulo.weight}" value="#{deliveryViewMB.weight}" readonly="true" style="width:100px;text-align:right;" />
+
+							<h:outputLabel id="km_id" for="km" value="#{rotulo.km}:" />
+							<p:inputText id="km" label="#{rotulo.km}" value="#{deliveryViewMB.km}" readonly="true" style="width:100px;text-align:right;" />
+
+							<h:outputLabel id="cost_id" for="cost" value="#{rotulo.cost}:" />
+							<p:inputText id="cost" label="#{rotulo.cost}" value="#{deliveryViewMB.cost}" readonly="true" style="width:100px;text-align:right;" />
+
+							<h:outputLabel id="completed_id" value="#{rotulo.completed}:" />
+							<h:outputText value="#{rotulo.yes}" rendered="#{deliveryViewMB.received}" />
+							<h:outputText value="#{rotulo.non}" rendered="#{!deliveryViewMB.received}" />
+
+							<h:outputLabel id="received_id" value="#{rotulo.received}:" />
+							<h:outputText value="#{rotulo.yes}" rendered="#{deliveryViewMB.completed}" />
+							<h:outputText value="#{rotulo.non}" rendered="#{!deliveryViewMB.completed}" />
+						</h:panelGrid>
+					</p:panel>
+						
+					<p:separator />
+					
+					<h:panelGrid id="buttom_id" columns="3">
+						<p:commandButton id="cancel_id" action="#{deliveryViewMB.cancel}" value="#{rotulo.cancel}" immediate="true"  icon="ui-icon-arrowreturnthick-1-w" ajax="false" />
+					</h:panelGrid>
+				
+				</h:form>
+			</p:panel>
+		</ui:define>
+	</ui:composition>
+######################
+package br.com.mulato.cso.view.controller;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.faces.application.Application;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
+
+import org.apache.log4j.Logger;
+
+import br.com.mulato.cso.dry.AbstractController;
+import br.com.mulato.cso.dry.FactoryService;
+import br.com.mulato.cso.exception.WebException;
+import br.com.mulato.cso.model.BusinessVO;
+import br.com.mulato.cso.model.CourierVO;
+import br.com.mulato.cso.model.CustomerVO;
+import br.com.mulato.cso.model.DeliveryVO;
+import br.com.mulato.cso.view.beans.FacesMessages;
+
+@ManagedBean(name="deliveryCoMB")
+@RequestScoped
+public class DeliveryCourierController extends AbstractController implements Serializable {
+    
+	private static final long serialVersionUID = 1L;
+
+	private static final Logger logger = Logger.getLogger(DeliveryCourierController.class);
+
+	private BusinessVO businessVO;
+
+	private Integer id;
+
+	private Integer idBusiness;
+
+	private String business_name;
+	
+	private Integer idCustomer;
+	
+	private String customer_name;
+	
+	private Integer idCourier;
+	
+	private String courier_name;
+	
+	private Date datetime;
+	
+	private String start;
+
+	private String destination;
+	
+	private String contact;
+	
+	private String packet;
+	
+	private BigDecimal volume;
+	
+	private BigDecimal weight;
+	
+	private BigDecimal km;
+
+	private BigDecimal cost;
+	
+	private boolean completed;
+	
+	private boolean received;
+	
+	private void loadSession() {	
+		
+		String profile;
+		
+		boolean isLogged = false;
+		
+		logger.info("Carregando controle da página de entregas do negócio ...");
+
+		try {
+	        
+			FacesContext context = FacesContext.getCurrentInstance();
+	        Application app = context.getApplication();
+	        LoginController loginController = (LoginController) app.evaluateExpressionGet(context, "#{loginMB}", LoginController.class);
+    		
+	        isLogged = loginController.isLogged();
+	        
+	        if (isLogged) {
+    			
+    			logger.info("Sessão carregada! ... Login: " + loginController.getUsername());
+    			
+    			profile = loginController.getProfile();
+    			
+   				if ((loginController.getUserIdLogged()==null) || (loginController.getUserIdLogged().intValue()<=0)) {
+
+					throw new WebException("Id do usuário logado não encontrado.");
+					
+				}
+    			
+   				if ((loginController.getBusinessVO()==null) || (loginController.getBusinessVO().getId()==null) || (loginController.getBusinessVO().getId().intValue()<=0)) {
+
+					throw new WebException("Negócio da sessão não encontrado.");
+   					
+   				} else {
+   					
+   					businessVO = loginController.getBusinessVO();
+   					
+   				}
+   				
+    			if (profile.equals("COURIER")) {
+    				
+					// Edit Delivery
+    				
+    				if (loginController.getId()!=null) {
+    					
+        				Integer id = loginController.getId();
+    					
+    					DeliveryVO delivery = FactoryService.getInstancia().getDeliveryService().find(id);
+
+    					if (delivery!=null) {
+
+    						setId(delivery.getId());
+    						
+    						if ((delivery.getBusiness()!=null) && (delivery.getBusiness().getId()!=null) && (delivery.getBusiness().getName()!=null)) {
+        						setIdBusiness(delivery.getBusiness().getId());
+        						setBusiness_name(delivery.getBusiness().getName());
+    						}
+    						
+    						if ((delivery.getCustomer()!=null) && (delivery.getCustomer().getId()!=null) && (delivery.getCustomer().getName()!=null)) {
+        						setIdCustomer(delivery.getCustomer().getId());
+        						setCustomer_name(delivery.getCustomer().getName());
+    						}
+    						
+    						if ((delivery.getCourier()!=null) && (delivery.getCourier().getId()!=null) && (delivery.getCourier().getName()!=null)) {
+        						setIdCourier(delivery.getCourier().getId());
+        						setCourier_name(delivery.getCourier().getName());
+    						}
+    						
+    						setDatetime(delivery.getDatetime());
+    						setStart(delivery.getStart());
+    						setDestination(delivery.getDestination());
+    						setContact(delivery.getContact());
+    						setPacket(delivery.getPacket());
+    						setVolume(delivery.getVolume());
+    						setWeight(delivery.getWeight());
+    						setKm(delivery.getKm());
+    						setCost(delivery.getCost());
+    						setCompleted(delivery.getCompleted());
+    						setReceived(delivery.getReceived());
+    						
+    					}
+    					
+    				}
+    				
+    				
+    			} else {
+	    			
+					throw new WebException("Perfil do usuário não encontrado.");
+    				
+    			}
+	        	
+	        } else {
+    			
+				throw new WebException("Sessão não carregada! Logar novamente.");
+				
+	        }
+	        
+		} catch (WebException e) {
+			FacesMessages.mensErro(e.getMessage());
+		}
+	}
+  	
+    public String save() {
+    	
+    	String path = "deliveries";
+
+    	int business_id = 0;
+    	int customer_id = 0;
+    	int courier_id  = 0;
+    	
+    	try {
+    		
+	    	if ((getIdBusiness()==null) || getIdBusiness().equals(new Integer(0))) {
+	            throw new WebException("Informe id negócio!");
+	    	}
+
+	    	if ((getIdCustomer()==null) || getIdCustomer().equals(new Integer(0))) {
+	            throw new WebException("Selecione cliente!");
+	    	}
+
+	    	if ((getIdCourier()==null) || getIdCourier().equals(new Integer(0))) {
+	            throw new WebException("Selecione entregador!");
+	    	}
+
+	    	if (getStart()==null) {
+	            throw new WebException("Informe endereço de início da corrida!");
+	    	}
+	    	
+	    	if (getStart().equals("")) {
+	            throw new WebException("Informe endereço de início da corrida!");
+	    	}
+	    	
+	    	if (getDestination()==null) {
+	            throw new WebException("Informe endereço de destino!");
+	    	}
+	    	
+	    	if (getDestination().equals("")) {
+	            throw new WebException("Informe endereço de destino!");
+	    	}
+	    	
+	    	if (getContact()==null) {
+	            throw new WebException("Informe o contato!");
+	    	}
+	    	
+	    	if (getContact().equals("")) {
+	            throw new WebException("Informe o contato!");
+	    	}
+	    	
+	    	if (getPacket()==null) {
+	            throw new WebException("Informe descrição!");
+	    	}
+	    	
+	    	if (getPacket().equals("")) {
+	            throw new WebException("Informe descrição!");
+	    	}
+	    	
+	    	if (getKm()==null) {
+	            throw new WebException("Informe distância em quilômetros!");
+	    	}
+	    	
+	    	if (getKm().equals(new BigDecimal(0))) {
+	            throw new WebException("Informe distância em quilômetros!");
+	    	}
+	    	
+	    	if (getCost()==null) {
+	            throw new WebException("Informe valor da corrida!");
+	    	}
+	    	
+	    	if (getCost().equals(new BigDecimal(0))) {
+	            throw new WebException("Informe valor da corrida!");
+	    	}
+
+	    	DeliveryVO delivery = new DeliveryVO();
+
+	    	delivery.setId(Integer.parseInt(getId().toString()));
+	    	
+	    	business_id = Integer.parseInt(getIdBusiness().toString());
+	    	customer_id = Integer.parseInt(getIdCustomer().toString());
+	    	courier_id  = Integer.parseInt(getIdCourier().toString());
+	    	
+	    	BusinessVO business = new BusinessVO();
+	    	business.setId(business_id);
+	    	delivery.setBusiness(business);
+
+	    	CustomerVO customer = new CustomerVO();
+	    	customer.setId(customer_id);
+	    	delivery.setCustomer(customer);
+	    	
+	    	CourierVO courier = new CourierVO();
+	    	courier.setId(courier_id);
+	    	delivery.setCourier(courier);
+	    	
+	    	delivery.setStart(getStart());
+	    	delivery.setDestination(getDestination());
+	    	delivery.setContact(getContact());
+	    	delivery.setPacket(getPacket());
+	    	delivery.setVolume(getVolume());
+	    	delivery.setWeight(getWeight());
+	    	delivery.setKm(getKm());
+	    	delivery.setCost(getCost());
+    		delivery.setReceived(true);
+	    	delivery.setCompleted(getCompleted());
+	    	
+	    	FactoryService.getInstancia().getDeliveryService().save(delivery);
+
+			FacesMessages.mensInfo("Entrega salva com sucesso!");
+    	        	
+		} catch (WebException e) {
+			path = "delivery";
+			FacesMessages.mensErro(e.getMessage());
+		} catch (Exception e) {
+			path = "delivery";
+			FacesMessages.mensErro("Falha na inserção no banco de dados!");
+		}
+    	
+        return goToBackPage(path);		
+		
+    }
+
+    public DeliveryCourierController() {
+		super();
+    	loadSession();
+	}
+	
+	/**
+	 * Buscar todos os entregadores do negócio
+	 * @return
+	 * @throws WebException
+	 */
+    public Map<String, Object> getCouriers() throws WebException {
+    	
+    	Map<String, Object> itemMap = new LinkedHashMap<String, Object>();
+
+    	if ((businessVO!=null) && (businessVO.getId()!=null)) {
+        	
+        	List<CourierVO> listCouriers = FactoryService.getInstancia().getCourierService().listAllCourierBusiness(businessVO);
+        	
+        	for (CourierVO courier : listCouriers) {
+    	    	
+        		// label, value
+        		itemMap.put(courier.getName(), courier.getId());
+    		} 
+    		
+    	}
+    	
+        return itemMap;
+        
+    }
+	
+	/**
+	 * Buscar todos os clientes do negócio
+	 * @return
+	 * @throws WebException
+	 */
+    public Map<String, Object> getCustomers() throws WebException {
+    	
+    	Map<String, Object> itemMap = new LinkedHashMap<String, Object>();
+
+    	if ((businessVO!=null) && (businessVO.getId()!=null)) {
+        	
+        	List<CustomerVO> listCustomers = FactoryService.getInstancia().getCustomerService().listAllCustomerBusiness(businessVO);
+        	
+        	for (CustomerVO customer : listCustomers) {
+    	    	
+        		// label, value
+        		itemMap.put(customer.getName(), customer.getId());
+    		} 
+    		
+    	}
+    	
+        return itemMap;
+        
+    }
+	
+    public String cancel() {
+        return goToPage("deliveries");
+    }
+	
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
+	public Integer getIdBusiness() {
+		return idBusiness;
+	}
+
+	public void setIdBusiness(Integer idBusiness) {
+		this.idBusiness = idBusiness;
+	}
+
+	public String getBusiness_name() {
+		return business_name;
+	}
+
+	public void setBusiness_name(String business_name) {
+		this.business_name = business_name;
+	}
+
+	public Integer getIdCustomer() {
+		return idCustomer;
+	}
+
+	public void setIdCustomer(Integer idCustomer) {
+		this.idCustomer = idCustomer;
+	}
+
+	public String getCustomer_name() {
+		return customer_name;
+	}
+
+	public void setCustomer_name(String customer_name) {
+		this.customer_name = customer_name;
+	}
+
+	public Integer getIdCourier() {
+		return idCourier;
+	}
+
+	public void setIdCourier(Integer idCourier) {
+		this.idCourier = idCourier;
+	}
+
+	public String getCourier_name() {
+		return courier_name;
+	}
+
+	public void setCourier_name(String courier_name) {
+		this.courier_name = courier_name;
+	}
+
+	public Date getDatetime() {
+		return datetime;
+	}
+
+	public void setDatetime(Date datetime) {
+		this.datetime = datetime;
+	}
+
+	public String getStart() {
+		return start;
+	}
+
+	public void setStart(String start) {
+		this.start = start;
+	}
+
+	public String getDestination() {
+		return destination;
+	}
+
+	public void setDestination(String destination) {
+		this.destination = destination;
+	}
+
+	public String getContact() {
+		return contact;
+	}
+
+	public void setContact(String contact) {
+		this.contact = contact;
+	}
+
+	public String getPacket() {
+		return packet;
+	}
+
+	public void setPacket(String packet) {
+		this.packet = packet;
+	}
+
+	public BigDecimal getVolume() {
+		return volume;
+	}
+
+	public void setVolume(BigDecimal volume) {
+		this.volume = volume;
+	}
+
+	public BigDecimal getWeight() {
+		return weight;
+	}
+
+	public void setWeight(BigDecimal weight) {
+		this.weight = weight;
+	}
+
+	public BigDecimal getKm() {
+		return km;
+	}
+
+	public void setKm(BigDecimal km) {
+		this.km = km;
+	}
+
+	public BigDecimal getCost() {
+		return cost;
+	}
+
+	public void setCost(BigDecimal cost) {
+		this.cost = cost;
+	}
+
+	public boolean getCompleted() {
+		return completed;
+	}
+
+	public void setCompleted(boolean completed) {
+		this.completed = completed;
+	}
+
+	public boolean getReceived() {
+		return received;
+	}
+
+	public void setReceived(boolean received) {
+		this.received = received;
+	}
+}
+#############
+package br.com.mulato.cso.view.listener;
+
+import java.io.IOException;
+
+import javax.faces.application.Application;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseEvent;
+import javax.faces.event.PhaseId;
+import javax.faces.event.PhaseListener;
+import javax.servlet.http.HttpSession;
+
+import org.apache.log4j.Logger;
+
+import br.com.mulato.cso.view.controller.LoginController;
+
+public class PageListener implements PhaseListener {
+
+    private static final Logger logger = Logger.getLogger(PageListener.class);
+
+    private static final long serialVersionUID = 1L;
+
+    public void afterPhase(PhaseEvent event) {
+    }
+
+    //executa antes de qualquer renderizar ao usuário
+    public void beforePhase(PhaseEvent event) {
+
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        Application application = facesContext.getApplication();
+        String page = facesContext.getViewRoot().getViewId();
+		ExternalContext externalContext = facesContext.getExternalContext();
+		HttpSession httpSession = (HttpSession) externalContext.getSession(false);
+
+        boolean timeout = false;
+        boolean validaPaginas= false;
+
+		boolean newSession = (httpSession == null) || (httpSession.isNew());
+		boolean postback = !externalContext.getRequestParameterMap().isEmpty();
+		timeout = postback && newSession;
+
+		logger.info("Navigation: " + page + " page.");
+		logger.info("Timeout: " + timeout);
+
+		// recupera os dados que estao na sessão LoginController
+        LoginController loginController = (LoginController) application.evaluateExpressionGet(facesContext, "#{loginMB}", LoginController.class);
+    	
+        if (loginController!=null) {
+        	if (timeout) { 
+            	loginController.logout();
+                try {
+                    externalContext.redirect(externalContext.getRequestContextPath() + "/login.faces");
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            	
+			} else {
+    	    	
+                validaPaginas =  page.equals("/logout.xhtml")
+                        		|| page.equals("/resume.xhtml")
+                                || page.equals("/user.xhtml")
+                                || page.equals("/users.xhtml")
+                                || page.equals("/change_password.xhtml")
+                                || page.equals("/business.xhtml")
+                                || page.equals("/businesses.xhtml")
+                                || page.equals("/customer.xhtml")
+                                || page.equals("/customers.xhtml")
+                                || page.equals("/courier.xhtml")
+                                || page.equals("/couriers.xhtml")
+                                || page.equals("/delivery.xhtml")
+                                || page.equals("/delivery_courier.xhtml")
+                                || page.equals("/delivery_customer.xhtml")
+                                || page.equals("/delivery_view.xhtml")
+                                || page.equals("/deliveries.xhtml")
+                                || page.equals("/deliveries_completed.xhtml");
+
+                //verifica as páginas que não possuem acesso externo
+                if (validaPaginas) {
+                	if(!loginController.isLogged()) {
+                        try {
+                            externalContext.redirect(externalContext.getRequestContextPath() + "/login.faces");
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+            	}
+                
+                //se abrir encerra todas sessões
+                if (page.equals("/logout.xhtml")) {
+                	loginController.logout();
+                }
+        		
+        	}
+    	}
+
+    }
+
+    public PhaseId getPhaseId() {
+        return PhaseId.RENDER_RESPONSE;
+    }
+}
+##############
+package br.com.mulato.cso.view.controller;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.faces.application.Application;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
+
+import org.apache.log4j.Logger;
+
+import br.com.mulato.cso.dry.AbstractController;
+import br.com.mulato.cso.dry.FactoryService;
+import br.com.mulato.cso.exception.WebException;
+import br.com.mulato.cso.model.DeliveryVO;
+import br.com.mulato.cso.view.beans.FacesMessages;
+
+@ManagedBean(name="deliveriesCoMB")
+@RequestScoped
+public class DeliveriesCompletedController extends AbstractController implements Serializable {
+    
+	private static final long serialVersionUID = 1L;
+
+    private static final Logger logger = Logger.getLogger(DeliveriesCompletedController.class);
+
+	private List<DeliveryVO> results;
+
+	private String parameter;
+
+	private boolean business_profile;
+
+	private boolean customer_profile;
+	
+	private boolean courier_profile;
+
+	private boolean no_items;
+	
+	private void loadSession() {	
+
+		String profile;
+		
+		logger.info("Carregando controle da página de entregas em aberto ...");
+		
+		try {
+	        
+			FacesContext context = FacesContext.getCurrentInstance();
+	        Application app = context.getApplication();
+	        LoginController loginController = (LoginController) app.evaluateExpressionGet(context, "#{loginMB}", LoginController.class);
+    		
+	        if (loginController.isLogged()) {
+    			
+    			logger.info("Sessão carregada! ... Login: " + loginController.getUsername());
+    			
+    			if ((loginController.getUserIdLogged()==null) || (loginController.getUserIdLogged().intValue()<=0)) {
+    				
+    				throw new WebException("Id do usuário não encontrado.");
+    				
+    			}
+    			
+    			profile = loginController.getProfile();
+    			
+    			if (profile.equals("BUSINESS")) {
+
+    				business_profile = true;
+	        		
+   					Integer idBusiness = loginController.getUserIdLogged();
+
+   					results = FactoryService.getInstancia().getDeliveryService().listAllDeliveryBusinessCompleted(idBusiness);
+
+    			} else if (profile.equals("CUSTOMER")) {
+
+    				customer_profile = true;
+
+    				Integer idCustomer = loginController.getUserIdLogged();
+    				
+    				results = FactoryService.getInstancia().getDeliveryService().listAllDeliveryCustomerCompleted(idCustomer);
+    				
+    			} else if (profile.equals("COURIER")) {
+
+    				courier_profile = true;
+
+    				Integer idCourier = loginController.getUserIdLogged();
+    				
+    				results = FactoryService.getInstancia().getDeliveryService().listAllDeliveryCourierCompleted(idCourier);
+    				
+    			} else {
+	    			
+					throw new WebException("Perfil do usuário não encontrado.");
+					
+	        	}
+    			
+    			if ((results!=null) && (results.size()>0)) {
+    				setResults(results);
+    			} else {
+    				setNo_items(true);
+    			}
+    			
+    		} else {
+    			
+				throw new WebException("Sessão não carregada! Logar novamente.");
+				
+    		}
+	        
+		} catch (WebException e) {
+            FacesMessages.mensErro(e.getMessage());
+		}
+	}
+	
+    public DeliveriesCompletedController() {
+		super();
+    	loadSession();
+	}
+   
+    public String edit() {
+		
+    	try {
+    		
+	    	parameter = super.getParameter("id");
+	    	
+	    	if ((parameter!=null) && (!parameter.equals(""))) {
+				
+		        FacesContext context = FacesContext.getCurrentInstance();
+		        Application app = context.getApplication();
+		        LoginController loginController = (LoginController) app.evaluateExpressionGet(context, "#{loginMB}", LoginController.class);
+		        
+		        if (loginController!=null) {
+		        	loginController.setId(Integer.parseInt(parameter));
+		        	return goToPage("delivery_view");
+		        	
+	    		}
+				
+			}
+			
+		} catch (Exception e) {
+            FacesMessages.mensErro(e.getMessage());
+	    } 
+	    
+        return goToPage("deliveries_completed");
+    }
+    
+    public String listAll() {
+    	return goToPage("deliveries_completed");
+    }
+    
+	public List<DeliveryVO> getResults() {
+		return results;
+	}
+
+	public void setResults(List<DeliveryVO> results) {
+		this.results = results;
+	}
+    
+    public String getParameter() {
+		return parameter;
+	}
+
+	public void setParameter(String parameter) {
+		this.parameter = parameter;
+	}
+	
+	public boolean isBusiness_profile() {
+		return business_profile;
+	}
+
+	public void setBusiness_profile(boolean business_profile) {
+		this.business_profile = business_profile;
+	}
+
+	public boolean isCustomer_profile() {
+		return customer_profile;
+	}
+
+	public void setCustomer_profile(boolean customer_profile) {
+		this.customer_profile = customer_profile;
+	}
+
+	public boolean isCourier_profile() {
+		return courier_profile;
+	}
+
+	public void setCourier_profile(boolean courier_profile) {
+		this.courier_profile = courier_profile;
+	}
+	public boolean isNo_items() {
+		return no_items;
+	}
+
+	public void setNo_items(boolean no_items) {
+		this.no_items = no_items;
+	}
+}
+##############
+package br.com.mulato.cso.view.controller;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.faces.application.Application;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
+
+import org.apache.log4j.Logger;
+
+import br.com.mulato.cso.dry.AbstractController;
+import br.com.mulato.cso.dry.FactoryService;
+import br.com.mulato.cso.exception.WebException;
+import br.com.mulato.cso.model.BusinessVO;
+import br.com.mulato.cso.model.CourierVO;
+import br.com.mulato.cso.model.CustomerVO;
+import br.com.mulato.cso.model.DeliveryVO;
+import br.com.mulato.cso.view.beans.FacesMessages;
+
+@ManagedBean(name="deliveryViewMB")
+@RequestScoped
+public class DeliveryViewController extends AbstractController implements Serializable {
+    
+	private static final long serialVersionUID = 1L;
+
+	private static final Logger logger = Logger.getLogger(DeliveryViewController.class);
+
+	private BusinessVO businessVO;
+	
+	private Integer id;
+
+	private Integer idBusiness;
+
+	private String business_name;
+	
+	private Integer idCustomer;
+	
+	private String customer_name;
+	
+	private Integer idCourier;
+	
+	private String courier_name;
+	
+	private Date datetime;
+	
+	private String start;
+
+	private String destination;
+	
+	private String contact;
+	
+	private String packet;
+	
+	private BigDecimal volume;
+	
+	private BigDecimal weight;
+	
+	private BigDecimal km;
+
+	private BigDecimal cost;
+	
+	private boolean completed;
+	
+	private boolean received;
+	
+	private void loadSession() {	
+		
+		String profile;
+		
+		boolean isLogged = false;
+		
+		logger.info("Carregando controle da página de entregas do negócio ...");
+
+		try {
+	        
+			FacesContext context = FacesContext.getCurrentInstance();
+	        Application app = context.getApplication();
+	        LoginController loginController = (LoginController) app.evaluateExpressionGet(context, "#{loginMB}", LoginController.class);
+    		
+	        isLogged = loginController.isLogged();
+	        
+	        if (isLogged) {
+    			
+    			logger.info("Sessão carregada! ... Login: " + loginController.getUsername());
+    			
+    			profile = loginController.getProfile();
+    			
+   				if ((loginController.getUserIdLogged()==null) || (loginController.getUserIdLogged().intValue()<=0)) {
+
+					throw new WebException("Id do usuário logado não encontrado.");
+					
+				}
+    			
+   				if ((loginController.getBusinessVO()==null) || (loginController.getBusinessVO().getId()==null) || (loginController.getBusinessVO().getId().intValue()<=0)) {
+
+					throw new WebException("Negócio da sessão não encontrado.");
+   					
+   				} else {
+   					
+   					businessVO = loginController.getBusinessVO();
+   					
+   				}
+   				
+    			if ((profile.equals("BUSINESS")) || (profile.equals("CUSTOMER")) || (profile.equals("COURIER"))) {
+    				
+					// Edit Delivery
+    				
+    				if (loginController.getId()!=null) {
+    					
+        				Integer id = loginController.getId();
+    					
+    					DeliveryVO delivery = FactoryService.getInstancia().getDeliveryService().find(id);
+
+    					if (delivery!=null) {
+
+    						setId(delivery.getId());
+    						
+    						if ((delivery.getBusiness()!=null) && (delivery.getBusiness().getId()!=null) && (delivery.getBusiness().getName()!=null)) {
+        						setIdBusiness(delivery.getBusiness().getId());
+        						setBusiness_name(delivery.getBusiness().getName());
+    						}
+    						
+    						if ((delivery.getCustomer()!=null) && (delivery.getCustomer().getId()!=null) && (delivery.getCustomer().getName()!=null)) {
+        						setIdCustomer(delivery.getCustomer().getId());
+        						setCustomer_name(delivery.getCustomer().getName());
+    						}
+    						
+    						if ((delivery.getCourier()!=null) && (delivery.getCourier().getId()!=null) && (delivery.getCourier().getName()!=null)) {
+        						setIdCourier(delivery.getCourier().getId());
+        						setCourier_name(delivery.getCourier().getName());
+    						}
+    						
+    						setDatetime(delivery.getDatetime());
+    						setStart(delivery.getStart());
+    						setDestination(delivery.getDestination());
+    						setContact(delivery.getContact());
+    						setPacket(delivery.getPacket());
+    						setVolume(delivery.getVolume());
+    						setWeight(delivery.getWeight());
+    						setKm(delivery.getKm());
+    						setCost(delivery.getCost());
+    						setCompleted(delivery.getCompleted());
+    						setReceived(delivery.getReceived());
+    						
+    					}
+    					
+    				}     				
+    				
+    			} else {
+	    			
+					throw new WebException("Perfil do usuário não encontrado.");
+    				
+    			}
+	        	
+	        } else {
+    			
+				throw new WebException("Sessão não carregada! Logar novamente.");
+				
+	        }
+	        
+		} catch (WebException e) {
+			FacesMessages.mensErro(e.getMessage());
+		}
+	}
+  	
+    public DeliveryViewController() {
+		super();
+    	loadSession();
+	}
+	
+	/**
+	 * Buscar todos os entregadores do negócio
+	 * @return
+	 * @throws WebException
+	 */
+    public Map<String, Object> getCouriers() throws WebException {
+    	
+    	Map<String, Object> itemMap = new LinkedHashMap<String, Object>();
+
+    	if ((businessVO!=null) && (businessVO.getId()!=null)) {
+        	
+        	List<CourierVO> listCouriers = FactoryService.getInstancia().getCourierService().listAllCourierBusiness(businessVO);
+        	
+        	for (CourierVO courier : listCouriers) {
+    	    	
+        		// label, value
+        		itemMap.put(courier.getName(), courier.getId());
+    		} 
+    		
+    	}
+    	
+        return itemMap;
+        
+    }
+	
+	/**
+	 * Buscar todos os clientes do negócio
+	 * @return
+	 * @throws WebException
+	 */
+    public Map<String, Object> getCustomers() throws WebException {
+    	
+    	Map<String, Object> itemMap = new LinkedHashMap<String, Object>();
+
+    	if ((businessVO!=null) && (businessVO.getId()!=null)) {
+        	
+        	List<CustomerVO> listCustomers = FactoryService.getInstancia().getCustomerService().listAllCustomerBusiness(businessVO);
+        	
+        	for (CustomerVO customer : listCustomers) {
+    	    	
+        		// label, value
+        		itemMap.put(customer.getName(), customer.getId());
+    		} 
+    		
+    	}
+    	
+        return itemMap;
+        
+    }
+	
+    public String cancel() {
+        return goToPage("deliveries_completed");
+    }
+	
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
+	public Integer getIdBusiness() {
+		return idBusiness;
+	}
+
+	public void setIdBusiness(Integer idBusiness) {
+		this.idBusiness = idBusiness;
+	}
+
+	public String getBusiness_name() {
+		return business_name;
+	}
+
+	public void setBusiness_name(String business_name) {
+		this.business_name = business_name;
+	}
+
+	public Integer getIdCustomer() {
+		return idCustomer;
+	}
+
+	public void setIdCustomer(Integer idCustomer) {
+		this.idCustomer = idCustomer;
+	}
+
+	public String getCustomer_name() {
+		return customer_name;
+	}
+
+	public void setCustomer_name(String customer_name) {
+		this.customer_name = customer_name;
+	}
+
+	public Integer getIdCourier() {
+		return idCourier;
+	}
+
+	public void setIdCourier(Integer idCourier) {
+		this.idCourier = idCourier;
+	}
+
+	public String getCourier_name() {
+		return courier_name;
+	}
+
+	public void setCourier_name(String courier_name) {
+		this.courier_name = courier_name;
+	}
+
+	public Date getDatetime() {
+		return datetime;
+	}
+
+	public void setDatetime(Date datetime) {
+		this.datetime = datetime;
+	}
+
+	public String getStart() {
+		return start;
+	}
+
+	public void setStart(String start) {
+		this.start = start;
+	}
+
+	public String getDestination() {
+		return destination;
+	}
+
+	public void setDestination(String destination) {
+		this.destination = destination;
+	}
+
+	public String getContact() {
+		return contact;
+	}
+
+	public void setContact(String contact) {
+		this.contact = contact;
+	}
+
+	public String getPacket() {
+		return packet;
+	}
+
+	public void setPacket(String packet) {
+		this.packet = packet;
+	}
+
+	public BigDecimal getVolume() {
+		return volume;
+	}
+
+	public void setVolume(BigDecimal volume) {
+		this.volume = volume;
+	}
+
+	public BigDecimal getWeight() {
+		return weight;
+	}
+
+	public void setWeight(BigDecimal weight) {
+		this.weight = weight;
+	}
+
+	public BigDecimal getKm() {
+		return km;
+	}
+
+	public void setKm(BigDecimal km) {
+		this.km = km;
+	}
+
+	public BigDecimal getCost() {
+		return cost;
+	}
+
+	public void setCost(BigDecimal cost) {
+		this.cost = cost;
+	}
+
+	public boolean getCompleted() {
+		return completed;
+	}
+
+	public void setCompleted(boolean completed) {
+		this.completed = completed;
+	}
+
+	public boolean getReceived() {
+		return received;
+	}
+
+	public void setReceived(boolean received) {
+		this.received = received;
+	}
+}

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:p="http://primefaces.org/ui"
+		template="template.xhtml">
+	
+		<ui:define name="body">
+			<p:panel id="panel_id">
+				<h:form id="form">
+					
+					<p:messages showDetail="true"/> 
+					
+					<p:panel id="panel_id2" header="#{deliveryMB.label}:" style="width:100%;">
+						<h:panelGrid id="grid_id" columns="2">
+							<h:inputHidden value="#{deliveryMB.id}" />
+							<p:spacer />
+
+							<h:inputHidden value="#{deliveryMB.idBusiness}" />
+							<p:spacer />
+	
+							<h:outputLabel id="business_name_id" for="business_name" value="#{rotulo.business}:" />
+							<p:inputText id="business_name" label="#{rotulo.business}" value="#{deliveryMB.business_name}" readonly="true" style="width:320px;text-align:left;" />
+							
+							<h:outputLabel id="customer_id" for="customer" value="#{rotulo.customer}:" />
+							<h:selectOneMenu id="customer" required="true" value="#{deliveryMB.idCustomer}" style="width:320px;text-align:left;">
+	                  			<f:selectItems value="#{deliveryMB.customers}" /> 
+							</h:selectOneMenu>
+
+							<h:outputLabel id="courier_id" for="courier" value="#{rotulo.courier}:" />
+							<h:selectOneMenu id="courier" required="true" value="#{deliveryMB.idCourier}" style="width:320px;text-align:left;">
+	                  			<f:selectItems value="#{deliveryMB.couriers}" /> 
+							</h:selectOneMenu>
+		
+							<h:outputLabel id="datetime_id" for="datetime" value="#{rotulo.datetime}:" rendered="#{!deliveryMB.insert}" />
+							<h:outputText id="datetime" value="#{deliveryMB.datetime}" rendered="#{!deliveryMB.insert}">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="#{initParam.timezone}" locale="#{initParam.locale}" />
+							</h:outputText>
+	
+							<h:outputLabel id="start_id" for="start" value="#{rotulo.start}:" />
+							<p:inputText id="start" label="#{rotulo.start}" value="#{deliveryMB.start}" required="true" style="width:320px;text-align:left;" />
+
+							<h:outputLabel id="destination_id" for="destination" value="#{rotulo.destination}:" />
+							<p:inputText id="destination" label="#{rotulo.destination}" value="#{deliveryMB.destination}" required="true" style="width:320px;text-align:left;" />
+
+							<h:outputLabel id="contact_id" for="contact" value="#{rotulo.contact}:" />
+							<p:inputText id="contact" label="#{rotulo.contact}" value="#{deliveryMB.contact}" style="width:120px;text-align:left;" />
+
+							<h:outputLabel id="description_id" for="description" value="#{rotulo.description}:" />
+							<p:inputTextarea id="description" label="#{rotulo.description}" rows="2" cols="60" value="#{deliveryMB.description}" style="width:320px;text-align:left;" />
+
+							<h:outputLabel id="volume_id" for="volume" value="#{rotulo.volume}:" />
+							<p:inputText id="volume" label="#{rotulo.volume}" value="#{deliveryMB.volume}" style="width:100px;text-align:right;" />
+
+							<h:outputLabel id="weight_id" for="weight" value="#{rotulo.weight}:" />
+							<p:inputText id="weight" label="#{rotulo.weight}" value="#{deliveryMB.weight}" style="width:100px;text-align:right;" />
+
+							<h:outputLabel id="km_id" for="km" value="#{rotulo.km}:" />
+							<p:inputText id="km" label="#{rotulo.km}" value="#{deliveryMB.km}" required="true" style="width:100px;text-align:right;" />
+
+							<h:outputLabel id="additional_cost_id" for="additional_cost" value="#{rotulo.additional}:" />
+							<p:inputText id="additional_cost" label="#{rotulo.additional}" value="#{deliveryMB.additionalCost}" converter="BigDecimalConverter" style="width:100px;text-align:right;" />
+
+							<h:outputLabel id="cost_id" for="cost" value="#{rotulo.cost}:" />
+							<p:inputText id="cost" label="#{rotulo.cost}"  value="#{deliveryMB.cost}" converter="BigDecimalConverter" style="width:100px;text-align:right;" />
+
+							<h:outputLabel id="received_id" for="received" value="#{rotulo.received}:" rendered="#{!deliveryMB.insert}" />
+							<p:selectBooleanCheckbox id="received" label="#{rotulo.received}" value="#{deliveryMB.received}" rendered="#{!deliveryMB.insert}" />
+							
+							<p:spacer rendered="#{!deliveryMB.insert}" />
+							
+							<h:outputLabel id="completed_id" for="completed" value="#{rotulo.completed}:" rendered="#{!deliveryMB.insert}" />
+							<p:selectBooleanCheckbox id="completed" label="#{rotulo.completed}" value="#{deliveryMB.completed}" rendered="#{!deliveryMB.insert}" />
+
+						</h:panelGrid>
+					</p:panel>
+
+					<p:separator rendered="#{!deliveryMB.received}" />
+
+					<h:panelGrid id="grid_sms_id" columns="2" rendered="#{!deliveryMB.received}">
+							<p:commandButton id="sms_button_id" value="#{rotulo.composeSms}" immediate="false" update="editor_id" /> 
+							<p:inputTextarea id="editor_id" rows="3" cols="60" value="#{deliveryMB.txtSms}" />
+					</h:panelGrid>
+				
+					<p:separator />
+					
+					<h:panelGrid id="grid_buttom_id" columns="5">
+						<p:commandButton id="salve_id"  action="#{deliveryMB.save}"   	value="#{rotulo.save}"   	immediate="false" icon="ui-icon-arrowreturnthick-1-w" ajax="false" />
+						<p:commandButton id="cancel_id" action="#{deliveryMB.cancel}" 	value="#{rotulo.cancel}" 	immediate="true"  icon="ui-icon-arrowreturnthick-1-w" ajax="false" />
+						<p:spacer width="20px" rendered="#{!deliveryMB.received}" />
+						<p:commandButton id="send_id"   action="#{deliveryMB.send}"   	value="#{rotulo.send}"   	immediate="false" rendered="#{!deliveryMB.received}" icon="ui-icon-mail-closed" ajax="false" />
+						<p:commandButton id="sms_id"    action="#{deliveryMB.sendSms}"  value="#{rotulo.sendSms}"   immediate="false" rendered="#{!deliveryMB.received}" icon="ui-icon-mail-closed" ajax="false" />
+					</h:panelGrid>
+				</h:form>
+			</p:panel>
+		</ui:define>
+	</ui:composition>
