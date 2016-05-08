@@ -1,3 +1,11 @@
+Application for Delivery Control.
+
+Technologies involved:
+Tomcat 7, MySQL Database, Java, JDBC/JSF, Factory Design and best practices.
+
+Responsible Technical: Cara-Core Informática.
+Site: http://www.caracore.com.br
+
 Portfolio:
 
 CSOnline System - http://www.csonline.net.br
