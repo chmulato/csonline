@@ -3,7 +3,7 @@ Application for Delivery Control.
 Technologies involved:
 Tomcat 7, MySQL Database, Java, JDBC/JSF, Factory Design and best practices.
 
-Responsible Technical: Cara-Core Inform·tica.
+Responsible Technical: Cara-Core Inform√°tica.
 Site: http://www.caracore.com.br
 
 Portfolio:
