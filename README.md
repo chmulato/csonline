@@ -4,28 +4,26 @@ Java SDK 8
 
 JSF Web Page
 
-Database local com MySQL
+Database com MySQL
 
-Servidor Web Tomcat 9 com build e deploy com formato de arquivo WAR.
-
-Compilado em Maven. Dependências catalogadas no arquivo pom.xml.
+Tomcat 9 com build e deploy com WAR
 
 Projeto CSOnline Delivery:
 
 Este projeto tem como objetivo executar uma aplicacao de controle de entregas:
 
-CSOnline Delivery; e
+CSOnline Delivery.
 
 Controle de Entregas.
 
-A aplicacao sera acessada via browser do sistema operacional na url: https://caracore.com.br/csonline
+A aplicacao acessa via browser do sistema operacional na url: https://caracore.com.br/csonline
 
 Perfil de Administrador:
 
 User:       chmulato
 Password:   admin
 
-O banco de dados da aplicacao no site local o MySQL.
+O banco de dados da aplicacao no site e' o MySQL database.
 
 Este banco de dados segue o padrao (SGDB) de bancos relacionais.
 
