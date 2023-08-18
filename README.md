@@ -6,7 +6,9 @@ JSF Web Page
 
 Database local com MySQL
 
-Tomcat 9 com build e deploy com WAR
+Servidor Web Tomcat 9 com build e deploy com formato de arquivo WAR.
+
+Compilado em Maven. Dependências catalogadas no arquivo pom.xml.
 
 Projeto CSOnline Delivery:
 
