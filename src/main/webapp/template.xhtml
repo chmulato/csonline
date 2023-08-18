@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html" locale="#{i18nMB.locale}">
+	<f:loadBundle basename="Rotulos" var="rotulo" />
+
+	<h:head>
+		<meta http-equiv="X-UA-Compatible" content="IE=8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link type="images/x-icon" rel="SHORTCUT ICON"
+			href="#{facesContext.externalContext.requestContextPath}/images/favicon.ico" />
+		<link type="text/css" rel="stylesheet" href="resources/styles.css" />
+		<script type="text/javascript"
+			src="#{facesContext.externalContext.requestContextPath}/resources/jquery/jquery.maskedinput-1.2.2.min.js" />
+		<script type="text/javascript"
+			src="#{facesContext.externalContext.requestContextPath}/resources/jquery/jquery.maskMoney.js" />
+		<script type="text/javascript"
+			src="#{facesContext.externalContext.requestContextPath}/resources/jquery/functions.js" />
+		<script>
+			  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+			
+			  ga('create', 'UA-6101461-10', 'auto');
+			  ga('send', 'pageview');
+			</script>
+		<title>#{rotulo.aplicacao}</title>
+	</h:head>
+
+	<body>
+		<p:ajaxStatus onstart="statusDialog.show();"
+			onsuccess="statusDialog.hide();" />
+		<p:dialog id="dialog_id" widgetVar="statusDialog"
+			header="#{rotulo.status}" draggable="true" closable="false"
+			modal="true" resizable="false">
+			<h:panelGrid id="grid_id" columns="1">
+				<p:graphicImage value="/images/ajaxloadingbar.gif"
+					style="vertical-align: middle;" />
+				<h:outputLabel value="#{rotulo.carregando}"
+					style="font-size: 12px; text-align: center;" />
+			</h:panelGrid>
+		</p:dialog>
+
+		<p:layout fullPage="true">
+
+			<p:layoutUnit position="north" header="#{loginMB.profile}"
+				resizable="false" closable="false" collapsible="false">
+				<table width="100%">
+					<tr>
+						<td style="width: 320px;"><h:graphicImage
+								value="#{facesContext.externalContext.requestContextPath}/images/logo.gif" /></td>
+						<td><p:panel style="width:40%;">
+								<h:panelGrid id="grid_profile_id" columns="1">
+									<h:outputLabel value="#{rotulo.user}: #{loginMB.username}" />
+									<h:outputLabel value="#{rotulo.role}: #{rotulo.administrator}"
+										rendered="#{loginMB.profile == 'ADMINISTRATOR'}" />
+									<h:outputLabel value="#{rotulo.role}: #{rotulo.business}"
+										rendered="#{loginMB.profile == 'BUSINESS'}" />
+									<h:outputLabel value="#{rotulo.role}: #{rotulo.customer}"
+										rendered="#{loginMB.profile == 'CUSTOMER'}" />
+									<h:outputLabel value="#{rotulo.role}: #{rotulo.courier}"
+										rendered="#{loginMB.profile == 'COURIER'}" />
+								</h:panelGrid>
+							</p:panel></td>
+					</tr>
+				</table>
+			</p:layoutUnit>
+
+			<p:layoutUnit position="west" header="#{rotulo.menu}"
+				resizable="false" closable="false" collapsible="false">
+				<ui:include src="menu.xhtml" />
+			</p:layoutUnit>
+
+			<p:layoutUnit position="center"
+				header="#{rotulo.timeSystem}: #{loginMB.timeSystem}"
+				footer="#{rotulo.copyright}">
+				<ui:insert name="body" />
+			</p:layoutUnit>
+		</p:layout>
+
+	</body>
+</f:view>
+</html>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="template.xhtml">
+
+	<ui:define name="body">
+		<p:panel id="panel_id">
+			<h:form id="form">
+
+				<p:messages showDetail="true" />
+
+				<p:panel id="panel_id2" header="#{rotulo.customers}:"
+					style="width:100%;">
+
+					<h:outputText id="msg_id" value="#{rotulo.no_items_registered}"
+						rendered="#{customersMB.no_items}" />
+
+					<h:panelGrid id="grid_id" columns="1"
+						rendered="#{not empty customersMB.results}">
+						<p:dataTable id="table_id"
+							rendered="#{not empty customersMB.results}" var="vo"
+							value="#{customersMB.results}" paginator="true" rows="5"
+							style="width:100%;"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,15,30">
+
+							<f:facet name="header"></f:facet>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="" />
+								</f:facet>
+								<p:commandLink action="#{customersMB.delete}"
+									value="#{rotulo.delete}"
+									onclick="javascript:if (!confirm('Deseja deletar?')) return false;"
+									ajax="true">
+									<f:param name="id" value="#{vo.id}" />
+									<f:param name="type" value="id" />
+								</p:commandLink>
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="" />
+								</f:facet>
+								<p:commandLink action="#{customersMB.edit}"
+									value="#{rotulo.edit}"
+									onclick="if(document.getElementById('form').target=='_blank') {document.getElementById('form').target='_self'}"
+									ajax="true">
+									<f:param name="id" value="#{vo.id}" />
+									<f:param name="type" value="id" />
+								</p:commandLink>
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="#{rotulo.role}" />
+								</f:facet>
+								<h:outputText value="#{vo.role}" />
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="#{rotulo.name}" />
+								</f:facet>
+								<h:outputText value="#{vo.name}" />
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="#{rotulo.login}" />
+								</f:facet>
+								<h:outputText value="#{vo.login.login}" />
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="#{rotulo.email}" />
+								</f:facet>
+								<h:outputText value="#{vo.email}" />
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="#{rotulo.email2}" />
+								</f:facet>
+								<h:outputText value="#{vo.email2}" />
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="#{rotulo.address}" />
+								</f:facet>
+								<h:outputText value="#{vo.address}" />
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="#{rotulo.mobile}" />
+								</f:facet>
+								<h:outputText value="#{vo.mobile}" />
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="#{rotulo.business}" />
+								</f:facet>
+								<h:outputText value="#{vo.business.name}" />
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="#{rotulo.factor_customer}" />
+								</f:facet>
+								<h:outputText value="#{vo.factor_customer}" />
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="#{rotulo.price_table}" />
+								</f:facet>
+								<h:outputText value="#{vo.price_table}" />
+							</p:column>
+
+							<f:facet name="footer" />
+
+						</p:dataTable>
+
+					</h:panelGrid>
+
+				</p:panel>
+
+				<p:separator />
+
+				<h:panelGrid id="grid_add_id">
+					<p:commandButton id="button_id" action="#{customersMB.add}"
+						value="#{rotulo.add}" immediate="false"
+						rendered="#{customersMB.business_profile}"
+						icon="ui-icon-arrowreturnthick-1-w" ajax="false" />
+				</h:panelGrid>
+
+			</h:form>
+		</p:panel>
+	</ui:define>
+</ui:composition>

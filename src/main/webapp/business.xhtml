@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="template.xhtml">
+
+	<ui:define name="body">
+		<p:panel id="panel_id">
+			<h:form id="form">
+
+				<p:messages showDetail="true" />
+
+				<p:panel id="panel_id2" header="#{businessMB.label}:"
+					style="width:100%;">
+					<h:panelGrid id="grid_id" columns="2">
+						<h:inputHidden value="#{businessMB.id}" />
+						<p:spacer />
+
+						<h:outputLabel id="role_id" for="role" value="#{rotulo.role}:" />
+						<p:inputText id="role" label="#{rotulo.role}"
+							value="#{businessMB.role}" readonly="true"
+							style="width:120px;text-align:left;" />
+
+						<h:outputLabel id="name_id" for="name" value="#{rotulo.name}:" />
+						<p:inputText id="name" label="#{rotulo.name}"
+							value="#{businessMB.name}" readonly="#{businessMB.readonly}"
+							style="width:320px;text-align:left;" />
+
+						<h:outputLabel id="email_id" for="email" value="#{rotulo.email}:" />
+						<p:inputText id="email" label="#{rotulo.email}"
+							value="#{businessMB.email}" readonly="#{businessMB.readonly}"
+							required="true" style="width:320px;text-align:left;">
+							<f:validator validatorId="validaEmail" />
+						</p:inputText>
+
+						<h:outputLabel id="login_id" for="login" value="#{rotulo.login}:" />
+						<p:inputText id="login" label="#{rotulo.login}"
+							value="#{businessMB.login}" readonly="#{businessMB.readonly}"
+							style="width:120px;text-align:left;" />
+
+						<h:outputLabel id="password_id" for="password"
+							value="#{rotulo.password}:" rendered="#{businessMB.insert}" />
+						<p:inputText id="password" label="#{rotulo.password}"
+							value="#{businessMB.password}" rendered="#{businessMB.insert}"
+							type="password" style="width:120px;text-align:left;" />
+
+						<h:outputLabel id="repeat_id" for="repeat"
+							value="#{rotulo.repeat}:" rendered="#{businessMB.insert}" />
+						<p:inputText id="repeat" label="#{rotulo.repeat}"
+							value="#{businessMB.repeat}" rendered="#{businessMB.insert}"
+							type="password" style="width:120px;text-align:left;" />
+
+						<h:outputLabel id="email2_id" for="email2"
+							value="#{rotulo.email2}:" />
+						<p:inputText id="email2" label="#{rotulo.email2}"
+							value="#{businessMB.email2}" readonly="#{businessMB.readonly}"
+							required="false" style="width:320px;text-align:left;">
+							<f:validator validatorId="validaEmail" />
+						</p:inputText>
+
+						<h:outputLabel id="address_id" for="address"
+							value="#{rotulo.address}:" />
+						<p:inputText id="address" label="#{rotulo.address}"
+							value="#{businessMB.address}" readonly="#{businessMB.readonly}"
+							style="width:320px;text-align:left;" />
+
+						<h:outputLabel id="mobile_id" for="mobile"
+							value="#{rotulo.mobile}:" />
+						<p:inputText id="mobile" label="#{rotulo.mobile}"
+							value="#{businessMB.mobile}" readonly="#{businessMB.readonly}"
+							style="width:120px;text-align:left;" />
+					</h:panelGrid>
+				</p:panel>
+
+				<p:separator />
+
+				<h:panelGrid id="buttom_id" columns="3">
+					<p:commandButton id="salve_id" action="#{businessMB.save}"
+						value="#{rotulo.save}" immediate="false"
+						rendered="#{!businessMB.business_profile}"
+						icon="ui-icon-arrowreturnthick-1-w" ajax="false" />
+					<p:commandButton id="cancel_bu"
+						action="#{businessMB.cancel_business}" value="#{rotulo.cancel}"
+						immediate="true" rendered="#{businessMB.business_profile}"
+						icon="ui-icon-arrowreturnthick-1-w" ajax="false" />
+					<p:commandButton id="cancel_id" action="#{businessMB.cancel}"
+						value="#{rotulo.cancel}" immediate="true"
+						rendered="#{!businessMB.business_profile}"
+						icon="ui-icon-arrowreturnthick-1-w" ajax="false" />
+				</h:panelGrid>
+
+			</h:form>
+		</p:panel>
+	</ui:define>
+</ui:composition>

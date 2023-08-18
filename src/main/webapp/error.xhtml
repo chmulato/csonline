@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="body.xhtml">
+
+	<ui:define name="body">
+		<p:panel header="#{rotulo.mensagem}"
+			style="margin-left: 35%; margin-right: 40%; margin-top: 10%">
+			<h:form id="form">
+				<h:panelGrid columns="3">
+					<p:spacer />
+					<p:spacer />
+					<p:spacer />
+
+					<h:outputLabel value="#{rotulo.mensagem_06}" />
+					<p:spacer height="50px" />
+					<p:spacer />
+
+					<p:spacer />
+					<p:spacer />
+					<h:commandButton value="#{rotulo.mensagem_03}"
+						action="#{loginMB.logar}" styleClass="default" />
+				</h:panelGrid>
+			</h:form>
+		</p:panel>
+	</ui:define>
+</ui:composition>

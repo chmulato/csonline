@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="template.xhtml">
+
+	<ui:define name="body">
+		<p:panel id="panel_id">
+			<h:form id="form">
+
+				<p:messages showDetail="true" />
+
+				<p:panel id="panel_id2" header="#{rotulo.view}:" style="width:100%;">
+					<h:panelGrid id="grid_id" columns="2">
+						<h:inputHidden value="#{userMB.id}" />
+						<p:spacer />
+
+						<h:outputLabel id="role_id" for="role" value="#{rotulo.role}:" />
+						<p:inputText id="role" label="#{rotulo.role}"
+							value="#{userMB.role}" readonly="true"
+							style="width:120px;text-align:left;" />
+
+						<h:outputLabel id="name_id" for="name" value="#{rotulo.name}:" />
+						<p:inputText id="name" label="#{rotulo.name}"
+							value="#{userMB.name}" readonly="true"
+							style="width:320px;text-align:left;" />
+
+						<h:outputLabel id="login_id" for="login" value="#{rotulo.login}:" />
+						<p:inputText id="login" label="#{rotulo.login}"
+							value="#{userMB.login}" readonly="true"
+							style="width:120px;text-align:left;" />
+
+						<h:outputLabel id="email_id" for="email" value="#{rotulo.email}:" />
+						<p:inputText id="email" label="#{rotulo.email}"
+							value="#{userMB.email}" readonly="true"
+							style="width:320px;text-align:left;" />
+
+						<h:outputLabel id="email2_id" for="email"
+							value="#{rotulo.email2}:" />
+						<p:inputText id="email2" label="#{rotulo.email2}"
+							value="#{userMB.email2}" readonly="true"
+							style="width:320px;text-align:left;" />
+
+						<h:outputLabel id="address_id" for="address"
+							value="#{rotulo.address}:" />
+						<p:inputText id="address" label="#{rotulo.address}"
+							value="#{userMB.address}" readonly="true"
+							style="width:320px;text-align:left;" />
+
+						<h:outputLabel id="mobile_id" for="mobile"
+							value="#{rotulo.mobile}:" />
+						<p:inputText id="mobile" label="#{rotulo.mobile}"
+							value="#{userMB.mobile}" readonly="true"
+							style="width:120px;text-align:left;" />
+					</h:panelGrid>
+				</p:panel>
+
+				<p:separator />
+
+				<h:panelGrid id="buttom_id" columns="2">
+					<p:spacer />
+					<p:commandButton id="cancel_id" action="#{userMB.cancel}"
+						value="#{rotulo.cancel}" immediate="true"
+						icon="ui-icon-arrowreturnthick-1-w" ajax="false" />
+				</h:panelGrid>
+
+			</h:form>
+		</p:panel>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="template.xhtml">
+
+	<ui:define name="body">
+		<p:panel id="panel_id">
+			<h:form id="form">
+
+				<p:messages showDetail="true" />
+
+				<p:panel id="panel_id2" header="#{deliveryCuMB.label}:"
+					style="width:100%;">
+					<h:panelGrid id="grid_id" columns="2">
+						<h:inputHidden value="#{deliveryCuMB.id}" />
+						<p:spacer />
+
+						<h:inputHidden value="#{deliveryCuMB.idBusiness}" />
+						<p:spacer />
+
+						<h:inputHidden value="#{deliveryCuMB.idCustomer}"
+							rendered="#{deliveryCuMB.insert}" />
+						<p:spacer rendered="#{deliveryCuMB.insert}" />
+
+						<h:outputLabel id="business_name_id" for="business_name"
+							value="#{rotulo.business}:" />
+						<p:inputText id="business_name" label="#{rotulo.business}"
+							value="#{deliveryCuMB.business_name}" readonly="true"
+							style="width:320px;text-align:left;" />
+
+						<h:outputLabel id="customer_name_id" for="customer_name"
+							value="#{rotulo.customer}:" rendered="#{deliveryCuMB.insert}" />
+						<p:inputText id="customer_name" label="#{rotulo.customer}"
+							value="#{deliveryCuMB.customer_name}" readonly="true"
+							style="width:320px;text-align:left;"
+							rendered="#{deliveryCuMB.insert}" />
+
+						<h:outputLabel id="customer_id" for="customer"
+							value="#{rotulo.customer}:" rendered="#{!deliveryCuMB.insert}" />
+						<h:selectOneMenu id="customer" required="true"
+							value="#{deliveryCuMB.idCustomer}" readonly="true"
+							style="width:320px;text-align:left;"
+							rendered="#{!deliveryCuMB.insert}">
+							<f:selectItems value="#{deliveryCuMB.customers}" />
+						</h:selectOneMenu>
+
+						<h:outputLabel id="courier_id" for="courier"
+							value="#{rotulo.courier}:" rendered="#{deliveryCuMB.received}" />
+						<h:selectOneMenu id="courier" required="true"
+							value="#{deliveryCuMB.idCourier}" readonly="true"
+							style="width:320px;text-align:left;"
+							rendered="#{deliveryCuMB.received}">
+							<f:selectItems value="#{deliveryCuMB.couriers}" />
+						</h:selectOneMenu>
+
+						<h:outputLabel id="datetime_id" for="datetime"
+							value="#{rotulo.datetime}:" rendered="#{!deliveryCuMB.insert}" />
+						<h:outputText id="datetime" value="#{deliveryCuMB.datetime}"
+							style="width:320px;text-align:left;"
+							rendered="#{!deliveryCuMB.insert}">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"
+								timeZone="#{initParam.timezone}" locale="#{initParam.locale}" />
+						</h:outputText>
+
+						<h:outputLabel id="start_id" for="start" value="#{rotulo.start}:" />
+						<p:inputText id="start" label="#{rotulo.start}"
+							value="#{deliveryCuMB.start}" readonly="#{deliveryCuMB.received}"
+							style="width:320px;text-align:left;" />
+
+						<h:outputLabel id="destination_id" for="destination"
+							value="#{rotulo.destination}:" />
+						<p:inputText id="destination" label="#{rotulo.destination}"
+							value="#{deliveryCuMB.destination}"
+							readonly="#{deliveryCuMB.received}"
+							style="width:320px;text-align:left;" />
+
+						<h:outputLabel id="contact_id" for="contact"
+							value="#{rotulo.contact}:" />
+						<p:inputText id="contact" label="#{rotulo.contact}"
+							value="#{deliveryCuMB.contact}"
+							readonly="#{deliveryCuMB.received}"
+							style="width:120px;text-align:left;" />
+
+						<h:outputLabel id="description_id" for="description"
+							value="#{rotulo.description}:" />
+						<p:inputText id="description" label="#{rotulo.description}"
+							value="#{deliveryCuMB.description}"
+							readonly="#{deliveryCuMB.received}"
+							style="width:320px;text-align:left;" />
+
+						<h:outputLabel id="volume_id" for="volume"
+							value="#{rotulo.volume}:" />
+						<p:inputText id="volume" label="#{rotulo.volume}"
+							value="#{deliveryCuMB.volume}"
+							readonly="#{deliveryCuMB.received}"
+							style="width:100px;text-align:right;" />
+
+						<h:outputLabel id="weight_id" for="weight"
+							value="#{rotulo.weight}:" />
+						<p:inputText id="weight" label="#{rotulo.weight}"
+							value="#{deliveryCuMB.weight}"
+							readonly="#{deliveryCuMB.received}"
+							style="width:100px;text-align:right;" />
+
+						<h:outputLabel id="km_id" for="km" value="#{rotulo.km}:" />
+						<p:inputText id="km" label="#{rotulo.km}"
+							value="#{deliveryCuMB.km}" readonly="#{deliveryCuMB.received}"
+							converter="BigDecimalConverter"
+							style="width:100px;text-align:right;" />
+
+						<h:outputLabel id="additional_cost_id" for="additional_cost"
+							value="#{rotulo.additional}:" />
+						<p:inputText id="additional_cost" label="#{rotulo.additional}"
+							value="#{deliveryCuMB.additionalCost}"
+							readonly="#{deliveryCuMB.received}"
+							converter="BigDecimalConverter"
+							style="width:100px;text-align:right;" />
+
+						<h:outputLabel id="cost_id" for="cost" value="#{rotulo.cost}:" />
+						<p:inputText id="cost" label="#{rotulo.cost}"
+							value="#{deliveryCuMB.cost}" readonly="#{deliveryCuMB.received}"
+							converter="BigDecimalConverter"
+							style="width:100px;text-align:right;" />
+
+						<h:outputLabel id="received_id" value="#{rotulo.received}:" />
+						<h:outputText value="#{rotulo.yes}"
+							rendered="#{deliveryCuMB.received}" />
+						<h:outputText value="#{rotulo.non}"
+							rendered="#{!deliveryCuMB.received}" />
+
+						<h:outputLabel id="completed_id" value="#{rotulo.completed}:" />
+						<h:outputText value="#{rotulo.yes}"
+							rendered="#{deliveryCuMB.completed}" />
+						<h:outputText value="#{rotulo.non}"
+							rendered="#{!deliveryCuMB.completed}" />
+					</h:panelGrid>
+				</p:panel>
+
+				<p:separator />
+
+				<h:panelGrid id="buttom_id" columns="4">
+					<p:commandButton id="salve_id" action="#{deliveryCuMB.save}"
+						value="#{rotulo.save}" immediate="false"
+						rendered="#{!deliveryCuMB.received}"
+						icon="ui-icon-arrowreturnthick-1-w" ajax="false" />
+					<p:commandButton id="cancel_id" action="#{deliveryCuMB.cancel}"
+						value="#{rotulo.cancel}" immediate="true"
+						icon="ui-icon-arrowreturnthick-1-w" ajax="false" />
+					<p:spacer rendered="#{!deliveryCuMB.received}" />
+					<p:commandButton id="send_id" action="#{deliveryCuMB.send}"
+						value="#{rotulo.send}" immediate="false"
+						rendered="#{!deliveryCuMB.received}" icon="ui-icon-mail-closed"
+						ajax="false" />
+				</h:panelGrid>
+
+			</h:form>
+		</p:panel>
+	</ui:define>
+</ui:composition>
