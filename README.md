@@ -1,14 +1,14 @@
-Aplicação CSOnline.
+Aplicação Web CSOnline.
 
 Java SDK 8
 
 JSF Web Page
 
-Database Local com MySQL
+Database local com MySQL
 
-Build com WAR
+Tomcat 9 com build e deploy com WAR
 
-#"Projeto CSOnline Delivery"
+Projeto CSOnline Delivery:
 
 Este projeto tem como objetivo executar uma aplicacao de controle de entregas:
 
@@ -18,7 +18,7 @@ Controle de Entregas.
 
 A aplicacao sera acessada via browser do sistema operacional na url: https://caracore.com.br/csonline
 
-Perfil de administrador:
+Perfil de Administrador:
 
 User:       chmulato
 Password:   admin
