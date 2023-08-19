@@ -68,7 +68,7 @@ public class CourierController
 	{
 		String profile;
 		boolean isLogged = false;
-		LOGGER.info("Carregando controle da pÃ¡gina de negÃ³cio ...");
+		LOGGER.info("Carregando controle da página de negócio ...");
 		try
 		{
 
@@ -78,11 +78,11 @@ public class CourierController
 			isLogged = loginController.isLogged();
 			if (isLogged)
 			{
-				LOGGER.info("SessÃ£o carregada! ... Login: " + loginController.getUsername());
+				LOGGER.info("Sessão carregada! ... Login: " + loginController.getUsername());
 				profile = loginController.getProfile();
 				if ((loginController.getUserIdLogged() == null) || (loginController.getUserIdLogged() <= 0))
 				{
-					throw new WebException("Id do usuÃ¡rio logado nÃ£o encontrado.");
+					throw new WebException("Id do usuário logado não encontrado.");
 				}
 				switch (profile)
 				{
@@ -159,12 +159,12 @@ public class CourierController
 					}
 					break;
 				default:
-					throw new WebException("Perfil do usuÃ¡rio nÃ£o encontrado.");
+					throw new WebException("Perfil do usuário não encontrado.");
 				}
 			}
 			else
 			{
-				throw new WebException("SessÃ£o nÃ£o carregada! Logar novamente.");
+				throw new WebException("Sessão não carregada! Logar novamente.");
 			}
 		}
 		catch (final WebException e)
@@ -287,12 +287,12 @@ public class CourierController
 
 			if (getAddress() == null)
 			{
-				throw new WebException("Informe endereÃ§o!");
+				throw new WebException("Informe endereço!");
 			}
 
 			if (getAddress().equals(""))
 			{
-				throw new WebException("Informe endereÃ§o!");
+				throw new WebException("Informe endereço!");
 			}
 
 			if (getMobile() == null)
@@ -307,14 +307,14 @@ public class CourierController
 
 			if (getBusinessId() == null)
 			{
-				throw new WebException("Informe id negÃ³cio!");
+				throw new WebException("Informe id negócio!");
 			}
 
 			idBusiness = Integer.parseInt(getBusinessId().toString());
 
 			if (idBusiness <= 0)
 			{
-				throw new WebException("Informe id negÃ³cio!");
+				throw new WebException("Informe id negócio!");
 			}
 
 			if (getFactor_courier() == null)
@@ -364,7 +364,7 @@ public class CourierController
 			FactoryService.getInstancia().getCourierService().save(courierVO, isUpdate_password());
 			if (isUpdate_password())
 			{
-				FacesMessages.mensInfo("Entregador salvo com alteraÃ§Ã£o de senha!");
+				FacesMessages.mensInfo("Entregador salvo com alteração de senha!");
 			}
 			else
 			{
@@ -374,7 +374,7 @@ public class CourierController
 				}
 				else
 				{
-					FacesMessages.mensInfo("Entregador salvo sem alteraÃ§Ã£o de senha!");
+					FacesMessages.mensInfo("Entregador salvo sem alteração de senha!");
 				}
 			}
 		}
@@ -388,7 +388,7 @@ public class CourierController
 		{
 			path = "courier";
 			LOGGER.error(e.getMessage());
-			FacesMessages.mensErro("Falha na inserÃ§Ã£o no banco de dados!");
+			FacesMessages.mensErro("Falha na inserção no banco de dados!");
 		}
 		return goToBackPage(path);
 	}

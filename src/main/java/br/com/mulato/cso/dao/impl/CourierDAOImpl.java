@@ -228,25 +228,25 @@ public class CourierDAOImpl
 
 		if (courier.getBusiness() == null)
 		{
-			throw new DAOException("Informe negÃ³cio do entregador!");
+			throw new DAOException("Informe negócio do entregador!");
 		}
 
 		if (courier.getBusiness().getId() == null)
 		{
-			throw new DAOException("Informe negÃ³cio do entregador!");
+			throw new DAOException("Informe negócio do entregador!");
 		}
 
 		if (courier.getBusiness().getId().intValue() <= 0)
 		{
-			throw new DAOException("Informe negÃ³cio do entregador!");
+			throw new DAOException("Informe negócio do entregador!");
 		}
 
 		if (isThereLogin(courier.getLogin()))
 		{
-			throw new DAOException("Login jÃ¡ existente!");
+			throw new DAOException("Login já existente!");
 		}
 
-		logger.info("Salvar informaÃ§Ãµes do entregador.");
+		logger.info("Salvar informações do entregador.");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -413,20 +413,20 @@ public class CourierDAOImpl
 
 		if (courier.getBusiness() == null)
 		{
-			throw new DAOException("Informe negÃ³cio do entregador!");
+			throw new DAOException("Informe negócio do entregador!");
 		}
 
 		if (courier.getBusiness().getId() == null)
 		{
-			throw new DAOException("Informe negÃ³cio do entregador!");
+			throw new DAOException("Informe negócio do entregador!");
 		}
 
 		if (courier.getBusiness().getId().intValue() <= 0)
 		{
-			throw new DAOException("Informe negÃ³cio do entregador!");
+			throw new DAOException("Informe negócio do entregador!");
 		}
 
-		logger.info("Atualizar informaÃ§Ãµes do entregador.");
+		logger.info("Atualizar informações do entregador.");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -527,7 +527,7 @@ public class CourierDAOImpl
 			throw new DAOException("Informe id entregador!");
 		}
 
-		logger.info("Deletar informaÃ§Ãµes do entregador.");
+		logger.info("Deletar informações do entregador.");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -611,15 +611,15 @@ public class CourierDAOImpl
 
 		if (business == null)
 		{
-			throw new DAOException("Informe negÃ³cio!");
+			throw new DAOException("Informe negócio!");
 		}
 
 		if (business.getId().intValue() <= 0)
 		{
-			throw new DAOException("Informe Id negÃ³cio!");
+			throw new DAOException("Informe Id negócio!");
 		}
 
-		logger.info("Pesquisar informaÃ§Ãµes dos entregadores do negÃ³cio.");
+		logger.info("Pesquisar informações dos entregadores do negócio.");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -690,13 +690,13 @@ public class CourierDAOImpl
 		}
 		catch (final ParameterException ex)
 		{
-			final String msg = "Erro ao pesquisar entregadores do negÃ³cio! ";
+			final String msg = "Erro ao pesquisar entregadores do negócio! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
 		catch (final SQLException ex)
 		{
-			final String msg = "Erro ao pesquisar entregadores do negÃ³cio! ";
+			final String msg = "Erro ao pesquisar entregadores do negócio! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
@@ -724,7 +724,7 @@ public class CourierDAOImpl
 			throw new DAOException("Informe Id entregador!");
 		}
 
-		logger.info("Pesquisar informaÃ§Ãµes de entregador da entrega.");
+		logger.info("Pesquisar informaõees de entregador da entrega.");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;

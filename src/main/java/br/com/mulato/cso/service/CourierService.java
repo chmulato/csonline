@@ -6,9 +6,7 @@ import br.com.mulato.cso.exception.WebException;
 import br.com.mulato.cso.model.BusinessVO;
 import br.com.mulato.cso.model.CourierVO;
 
-public interface CourierService
-    extends Serializable
-{
+public interface CourierService extends Serializable {
 
 	public List<CourierVO> listAllCourierBusiness (BusinessVO business) throws WebException;
 

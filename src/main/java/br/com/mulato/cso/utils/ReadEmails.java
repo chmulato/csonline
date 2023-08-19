@@ -122,7 +122,7 @@ public class ReadEmails
 						{
 							if (subject.contains(mobile))
 							{
-								LOGGER.info("N√∫mero de celular v√°lido= " + mobile);
+								LOGGER.info("N˙mero de celular v·lido= " + mobile);
 								mobileNumber = mobile;
 								break;
 							}
@@ -168,7 +168,7 @@ public class ReadEmails
 
 		if ((server == null) || (server.equals("")))
 		{
-			msg = "Informe endere√ßo IMAP do servidor!";
+			msg = "Informe endereÌßo IMAP do servidor!";
 			LOGGER.error(msg);
 			throw new WebException(msg);
 		}
@@ -182,14 +182,14 @@ public class ReadEmails
 
 		if ((username == null) || (username.equals("")))
 		{
-			msg = "Informe a conta do usu√°rio do servidor IMAP!";
+			msg = "Informe a conta do usu·rio do servidor IMAP!";
 			LOGGER.error(msg);
 			throw new WebException(msg);
 		}
 
 		if ((password == null) || (password.equals("")))
 		{
-			msg = "Informe a senha do usu√°rio do servidor IMAP!";
+			msg = "Informe a senha do usu·rio do servidor IMAP!";
 			LOGGER.error(msg);
 			throw new WebException(msg);
 		}
@@ -230,23 +230,23 @@ public class ReadEmails
 
 			if (!deleteMessages)
 			{
-				LOGGER.info("--------------In√≠cio de Processamento de Leitura de Emails-----------------");
+				LOGGER.info("--------------InÌ≠cio de Processamento de Leitura de Emails-----------------");
 			}
 			else
 			{
-				LOGGER.info("--------------In√≠cio de Processamento de Deletar de Emails-----------------");
+				LOGGER.info("--------------InÌ≠cio de Processamento de Deletar de Emails-----------------");
 			}
 
-			// Session - objeto que ira realizar a conex√£o com o servidor
+			// Session - objeto que ira realizar a conex„o com o servidor
 			/*
-			 * Como h√° necessidade de autentica√ß√£o √© criada uma autenticacao que
-			 * √© responsavel por solicitar e retornar o usu√°rio e senha para
-			 * autentica√ß√£o
+			 * Como h· necessidade de autenticaÁ„o È criada uma autenticaÁ„o que
+			 * È respons·vel por solicitar e retornar o usu·rio e senha para
+			 * autenticaÁ„o
 			 */
 			final Session session = Session.getDefaultInstance(properties, auth);
-			LOGGER.info("Abrindo sess√£o para acessar emails ...");
+			LOGGER.info("Abrindo sess„o para acessar emails ...");
 			final Store store = session.getStore(protocolo);
-			LOGGER.info("Conex√£o estabelecida com o servidor imap: " + server);
+			LOGGER.info("Conex„o estabelecida com o servidor imap: " + server);
 			store.connect(server, username, password);
 			LOGGER.info(store);
 			final Folder inbox = store.getFolder(folder);
@@ -265,17 +265,17 @@ public class ReadEmails
 			store.close();
 			if (!deleteMessages)
 			{
-				LOGGER.info("--------------Finaliza√ß√£o do Processo de Leitura de Emails-----------------");
+				LOGGER.info("--------------FinalizaÁ„o do Processo de Leitura de Emails-----------------");
 			}
 			else
 			{
-				LOGGER.info("--------------Finaliza√ß√£o do Processo de Deletar de Emails-----------------");
+				LOGGER.info("--------------FinalizaÁ„o do Processo de Deletar de Emails-----------------");
 			}
 		}
 		catch (final MessagingException e)
 		{
-			LOGGER.error("N√£o foi poss√≠vel acesar as mensagens! " + e.getMessage());
-			throw new WebException("N√£o foi poss√≠vel acessar as mensagens!");
+			LOGGER.error("N„o foi possÌ≠vel acesar as mensagens! " + e.getMessage());
+			throw new WebException("N„o foi possÌ≠vel acessar as mensagens!");
 		}
 	}
 
@@ -365,7 +365,7 @@ public class ReadEmails
 						}
 						else
 						{
-							LOGGER.info("Celular do entregador inv√°lido!");
+							LOGGER.info("Celular do entregador inv·lido!");
 						}
 						LOGGER.info("Mensagens carregadas corretamente!");
 					}
@@ -376,11 +376,11 @@ public class ReadEmails
 		}
 		catch (final MessagingException e)
 		{
-			LOGGER.error("N√£o foi poss√≠vel ler as mensagens! " + e.getMessage());
+			LOGGER.error("N„o foi possÌ≠vel ler as mensagens! " + e.getMessage());
 		}
 		catch (DAOException | IOException e)
 		{
-			LOGGER.error("N√£o foi poss√≠vel ler as mensagens! " + e.getMessage());
+			LOGGER.error("N„o foi possÌ≠vel ler as mensagens! " + e.getMessage());
 		}
 
 		if (listAllEmails != null)
@@ -405,14 +405,14 @@ public class ReadEmails
 			final Message msg[] = inbox.getMessages();
 			if ((msg != null) && (msg.length > 0))
 			{
-				LOGGER.info("Total de emails para verificar se ser√° deletadas: " + msg.length);
+				LOGGER.info("Total de emails para verificar se ser· deletadas: " + msg.length);
 				int count = 0;
 				for (final Message message : msg)
 				{
 					LOGGER.info("Mensagem existente para deletar: " + (count + 1));
 					LOGGER.info("e ..., contanto.");
 					final boolean delete = isThisMessageToDelete(message);
-					LOGGER.info("Deletar mensagem selecionada? " + (delete ? "- Sim" : " - N√£o"));
+					LOGGER.info("Deletar mensagem selecionada? " + (delete ? "- Sim" : " - N„o"));
 					if (delete)
 					{
 						message.setFlag(Flags.Flag.DELETED, true);
@@ -425,7 +425,7 @@ public class ReadEmails
 		}
 		catch (final MessagingException e)
 		{
-			LOGGER.error("N√£o foi poss√≠vel deletar todas as mensagens! " + e.getMessage());
+			LOGGER.error("N„o foi possÌ≠vel deletar todas as mensagens! " + e.getMessage());
 		}
 	}
 }

@@ -84,7 +84,7 @@ public class DeliveryCustomerController
 
 		boolean isLogged = false;
 
-		LOGGER.info("Carregando controle da página de entregas do cliente ...");
+		LOGGER.info("Carregando controle da p�gina de entregas do cliente ...");
 
 		try
 		{
@@ -98,14 +98,14 @@ public class DeliveryCustomerController
 			if (isLogged)
 			{
 
-				LOGGER.info("Sessão carregada! ... Login: " + loginController.getUsername());
+				LOGGER.info("Sess�o carregada! ... Login: " + loginController.getUsername());
 
 				profile = loginController.getProfile();
 
 				if ((loginController.getUserIdLogged() == null) || (loginController.getUserIdLogged().intValue() <= 0))
 				{
 
-					throw new WebException("Id do usuário logado não encontrado.");
+					throw new WebException("Id do usu�rio logado n�o encontrado.");
 
 				}
 
@@ -113,7 +113,7 @@ public class DeliveryCustomerController
 				    (loginController.getBusinessVO().getId().intValue() <= 0))
 				{
 
-					throw new WebException("Negócio da sessão não encontrado.");
+					throw new WebException("Neg�cio da sess�o n�o encontrado.");
 
 				}
 				else
@@ -205,7 +205,7 @@ public class DeliveryCustomerController
 						if ((customer == null) || (customer.getId() == null) || (customer.getName() == null))
 						{
 
-							throw new WebException("Dados do cliente logado não encontrado.");
+							throw new WebException("Dados do cliente logado n�o encontrado.");
 
 						}
 
@@ -223,7 +223,7 @@ public class DeliveryCustomerController
 				else
 				{
 
-					throw new WebException("Perfil do usuário não encontrado.");
+					throw new WebException("Perfil do usu�rio n�o encontrado.");
 
 				}
 
@@ -231,7 +231,7 @@ public class DeliveryCustomerController
 			else
 			{
 
-				throw new WebException("Sessão não carregada! Logar novamente.");
+				throw new WebException("Sess�o n�o carregada! Logar novamente.");
 
 			}
 
@@ -268,7 +268,7 @@ public class DeliveryCustomerController
 
 			if ((getIdBusiness() == null) || getIdBusiness().equals(new Integer(0)))
 			{
-				throw new WebException("Informe id negócio!");
+				throw new WebException("Informe id neg�cio!");
 			}
 
 			if ((getIdCustomer() == null) || getIdCustomer().equals(new Integer(0)))
@@ -278,22 +278,22 @@ public class DeliveryCustomerController
 
 			if (getStart() == null)
 			{
-				throw new WebException("Informe endereço de início da corrida!");
+				throw new WebException("Informe endere�o de início da corrida!");
 			}
 
 			if (getStart().equals(""))
 			{
-				throw new WebException("Informe endereço de início da corrida!");
+				throw new WebException("Informe endere�o de início da corrida!");
 			}
 
 			if (getDestination() == null)
 			{
-				throw new WebException("Informe endereço de destino!");
+				throw new WebException("Informe endere�o de destino!");
 			}
 
 			if (getDestination().equals(""))
 			{
-				throw new WebException("Informe endereço de destino!");
+				throw new WebException("Informe endere�o de destino!");
 			}
 
 			if (getContact() == null)
@@ -308,22 +308,22 @@ public class DeliveryCustomerController
 
 			if (getDescription() == null)
 			{
-				throw new WebException("Informe descrição!");
+				throw new WebException("Informe descri��o!");
 			}
 
 			if (getDescription().equals(""))
 			{
-				throw new WebException("Informe descrição!");
+				throw new WebException("Informe descri��o!");
 			}
 
 			if (getKm() == null)
 			{
-				throw new WebException("Informe distância em quilômetros!");
+				throw new WebException("Informe dist�ncia em quil�metros!");
 			}
 
 			if (getKm().equals(new BigDecimal(0)))
 			{
-				throw new WebException("Informe distância em quilômetros!");
+				throw new WebException("Informe dist�ncia em quil�metros!");
 			}
 
 			if (getCost() == null)
@@ -390,7 +390,7 @@ public class DeliveryCustomerController
 		}
 		catch (final Exception e)
 		{
-			FacesMessages.mensErro("Falha na inserção no banco de dados!");
+			FacesMessages.mensErro("Falha na inser��o no banco de dados!");
 		}
 
 		return goToBackPage(path);
@@ -404,7 +404,7 @@ public class DeliveryCustomerController
 	}
 
 	/**
-	 * Buscar todos os entregadores do negócio
+	 * Buscar todos os entregadores do neg�cio
 	 * 
 	 * @return
 	 * @throws WebException
@@ -433,7 +433,7 @@ public class DeliveryCustomerController
 	}
 
 	/**
-	 * Buscar todos os clientes do negócio
+	 * Buscar todos os clientes do neg�cio
 	 * 
 	 * @return
 	 * @throws WebException

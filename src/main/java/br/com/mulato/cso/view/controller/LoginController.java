@@ -84,22 +84,22 @@ public class LoginController
 
 			if (username == null)
 			{
-				throw new WebException("Informe login do usuÃ¡rio!");
+				throw new WebException("Informe login do usuário!");
 			}
 
 			if (password == null)
 			{
-				throw new WebException("Informe senha do usuÃ¡rio!");
+				throw new WebException("Informe senha do usuário!");
 			}
 
 			if (username.equals(""))
 			{
-				throw new WebException("Informe login do usuÃ¡rio!");
+				throw new WebException("Informe login do usuário!");
 			}
 
 			if (password.equals(""))
 			{
-				throw new WebException("Informe senha do usuÃ¡rio!");
+				throw new WebException("Informe senha do usuário!");
 			}
 
 			username = username.trim();
@@ -136,22 +136,22 @@ public class LoginController
 
 			if (user == null)
 			{
-				throw new WebException("UsuÃ¡rio nÃ£o encontrado!");
+				throw new WebException("Usuário não encontrado!");
 			}
 
 			if (user.getId() == null)
 			{
-				throw new WebException("UsuÃ¡rio nÃ£o encontrado!");
+				throw new WebException("Usuário não encontrado!");
 			}
 
 			if (user.getId().intValue() <= 0)
 			{
-				throw new WebException("UsuÃ¡rio nÃ£o encontrado!");
+				throw new WebException("Usuário não encontrado!");
 			}
 
 			if ((user.getRole() == null) || (user.getRole().equals("")))
 			{
-				throw new WebException("Perfil nÃ£o encontrado!");
+				throw new WebException("Perfil não encontrado!");
 			}
 
 			profile = user.getRole().toUpperCase().trim();
@@ -183,7 +183,7 @@ public class LoginController
 				else
 				{
 
-					throw new WebException("NegÃ³cio nÃ£o encontrado!");
+					throw new WebException("Negócio não encontrado!");
 
 				}
 
@@ -209,7 +209,7 @@ public class LoginController
 				else
 				{
 
-					throw new WebException("NegÃ³cio do cliente nÃ£o encontrado!");
+					throw new WebException("Negócio do cliente não encontrado!");
 
 				}
 
@@ -237,7 +237,7 @@ public class LoginController
 				else
 				{
 
-					throw new WebException("NegÃ³cio do entregador nÃ£o encontrado!");
+					throw new WebException("Negócio do entregador não encontrado!");
 
 				}
 
@@ -245,7 +245,7 @@ public class LoginController
 
 			}
 
-			LOGGER.info("UsuÃ¡rio encontrado: " + user);
+			LOGGER.info("Usuário encontrado: " + user);
 
 			final FacesContext facesContext = FacesContext.getCurrentInstance();
 			final ServletContext servletContext = (ServletContext)facesContext.getExternalContext().getContext();

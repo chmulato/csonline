@@ -58,7 +58,7 @@ public class LoginDAOImpl
 		usr = login.getLogin().trim();
 		pwd = login.getPassword().trim();
 
-		logger.info("Verificar login e senha do usuÃ¡rio.");
+		logger.info("Verificar login e senha do usuário.");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -90,13 +90,13 @@ public class LoginDAOImpl
 					pwd_db = pwd_db.trim();
 					if (!pwd.equals(pwd_db))
 					{
-						throw new DAOException("UsuÃ¡rio ou senha invÃ¡lidos, tente novamente!");
+						throw new DAOException("Usuário ou senha inválidos, tente novamente!");
 					}
 				}
 			}
 			else
 			{
-				throw new DAOException("UsuÃ¡rio ou senha invÃ¡lidos, tente novamente!");
+				throw new DAOException("Usuário ou senha inválidos, tente novamente!");
 			}
 
 			if (InitProperties.getViewSql())
@@ -107,13 +107,13 @@ public class LoginDAOImpl
 		}
 		catch (final ParameterException ex)
 		{
-			final String msg = "Erro ao verificar usuÃ¡rio e senha! ";
+			final String msg = "Erro ao verificar usuário e senha! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
 		catch (final SQLException ex)
 		{
-			final String msg = "Erro ao verificar usuÃ¡rio e senha! ";
+			final String msg = "Erro ao verificar usuário e senha! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}

@@ -41,7 +41,7 @@ public class DeliveriesCompletedController
 
 		String profile;
 
-		LOGGER.info("Carregando controle da p√°gina de entregas em aberto ...");
+		LOGGER.info("Carregando controle da p·gina de entregas em aberto ...");
 
 		try
 		{
@@ -53,12 +53,12 @@ public class DeliveriesCompletedController
 			if (loginController.isLogged())
 			{
 
-				LOGGER.info("Sess√£o carregada! ... Login: " + loginController.getUsername());
+				LOGGER.info("Sess„o carregada! ... Login: " + loginController.getUsername());
 
 				if ((loginController.getUserIdLogged() == null) || (loginController.getUserIdLogged().intValue() <= 0))
 				{
 
-					throw new WebException("Id do usu√°rio n√£o encontrado.");
+					throw new WebException("Id do usu·rio n„o encontrado.");
 
 				}
 
@@ -97,7 +97,7 @@ public class DeliveriesCompletedController
 				else
 				{
 
-					throw new WebException("Perfil do usu√°rio n√£o encontrado.");
+					throw new WebException("Perfil do usu·rio n„o encontrado.");
 
 				}
 
@@ -114,7 +114,7 @@ public class DeliveriesCompletedController
 			else
 			{
 
-				throw new WebException("Sess√£o n√£o carregada! Logar novamente.");
+				throw new WebException("Sess„o n„o carregada! Logar novamente.");
 
 			}
 

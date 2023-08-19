@@ -49,7 +49,7 @@ public class CustomersController
 			}
 			else
 			{
-				throw new WebException("Sess√£o n√£o carregada! Logar novamente.");
+				throw new WebException("Sess„o n„o carregada! Logar novamente.");
 			}
 
 		}
@@ -65,7 +65,7 @@ public class CustomersController
 
 		String profile;
 
-		LOGGER.info("Carregando controle da p√°gina de clientes do neg√≥cio ...");
+		LOGGER.info("Carregando controle da p·gina de clientes do negÛcio ...");
 
 		try
 		{
@@ -77,7 +77,7 @@ public class CustomersController
 			if (loginController.isLogged())
 			{
 
-				LOGGER.info("Sess√£o carregada! ... Login: " + loginController.getUsername());
+				LOGGER.info("Sess„o carregada! ... Login: " + loginController.getUsername());
 
 				profile = loginController.getProfile();
 
@@ -103,7 +103,7 @@ public class CustomersController
 				else
 				{
 
-					throw new WebException("Perfil do usu√°rio n√£o encontrado.");
+					throw new WebException("Perfil do usu·rio n„o encontrado.");
 
 				}
 
@@ -111,7 +111,7 @@ public class CustomersController
 			else
 			{
 
-				throw new WebException("Sess√£o n√£o carregada! Logar novamente.");
+				throw new WebException("Sess„o n„o carregada! Logar novamente.");
 
 			}
 

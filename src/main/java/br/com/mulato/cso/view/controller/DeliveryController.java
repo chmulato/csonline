@@ -91,7 +91,7 @@ public class DeliveryController
 
 		boolean isLogged = false;
 
-		LOGGER.info("Carregando controle da pÃ¡gina de entregas do negÃ³cio ...");
+		LOGGER.info("Carregando controle da página de entregas do negócio ...");
 
 		try
 		{
@@ -105,14 +105,14 @@ public class DeliveryController
 			if (isLogged)
 			{
 
-				LOGGER.info("SessÃ£o carregada! ... Login: " + loginController.getUsername());
+				LOGGER.info("Sessão carregada! ... Login: " + loginController.getUsername());
 
 				profile = loginController.getProfile();
 
 				if ((loginController.getUserIdLogged() == null) || (loginController.getUserIdLogged().intValue() <= 0))
 				{
 
-					throw new WebException("Id do usuÃ¡rio logado nÃ£o encontrado.");
+					throw new WebException("Id do usuário logado não encontrado.");
 
 				}
 
@@ -120,7 +120,7 @@ public class DeliveryController
 				    (loginController.getBusinessVO().getId().intValue() <= 0))
 				{
 
-					throw new WebException("NegÃ³cio da sessÃ£o nÃ£o encontrado.");
+					throw new WebException("Negócio da sessão não encontrado.");
 
 				}
 				else
@@ -203,7 +203,7 @@ public class DeliveryController
 				else
 				{
 
-					throw new WebException("Perfil do usuÃ¡rio nÃ£o encontrado.");
+					throw new WebException("Perfil do usuário não encontrado.");
 
 				}
 
@@ -211,7 +211,7 @@ public class DeliveryController
 			else
 			{
 
-				throw new WebException("SessÃ£o nÃ£o carregada! Logar novamente.");
+				throw new WebException("Sessão não carregada! Logar novamente.");
 
 			}
 
@@ -295,7 +295,7 @@ public class DeliveryController
 
 			if ((getIdBusiness() == null) || getIdBusiness().equals(new Integer(0)))
 			{
-				throw new WebException("Informe id negÃ³cio!");
+				throw new WebException("Informe id negócio!");
 			}
 
 			if ((getIdCustomer() == null) || getIdCustomer().equals(new Integer(0)))
@@ -310,22 +310,22 @@ public class DeliveryController
 
 			if (getStart() == null)
 			{
-				throw new WebException("Informe endereÃ§o de inÃ­cio da corrida!");
+				throw new WebException("Informe endereço de iní­cio da corrida!");
 			}
 
 			if (getStart().equals(""))
 			{
-				throw new WebException("Informe endereÃ§o de inÃ­cio da corrida!");
+				throw new WebException("Informe endereço de iní­cio da corrida!");
 			}
 
 			if (getDestination() == null)
 			{
-				throw new WebException("Informe endereÃ§o de destino!");
+				throw new WebException("Informe endereço de destino!");
 			}
 
 			if (getDestination().equals(""))
 			{
-				throw new WebException("Informe endereÃ§o de destino!");
+				throw new WebException("Informe endereço de destino!");
 			}
 
 			if (getContact() == null)
@@ -340,22 +340,22 @@ public class DeliveryController
 
 			if (getDescription() == null)
 			{
-				throw new WebException("Informe descriÃ§Ã£o!");
+				throw new WebException("Informe descriçío!");
 			}
 
 			if (getDescription().equals(""))
 			{
-				throw new WebException("Informe descriÃ§Ã£o!");
+				throw new WebException("Informe descrição!");
 			}
 
 			if (getKm() == null)
 			{
-				throw new WebException("Informe distÃ¢ncia em quilÃ´metros!");
+				throw new WebException("Informe distância em quilômetros!");
 			}
 
 			if (getKm().equals(new BigDecimal(0)))
 			{
-				throw new WebException("Informe distÃ¢ncia em quilÃ´metros!");
+				throw new WebException("Informe distância em quilômetros!");
 			}
 
 			if (getCost() == null)
@@ -464,7 +464,7 @@ public class DeliveryController
 		}
 		catch (final Exception e)
 		{
-			FacesMessages.mensErro("Falha na inserÃ§Ã£o no banco de dados!");
+			FacesMessages.mensErro("Falha na inserção no banco de dados!");
 		}
 
 		return goToBackPage(path);
@@ -478,7 +478,7 @@ public class DeliveryController
 	}
 
 	/**
-	 * Buscar todos os entregadores do negÃ³cio
+	 * Buscar todos os entregadores do negócio
 	 * 
 	 * @return
 	 * @throws WebException
@@ -507,7 +507,7 @@ public class DeliveryController
 	}
 
 	/**
-	 * Buscar todos os clientes do negÃ³cio
+	 * Buscar todos os clientes do negócio
 	 * 
 	 * @return
 	 * @throws WebException
@@ -756,7 +756,7 @@ public class DeliveryController
 		}
 		catch (final WebException e)
 		{
-			txtCustomerValue = "NÃ£o Encontrado!";
+			txtCustomerValue = "Não Encontrado!";
 		}
 
 		if (getContact() != null)

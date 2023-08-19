@@ -4,9 +4,7 @@ import java.io.Serializable;
 import br.com.mulato.cso.exception.WebException;
 import br.com.mulato.cso.model.LoginVO;
 
-public interface LoginService
-    extends Serializable
-{
+public interface LoginService extends Serializable {
 
 	public Boolean authenticate (LoginVO login) throws WebException;
 

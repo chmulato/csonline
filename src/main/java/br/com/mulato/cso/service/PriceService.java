@@ -4,9 +4,7 @@ import java.io.Serializable;
 import br.com.mulato.cso.exception.WebException;
 import br.com.mulato.cso.model.PriceVO;
 
-public interface PriceService
-    extends Serializable
-{
+public interface PriceService extends Serializable {
 
 	public PriceVO find (Integer idPrice) throws WebException;
 

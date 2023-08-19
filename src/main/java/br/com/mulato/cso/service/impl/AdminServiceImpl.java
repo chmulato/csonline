@@ -9,9 +9,7 @@ import br.com.mulato.cso.model.LoginVO;
 import br.com.mulato.cso.model.UserVO;
 import br.com.mulato.cso.service.AdminService;
 
-public class AdminServiceImpl
-    implements AdminService
-{
+public class AdminServiceImpl implements AdminService {
 
 	private static final long serialVersionUID = 1L;
 
@@ -21,7 +19,7 @@ public class AdminServiceImpl
 	public List<UserVO> listAllUsers () throws WebException
 	{
 		List<UserVO> list = null;
-		LOGGER.info("Listar todos os usuÃ¡rios.");
+		LOGGER.info("Listar todos os usuários.");
 		try
 		{
 			FactoryDAO.onTransaction();
@@ -42,9 +40,9 @@ public class AdminServiceImpl
 		UserVO user = null;
 		if ((id == null) || (id <= 0))
 		{
-			throw new WebException("Informe id usuÃ¡rio.");
+			throw new WebException("Informe id usuário.");
 		}
-		LOGGER.info("Pesquisar usuÃ¡rio pelo id.");
+		LOGGER.info("Pesquisar usuário pelo id.");
 		try
 		{
 			user = FactoryDAO.getInstancia().getUserDAO().find(id, false);
@@ -63,13 +61,13 @@ public class AdminServiceImpl
 		UserVO user = null;
 		if (login == null)
 		{
-			throw new WebException("Informe usuÃ¡rio.");
+			throw new WebException("Informe usuário.");
 		}
 		if (login.getLogin() == null)
 		{
-			throw new WebException("Informe usuÃ¡rio.");
+			throw new WebException("Informe usuário.");
 		}
-		LOGGER.info("Pesquisar usuÃ¡rio por login.");
+		LOGGER.info("Pesquisar usuário por login.");
 		try
 		{
 			user = FactoryDAO.getInstancia().getUserDAO().findByLogin(login);
@@ -88,9 +86,9 @@ public class AdminServiceImpl
 		UserVO user = null;
 		if ((id == null) || (id <= 0))
 		{
-			throw new WebException("Informe id usuÃ¡rio.");
+			throw new WebException("Informe id usuário.");
 		}
-		LOGGER.info("Pesquisar usuÃ¡rio pelo id.");
+		LOGGER.info("Pesquisar usuário pelo id.");
 		try
 		{
 			user = FactoryDAO.getInstancia().getUserDAO().find(id, true);

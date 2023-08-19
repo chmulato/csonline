@@ -27,7 +27,7 @@ public class InitProperties
 	private static boolean singletonDAO;
 	private static boolean singletonService;
 
-	// variaveis para os parâmetros de envio de email
+	// vari�veis para os par�metros de envio de email
 	private static boolean email_active;
 	private static String email_user;
 	private static String email_password;
@@ -46,11 +46,11 @@ public class InitProperties
 	private static String email_format;
 	private static boolean email_debug;
 
-	// variaveis para os parâmetros caixa postal do android
+	// vari�veis para os par�metros caixa postal do android
 	private static String email_android;
 
-	// variaveis para os parâmetros de recebimento de email
-	// variaveis para envio de sms
+	// vari�veis para os par�metros de recebimento de email
+	// vari�veis para envio de sms
 	private static boolean smsActive;
 	private static String smsMobile;
 	private static long smsTimer;
@@ -78,7 +78,7 @@ public class InitProperties
 			final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 			final InputStream inputStream = classLoader.getResourceAsStream("config.properties");
 
-			LOGGER.info("Leitura de parâmetros do arquivo properties config.");
+			LOGGER.info("Leitura de par�metros do arquivo properties config.");
 
 			try
 			{
@@ -90,7 +90,7 @@ public class InitProperties
 				}
 				else
 				{
-					msg = "Informe parâmetro jndi cso!";
+					msg = "Informe par�metro jndi cso!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
@@ -109,7 +109,7 @@ public class InitProperties
 				}
 				else
 				{
-					msg = "Informe parâmetro ativar jndi!";
+					msg = "Informe par�metro ativar jndi!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
@@ -120,7 +120,7 @@ public class InitProperties
 				}
 				else
 				{
-					msg = "Informe parâmetro driver!";
+					msg = "Informe par�metro driver!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
@@ -131,7 +131,7 @@ public class InitProperties
 				}
 				else
 				{
-					msg = "Informe parâmetro username!";
+					msg = "Informe par�metro username!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
@@ -142,7 +142,7 @@ public class InitProperties
 				}
 				else
 				{
-					msg = "Informe parâmetro password!";
+					msg = "Informe par�metro password!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
@@ -153,7 +153,7 @@ public class InitProperties
 				}
 				else
 				{
-					msg = "Informe parâmetro url cso!";
+					msg = "Informe par�metro url cso!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
@@ -172,7 +172,7 @@ public class InitProperties
 				}
 				else
 				{
-					msg = "Informe parâmetro sql view true or false!";
+					msg = "Informe par�metro sql view true or false!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
@@ -191,7 +191,7 @@ public class InitProperties
 				}
 				else
 				{
-					msg = "Informe parâmetro object view true or false!";
+					msg = "Informe par�metro object view true or false!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
@@ -210,7 +210,7 @@ public class InitProperties
 				}
 				else
 				{
-					msg = "Informe parâmetro dao singleton true or false!";
+					msg = "Informe par�metro dao singleton true or false!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
@@ -229,12 +229,12 @@ public class InitProperties
 				}
 				else
 				{
-					msg = "Informe parâmetro service singleton true or false!";
+					msg = "Informe par�metro service singleton true or false!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
 
-				// seta parâmetros para envio de mensagens de email
+				// seta par�metros para envio de mensagens de email
 				if (properties.getProperty("email.active") != null)
 				{
 					condition = properties.getProperty("email.active").toUpperCase();
@@ -249,7 +249,7 @@ public class InitProperties
 				}
 				else
 				{
-					msg = "Informe parâmetro email de envio ativo: true or false!";
+					msg = "Informe par�metro email de envio ativo: true or false!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
@@ -260,7 +260,7 @@ public class InitProperties
 				}
 				else
 				{
-					msg = "Informe parâmetro email de envio!";
+					msg = "Informe par�metro email de envio!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
@@ -271,7 +271,7 @@ public class InitProperties
 				}
 				else
 				{
-					msg = "Informe parâmetro email de envio!";
+					msg = "Informe par�metro email de envio!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
@@ -283,7 +283,7 @@ public class InitProperties
 				}
 				else
 				{
-					msg = "Informe parâmetro protocolo do email de envio!";
+					msg = "Informe par�metro protocolo do email de envio!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
@@ -294,7 +294,7 @@ public class InitProperties
 				}
 				else
 				{
-					msg = "Informe parâmetro endereço do email de envio!";
+					msg = "Informe par�metro endere�o do email de envio!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
@@ -305,7 +305,7 @@ public class InitProperties
 				}
 				else
 				{
-					msg = "Informe parâmetro porta do email para envio!";
+					msg = "Informe par�metro porta do email para envio!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
@@ -324,7 +324,7 @@ public class InitProperties
 				}
 				else
 				{
-					msg = "Informe parâmetro ssl do email de envio!";
+					msg = "Informe par�metro ssl do email de envio!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
@@ -343,7 +343,7 @@ public class InitProperties
 				}
 				else
 				{
-					msg = "Informe parâmetro tls do email de envio!";
+					msg = "Informe par�metro tls do email de envio!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
@@ -354,7 +354,7 @@ public class InitProperties
 				}
 				else
 				{
-					msg = "Informe parâmetro autenticação do servidor de email de envio!";
+					msg = "Informe par�metro autentica��o do servidor de email de envio!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
@@ -366,7 +366,7 @@ public class InitProperties
 				}
 				else
 				{
-					msg = "Informe parâmetro protocolo email de recebimento!";
+					msg = "Informe par�metro protocolo email de recebimento!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
@@ -377,7 +377,7 @@ public class InitProperties
 				}
 				else
 				{
-					msg = "Informe parâmetro endereço do protocolo de recepção!";
+					msg = "Informe par�metro endere�o do protocolo de recep��o!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
@@ -388,7 +388,7 @@ public class InitProperties
 				}
 				else
 				{
-					msg = "Informe parâmetro porta email de recebimento!";
+					msg = "Informe par�metro porta email de recebimento!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
@@ -407,7 +407,7 @@ public class InitProperties
 				}
 				else
 				{
-					msg = "Informe parâmetro ssl email de recebimento!";
+					msg = "Informe par�metro ssl email de recebimento!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
@@ -424,21 +424,21 @@ public class InitProperties
 						}
 						else
 						{
-							msg = "Informe parâmetro timeout do email de recebimento! Valor entre 5000 milisegundos a 30000 milisegundos";
+							msg = "Informe par�metro timeout do email de recebimento! Valor entre 5000 milisegundos a 30000 milisegundos";
 							LOGGER.error(msg);
 							throw new ParameterException(msg);
 						}
 					}
 					else
 					{
-						msg = "Informe parâmetro timeout do email de recebimento! Valor entre 5000 milisegundos a 30000 milisegundos";
+						msg = "Informe par�metro timeout do email de recebimento! Valor entre 5000 milisegundos a 30000 milisegundos";
 						LOGGER.error(msg);
 						throw new ParameterException(msg);
 					}
 				}
 				else
 				{
-					msg = "Informe parâmetro timeout do email de recebimento! Valor entre 5000 milisegundos a 30000 milisegundos";
+					msg = "Informe par�metro timeout do email de recebimento! Valor entre 5000 milisegundos a 30000 milisegundos";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
@@ -450,7 +450,7 @@ public class InitProperties
 				}
 				else
 				{
-					msg = "Informe parâmetro pasta principal do email de recebimento!";
+					msg = "Informe par�metro pasta principal do email de recebimento!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
@@ -469,7 +469,7 @@ public class InitProperties
 				}
 				else
 				{
-					msg = "Informe parâmetro debug email!";
+					msg = "Informe par�metro debug email!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
@@ -480,24 +480,24 @@ public class InitProperties
 				}
 				else
 				{
-					msg = "Informe parâmetro formato email!";
+					msg = "Informe par�metro formato email!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
 
-				// seta parâmetros para endereço da caixa postal de email do android
+				// seta par�metros para endere�o da caixa postal de email do android
 				if (properties.getProperty("email.android") != null)
 				{
 					email_android = properties.getProperty("email.android");
 				}
 				else
 				{
-					msg = "Informe parâmetro email de envio!";
+					msg = "Informe par�metro email de envio!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
 
-				// seta parâmetros para envio de sms
+				// seta par�metros para envio de sms
 				if (properties.getProperty("sms.active") != null)
 				{
 					condition = properties.getProperty("sms.active").toUpperCase();
@@ -512,7 +512,7 @@ public class InitProperties
 				}
 				else
 				{
-					msg = "Informe parâmetro de enviar sms: true or false!";
+					msg = "Informe par�metro de enviar sms: true or false!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
@@ -526,14 +526,14 @@ public class InitProperties
 					}
 					else
 					{
-						msg = "Informe parâmetro de número de celular para envio de sms!";
+						msg = "Informe par�metro de número de celular para envio de sms!";
 						LOGGER.error(msg);
 						throw new ParameterException(msg);
 					}
 				}
 				else
 				{
-					msg = "Informe parâmetro de número de celular para envio de sms!";
+					msg = "Informe par�metro de número de celular para envio de sms!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
@@ -547,26 +547,26 @@ public class InitProperties
 					}
 					else
 					{
-						msg = "Informe parâmetro de tempo de leitura de sms!";
+						msg = "Informe par�metro de tempo de leitura de sms!";
 						LOGGER.error(msg);
 						throw new ParameterException(msg);
 					}
 				}
 				else
 				{
-					msg = "Informe parâmetro de tempo de leitura de sms!";
+					msg = "Informe par�metro de tempo de leitura de sms!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
 
-				// seta parâmetros para nome da aplicação
+				// seta par�metros para nome da aplica��o
 				if (properties.getProperty("client.application_name") != null)
 				{
 					applicationName = properties.getProperty("client.application_name");
 				}
 				else
 				{
-					msg = "Informe parâmetro nome da aplicação!";
+					msg = "Informe par�metro nome da aplica��o!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
@@ -577,7 +577,7 @@ public class InitProperties
 				}
 				else
 				{
-					msg = "Informe parâmetro aparência da aplicação!";
+					msg = "Informe par�metro apar�ncia da aplica��o!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
@@ -602,14 +602,14 @@ public class InitProperties
 					}
 					else
 					{
-						msg = "Informe parâmetro tipo de veículos!";
+						msg = "Informe par�metro tipo de veículos!";
 						LOGGER.error(msg);
 						throw new ParameterException(msg);
 					}
 				}
 				else
 				{
-					msg = "Informe parâmetro tipo de veículos!";
+					msg = "Informe par�metro tipo de veículos!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
@@ -634,14 +634,14 @@ public class InitProperties
 					}
 					else
 					{
-						msg = "Informe parâmetro tipo de veículos!";
+						msg = "Informe par�metro tipo de veículos!";
 						LOGGER.error(msg);
 						throw new ParameterException(msg);
 					}
 				}
 				else
 				{
-					msg = "Informe parâmetro tipo de veículos!";
+					msg = "Informe par�metro tipo de veículos!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
@@ -651,14 +651,14 @@ public class InitProperties
 			}
 			catch (final ParameterException e)
 			{
-				msg = "Parâmetro de configuração não encontrado! ";
+				msg = "Par�metro de configura��o n�o encontrado! ";
 				msg = msg + e.getMessage();
 				LOGGER.error(msg);
 				throw new ParameterException(msg);
 			}
 			catch (IOException | NumberFormatException e)
 			{
-				msg = "Arquivo de configuração não encontrado! ";
+				msg = "Arquivo de configura��o n�o encontrado! ";
 				LOGGER.error(msg + e.getMessage());
 				throw new ParameterException(msg);
 			}
@@ -726,7 +726,7 @@ public class InitProperties
 		return singletonService;
 	}
 
-	// seta parâmetros para envio de mensagens de email
+	// seta par�metros para envio de mensagens de email
 	public static boolean getEmail_active () throws ParameterException
 	{
 		getProperties();
@@ -897,7 +897,7 @@ public class InitProperties
 		}
 		catch (final ParameterException e)
 		{
-			LOGGER.error("Erro na leitura de parâmetro [ veículos ] ..." + e.getMessage());
+			LOGGER.error("Erro na leitura de par�metro [ veículos ] ..." + e.getMessage());
 		}
 		return result;
 	}
@@ -922,7 +922,7 @@ public class InitProperties
 		}
 		catch (final ParameterException e)
 		{
-			LOGGER.error("Erro na leitura de parâmetro [veículos] ..." + e.getMessage());
+			LOGGER.error("Erro na leitura de par�metro [veículos] ..." + e.getMessage());
 		}
 		return result;
 	}
@@ -947,7 +947,7 @@ public class InitProperties
 		}
 		catch (final ParameterException e)
 		{
-			LOGGER.error("Erro na leitura de parâmetro [tabelas de preços] ..." + e.getMessage());
+			LOGGER.error("Erro na leitura de par�metro [tabelas de pre�os] ..." + e.getMessage());
 		}
 		return result;
 	}
@@ -972,7 +972,7 @@ public class InitProperties
 		}
 		catch (final ParameterException e)
 		{
-			LOGGER.error("Erro na leitura de parâmetro [tabelas de preços] ..." + e.getMessage());
+			LOGGER.error("Erro na leitura de par�metro [tabelas de pre�os] ..." + e.getMessage());
 		}
 		return result;
 	}

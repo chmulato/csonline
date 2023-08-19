@@ -50,8 +50,8 @@ public class CpfCnpjConverter implements Converter<Object> {
 		}
 		if (value instanceof String) {
 			String result = ((String) value).trim();
-			result = result.replaceAll("[^0-9]", "");// retira tudo que nao e
-														// numero
+			result = result.replaceAll("[^0-9]", "");// retira tudo que não e
+														// número
 			MaskFormatter a;
 			try {
 				if (result.length() > 9) {

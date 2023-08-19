@@ -56,12 +56,12 @@ public class BusinessDAOImpl
 
 		if (id == null)
 		{
-			throw new DAOException("Informe Id negÃ³cio!");
+			throw new DAOException("Informe Id negócio!");
 		}
 
 		if (id <= 0)
 		{
-			throw new DAOException("Informe Id negÃ³cio!");
+			throw new DAOException("Informe Id negócio!");
 		}
 
 		Connection conn = null;
@@ -105,13 +105,13 @@ public class BusinessDAOImpl
 		}
 		catch (final ParameterException ex)
 		{
-			final String msg = "Erro ao pesquisar negÃ³cio! ";
+			final String msg = "Erro ao pesquisar negócio! ";
 			LOGGER.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
 		catch (final SQLException ex)
 		{
-			final String msg = "Erro ao pesquisar negÃ³cio! ";
+			final String msg = "Erro ao pesquisar negócio! ";
 			LOGGER.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
@@ -131,50 +131,50 @@ public class BusinessDAOImpl
 
 		if (business == null)
 		{
-			throw new DAOException("Informe negÃ³cio!");
+			throw new DAOException("Informe negócio!");
 		}
 
 		if (business.getName() == null)
 		{
-			throw new DAOException("Informe nome do negÃ³cio!");
+			throw new DAOException("Informe nome do negócio!");
 		}
 
 		if (business.getRole() == null)
 		{
-			throw new DAOException("Informe o perfil de negÃ³cio!");
+			throw new DAOException("Informe o perfil de negócio!");
 		}
 
 		if (!business.getRole().equals("BUSINESS"))
 		{
-			throw new DAOException("Informe o perfil de negÃ³cio!");
+			throw new DAOException("Informe o perfil de negócio!");
 		}
 
 		if (business.getLogin() == null)
 		{
-			throw new DAOException("Informe login do negÃ³cio!");
+			throw new DAOException("Informe login do negócio!");
 		}
 
 		if (business.getLogin().getLogin() == null)
 		{
-			throw new DAOException("Informe login do negÃ³cio!");
+			throw new DAOException("Informe login do negócio!");
 		}
 
 		if (business.getLogin().getPassword() == null)
 		{
-			throw new DAOException("Informe senha do negÃ³cio!");
+			throw new DAOException("Informe senha do negócio!");
 		}
 
 		if (business.getEmail() == null)
 		{
-			throw new DAOException("Informe email do negÃ³cio!");
+			throw new DAOException("Informe email do negócio!");
 		}
 
 		if (isThereLogin(business.getLogin()))
 		{
-			throw new DAOException("Login jÃ¡ existente!");
+			throw new DAOException("Login já existente!");
 		}
 
-		LOGGER.info("Salvar informaÃ§Ãµes do negÃ³cio.");
+		LOGGER.info("Salvar informações do negócio.");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -229,7 +229,7 @@ public class BusinessDAOImpl
 		catch (final ParameterException ex)
 		{
 
-			final String msg = "Erro ao salvar negÃ³cio! ";
+			final String msg = "Erro ao salvar negócio! ";
 			LOGGER.error(msg + ex.getMessage());
 
 			throw new DAOException(msg);
@@ -237,7 +237,7 @@ public class BusinessDAOImpl
 		}
 		catch (final SQLException ex)
 		{
-			final String msg = "Erro ao salvar negÃ³cio! ";
+			final String msg = "Erro ao salvar negócio! ";
 			LOGGER.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
@@ -253,45 +253,45 @@ public class BusinessDAOImpl
 
 		if (business == null)
 		{
-			throw new DAOException("Informe negÃ³cio!");
+			throw new DAOException("Informe negócio!");
 		}
 
 		if (business.getId() == null)
 		{
-			throw new DAOException("Informe id negÃ³cio!");
+			throw new DAOException("Informe id negócio!");
 		}
 
 		if (business.getName() == null)
 		{
-			throw new DAOException("Informe nome do negÃ³cio!");
+			throw new DAOException("Informe nome do negócio!");
 		}
 
 		if (business.getRole() == null)
 		{
-			throw new DAOException("Informe perfil de negÃ³cio!");
+			throw new DAOException("Informe perfil de negócio!");
 		}
 
 		if (!business.getRole().equals("BUSINESS"))
 		{
-			throw new DAOException("Informe perfil de negÃ³cio!");
+			throw new DAOException("Informe perfil de negócio!");
 		}
 
 		if (business.getLogin() == null)
 		{
-			throw new DAOException("Informe login do negÃ³cio!");
+			throw new DAOException("Informe login do negócio!");
 		}
 
 		if (business.getLogin().getLogin() == null)
 		{
-			throw new DAOException("Informe login do negÃ³cio!");
+			throw new DAOException("Informe login do negócio!");
 		}
 
 		if (business.getEmail() == null)
 		{
-			throw new DAOException("Informe email do negÃ³cio!");
+			throw new DAOException("Informe email do negócio!");
 		}
 
-		LOGGER.info("Salvar informaÃ§Ãµes do negÃ³cio.");
+		LOGGER.info("Salvar informações do negócio.");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -327,13 +327,13 @@ public class BusinessDAOImpl
 		}
 		catch (final ParameterException ex)
 		{
-			final String msg = "Erro ao atualizar negÃ³cio! ";
+			final String msg = "Erro ao atualizar negócio! ";
 			LOGGER.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
 		catch (final SQLException ex)
 		{
-			final String msg = "Erro ao atualizar negÃ³cio! ";
+			final String msg = "Erro ao atualizar negócio! ";
 			LOGGER.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
@@ -352,10 +352,10 @@ public class BusinessDAOImpl
 
 		if (id == null)
 		{
-			throw new DAOException("Informe id negÃ³cio!");
+			throw new DAOException("Informe id negócio!");
 		}
 
-		LOGGER.info("Deletar negÃ³cio.");
+		LOGGER.info("Deletar negócio.");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -386,7 +386,7 @@ public class BusinessDAOImpl
 
 			if (count > 0)
 			{
-				throw new SQLException("Existe entrega relacionada ao negÃ³cio!");
+				throw new SQLException("Existe entrega relacionada ao negócio!");
 			}
 
 			stmt = conn.prepareStatement(COUNT_CUSTOMER_BUSINESS);
@@ -400,7 +400,7 @@ public class BusinessDAOImpl
 
 			if (count > 0)
 			{
-				throw new SQLException("Existe cliente relacionado ao negÃ³cio!");
+				throw new SQLException("Existe cliente relacionado ao negócio!");
 			}
 
 			stmt = conn.prepareStatement(COUNT_COURIER_BUSINESS);
@@ -414,7 +414,7 @@ public class BusinessDAOImpl
 
 			if (count > 0)
 			{
-				throw new SQLException("Existe entregador relacionado ao negÃ³cio!");
+				throw new SQLException("Existe entregador relacionado ao negócio!");
 			}
 
 			stmt = conn.prepareStatement(SQL);
@@ -431,14 +431,14 @@ public class BusinessDAOImpl
 		}
 		catch (final ParameterException ex)
 		{
-			final String msg = "Erro ao atualizar negÃ³cio! ";
+			final String msg = "Erro ao atualizar negócio! ";
 			LOGGER.error(msg + ex.getMessage());
 
 			throw new DAOException(msg);
 		}
 		catch (final SQLException ex)
 		{
-			final String msg = "Erro ao atualizar negÃ³cio! ";
+			final String msg = "Erro ao atualizar negócio! ";
 			LOGGER.error(msg + ex.getMessage());
 
 			throw new DAOException(msg);
@@ -514,13 +514,13 @@ public class BusinessDAOImpl
 		}
 		catch (final ParameterException ex)
 		{
-			final String msg = "Erro ao pesquisar lista de negÃ³cios! ";
+			final String msg = "Erro ao pesquisar lista de negócios! ";
 			LOGGER.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
 		catch (final SQLException ex)
 		{
-			final String msg = "Erro ao pesquisar lista de negÃ³cios! ";
+			final String msg = "Erro ao pesquisar lista de negócios! ";
 			LOGGER.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
@@ -552,7 +552,7 @@ public class BusinessDAOImpl
 			throw new DAOException("Informe id cliente!");
 		}
 
-		LOGGER.info("Pesquisar informaÃ§Ãµes de negÃ³cio do cliente.");
+		LOGGER.info("Pesquisar informações de negócio do cliente.");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -603,13 +603,13 @@ public class BusinessDAOImpl
 		}
 		catch (final ParameterException ex)
 		{
-			final String msg = "Erro ao pesquisar negÃ³cio do cliente! ";
+			final String msg = "Erro ao pesquisar negócio do cliente! ";
 			LOGGER.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
 		catch (final SQLException ex)
 		{
-			final String msg = "Erro ao pesquisar negÃ³cio do cliente! ";
+			final String msg = "Erro ao pesquisar negócio do cliente! ";
 			LOGGER.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
@@ -642,7 +642,7 @@ public class BusinessDAOImpl
 			throw new DAOException("Informe id entregador!");
 		}
 
-		LOGGER.info("Pesquisar informaÃ§Ãµes de negÃ³cio do entregador.");
+		LOGGER.info("Pesquisar informações de negócio do entregador.");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -693,13 +693,13 @@ public class BusinessDAOImpl
 		}
 		catch (final ParameterException ex)
 		{
-			final String msg = "Erro ao pesquisar negÃ³cio do entregador! ";
+			final String msg = "Erro ao pesquisar negócio do entregador! ";
 			LOGGER.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
 		catch (final SQLException ex)
 		{
-			final String msg = "Erro ao pesquisar negÃ³cio do entregador! ";
+			final String msg = "Erro ao pesquisar negócio do entregador! ";
 			LOGGER.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
@@ -732,7 +732,7 @@ public class BusinessDAOImpl
 			throw new DAOException("Informe id entrega!");
 		}
 
-		LOGGER.info("Pesquisar informaÃ§Ãµes de negÃ³cio da entrega.");
+		LOGGER.info("Pesquisar informações de negócio da entrega.");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -785,13 +785,13 @@ public class BusinessDAOImpl
 		}
 		catch (final ParameterException ex)
 		{
-			final String msg = "Erro ao pesquisar negÃ³cio da entrega! ";
+			final String msg = "Erro ao pesquisar negócio da entrega! ";
 			LOGGER.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
 		catch (final SQLException ex)
 		{
-			final String msg = "Erro ao pesquisar negÃ³cio da entrega! ";
+			final String msg = "Erro ao pesquisar negócio da entrega! ";
 			LOGGER.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}

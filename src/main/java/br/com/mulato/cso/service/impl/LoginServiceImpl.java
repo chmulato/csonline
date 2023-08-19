@@ -34,7 +34,7 @@ public class LoginServiceImpl
 		message.append("Password:\t[").append(login.getNewPassword());
 		message.append("]*\r\n");
 		message.append("\r\n");
-		message.append("*Par√¢metros entre colchetes []. \r\n");
+		message.append("*Par‚metros entre colchetes []. \r\n");
 
 		return new SendEmail(email, subject, message.toString());
 

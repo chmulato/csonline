@@ -33,7 +33,7 @@ public class UsersController
 
 	private void loadSession ()
 	{
-		String msg = "Carregando controle da p√°gina de usu√°rios ...";
+		String msg = "Carregando controle da p·gina de usu·rios ...";
 		LOGGER.info(msg);
 		try
 		{
@@ -42,7 +42,7 @@ public class UsersController
 			final LoginController loginController = app.evaluateExpressionGet(context, "#{loginMB}", LoginController.class);
 			if (loginController.isLogged())
 			{
-				LOGGER.info("Sess√£o carregada! ... Login: " + loginController.getUsername());
+				LOGGER.info("Sess„o carregada! ... Login: " + loginController.getUsername());
 				if (loginController.getProfile().equals("ADMINISTRATOR"))
 				{
 					results = FactoryService.getInstancia().getAdminService().listAllUsers();
@@ -57,14 +57,14 @@ public class UsersController
 				}
 				else
 				{
-					msg = "Perfil do usu√°rio n√£o encontrado.";
+					msg = "Perfil do usu·rio n„o encontrado.";
 					LOGGER.error(msg);
 					throw new WebException(msg);
 				}
 			}
 			else
 			{
-				msg = "Sess√£o n√£o carregada! Logar novamente.";
+				msg = "Sess„o n„o carregada! Logar novamente.";
 				LOGGER.error(msg);
 				throw new WebException(msg);
 			}

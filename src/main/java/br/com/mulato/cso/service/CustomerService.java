@@ -7,9 +7,7 @@ import br.com.mulato.cso.model.BusinessVO;
 import br.com.mulato.cso.model.CustomerVO;
 import br.com.mulato.cso.model.PriceVO;
 
-public interface CustomerService
-    extends Serializable
-{
+public interface CustomerService extends Serializable {
 
 	public List<CustomerVO> listAllCustomerBusiness (BusinessVO business) throws WebException;
 

@@ -48,17 +48,17 @@ public class UserDAOImpl
 
 		if (id == null)
 		{
-			throw new DAOException("Informe Id usuÃ¡rio!");
+			throw new DAOException("Informe Id usuário!");
 		}
 
 		if (id.intValue() <= 0)
 		{
-			throw new DAOException("Informe Id usuÃ¡rio!");
+			throw new DAOException("Informe Id usuário!");
 		}
 
 		Connection conn = null;
 
-		logger.info("Pesquisar de usuÃ¡rio.");
+		logger.info("Pesquisar de usuário.");
 
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -115,13 +115,13 @@ public class UserDAOImpl
 		}
 		catch (final ParameterException ex)
 		{
-			final String msg = "Erro ao pesquisar usuÃ¡rio! ";
+			final String msg = "Erro ao pesquisar usuário! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
 		catch (final SQLException ex)
 		{
-			final String msg = "Erro ao pesquisar usuÃ¡rio! ";
+			final String msg = "Erro ao pesquisar usuário! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
@@ -141,7 +141,7 @@ public class UserDAOImpl
 
 		boolean thereIs = false;
 
-		logger.info("Pesquisar lista de usuÃ¡rios.");
+		logger.info("Pesquisar lista de usuários.");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -197,13 +197,13 @@ public class UserDAOImpl
 		}
 		catch (final ParameterException ex)
 		{
-			final String msg = "Erro ao pesquisar lista de usuÃ¡rios! ";
+			final String msg = "Erro ao pesquisar lista de usuários! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
 		catch (final SQLException ex)
 		{
-			final String msg = "Erro ao pesquisar lista de usuÃ¡rios! ";
+			final String msg = "Erro ao pesquisar lista de usuários! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
@@ -226,7 +226,7 @@ public class UserDAOImpl
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
-		logger.info("Pesquisar lista de negÃ³cios.");
+		logger.info("Pesquisar lista de negócios.");
 
 		try
 		{
@@ -278,13 +278,13 @@ public class UserDAOImpl
 		}
 		catch (final ParameterException ex)
 		{
-			final String msg = "Erro ao pesquisar lista de negÃ³cios! ";
+			final String msg = "Erro ao pesquisar lista de negócios! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
 		catch (final SQLException ex)
 		{
-			final String msg = "Erro ao pesquisar lista de negÃ³cios! ";
+			final String msg = "Erro ao pesquisar lista de negócios! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
@@ -304,7 +304,7 @@ public class UserDAOImpl
 
 		if (login == null)
 		{
-			throw new DAOException("Informe usuÃ¡rio!");
+			throw new DAOException("Informe usuário!");
 		}
 
 		if (login.getLogin() == null)
@@ -312,7 +312,7 @@ public class UserDAOImpl
 			throw new DAOException("Informe login!");
 		}
 
-		logger.info("Pesquisar de usuÃ¡rio por login.");
+		logger.info("Pesquisar de usuário por login.");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -362,13 +362,13 @@ public class UserDAOImpl
 		}
 		catch (final ParameterException ex)
 		{
-			final String msg = "Erro ao pesquisar usuÃ¡rio pelo login! ";
+			final String msg = "Erro ao pesquisar usuário pelo login! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
 		catch (final SQLException ex)
 		{
-			final String msg = "Erro ao pesquisar usuÃ¡rio pelo login! ";
+			final String msg = "Erro ao pesquisar usuário pelo login! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}

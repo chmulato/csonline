@@ -50,7 +50,7 @@ public class AbstractController
 
 	public final String LOGOMARCA_JPG = "logomarca.jpg";
 
-	public final String SUBJECT_MESSAGE_EMAIL = "Documentos para importaÃ§Ã£o no sistema CSO";
+	public final String SUBJECT_MESSAGE_EMAIL = "Documentos para importaçío no sistema CSO";
 
 	public final String FILE_TYPE_TXT = ".txt";
 
@@ -76,7 +76,7 @@ public class AbstractController
 	@SuppressWarnings("rawtypes")
 	protected String getParameter (final String parameterId) throws WebException
 	{
-		final String msg = "ParÃ¢metro de navegaÃ§Ã£o invÃ¡lido! ";
+		final String msg = "Parí¢metro de navegaçío inválido! ";
 		String value = null;
 		try
 		{
@@ -130,7 +130,7 @@ public class AbstractController
 
 	public void exportReportPDF (final JasperPrint jasperPrint) throws ReportException
 	{
-		final String msg = "Erro ao exportar o relatÃ¡rio para o usuÃ¡rio: ";
+		final String msg = "Erro ao exportar o relatário para o usuário: ";
 		try
 		{
 			final HttpServletResponse response = (HttpServletResponse)getExternalContext().getResponse();
@@ -143,19 +143,19 @@ public class AbstractController
 		catch (final RuntimeException e)
 		{
 			LOGGER.error(msg + e.getMessage());
-			throw new ReportException("NÃ£o foi possÃ­vel montar seu relatÃ³rio. Tente mais tarde.");
+			throw new ReportException("Nío foi possí­vel montar seu relatório. Tente mais tarde.");
 		}
 		catch (IOException | JRException e)
 		{
 			LOGGER.error(msg + e.getMessage());
-			throw new ReportException("NÃ£o foi possÃ­vel montar seu relatÃ³rio. Tente mais tarde.");
+			throw new ReportException("Nío foi possí­vel montar seu relatório. Tente mais tarde.");
 		}
 
 	}
 
 	public void exportReportRTF (final JasperPrint jasperPrint) throws ReportException
 	{
-		final String msg = "Erro ao exportar o relatÃ¡rio para o usuÃ¡rio: ";
+		final String msg = "Erro ao exportar o relatário para o usuário: ";
 		try
 		{
 			final HttpServletResponse response = (HttpServletResponse)getExternalContext().getResponse();
@@ -169,19 +169,19 @@ public class AbstractController
 		catch (final RuntimeException e)
 		{
 			LOGGER.error(msg + e.getMessage());
-			throw new ReportException("NÃ£o foi possÃ­vel montar seu relatÃ³rio. Tente mais tarde.");
+			throw new ReportException("Nío foi possí­vel montar seu relatório. Tente mais tarde.");
 		}
 		catch (IOException | JRException e)
 		{
 			LOGGER.error(msg + e.getMessage());
-			throw new ReportException("NÃ£o foi possÃ­vel montar seu relatÃ³rio. Tente mais tarde.");
+			throw new ReportException("Nío foi possí­vel montar seu relatório. Tente mais tarde.");
 		}
 
 	}
 
 	public void exportReportHTML (final JasperPrint jasperPrint) throws ReportException
 	{
-		final String msg = "Erro ao exportar relatÃ³rio: ";
+		final String msg = "Erro ao exportar relatório: ";
 		try
 		{
 			final PrintWriter printWriter = getResponse().getWriter();
@@ -196,13 +196,13 @@ public class AbstractController
 		catch (IOException | JRException e)
 		{
 			LOGGER.error(msg + e.getMessage());
-			throw new ReportException("NÃ£o foi possÃ­vel montar seu relatÃ³rio. Tente mais tarde.");
+			throw new ReportException("Nío foi possí­vel montar seu relatório. Tente mais tarde.");
 		}
 	}
 
 	protected void downloadArquivo (final String filename, final String fileType)
 	{
-		String msg = "Erro ao realizar download do arquivo temporario ";
+		String msg = "Erro ao realizar download do arquivo temporário ";
 		try
 		{
 			final File file = new File(getTempPath() + "/" + filename);

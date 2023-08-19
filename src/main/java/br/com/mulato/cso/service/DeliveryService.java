@@ -7,9 +7,7 @@ import br.com.mulato.cso.model.CourierVO;
 import br.com.mulato.cso.model.DeliveryVO;
 import br.com.mulato.cso.model.SmsVO;
 
-public interface DeliveryService
-    extends Serializable
-{
+public interface DeliveryService extends Serializable {
 
 	public List<DeliveryVO> listAllDeliveryBusinessCompleted (Integer idBusiness) throws WebException;
 

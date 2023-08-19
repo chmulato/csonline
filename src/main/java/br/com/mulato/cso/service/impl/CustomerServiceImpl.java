@@ -26,20 +26,20 @@ public class CustomerServiceImpl
 
 		if (business == null)
 		{
-			throw new WebException("Informe neg贸cio.");
+			throw new WebException("Informe neg骳io.");
 		}
 
 		if (business.getId() == null)
 		{
-			throw new WebException("Informe id neg贸cio!");
+			throw new WebException("Informe id neg骳io!");
 		}
 
 		if (business.getId() <= 0)
 		{
-			throw new WebException("Informe id neg贸cio!");
+			throw new WebException("Informe id neg骳io!");
 		}
 
-		LOGGER.info("Listar todos os clientes do neg贸cio.");
+		LOGGER.info("Listar todos os clientes do neg骳io.");
 
 		try
 		{
@@ -119,17 +119,17 @@ public class CustomerServiceImpl
 
 		if (customer.getBusiness() == null)
 		{
-			throw new DAOException("Informe neg贸cio do cliente!");
+			throw new DAOException("Informe neg骳io do cliente!");
 		}
 
 		if (customer.getBusiness().getId() == null)
 		{
-			throw new DAOException("Informe neg贸cio do cliente!");
+			throw new DAOException("Informe neg骳io do cliente!");
 		}
 
 		if (customer.getBusiness().getId() <= 0)
 		{
-			throw new DAOException("Informe neg贸cio do cliente!");
+			throw new DAOException("Informe neg骳io do cliente!");
 		}
 
 		try
@@ -207,15 +207,15 @@ public class CustomerServiceImpl
 
 		if (nameTable == null)
 		{
-			throw new WebException("Informe nome da tabela de pre莽o do cliente.");
+			throw new WebException("Informe nome da tabela de pre鏾 do cliente.");
 		}
 
 		if (nameTable.equals(""))
 		{
-			throw new WebException("Informe nome da tabela de pre莽o do cliente.");
+			throw new WebException("Informe nome da tabela de pre鏾 do cliente.");
 		}
 
-		LOGGER.info("Pesquisar lista de pre莽os do cliente.");
+		LOGGER.info("Pesquisar lista de pre鏾s do cliente.");
 
 		try
 		{

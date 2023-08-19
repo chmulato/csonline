@@ -54,7 +54,7 @@ public class SmsDAOImpl
 
 		int id = 0;
 
-		logger.info("Salvar mensagem de sms em pedaÃ§os.");
+		logger.info("Salvar mensagem de sms em pedaços.");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -122,7 +122,7 @@ public class SmsDAOImpl
 		catch (final ParameterException ex)
 		{
 
-			final String msg = "Erro ao salvar sms em pedaÃ§os! ";
+			final String msg = "Erro ao salvar sms em pedaços! ";
 			logger.error(msg + ex.getMessage());
 
 			throw new DAOException(msg);
@@ -131,7 +131,7 @@ public class SmsDAOImpl
 		catch (final SQLException ex)
 		{
 
-			final String msg = "Erro ao salvar sms em pedaÃ§os! ";
+			final String msg = "Erro ao salvar sms em pedaços! ";
 			logger.error(msg + ex.getMessage());
 
 			throw new DAOException(msg);
@@ -285,12 +285,12 @@ public class SmsDAOImpl
 
 		if (!tools.validarNumero(sms.getTo()))
 		{
-			throw new DAOException("Informe nÃºmero de celular vÃ¡lido a receber da mensagem!");
+			throw new DAOException("Informe número de celular válido a receber da mensagem!");
 		}
 
 		if (!tools.validarNumero(sms.getFrom()))
 		{
-			throw new DAOException("Informe nÃºmero de celular vÃ¡lido de envio da mensagem!");
+			throw new DAOException("Informe número de celular válido de envio da mensagem!");
 		}
 
 		String message = sms.getMessage().trim();
@@ -570,7 +570,7 @@ public class SmsDAOImpl
 
 		if (!tools.validarNumero(mobile))
 		{
-			throw new DAOException("Informe nÃºmero de celular vÃ¡lido!");
+			throw new DAOException("Informe número de celular válido!");
 		}
 
 		logger.info("Pesquisar todas mensagens do celular.");

@@ -6,9 +6,7 @@ import br.com.mulato.cso.exception.WebException;
 import br.com.mulato.cso.model.LoginVO;
 import br.com.mulato.cso.model.UserVO;
 
-public interface AdminService
-    extends Serializable
-{
+public interface AdminService extends Serializable {
 
 	public List<UserVO> listAllUsers () throws WebException;
 

@@ -78,7 +78,7 @@ public class DeliveryViewController
 
 		boolean isLogged = false;
 
-		LOGGER.info("Carregando controle da pÃ¡gina de entregas do negÃ³cio ...");
+		LOGGER.info("Carregando controle da página de entregas do negócio ...");
 
 		try
 		{
@@ -92,14 +92,14 @@ public class DeliveryViewController
 			if (isLogged)
 			{
 
-				LOGGER.info("SessÃ£o carregada! ... Login: " + loginController.getUsername());
+				LOGGER.info("Sessão carregada! ... Login: " + loginController.getUsername());
 
 				profile = loginController.getProfile();
 
 				if ((loginController.getUserIdLogged() == null) || (loginController.getUserIdLogged().intValue() <= 0))
 				{
 
-					throw new WebException("Id do usuÃ¡rio logado nÃ£o encontrado.");
+					throw new WebException("Id do usuário logado não encontrado.");
 
 				}
 
@@ -107,7 +107,7 @@ public class DeliveryViewController
 				    (loginController.getBusinessVO().getId().intValue() <= 0))
 				{
 
-					throw new WebException("NegÃ³cio da sessÃ£o nÃ£o encontrado.");
+					throw new WebException("Negócio da sessão não encontrado.");
 
 				}
 				else
@@ -176,7 +176,7 @@ public class DeliveryViewController
 				else
 				{
 
-					throw new WebException("Perfil do usuÃ¡rio nÃ£o encontrado.");
+					throw new WebException("Perfil do usuário não encontrado.");
 
 				}
 
@@ -184,7 +184,7 @@ public class DeliveryViewController
 			else
 			{
 
-				throw new WebException("SessÃ£o nÃ£o carregada! Logar novamente.");
+				throw new WebException("Sessão não carregada! Logar novamente.");
 
 			}
 
@@ -202,7 +202,7 @@ public class DeliveryViewController
 	}
 
 	/**
-	 * Buscar todos os entregadores do negÃ³cio
+	 * Buscar todos os entregadores do negócio
 	 * 
 	 * @return
 	 * @throws WebException
@@ -231,7 +231,7 @@ public class DeliveryViewController
 	}
 
 	/**
-	 * Buscar todos os clientes do negÃ³cio
+	 * Buscar todos os clientes do negócio
 	 * 
 	 * @return
 	 * @throws WebException

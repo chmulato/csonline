@@ -70,7 +70,7 @@ public class DBConnection extends DBTransaction
 	@SuppressWarnings("unused")
 	public static Connection getConnectionDB() throws DAOException, ParameterException
 	{
-		String msg = "Cria√ß√£o da conex√£o com o banco de dados CSO.";
+		String msg = "CriaÁ„o da conex„o com o banco de dados CSO.";
 		LOGGER.info(msg);
 		getParamaters();
 		if (jndiActive)
@@ -82,7 +82,7 @@ public class DBConnection extends DBTransaction
 				initialContext = new InitialContext();
 				if (initialContext == null)
 				{
-					msg = "N√£o foi poss√≠vel ler o contexto de conex√£o com o banco.";
+					msg = "N„o foi possÌ≠vel ler o contexto de conex„o com o banco.";
 					LOGGER.error(msg);
 					throw new DAOException(msg);
 				}
@@ -92,7 +92,7 @@ public class DBConnection extends DBTransaction
 				}
 				if (dataSource == null)
 				{
-					msg = "N√£o foi poss√≠vel carregar data source de conex√£o com o banco.";
+					msg = "N„o foi possÌ≠vel carregar data source de conex„o com o banco.";
 					LOGGER.error(msg);
 					throw new DAOException(msg);
 				}
@@ -103,7 +103,7 @@ public class DBConnection extends DBTransaction
 				}
 				if (getConnection() == null)
 				{
-					msg = "N√£o foi poss√≠vel abrir a conex√£o com o banco.";
+					msg = "N„o foi possÌ≠vel abrir a conex„o com o banco.";
 					LOGGER.error(msg);
 					throw new DAOException(msg);
 				}
@@ -111,7 +111,7 @@ public class DBConnection extends DBTransaction
 			}
 			catch (NamingException | SQLException e)
 			{
-				msg = "Erro na conex√£o com o banco. ";
+				msg = "Erro na conex„o com o banco. ";
 				LOGGER.error(msg + e.getMessage());
 				throw new DAOException(msg);
 			}
@@ -125,19 +125,19 @@ public class DBConnection extends DBTransaction
 			}
 			catch (final ClassNotFoundException cnf)
 			{
-				msg = "Driver de conex√£o com o banco n√£o encontrado. ";
+				msg = "Driver de conex„o com o banco n„o encontrado. ";
 				LOGGER.error(msg + cnf.getMessage());
 				throw new DAOException(msg);
 			}
 			catch (final SQLException sql)
 			{
-				msg = "N√£o foi poss√≠vel abrir a conex√£o com o banco. ";
+				msg = "N„o foi possÌ≠vel abrir a conex„o com o banco. ";
 				LOGGER.error(msg + sql.getMessage());
 				throw new DAOException(msg);
 			}
 			catch (InstantiationException | IllegalAccessException e)
 			{
-				msg = "Erro na conex√£o com o banco. ";
+				msg = "Erro na conex„o com o banco. ";
 				LOGGER.error(msg + e.getMessage());
 				throw new DAOException(msg);
 			}
@@ -162,7 +162,7 @@ public class DBConnection extends DBTransaction
 	public static void close (final Connection conn, final Statement stmt, final ResultSet rs) throws DAOException
 	{
 		
-		final String msg = "Desconex√£o com a base de dados n√£o efetuada corretamente. ";
+		final String msg = "Desconex„o com a base de dados n„o efetuada corretamente. ";
 		
 		try
 		{

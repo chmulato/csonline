@@ -56,7 +56,7 @@ public class ChangePasswordController
 	{
 		String profile;
 		boolean isLogged = false;
-		LOGGER.info("Carregando controle da pÃ¡gina de usuÃ¡rio ...");
+		LOGGER.info("Carregando controle da página de usuário ...");
 		try
 		{
 
@@ -68,11 +68,11 @@ public class ChangePasswordController
 
 			if (isLogged)
 			{
-				LOGGER.info("SessÃ£o carregada! ... Login: " + loginController.getUsername());
+				LOGGER.info("Sessão carregada! ... Login: " + loginController.getUsername());
 				profile = loginController.getProfile();
 				if ((loginController.getUserIdLogged() == null) || (loginController.getUserIdLogged() <= 0))
 				{
-					throw new WebException("Id do usuÃ¡rio logado nÃ£o encontrado.");
+					throw new WebException("Id do usuário logado não encontrado.");
 				}
 				if ((profile.equals("ADMINISTRATOR")) || (profile.equals("BUSINESS")) || (profile.equals("CUSTOMER")))
 				{
@@ -114,12 +114,12 @@ public class ChangePasswordController
 				}
 				else
 				{
-					throw new WebException("Perfil do usuÃ¡rio nÃ£o encontrado.");
+					throw new WebException("Perfil do usuário não encontrado.");
 				}
 			}
 			else
 			{
-				throw new WebException("SessÃ£o nÃ£o carregada! Logar novamente.");
+				throw new WebException("Sessão não carregada! Logar novamente.");
 			}
 		}
 		catch (final WebException e)
@@ -163,7 +163,7 @@ public class ChangePasswordController
 
 			if ((getId() == null) || getId().equals(new Integer(0)))
 			{
-				throw new WebException("Informe id do usuÃ¡rio logado!");
+				throw new WebException("Informe id do usuário logado!");
 			}
 
 			if ((getEmail1() != null) && (!getEmail1().equals("")))

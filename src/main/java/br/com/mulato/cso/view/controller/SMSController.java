@@ -48,7 +48,7 @@ public class SMSController
 	private void loadSession ()
 	{
 		String profile;
-		LOGGER.info("Carregando controle da p√°gina de mensagens ...");
+		LOGGER.info("Carregando controle da p·gina de mensagens ...");
 		try
 		{
 
@@ -57,14 +57,14 @@ public class SMSController
 			final LoginController loginController = app.evaluateExpressionGet(context, "#{loginMB}", LoginController.class);
 			if (loginController.isLogged())
 			{
-				LOGGER.info("Sess√£o carregada! ... Login: " + loginController.getUsername());
+				LOGGER.info("Sess„o carregada! ... Login: " + loginController.getUsername());
 				if ((loginController.getUserIdLogged() == null) || (loginController.getUserIdLogged() <= 0))
 				{
-					throw new WebException("Id do usu√°rio n√£o encontrado.");
+					throw new WebException("Id do usu·rio n„o encontrado.");
 				}
 				if ((loginController.getId() == null) || (loginController.getId() <= 0))
 				{
-					throw new WebException("Id do entregador n√£o encontrado.");
+					throw new WebException("Id do entregador n„o encontrado.");
 				}
 				profile = loginController.getProfile();
 				if (profile.equals("BUSINESS"))
@@ -80,7 +80,7 @@ public class SMSController
 				}
 				else
 				{
-					throw new WebException("Perfil do usu√°rio n√£o encontrado.");
+					throw new WebException("Perfil do usu·rio n„o encontrado.");
 				}
 
 				if ((results != null) && (results.size() > 0))
@@ -94,7 +94,7 @@ public class SMSController
 			}
 			else
 			{
-				throw new WebException("Sess√£o n√£o carregada! Logar novamente.");
+				throw new WebException("Sess„o n„o carregada! Logar novamente.");
 			}
 		}
 		catch (final WebException e)
@@ -117,7 +117,7 @@ public class SMSController
 
 	public void cancelEvent (final AjaxBehaviorEvent event)
 	{
-		final FacesMessage msg = new FacesMessage("Atualiza√ß√£o cancelada!");
+		final FacesMessage msg = new FacesMessage("AtualizaÁ„o cancelada!");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
@@ -167,7 +167,7 @@ public class SMSController
 			catch (final Exception e)
 			{
 				path = "messages";
-				FacesMessages.mensErro("Falha na inser√ß√£o no banco de dados!");
+				FacesMessages.mensErro("Falha na inserÁ„o no banco de dados!");
 			}
 		}
 		return goToBackPage(path);

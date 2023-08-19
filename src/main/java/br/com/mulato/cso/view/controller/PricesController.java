@@ -48,7 +48,7 @@ public class PricesController
 			}
 			else
 			{
-				throw new WebException("SessÃ£o nÃ£o carregada! Logar novamente.");
+				throw new WebException("Sessão não carregada! Logar novamente.");
 			}
 
 		}
@@ -64,7 +64,7 @@ public class PricesController
 
 		String profile;
 
-		LOGGER.info("Carregando controle da pÃ¡gina de entregas em aberto ...");
+		LOGGER.info("Carregando controle da página de entregas em aberto ...");
 
 		try
 		{
@@ -76,12 +76,12 @@ public class PricesController
 			if (loginController.isLogged())
 			{
 
-				LOGGER.info("SessÃ£o carregada! ... Login: " + loginController.getUsername());
+				LOGGER.info("Sessão carregada! ... Login: " + loginController.getUsername());
 
 				if ((loginController.getUserIdLogged() == null) || (loginController.getUserIdLogged().intValue() <= 0))
 				{
 
-					throw new WebException("Id do usuÃ¡rio nÃ£o encontrado.");
+					throw new WebException("Id do usuário não encontrado.");
 
 				}
 
@@ -100,7 +100,7 @@ public class PricesController
 				else
 				{
 
-					throw new WebException("Perfil do usuÃ¡rio nÃ£o encontrado.");
+					throw new WebException("Perfil do usuário não encontrado.");
 
 				}
 
@@ -117,7 +117,7 @@ public class PricesController
 			else
 			{
 
-				throw new WebException("SessÃ£o nÃ£o carregada! Logar novamente.");
+				throw new WebException("Sessão não carregada! Logar novamente.");
 
 			}
 
@@ -226,7 +226,7 @@ public class PricesController
 			}
 			else
 			{
-				throw new WebException("ParÃ¢metro vazio! Informe id da preÃ§o.");
+				throw new WebException("Parâmetro vazio! Informe id da preço.");
 			}
 
 		}

@@ -24,7 +24,7 @@ public class PageListener
 	{
 	}
 
-	// executa antes de qualquer renderizar ao usu√°rio
+	// executa antes de qualquer renderizar ao usu·rio
 	@Override
 	public void beforePhase (final PhaseEvent event)
 	{
@@ -45,7 +45,7 @@ public class PageListener
 		LOGGER.info("Navigation: " + page + " page.");
 		LOGGER.info("Timeout: " + timeout);
 
-		// recupera os dados que estao na sess√£o LoginController
+		// recupera os dados que estao na sess„o LoginController
 		final LoginController loginController = application.evaluateExpressionGet(facesContext, "#{loginMB}", LoginController.class);
 
 		if (loginController != null)
@@ -85,7 +85,7 @@ public class PageListener
 						|| page.equals("/pricetables.xhtml")
 						|| page.equals("/messages.xhtml");
 
-				// verifica as p√°ginas que n√£o possuem acesso externo
+				// verifica as p·ginas que n„o possuem acesso externo
 				if (validaPaginas)
 				{
 					if (!loginController.isLogged())
@@ -100,7 +100,7 @@ public class PageListener
 						}
 					}
 				}
-				// se abrir encerra todas sess√µes
+				// se abrir encerra todas sessıes
 				if (page.equals("/logout.xhtml"))
 				{
 					loginController.logout();

@@ -24,13 +24,13 @@ public class SendSms
 		{
 			if ((from == null) || (from.equals("")))
 			{
-				msg = "Informe nÃºmero de celular para enviar!";
+				msg = "Informe número de celular para enviar!";
 				LOGGER.error(msg);
 				throw new WebException(msg);
 			}
 			if ((to == null) || (to.equals("")))
 			{
-				msg = "Informe nÃºmero de celular para receber!";
+				msg = "Informe número de celular para receber!";
 				LOGGER.error(msg);
 				throw new WebException(msg);
 			}
@@ -42,7 +42,7 @@ public class SendSms
 			}
 			if (new ToolUtils().validarNumero(to))
 			{
-				msg = "NÃºmero de celular invÃ¡lido!";
+				msg = "Número de celular inválido!";
 				LOGGER.error(msg);
 				throw new WebException(msg);
 			}

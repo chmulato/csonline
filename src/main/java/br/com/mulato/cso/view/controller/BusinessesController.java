@@ -49,7 +49,7 @@ public class BusinessesController
 			}
 			else
 			{
-				throw new WebException("SessÃ£o nÃ£o carregada! Logar novamente.");
+				throw new WebException("Sessão não carregada! Logar novamente.");
 			}
 
 		}
@@ -65,7 +65,7 @@ public class BusinessesController
 
 		String profile;
 
-		LOGGER.info("Carregando controle da pÃ¡gina de negÃ³cios ...");
+		LOGGER.info("Carregando controle da página de negócios ...");
 
 		try
 		{
@@ -77,7 +77,7 @@ public class BusinessesController
 			if (loginController.isLogged())
 			{
 
-				LOGGER.info("SessÃ£o carregada! ... Login: " + loginController.getUsername());
+				LOGGER.info("Sessão carregada! ... Login: " + loginController.getUsername());
 
 				profile = loginController.getProfile();
 
@@ -100,12 +100,12 @@ public class BusinessesController
 				}
 				else
 				{
-					throw new WebException("Perfil do usuÃ¡rio nÃ£o encontrado.");
+					throw new WebException("Perfil do usuário não encontrado.");
 				}
 			}
 			else
 			{
-				throw new WebException("SessÃ£o nÃ£o carregada! Logar novamente.");
+				throw new WebException("Sessão não carregada! Logar novamente.");
 			}
 
 		}
@@ -162,12 +162,12 @@ public class BusinessesController
 				if (id != null)
 				{
 					FactoryService.getInstancia().getBusinessService().delete(id);
-					FacesMessages.mensInfo("NegÃ³cio deletado com sucesso!");
+					FacesMessages.mensInfo("Negócio deletado com sucesso!");
 				}
 			}
 			else
 			{
-				throw new WebException("ParÃ¢metro vazio! Informe id negÃ³cio.");
+				throw new WebException("Parâmetro vazio! Informe id negócio.");
 			}
 		}
 		catch (final NumberFormatException e)

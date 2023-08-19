@@ -43,7 +43,7 @@ public class UserController
 
 	private void loadSessao ()
 	{
-		String msg = "Carregando controle da pÃ¡gina de usuÃ¡rio ...";
+		String msg = "Carregando controle da página de usuário ...";
 		String profile;
 		boolean isLogged;
 		LOGGER.info(msg);
@@ -55,11 +55,11 @@ public class UserController
 			isLogged = loginController.isLogged();
 			if (isLogged)
 			{
-				LOGGER.info("SessÃ£o carregada! ... Login: " + loginController.getUsername());
+				LOGGER.info("Sessão carregada! ... Login: " + loginController.getUsername());
 				profile = loginController.getProfile();
 				if ((loginController.getUserIdLogged() == null) || (loginController.getUserIdLogged() <= 0))
 				{
-					msg = "Id do usuÃ¡rio logado nÃ£o encontrado.";
+					msg = "Id do usuário logado não encontrado.";
 					LOGGER.error(msg);
 					throw new WebException(msg);
 				}
@@ -81,14 +81,14 @@ public class UserController
 				}
 				else
 				{
-					msg = "Perfil do usuÃ¡rio nÃ£o encontrado.";
+					msg = "Perfil do usuário não encontrado.";
 					LOGGER.error(msg);
 					throw new WebException(msg);
 				}
 			}
 			else
 			{
-				msg = "SessÃ£o nÃ£o carregada! Logar novamente.";
+				msg = "Sessão não carregada! Logar novamente.";
 				LOGGER.error(msg);
 				throw new WebException(msg);
 			}

@@ -30,12 +30,12 @@ public class ToolUtils
 			if (!strText.equals(""))
 			{
 				strText = strText.toUpperCase();
-				strText = strText.replaceAll("[ÁÀÂÃ]", "A");
-				strText = strText.replaceAll("[ÉÈÊ]", "E");
-				strText = strText.replaceAll("[ÍÌÎ]", "I");
-				strText = strText.replaceAll("[ÓÒÔÕ]", "O");
-				strText = strText.replaceAll("[ÚÙÛ]", "U");
-				strText = strText.replaceAll("[Ç]", "C");
+				strText = strText.replaceAll("[Ã�Ã€Ã‚Ãƒ]", "A");
+				strText = strText.replaceAll("[Ã‰ÃˆÃŠ]", "E");
+				strText = strText.replaceAll("[Ã�ÃŒÃŽ]", "I");
+				strText = strText.replaceAll("[Ã“Ã’Ã”Ã•]", "O");
+				strText = strText.replaceAll("[ÃšÃ™Ã›]", "U");
+				strText = strText.replaceAll("[Ã‡]", "C");
 				strText = strText.replaceAll("[*]", "YYY");
 				strText = strText.replaceAll("[.]", "ZZZ");
 				strText = strText.replaceAll("[-]", "WWW");
@@ -213,7 +213,7 @@ public class ToolUtils
 		try
 		{
 			String cpfCnpjFormatted = cpfCnpj.trim();
-			// retira tudo que nao é número
+			// retira tudo que não é número
 			cpfCnpjFormatted = cpfCnpjFormatted.replaceAll("[^0-9]", "");
 			MaskFormatter a;
 			if (cpfCnpjFormatted.length() > 9)
@@ -248,7 +248,7 @@ public class ToolUtils
 		}
 	}
 
-	// -------- Valida CPF ou CNPJ
+	// -------- Válida CPF ou CNPJ
 	public boolean validarCpfCnpj (final String s_aux)
 	{
 
@@ -265,7 +265,7 @@ public class ToolUtils
 			for (int n_Count = 1; n_Count < s_aux.length() - 1; n_Count++)
 			{
 				digitoCPF = Integer.valueOf(s_aux.substring(n_Count - 1, n_Count));
-				// --------- Multiplique a ultima casa por 2 a seguinte por 3 a seguinte por 4 e assim por
+				// --------- Multiplique a última casa por 2 a seguinte por 3 a seguinte por 4 e assim por
 				// diante.
 				d1 = d1 + (11 - n_Count) * digitoCPF;
 				// --------- Para o segundo digito repita o procedimento incluindo o primeiro digito calculado
@@ -622,7 +622,7 @@ public class ToolUtils
 
 	/**
 	 * Função modulo10:
-	 * Calcula o módulo10 de uma string numerica e retorna o digito
+	 * Calcula o módulo10 de uma string numérica e retorna o digito
 	 * 
 	 * @param numero
 	 *        String contendo o numero a ter o mod10 calculado
@@ -740,7 +740,7 @@ public class ToolUtils
 		// Se o modulo for igual a 0 o digito verificador será 0
 		// se for maior que 0 deve-se diminuir de 10
 		//
-		// 10 - 5 = 5 //digito verificador é 5
+		// 10 - 5 = 5 //digito verificador Ã© 5
 		if (resultado == 0)
 		{
 			digito = 0;
@@ -759,8 +759,8 @@ public class ToolUtils
 		int digito = 0;
 		// Modulo 11:
 		// Ex.: 5555555555-8
-		// digito verificador é o 8
-		// multiplica-se cada digito do numero de 2 à 9 , da direita para a esquerda
+		// digito verificador Ã© o 8
+		// multiplica-se cada digito do numero de 2 Ã  9 , da direita para a esquerda
 		// somando cada resultado
 		// (5*3)+(5*2)+(5*9)+(5*8)+(5*7)+(5*6)+(5*5)+(5*4)+(5*3)+(5*2) = 245;
 		int soma = 0;
@@ -784,7 +784,7 @@ public class ToolUtils
 		// Se o modulo for igual a 0 ou 1 o digito verificador será 0
 		// se o modulo for maior que 1 deve-se diminuir de 11
 		//
-		// 11 - 3 = 8; // digito verificador é 8
+		// 11 - 3 = 8; // digito verificador Ã© 8
 		if ((resultado == 0) || (resultado == 1))
 		{
 			digito = 0;

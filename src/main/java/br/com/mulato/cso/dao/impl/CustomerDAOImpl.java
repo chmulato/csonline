@@ -218,25 +218,25 @@ public class CustomerDAOImpl
 
 		if (customer.getBusiness() == null)
 		{
-			throw new DAOException("Informe negÃ³cio do cliente!");
+			throw new DAOException("Informe negócio do cliente!");
 		}
 
 		if (customer.getBusiness().getId() == null)
 		{
-			throw new DAOException("Informe negÃ³cio do cliente!");
+			throw new DAOException("Informe negócio do cliente!");
 		}
 
 		if (customer.getBusiness().getId().intValue() <= 0)
 		{
-			throw new DAOException("Informe negÃ³cio do cliente!");
+			throw new DAOException("Informe negócio do cliente!");
 		}
 
 		if (isThereLogin(customer.getLogin()))
 		{
-			throw new DAOException("Login jÃ¡ existente!");
+			throw new DAOException("Login já existente!");
 		}
 
-		logger.info("Salvar informaÃ§Ãµes do cliente.");
+		logger.info("Salvar informações do cliente.");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -393,20 +393,20 @@ public class CustomerDAOImpl
 
 		if (customer.getBusiness() == null)
 		{
-			throw new DAOException("Informe negÃ³cio do cliente!");
+			throw new DAOException("Informe negócio do cliente!");
 		}
 
 		if (customer.getBusiness().getId() == null)
 		{
-			throw new DAOException("Informe negÃ³cio do cliente!");
+			throw new DAOException("Informe negócio do cliente!");
 		}
 
 		if (customer.getBusiness().getId().intValue() <= 0)
 		{
-			throw new DAOException("Informe negÃ³cio do cliente!");
+			throw new DAOException("Informe negócio do cliente!");
 		}
 
-		logger.info("Salvar informaÃ§Ãµes do cliente.");
+		logger.info("Salvar informações do cliente.");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -573,17 +573,17 @@ public class CustomerDAOImpl
 
 		if (business == null)
 		{
-			throw new DAOException("Informe negÃ³cio!");
+			throw new DAOException("Informe negócio!");
 		}
 
 		if (business.getId() == null)
 		{
-			throw new DAOException("Informe negÃ³cio!");
+			throw new DAOException("Informe negócio!");
 		}
 
 		if (business.getId().intValue() <= 0)
 		{
-			throw new DAOException("Informe negÃ³cio!");
+			throw new DAOException("Informe negócio!");
 		}
 
 		Connection conn = null;

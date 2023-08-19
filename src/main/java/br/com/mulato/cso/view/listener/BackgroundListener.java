@@ -20,7 +20,7 @@ public class BackgroundListener
 
 	private long timer = 0;
 
-	// timer vÃ¡lido com valor entre 60 segundos (60 segundos x 1000 milisegundos)
+	// timer ví¡lido com valor entre 60 segundos (60 segundos x 1000 milisegundos)
 	private final long minimumTime = 60000;
 
 	// a uma hora (1 hora x 60 minutos x 60 segundos X 1000 milisegundos)
@@ -38,13 +38,13 @@ public class BackgroundListener
 		}
 		catch (final ParameterException e)
 		{
-			LOGGER.error("Tempo de leitura de sms nÃ£o informado!");
+			LOGGER.error("Tempo de leitura de sms não informado!");
 		}
 		if (smsReading)
 		{
 			if ((timer >= minimumTime) && (timer <= maximunTime))
 			{
-				LOGGER.info("InÃ­cio do serviÃ§o de leitura de emails!");
+				LOGGER.info("Iní­cio do serviço de leitura de emails!");
 				scheduler = Executors.newSingleThreadScheduledExecutor();
 				scheduler.scheduleAtFixedRate(new SMSServiceImpl(), 0, timer, TimeUnit.MILLISECONDS);
 			}
@@ -56,7 +56,7 @@ public class BackgroundListener
 	{
 		if (smsReading)
 		{
-			LOGGER.info("TÃ©rmino do serviÃ§o de leitura de emails!");
+			LOGGER.info("Término do serviço de leitura de emails!");
 			if ((timer >= minimumTime) && (timer <= maximunTime))
 			{
 				scheduler.shutdownNow();

@@ -56,14 +56,14 @@ public abstract class FactoryDAO
 			{
 				if (instancia == null)
 				{
-					LOGGER.info("CriaÃ§Ã£o da instÃ¢ncia FactoryDAOImpl.");
+					LOGGER.info("Criação da instâcia FactoryDAOImpl.");
 					instancia = new FactoryDAOImpl();
 				}
 				return instancia;
 			}
 			else
 			{
-				LOGGER.info("CriaÃ§Ã£o da classe FactoryDAOImpl.");
+				LOGGER.info("Criação da classe FactoryDAOImpl.");
 				return new FactoryDAOImpl();
 			}
 		}
@@ -82,14 +82,14 @@ public abstract class FactoryDAO
 	public static boolean onTransaction() throws DAOException
 	{
 		transaction_active = TRANSACTION_ENABLE;
-		LOGGER.info("Acesso ao banco de dados - Transacao ativada ...");
+		LOGGER.info("Acesso ao banco de dados - Transação ativada ...");
 		return transaction_active;
 	}
 	
 	public static boolean offTransaction() throws DAOException
 	{
 		transaction_active = TRANSACTION_DISABLE;
-		LOGGER.info("Acesso ao banco de dados - Transacao desativa ...");
+		LOGGER.info("Acesso ao banco de dados - Transação desativa ...");
 		return transaction_active;
 	}
 

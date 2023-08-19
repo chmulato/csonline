@@ -51,16 +51,16 @@ public class AuthenticationService
 						authenticationStatus = authenticate;
 						if (authenticationStatus)
 						{
-							LOGGER.info("AutenticaÃ§Ã£o do usuÃ¡rio com sucesso!");
+							LOGGER.info("Autenticação do usuário com sucesso!");
 						}
 						else
 						{
-							LOGGER.error("AutenticaÃ§Ã£o do usuÃ¡rio nÃ£o vÃ¡lida!");
+							LOGGER.error("Autenticação do usuáo não válida!");
 						}
 					}
 					else
 					{
-						LOGGER.error("Objeto de autenticaÃ§Ã£o nulo!");
+						LOGGER.error("Objeto de autenticação nulo!");
 					}
 				}
 				catch (final Exception e)
@@ -70,12 +70,12 @@ public class AuthenticationService
 			}
 			else
 			{
-				LOGGER.error("UsuÃ¡rio ou senha vazio!");
+				LOGGER.error("Usuário ou senha vazio!");
 			}
 		}
 		else
 		{
-			LOGGER.error("UsuÃ¡rio ou senha nulo!");
+			LOGGER.error("Usuário ou senha nulo!");
 		}
 		return authenticationStatus;
 	}

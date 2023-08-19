@@ -64,7 +64,7 @@ public class DBTransaction {
 			begin();
 		} catch (SQLException ex)
 		{
-			throw new DAOException("Falha ao ativa transacao...");
+			throw new DAOException("Falha ao ativa transação...");
 		}
 	}
 	
@@ -75,7 +75,7 @@ public class DBTransaction {
 			disableTransaction();
 		} catch (SQLException ex)
 		{
-			throw new DAOException("Falha ao desativar transacao...");
+			throw new DAOException("Falha ao desativar transação...");
 		}
 	}
 

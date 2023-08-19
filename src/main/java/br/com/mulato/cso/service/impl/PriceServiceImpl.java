@@ -21,9 +21,9 @@ public class PriceServiceImpl
 		PriceVO price = null;
 		if ((idPrice == null) || (idPrice <= 0))
 		{
-			throw new WebException("Informe id preÃ§o.");
+			throw new WebException("Informe id preço.");
 		}
-		LOGGER.info("Buscar preÃ§o.");
+		LOGGER.info("Buscar preço.");
 		try
 		{
 			price = FactoryDAO.getInstancia().getPriceDAO().find(idPrice);
@@ -42,32 +42,32 @@ public class PriceServiceImpl
 
 		if (price == null)
 		{
-			throw new WebException("Informe preÃ§o!");
+			throw new WebException("Informe preço!");
 		}
 
 		if (price.getBusiness() == null)
 		{
-			throw new WebException("Informe o negÃ³cio!");
+			throw new WebException("Informe o negócio!");
 		}
 
 		if (price.getBusiness().getId() == null)
 		{
-			throw new WebException("Informe o negÃ³cio!");
+			throw new WebException("Informe o negócio!");
 		}
 
 		if (price.getBusiness().getId() <= 0)
 		{
-			throw new WebException("Informe o negÃ³cio!");
+			throw new WebException("Informe o negócio!");
 		}
 
 		if (price.getTable() == null)
 		{
-			throw new WebException("Informe tabela de preÃ§o!");
+			throw new WebException("Informe tabela de preço!");
 		}
 
 		if (price.getTable().equals(""))
 		{
-			throw new WebException("Informe tabela de preÃ§o!");
+			throw new WebException("Informe tabela de preço!");
 		}
 
 		if (price.getVehicle() == null)
@@ -94,12 +94,12 @@ public class PriceServiceImpl
 		{
 			if (price.getId() == null)
 			{
-				LOGGER.info("Salvar preÃ§o.");
+				LOGGER.info("Salvar preço.");
 				FactoryDAO.getInstancia().getPriceDAO().insert(price);
 			}
 			else
 			{
-				LOGGER.info("Atualizar preÃ§o.");
+				LOGGER.info("Atualizar preço.");
 				FactoryDAO.getInstancia().getPriceDAO().update(price);
 			}
 		}
@@ -115,9 +115,9 @@ public class PriceServiceImpl
 	{
 		if ((idPrice == null) || (idPrice <= 0))
 		{
-			throw new WebException("Informe id preÃ§o.");
+			throw new WebException("Informe id preço.");
 		}
-		LOGGER.info("Deletar preÃ§o.");
+		LOGGER.info("Deletar preço.");
 		try
 		{
 			FactoryDAO.getInstancia().getPriceDAO().delete(idPrice);

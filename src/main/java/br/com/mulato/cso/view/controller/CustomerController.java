@@ -76,7 +76,7 @@ public class CustomerController
 
 		boolean isLogged = false;
 
-		LOGGER.info("Carregando controle da p√°gina de cliente ...");
+		LOGGER.info("Carregando controle da p·gina de cliente ...");
 
 		try
 		{
@@ -90,14 +90,14 @@ public class CustomerController
 			if (isLogged)
 			{
 
-				LOGGER.info("Sess√£o carregada! ... Login: " + loginController.getUsername());
+				LOGGER.info("Sess„o carregada! ... Login: " + loginController.getUsername());
 
 				profile = loginController.getProfile();
 
 				if ((loginController.getUserIdLogged() == null) || (loginController.getUserIdLogged().intValue() <= 0))
 				{
 
-					throw new WebException("Id do usu√°rio logado n√£o encontrado.");
+					throw new WebException("Id do usu·rio logado n„o encontrado.");
 
 				}
 
@@ -243,7 +243,7 @@ public class CustomerController
 				else
 				{
 
-					throw new WebException("Perfil do usu√°rio n√£o encontrado.");
+					throw new WebException("Perfil do usu·rio n„o encontrado.");
 
 				}
 
@@ -251,7 +251,7 @@ public class CustomerController
 			else
 			{
 
-				throw new WebException("Sess√£o n√£o carregada! Logar novamente.");
+				throw new WebException("Sess„o n„o carregada! Logar novamente.");
 
 			}
 
@@ -349,34 +349,34 @@ public class CustomerController
 
 			if (getAddress() == null)
 			{
-				throw new WebException("Informe endere√ßo!");
+				throw new WebException("Informe endereÁo!");
 			}
 
 			if (getAddress().equals(""))
 			{
-				throw new WebException("Informe endere√ßo!");
+				throw new WebException("Informe endereÁo!");
 			}
 
 			if (getMobile() == null)
 			{
-				throw new WebException("Informe n√∫mero de celular!");
+				throw new WebException("Informe n˙mero de celular!");
 			}
 
 			if (getMobile().equals(""))
 			{
-				throw new WebException("Informe n√∫mero de celular!");
+				throw new WebException("Informe n˙mero de celular!");
 			}
 
 			if (getBusinessId() == null)
 			{
-				throw new WebException("Informe id neg√≥cio!");
+				throw new WebException("Informe id negÛcio!");
 			}
 
 			idBusiness = Integer.parseInt(getBusinessId().toString());
 
 			if (idBusiness <= 0)
 			{
-				throw new WebException("Informe id neg√≥cio!");
+				throw new WebException("Informe id negÛcio!");
 			}
 
 			if (getFactor_customer() == null)
@@ -443,7 +443,7 @@ public class CustomerController
 		}
 		catch (final Exception e)
 		{
-			FacesMessages.mensErro("Falha na inser√ß√£o no banco de dados!");
+			FacesMessages.mensErro("Falha na inserÁ„o no banco de dados!");
 		}
 
 		return goToBackPage("customers");

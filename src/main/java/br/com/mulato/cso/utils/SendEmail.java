@@ -68,7 +68,7 @@ public class SendEmail
 
 		if ((server == null) || (server.equals("")))
 		{
-			msg = "Informe endere√ßo SMTP do servidor!";
+			msg = "Informe endereÌßo SMTP do servidor!";
 			LOGGER.error(msg);
 			throw new WebException(msg);
 		}
@@ -82,28 +82,28 @@ public class SendEmail
 
 		if ((authentication == null) || (authentication.equals("")))
 		{
-			msg = "Informe se o servidor SMTP utiliza autentica√ß√£o!";
+			msg = "Informe se o servidor SMTP utiliza autenticaÁÌo!";
 			LOGGER.error(msg);
 			throw new WebException(msg);
 		}
 
 		if ((username == null) || (username.equals("")))
 		{
-			msg = "Informe a conta do usu√°rio do servidor SMTP!";
+			msg = "Informe a conta do usu·rio do servidor SMTP!";
 			LOGGER.error(msg);
 			throw new WebException(msg);
 		}
 
 		if ((password == null) || (password.equals("")))
 		{
-			msg = "Informe a senha do usu√°rio do servidor SMTP!";
+			msg = "Informe a senha do usu·rio do servidor SMTP!";
 			LOGGER.error(msg);
 			throw new WebException(msg);
 		}
 
 		if ((recipient == null) || (recipient.length == 0))
 		{
-			msg = "Informe a conta eletr√¥nica p/ envio do(s) documento(s)!";
+			msg = "Informe a conta eletrÌ¥nica p/ envio do(s) documento(s)!";
 			LOGGER.error(msg);
 			throw new WebException(msg);
 		}
@@ -157,18 +157,18 @@ public class SendEmail
             //Cria um autenticador que sera usado a seguir
             final AuthenticationEmail auth = new AuthenticationEmail (username, password);
 
-            //Session - objeto que ira realizar a conex√£o com o servidor
-            /*Como h√° necessidade de autentica√ß√£o √© criada uma autenticacao que
-             * √© responsavel por solicitar e retornar o usu√°rio e senha para
-             * autentica√ß√£o */
+            //Session - objeto que ira realizar a conex„o com o servidor
+            /*Como h· necessidade de autenticaÁ„o È criada uma autenticaÁ„o que
+             * È respons·vel por solicitar e retornar o usu·rio e senha para
+             * autenticaÁ„o */
             final Session session = Session.getDefaultInstance(properties, auth);
 
-            //Habilita o LOG das a√ß√µes executadas durante o envio do email
+            //Habilita o LOG das aÁıes executadas durante o envio do email
             session.setDebug(true);
-            //Objeto que cont√©m a mensagem
+            //Objeto que contÈm a mensagem
             MimeMessage mimeMessage = new MimeMessage(session);
 
-            //Setando os destinat√°rios
+            //Setando os destinat·rios
             InternetAddress[] addressTo = new InternetAddress[recipient.length];
             for (int i = 0; i < recipient.length; i++) {
                 addressTo[i] = new InternetAddress(recipient[i]);
@@ -207,14 +207,14 @@ public class SendEmail
              *  3 - sua senha
              */
             tr.connect(server, username, password);
-            mimeMessage.saveChanges(); // n√£o esqueca isso
+            mimeMessage.saveChanges(); // nÌo esqueca isso
             //envio da mensagem
             tr.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
             tr.close();
 		}
 		catch (MessagingException e)
 		{
-			msg = "N√£o foi poss√≠vel enviar a mensagem! ";
+			msg = "NÌo foi possÌ≠vel enviar a mensagem! ";
 			LOGGER.error(msg + e.getMessage());
 			throw new WebException(msg);
 		}

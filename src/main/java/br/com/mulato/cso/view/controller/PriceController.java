@@ -58,7 +58,7 @@ public class PriceController
 
 		boolean isLogged = false;
 
-		LOGGER.info("Carregando controle da pÃ¡gina de entregas do negÃ³cio ...");
+		LOGGER.info("Carregando controle da página de entregas do negócio ...");
 
 		try
 		{
@@ -72,14 +72,14 @@ public class PriceController
 			if (isLogged)
 			{
 
-				LOGGER.info("SessÃ£o carregada! ... Login: " + loginController.getUsername());
+				LOGGER.info("Sessío carregada! ... Login: " + loginController.getUsername());
 
 				profile = loginController.getProfile();
 
 				if ((loginController.getUserIdLogged() == null) || (loginController.getUserIdLogged().intValue() <= 0))
 				{
 
-					throw new WebException("Id do usuÃ¡rio logado nÃ£o encontrado.");
+					throw new WebException("Id do usuário logado nío encontrado.");
 
 				}
 
@@ -87,7 +87,7 @@ public class PriceController
 				    (loginController.getBusinessVO().getId().intValue() <= 0))
 				{
 
-					throw new WebException("NegÃ³cio da sessÃ£o nÃ£o encontrado.");
+					throw new WebException("Negócio da sessío nío encontrado.");
 
 				}
 				else
@@ -170,7 +170,7 @@ public class PriceController
 				else
 				{
 
-					throw new WebException("Perfil do usuÃ¡rio nÃ£o encontrado.");
+					throw new WebException("Perfil do usuário nío encontrado.");
 
 				}
 
@@ -178,7 +178,7 @@ public class PriceController
 			else
 			{
 
-				throw new WebException("SessÃ£o nÃ£o carregada! Logar novamente.");
+				throw new WebException("Sessío nío carregada! Logar novamente.");
 
 			}
 
@@ -208,17 +208,17 @@ public class PriceController
 
 			if ((getIdBusiness() == null) || getIdBusiness().equals(new Integer(0)))
 			{
-				throw new WebException("Informe id negÃ³cio!");
+				throw new WebException("Informe id negócio!");
 			}
 
 			if (getLocal() == null)
 			{
-				throw new WebException("Informe endereÃ§o de destino!");
+				throw new WebException("Informe endereço de destino!");
 			}
 
 			if (getLocal().equals(""))
 			{
-				throw new WebException("Informe endereÃ§o de destino!");
+				throw new WebException("Informe endereço de destino!");
 			}
 
 			if ((getIdTable() == null) || getIdTable().equals(new Integer(0)))
@@ -228,7 +228,7 @@ public class PriceController
 
 			if ((getIdVehicle() == null) || getIdVehicle().equals(new Integer(0)))
 			{
-				throw new WebException("Informe veÃ­culo!");
+				throw new WebException("Informe veí­culo!");
 			}
 
 			if (getPrice() == null)
@@ -296,7 +296,7 @@ public class PriceController
 		}
 		catch (final Exception e)
 		{
-			FacesMessages.mensErro("Falha na inserÃ§Ã£o no banco de dados!");
+			FacesMessages.mensErro("Falha na inserçío no banco de dados!");
 		}
 
 		return goToBackPage(path);
@@ -330,7 +330,7 @@ public class PriceController
 	}
 
 	/**
-	 * Buscar todos os veÃ­culos
+	 * Buscar todos os veí­culos
 	 * 
 	 * @return
 	 * @throws WebException

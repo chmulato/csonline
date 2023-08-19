@@ -30,12 +30,12 @@ public class DeliveryServiceImpl
 
 		if ((sms.getTo() == null) || (sms.getTo().equals("")))
 		{
-			throw new WebException("Informe n√∫mero de celular para enviar!");
+			throw new WebException("Informe n˙mero de celular para enviar!");
 		}
 
 		if ((sms.getFrom() == null) || (sms.getFrom().equals("")))
 		{
-			throw new WebException("Informe n√∫mero de celular de envio!");
+			throw new WebException("Informe n˙mero de celular de envio!");
 		}
 
 		if ((sms.getMessage() == null) || (sms.getMessage().equals("")))
@@ -45,7 +45,7 @@ public class DeliveryServiceImpl
 
 		if (new ToolUtils().validarNumero(sms.getTo()))
 		{
-			throw new WebException("N√∫mero de celular inv√°lido!");
+			throw new WebException("N˙mero de celular inv·lido!");
 		}
 
 		return new SendSms(sms.getTo(), sms.getFrom(), sms.getMessage());
@@ -64,17 +64,17 @@ public class DeliveryServiceImpl
 
 		if (delivery.getBusiness() == null)
 		{
-			throw new WebException("Neg√≥cio da entrega n√£o encontrado.");
+			throw new WebException("Neg√≥cio da entrega n„o encontrado.");
 		}
 
 		if (delivery.getCustomer() == null)
 		{
-			throw new WebException("Cliente da entrega n√£o encontrado.");
+			throw new WebException("Cliente da entrega n„o encontrado.");
 		}
 
 		if (delivery.getCourier() == null)
 		{
-			throw new WebException("Entregador n√£o encontrado.");
+			throw new WebException("Entregador n„o encontrado.");
 		}
 
 		if ((delivery.getReceived()) && (!delivery.getCompleted()))
@@ -92,11 +92,11 @@ public class DeliveryServiceImpl
 			message.append("Cliente: 				").append(delivery.getCustomer().getName()).append("\r\n");
 			message.append("Nome do Entregador:		").append(delivery.getCourier().getName()).append("\r\n");
 			message.append("Data/Hora: 				").append(date).append("\r\n");
-			message.append("Endere√ßo base:		    ").append(delivery.getStart()).append("\r\n");
-			message.append("Endere√ßo de entrega:    ").append(delivery.getDestination()).append("\r\n");
-			message.append("Dist√¢ncia: 	 			").append(delivery.getKm()).append(" Km\r\n");
+			message.append("EndereÁo base:		    ").append(delivery.getStart()).append("\r\n");
+			message.append("EndereÁo de entrega:    ").append(delivery.getDestination()).append("\r\n");
+			message.append("Dist‚ncia: 	 			").append(delivery.getKm()).append(" Km\r\n");
 			message.append("Contato: 	 			").append(delivery.getContact()).append("\r\n");
-			message.append("Descri√ß√£o: 	 			").append(delivery.getDescription()).append("\r\n");
+			message.append("DescriÁ„o: 	 			").append(delivery.getDescription()).append("\r\n");
 			message.append("Additional:  			").append(delivery.getAdditionalCost()).append(" reais\r\n");
 			message.append("Custo: 		 			").append(delivery.getCost()).append(" reais\r\n");
 
@@ -120,11 +120,11 @@ public class DeliveryServiceImpl
 			message.append("Cliente: 				").append(delivery.getCustomer().getName()).append("\r\n");
 			message.append("Entregador:				").append(delivery.getCourier().getName()).append("\r\n");
 			message.append("Data/Hora: 				").append(date).append("\r\n");
-			message.append("Endere√ßo base:		    ").append(delivery.getStart()).append("\r\n");
-			message.append("Endere√ßo de entrega:    ").append(delivery.getDestination()).append("\r\n");
-			message.append("Dist√¢ncia: 	 			").append(delivery.getKm()).append(" Km\r\n");
+			message.append("EndereÁo base:		    ").append(delivery.getStart()).append("\r\n");
+			message.append("EndereÁo de entrega:    ").append(delivery.getDestination()).append("\r\n");
+			message.append("Dist‚ncia: 	 			").append(delivery.getKm()).append(" Km\r\n");
 			message.append("Contato: 	 			").append(delivery.getContact()).append("\r\n");
-			message.append("Descri√ß√£o: 	 			").append(delivery.getDescription()).append("\r\n");
+			message.append("DescriÁ„o: 	 			").append(delivery.getDescription()).append("\r\n");
 			message.append("Encomenda entregue.");
 			// lista de emails de destino
 			final String[] emailList02 = new String[2];
@@ -143,12 +143,12 @@ public class DeliveryServiceImpl
 
 		if (delivery.getBusiness() == null)
 		{
-			throw new WebException("Neg?cio da entrega n√£o encontrado.");
+			throw new WebException("Neg?cio da entrega n„o encontrado.");
 		}
 
 		if (delivery.getCustomer() == null)
 		{
-			throw new WebException("Cliente da entrega n√£o encontrado.");
+			throw new WebException("Cliente da entrega n„o encontrado.");
 		}
 
 		final String emailBusiness = delivery.getBusiness().getEmail();
@@ -162,11 +162,11 @@ public class DeliveryServiceImpl
 		message.append("Cliente: 				").append(delivery.getCustomer().getName()).append("\r\n");
 		message.append("Nome do Entregador:		" + "Escale um motoboy!" + "\r\n");
 		message.append("Data/Hora: 				").append(date).append("\r\n");
-		message.append("Endere√ßo base:		    ").append(delivery.getStart()).append("\r\n");
-		message.append("Endere√ßo de entrega:    ").append(delivery.getDestination()).append("\r\n");
-		message.append("Dist√¢ncia: 	 			").append(delivery.getKm()).append(" Km\r\n");
+		message.append("EndereÁo base:		    ").append(delivery.getStart()).append("\r\n");
+		message.append("EndereÁo de entrega:    ").append(delivery.getDestination()).append("\r\n");
+		message.append("Dist‚ncia: 	 			").append(delivery.getKm()).append(" Km\r\n");
 		message.append("Contato: 	 			").append(delivery.getContact()).append("\r\n");
-		message.append("Descri√ß√£o: 	 			").append(delivery.getDescription()).append("\r\n");
+		message.append("DescriÁ„o: 	 			").append(delivery.getDescription()).append("\r\n");
 		message.append("Adicional: 	 			").append(delivery.getAdditionalCost()).append(" reais (Valor a confirmar)\r\n");
 		message.append("Custo: 		 			").append(delivery.getCost()).append(" reais (Valor a confirmar)\r\n");
 
@@ -191,17 +191,17 @@ public class DeliveryServiceImpl
 
 		if (delivery.getBusiness() == null)
 		{
-			throw new WebException("Neg√≥cio da entrega n√£o encontrado.");
+			throw new WebException("Neg√≥cio da entrega n„o encontrado.");
 		}
 
 		if (delivery.getCustomer() == null)
 		{
-			throw new WebException("Cliente da entrega n√£o encontrado.");
+			throw new WebException("Cliente da entrega n„o encontrado.");
 		}
 
 		if (delivery.getCourier() == null)
 		{
-			throw new WebException("Entregador n√£o encontrado.");
+			throw new WebException("Entregador n„o encontrado.");
 		}
 
 		final String emailBusiness = delivery.getBusiness().getEmail();
@@ -219,11 +219,11 @@ public class DeliveryServiceImpl
 			message.append("Cliente: 				").append(delivery.getCustomer().getName()).append("\r\n");
 			message.append("Entregador:				").append(delivery.getCourier().getName()).append("\r\n");
 			message.append("Data/Hora: 				").append(date).append("\r\n");
-			message.append("Endere√ßo base:		    ").append(delivery.getStart()).append("\r\n");
-			message.append("Endere√ßo de entrega:    ").append(delivery.getDestination()).append("\r\n");
-			message.append("Dist√¢ncia: 	 			").append(delivery.getKm()).append(" Km\r\n");
+			message.append("EndereÁo base:		    ").append(delivery.getStart()).append("\r\n");
+			message.append("EndereÁo de entrega:    ").append(delivery.getDestination()).append("\r\n");
+			message.append("Dist‚ncia: 	 			").append(delivery.getKm()).append(" Km\r\n");
 			message.append("Contato: 	 			").append(delivery.getContact()).append("\r\n");
-			message.append("Descri√ß√£o: 	 			").append(delivery.getDescription()).append("\r\n");
+			message.append("DescriÁ„o: 	 			").append(delivery.getDescription()).append("\r\n");
 			message.append("Encomenda entregue.");
 
 			// lista de emails de destino
@@ -286,7 +286,7 @@ public class DeliveryServiceImpl
 			throw new WebException("Informe id neg√≥cio!");
 		}
 
-		LOGGER.info("Listar todas as entregas n√£o completadas do neg√≥cio.");
+		LOGGER.info("Listar todas as entregas n„o completadas do neg√≥cio.");
 
 		final BusinessVO business = new BusinessVO();
 		business.setId(idBusiness);
@@ -352,7 +352,7 @@ public class DeliveryServiceImpl
 			throw new WebException("Informe id cliente!");
 		}
 
-		LOGGER.info("Listar todas as entregas n√£o completadas do cliente.");
+		LOGGER.info("Listar todas as entregas n„o completadas do cliente.");
 
 		final CustomerVO customer = new CustomerVO();
 		customer.setId(idCustomer);
@@ -418,7 +418,7 @@ public class DeliveryServiceImpl
 			throw new WebException("Informe id entregador!");
 		}
 
-		LOGGER.info("Listar todas as entregas n√£o completadas do entregador.");
+		LOGGER.info("Listar todas as entregas n„o completadas do entregador.");
 
 		final CourierVO courier = new CourierVO();
 		courier.setId(idCourier);
@@ -481,12 +481,12 @@ public class DeliveryServiceImpl
 
 		if (delivery.getDescription() == null)
 		{
-			throw new WebException("Informe descri√ß√£o da entrega!");
+			throw new WebException("Informe descriÁ„o da entrega!");
 		}
 
 		if (delivery.getKm() == null)
 		{
-			throw new WebException("Informe dist√¢ncia!");
+			throw new WebException("Informe dist‚ncia!");
 		}
 
 		if (delivery.getCost() == null)
@@ -620,12 +620,12 @@ public class DeliveryServiceImpl
 
 		if (delivery.getDescription() == null)
 		{
-			throw new WebException("Informe descri√ß√£o da entrega!");
+			throw new WebException("Informe descriÁ„o da entrega!");
 		}
 
 		if (delivery.getKm() == null)
 		{
-			throw new WebException("Informe dist√¢ncia!");
+			throw new WebException("Informe dist‚ncia!");
 		}
 
 		if (delivery.getCost() == null)
@@ -718,12 +718,12 @@ public class DeliveryServiceImpl
 
 		if (delivery.getDescription() == null)
 		{
-			throw new WebException("Informe descri√ß√£o da entrega!");
+			throw new WebException("Informe descriÁ„o da entrega!");
 		}
 
 		if (delivery.getKm() == null)
 		{
-			throw new WebException("Informe dist√¢ncia!");
+			throw new WebException("Informe dist‚ncia!");
 		}
 
 		if (delivery.getCost() == null)

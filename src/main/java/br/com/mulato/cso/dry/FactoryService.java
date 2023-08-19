@@ -47,14 +47,14 @@ public abstract class FactoryService
 			{
 				if (instancia == null)
 				{
-					LOGGER.info("Cria√ß√£o da inst√¢ncia FactoryServiceImpl.");
+					LOGGER.info("CriaÁ„o da inst‚ncia FactoryServiceImpl.");
 					instancia = new FactoryServiceImpl();
 				}
 				return instancia;
 			}
 			else
 			{
-				LOGGER.info("Cria√ß√£o da classe FactoryServiceImpl.");
+				LOGGER.info("CriaÁ„o da classe FactoryServiceImpl.");
 				return new FactoryServiceImpl();
 			}
 		}

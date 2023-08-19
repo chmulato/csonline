@@ -9,9 +9,7 @@ import br.com.mulato.cso.model.BusinessVO;
 import br.com.mulato.cso.model.CourierVO;
 import br.com.mulato.cso.service.CourierService;
 
-public class CourierServiceImpl
-    implements CourierService
-{
+public class CourierServiceImpl implements CourierService {
 
 	private static final long serialVersionUID = 1L;
 
@@ -25,20 +23,20 @@ public class CourierServiceImpl
 
 		if (business == null)
 		{
-			throw new WebException("Informe neg贸cio.");
+			throw new WebException("Informe neg骳io.");
 		}
 
 		if (business.getId() == null)
 		{
-			throw new WebException("Informe id neg贸cio!");
+			throw new WebException("Informe id neg骳io!");
 		}
 
 		if (business.getId() <= 0)
 		{
-			throw new WebException("Informe id neg贸cio!");
+			throw new WebException("Informe id neg骳io!");
 		}
 
-		LOGGER.info("Listar todos os entregadores do neg贸cio.");
+		LOGGER.info("Listar todos os entregadores do neg骳io.");
 
 		try
 		{
@@ -161,17 +159,17 @@ public class CourierServiceImpl
 
 		if (courier.getBusiness() == null)
 		{
-			throw new DAOException("Informe neg贸cio do entregador!");
+			throw new DAOException("Informe neg骳io do entregador!");
 		}
 
 		if (courier.getBusiness().getId() == null)
 		{
-			throw new DAOException("Informe neg贸cio do entregador!");
+			throw new DAOException("Informe neg骳io do entregador!");
 		}
 
 		if (courier.getBusiness().getId() <= 0)
 		{
-			throw new DAOException("Informe neg贸cio do entregador!");
+			throw new DAOException("Informe neg骳io do entregador!");
 		}
 
 		try

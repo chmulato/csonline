@@ -24,7 +24,7 @@ public class BusinessServiceImpl
 	public List<BusinessVO> listAllBusiness () throws WebException
 	{
 		List<BusinessVO> list = null;
-		LOGGER.info("Listar todos os neg贸cios.");
+		LOGGER.info("Listar todos os neg骳ios.");
 		try
 		{
 			list = FactoryDAO.getInstancia().getBusinessDAO().listAll();
@@ -42,43 +42,43 @@ public class BusinessServiceImpl
 	{
 		if (business == null)
 		{
-			throw new WebException("Informe neg贸cio.");
+			throw new WebException("Informe neg骳io.");
 		}
 
 		if (business.getName() == null)
 		{
-			throw new WebException("Informe nome do neg贸cio!");
+			throw new WebException("Informe nome do neg骳io!");
 		}
 
 		if (business.getRole() == null)
 		{
-			throw new WebException("Informe o perfil de neg贸cio!");
+			throw new WebException("Informe o perfil de neg骳io!");
 		}
 
 		if (!business.getRole().equals("BUSINESS"))
 		{
-			throw new WebException("Informe o perfil de neg贸cio!");
+			throw new WebException("Informe o perfil de neg骳io!");
 		}
 
 		if (business.getLogin() == null)
 		{
-			throw new WebException("Informe login do neg贸cio!");
+			throw new WebException("Informe login do neg骳io!");
 		}
 
 		if (business.getLogin().getLogin() == null)
 		{
-			throw new WebException("Informe login do neg贸cio!");
+			throw new WebException("Informe login do neg骳io!");
 		}
 
 		if (business.getId() == null)
 		{
 			if (business.getLogin().getPassword() == null)
 			{
-				throw new WebException("Informe senha do neg贸cio!");
+				throw new WebException("Informe senha do neg骳io!");
 			}
 			if (business.getLogin().getRepeat() == null)
 			{
-				throw new WebException("Repita senha do neg贸cio!");
+				throw new WebException("Repita senha do neg骳io!");
 			}
 			if (!business.getLogin().getPassword().equals(business.getLogin().getRepeat()))
 			{
@@ -88,19 +88,19 @@ public class BusinessServiceImpl
 
 		if (business.getEmail() == null)
 		{
-			throw new WebException("Informe email do neg贸cio!");
+			throw new WebException("Informe email do neg骳io!");
 		}
 
 		try
 		{
 			if (business.getId() == null)
 			{
-				LOGGER.info("Salvar neg贸cio.");
+				LOGGER.info("Salvar neg骳io.");
 				FactoryDAO.getInstancia().getBusinessDAO().insert(business);
 			}
 			else
 			{
-				LOGGER.info("Atualizar neg贸cio.");
+				LOGGER.info("Atualizar neg骳io.");
 				FactoryDAO.getInstancia().getBusinessDAO().update(business);
 			}
 		}
@@ -117,9 +117,9 @@ public class BusinessServiceImpl
 		BusinessVO business = null;
 		if ((idBusiness == null) || (idBusiness <= 0))
 		{
-			throw new WebException("Informe id neg贸cio.");
+			throw new WebException("Informe id neg骳io.");
 		}
-		LOGGER.info("Buscar neg贸cio.");
+		LOGGER.info("Buscar neg骳io.");
 		try
 		{
 			business = FactoryDAO.getInstancia().getBusinessDAO().find(idBusiness);
@@ -137,9 +137,9 @@ public class BusinessServiceImpl
 	{
 		if ((idBusiness == null) || (idBusiness <= 0))
 		{
-			throw new WebException("Informe id neg贸cio.");
+			throw new WebException("Informe id neg骳io.");
 		}
-		LOGGER.info("Deletar neg贸cio.");
+		LOGGER.info("Deletar neg骳io.");
 		try
 		{
 			FactoryDAO.getInstancia().getBusinessDAO().delete(idBusiness);
@@ -209,13 +209,13 @@ public class BusinessServiceImpl
 		List<PriceListVO> list = null;
 		if (ibBusiness == null)
 		{
-			throw new WebException("Informe id neg贸cio.");
+			throw new WebException("Informe id neg骳io.");
 		}
 		if (ibBusiness <= 0)
 		{
-			throw new WebException("Informe id neg贸cio.");
+			throw new WebException("Informe id neg骳io.");
 		}
-		LOGGER.info("Pesquisar listas de pre莽os do neg贸cio.");
+		LOGGER.info("Pesquisar listas de pre鏾s do neg骳io.");
 		try
 		{
 			list = FactoryDAO.getInstancia().getPriceDAO().listAllPriceListBusiness(ibBusiness);
@@ -234,13 +234,13 @@ public class BusinessServiceImpl
 		List<PriceVO> list = null;
 		if (idBusiness == null)
 		{
-			throw new WebException("Informe id neg贸cio.");
+			throw new WebException("Informe id neg骳io.");
 		}
 		if (idBusiness <= 0)
 		{
-			throw new WebException("Informe id neg贸cio.");
+			throw new WebException("Informe id neg骳io.");
 		}
-		LOGGER.info("Pesquisar tabela de pre莽os do neg贸cio.");
+		LOGGER.info("Pesquisar tabela de pre鏾s do neg骳io.");
 		try
 		{
 			list = FactoryDAO.getInstancia().getPriceDAO().listAllPriceBusiness(idBusiness);
@@ -259,11 +259,11 @@ public class BusinessServiceImpl
 		List<PriceVO> list = null;
 		if (idBusiness == null)
 		{
-			throw new WebException("Informe id neg贸cio.");
+			throw new WebException("Informe id neg骳io.");
 		}
 		if (idBusiness <= 0)
 		{
-			throw new WebException("Informe id neg贸cio.");
+			throw new WebException("Informe id neg骳io.");
 		}
 		if (table == null)
 		{
@@ -273,7 +273,7 @@ public class BusinessServiceImpl
 		{
 			throw new WebException("Informe nome da tabela.");
 		}
-		LOGGER.info("Pesquisar tabela de pre莽os do neg贸cio.");
+		LOGGER.info("Pesquisar tabela de pre鏾s do neg骳io.");
 		try
 		{
 			list = FactoryDAO.getInstancia().getPriceDAO().listAllPriceBusinessByTable(idBusiness, table);
@@ -291,9 +291,9 @@ public class BusinessServiceImpl
 	{
 		if ((idBusiness == null) || (idBusiness <= 0))
 		{
-			throw new WebException("Informe id neg贸cio.");
+			throw new WebException("Informe id neg骳io.");
 		}
-		LOGGER.info("Deletar todas as listas de pre莽os do neg贸cio.");
+		LOGGER.info("Deletar todas as listas de pre鏾s do neg骳io.");
 		try
 		{
 			FactoryDAO.getInstancia().getPriceDAO().deleteBusinessValues(idBusiness);

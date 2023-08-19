@@ -175,11 +175,11 @@ public class DeliveryDAOImpl implements DeliveryDAO, Serializable {
 		}
 
 		if (delivery.getBusiness() == null) {
-			throw new DAOException("Informe neg√≥cio!");
+			throw new DAOException("Informe negÛcio!");
 		}
 
 		if (delivery.getBusiness().getId() == null) {
-			throw new DAOException("Informe neg√≥cio!");
+			throw new DAOException("Informe negÛcio!");
 		}
 
 		if (delivery.getCustomer() == null) {
@@ -195,18 +195,18 @@ public class DeliveryDAOImpl implements DeliveryDAO, Serializable {
 		}
 
 		if (delivery.getDescription() == null) {
-			throw new DAOException("Informe descri√ß√£o da entrega!");
+			throw new DAOException("Informe descriÁ„o da entrega!");
 		}
 
 		if (delivery.getKm() == null) {
-			throw new DAOException("Informe dist√¢ncia!");
+			throw new DAOException("Informe dist‚ncia!");
 		}
 
 		if (delivery.getCost() == null) {
 			throw new DAOException("Informe valor!");
 		}
 
-		logger.info("Salvar informa√ß√µes da entrega.");
+		logger.info("Salvar informaÁıes da entrega.");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -298,11 +298,11 @@ public class DeliveryDAOImpl implements DeliveryDAO, Serializable {
 		}
 
 		if (delivery.getBusiness() == null) {
-			throw new DAOException("Informe neg√≥cio!");
+			throw new DAOException("Informe negÛcio!");
 		}
 
 		if (delivery.getBusiness().getId() == null) {
-			throw new DAOException("Informe neg√≥cio!");
+			throw new DAOException("Informe negÛcio!");
 		}
 
 		if (delivery.getCustomer() == null) {
@@ -318,18 +318,18 @@ public class DeliveryDAOImpl implements DeliveryDAO, Serializable {
 		}
 
 		if (delivery.getDescription() == null) {
-			throw new DAOException("Informe descri√ß√£o da entrega!");
+			throw new DAOException("Informe descriÁ„o da entrega!");
 		}
 
 		if (delivery.getKm() == null) {
-			throw new DAOException("Informe dist√¢ncia!");
+			throw new DAOException("Informe dist‚ncia!");
 		}
 
 		if (delivery.getCost() == null) {
 			throw new DAOException("Informe valor!");
 		}
 
-		logger.info("Atualizar informa√ß√µes da entrega.");
+		logger.info("Atualizar informaÁıes da entrega.");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -398,7 +398,7 @@ public class DeliveryDAOImpl implements DeliveryDAO, Serializable {
 			throw new DAOException("Informe id entrega!");
 		}
 
-		logger.info("Deletar entrega que ainda n√£o est√° a caminho.");
+		logger.info("Deletar entrega que ainda n„o est· a caminho.");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -429,7 +429,7 @@ public class DeliveryDAOImpl implements DeliveryDAO, Serializable {
 				stmt.setInt(1, id);
 				stmt.executeUpdate();
 			} else {
-				throw new SQLException("Esta entrega j√° esta a caminho!");
+				throw new SQLException("Esta entrega j· esta a caminho!");
 			}
 
 			DBConnection.offTransaction();
@@ -463,14 +463,14 @@ public class DeliveryDAOImpl implements DeliveryDAO, Serializable {
 		boolean thereIs = false;
 
 		if (business == null) {
-			throw new DAOException("Informe neg√≥cio!");
+			throw new DAOException("Informe negÛcio!");
 		}
 
 		if (business.getId() == null) {
-			throw new DAOException("Informe id do neg√≥cio!");
+			throw new DAOException("Informe id do negÛcio!");
 		}
 
-		logger.info("Pesquisar lista de entregas do neg√≥cio.");
+		logger.info("Pesquisar lista de entregas do negÛcio.");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -568,11 +568,11 @@ public class DeliveryDAOImpl implements DeliveryDAO, Serializable {
 			}
 
 		} catch (final ParameterException ex) {
-			final String msg = "Erro ao pesquisar lista de entregas do neg√≥cio! ";
+			final String msg = "Erro ao pesquisar lista de entregas do negÛcio! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		} catch (final SQLException ex) {
-			final String msg = "Erro ao pesquisar lista de entregas do neg√≥cio! ";
+			final String msg = "Erro ao pesquisar lista de entregas do negÛcio! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		} finally {
@@ -845,7 +845,7 @@ public class DeliveryDAOImpl implements DeliveryDAO, Serializable {
 
 		boolean thereIs = false;
 
-		logger.info("Pesquisar lista de entregas n√£o completadas.");
+		logger.info("Pesquisar lista de entregas n„o completadas.");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -938,11 +938,11 @@ public class DeliveryDAOImpl implements DeliveryDAO, Serializable {
 			}
 
 		} catch (final ParameterException ex) {
-			final String msg = "Erro ao pesquisar lista de entregas n√£o completadas! ";
+			final String msg = "Erro ao pesquisar lista de entregas n„o completadas! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		} catch (final SQLException ex) {
-			final String msg = "Erro ao pesquisar lista de entregas n√£o completadas! ";
+			final String msg = "Erro ao pesquisar lista de entregas n„o completadas! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		} finally {

@@ -26,7 +26,7 @@ public class SessionListener
 	{
 		if ((event != null) && (event.getSession() != null) && (event.getSession().getId() != null))
 		{
-			LOGGER.info("Sess√£o corrente criada - N√∫mero: " + event.getSession().getId() + " - Dia/Hora: " +
+			LOGGER.info("Sess„o corrente criada - NÌ∫mero: " + event.getSession().getId() + " - Dia/Hora: " +
 			    ToolUtils.converteDateToString(new Date(), "dd/MM/yyyy hh:mm:ss"));
 		}
 	}
@@ -53,15 +53,15 @@ public class SessionListener
 					if (externalContext != null)
 					{
 						externalContext.redirect(externalContext.getRequestContextPath() + "/redirect.html");
-						LOGGER.info("P√°gina redirecionada para tela de descanso!");
+						LOGGER.info("P·gina redirecionada para tela de descanso!");
 					}
-					LOGGER.info("Sess√£o corrente destru√≠da!");
+					LOGGER.info("Sess„o corrente destruÌ≠da!");
 				}
 			}
 		}
 		catch (final Exception e)
 		{
-			LOGGER.error("Erro ao finalizar sess√£o! " + e.getMessage(), e);
+			LOGGER.error("Erro ao finalizar sess„o! " + e.getMessage(), e);
 		}
 	}
 }

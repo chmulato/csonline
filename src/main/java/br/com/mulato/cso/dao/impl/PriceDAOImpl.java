@@ -54,17 +54,17 @@ public class PriceDAOImpl
 
 		if (price == null)
 		{
-			throw new DAOException("Informe preÃ§o!");
+			throw new DAOException("Informe preço!");
 		}
 
 		if (price.getId() == null)
 		{
-			throw new DAOException("Informe id preÃ§o!");
+			throw new DAOException("Informe id preço!");
 		}
 
 		if (price.getId().intValue() < 0)
 		{
-			throw new DAOException("Informe id preÃ§o!");
+			throw new DAOException("Informe id preço!");
 		}
 
 		Connection conn = null;
@@ -105,13 +105,13 @@ public class PriceDAOImpl
 		}
 		catch (final ParameterException ex)
 		{
-			final String msg = "Erro ao pesquisar preÃ§o! ";
+			final String msg = "Erro ao pesquisar preço! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
 		catch (final SQLException ex)
 		{
-			final String msg = "Erro ao pesquisar preÃ§o! ";
+			final String msg = "Erro ao pesquisar preço! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
@@ -131,7 +131,7 @@ public class PriceDAOImpl
 
 		if (price == null)
 		{
-			throw new DAOException("Informe preÃ§o!");
+			throw new DAOException("Informe preço!");
 		}
 
 		Connection conn = null;
@@ -171,13 +171,13 @@ public class PriceDAOImpl
 		}
 		catch (final ParameterException ex)
 		{
-			final String msg = "Erro ao pesquisar preÃ§o! ";
+			final String msg = "Erro ao pesquisar preço! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
 		catch (final SQLException ex)
 		{
-			final String msg = "Erro ao pesquisar preÃ§o! ";
+			final String msg = "Erro ao pesquisar preço! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
@@ -198,12 +198,12 @@ public class PriceDAOImpl
 
 		if (id == null)
 		{
-			throw new DAOException("Informe Id tabela de preÃ§o!");
+			throw new DAOException("Informe Id tabela de preço!");
 		}
 
 		if (id.intValue() <= 0)
 		{
-			throw new DAOException("Informe Id tabela de preÃ§o!");
+			throw new DAOException("Informe Id tabela de preço!");
 		}
 
 		Connection conn = null;
@@ -255,13 +255,13 @@ public class PriceDAOImpl
 		}
 		catch (final ParameterException ex)
 		{
-			final String msg = "Erro ao pesquisar preÃ§o! ";
+			final String msg = "Erro ao pesquisar preço! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
 		catch (final SQLException ex)
 		{
-			final String msg = "Erro ao pesquisar preÃ§o! ";
+			final String msg = "Erro ao pesquisar preço! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
@@ -279,10 +279,10 @@ public class PriceDAOImpl
 
 		if ((id == null) || (id.intValue() <= 0))
 		{
-			throw new DAOException("Informe id preÃ§o!");
+			throw new DAOException("Informe id preço!");
 		}
 
-		logger.info("Deletar preÃ§o por id.");
+		logger.info("Deletar preço por id.");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -312,13 +312,13 @@ public class PriceDAOImpl
 		}
 		catch (final ParameterException ex)
 		{
-			final String msg = "Erro ao deletar preÃ§o! ";
+			final String msg = "Erro ao deletar preço! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
 		catch (final SQLException ex)
 		{
-			final String msg = "Erro ao deletar preÃ§o! ";
+			final String msg = "Erro ao deletar preço! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
@@ -334,10 +334,10 @@ public class PriceDAOImpl
 
 		if ((idBusiness == null) || (idBusiness.intValue() <= 0))
 		{
-			throw new DAOException("Informe id negÃ³cio!");
+			throw new DAOException("Informe id negócio!");
 		}
 
-		logger.info("Deletar preÃ§os do negÃ³cio");
+		logger.info("Deletar preços do negócio");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -368,13 +368,13 @@ public class PriceDAOImpl
 		}
 		catch (final ParameterException ex)
 		{
-			final String msg = "Erro ao deletar preÃ§os do negÃ³cio! ";
+			final String msg = "Erro ao deletar preços do negócio! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
 		catch (final SQLException ex)
 		{
-			final String msg = "Erro ao deletar preÃ§os do negÃ³cio! ";
+			final String msg = "Erro ao deletar preços do negócio! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
@@ -393,32 +393,32 @@ public class PriceDAOImpl
 
 		if (price == null)
 		{
-			throw new DAOException("Informe preÃ§o!");
+			throw new DAOException("Informe preço!");
 		}
 
 		if (price.getBusiness() == null)
 		{
-			throw new DAOException("Informe o negÃ³cio!");
+			throw new DAOException("Informe o negócio!");
 		}
 
 		if (price.getBusiness().getId() == null)
 		{
-			throw new DAOException("Informe o negÃ³cio!");
+			throw new DAOException("Informe o negócio!");
 		}
 
 		if (price.getBusiness().getId().intValue() <= 0)
 		{
-			throw new DAOException("Informe o negÃ³cio!");
+			throw new DAOException("Informe o negócio!");
 		}
 
 		if (price.getTable() == null)
 		{
-			throw new DAOException("Informe tabela de preÃ§o!");
+			throw new DAOException("Informe tabela de preço!");
 		}
 
 		if (price.getTable().equals(""))
 		{
-			throw new DAOException("Informe tabela de preÃ§o!");
+			throw new DAOException("Informe tabela de preço!");
 		}
 
 		if (price.getVehicle() == null)
@@ -443,10 +443,10 @@ public class PriceDAOImpl
 
 		if (thereIsEqual(price))
 		{
-			throw new DAOException("Item jÃ¡ cadastrado!");
+			throw new DAOException("Item já cadastrado!");
 		}
 
-		logger.info("Salvar dados da tabela de preÃ§o.");
+		logger.info("Salvar dados da tabela de preço.");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -514,7 +514,7 @@ public class PriceDAOImpl
 		catch (final ParameterException ex)
 		{
 
-			final String msg = "Erro ao salvar preÃ§o! ";
+			final String msg = "Erro ao salvar preço! ";
 			logger.error(msg + ex.getMessage());
 
 			throw new DAOException(msg);
@@ -523,7 +523,7 @@ public class PriceDAOImpl
 		catch (final SQLException ex)
 		{
 
-			final String msg = "Erro ao salvar preÃ§o! ";
+			final String msg = "Erro ao salvar preço! ";
 			logger.error(msg + ex.getMessage());
 
 			throw new DAOException(msg);
@@ -543,42 +543,42 @@ public class PriceDAOImpl
 
 		if (price == null)
 		{
-			throw new DAOException("Informe preÃ§o!");
+			throw new DAOException("Informe preço!");
 		}
 
 		if (price.getId() == null)
 		{
-			throw new DAOException("Informe id preÃ§o!");
+			throw new DAOException("Informe id preço!");
 		}
 
 		if (price.getId().intValue() < 0)
 		{
-			throw new DAOException("Informe id preÃ§o!");
+			throw new DAOException("Informe id preço!");
 		}
 
 		if (price.getBusiness() == null)
 		{
-			throw new DAOException("Informe o negÃ³cio!");
+			throw new DAOException("Informe o negócio!");
 		}
 
 		if (price.getBusiness().getId() == null)
 		{
-			throw new DAOException("Informe o negÃ³cio!");
+			throw new DAOException("Informe o negócio!");
 		}
 
 		if (price.getBusiness().getId().intValue() <= 0)
 		{
-			throw new DAOException("Informe o negÃ³cio!");
+			throw new DAOException("Informe o negócio!");
 		}
 
 		if (price.getTable() == null)
 		{
-			throw new DAOException("Informe tabela de preÃ§o!");
+			throw new DAOException("Informe tabela de preço!");
 		}
 
 		if (price.getTable().equals(""))
 		{
-			throw new DAOException("Informe tabela de preÃ§o!");
+			throw new DAOException("Informe tabela de preço!");
 		}
 
 		if (price.getVehicle() == null)
@@ -593,10 +593,10 @@ public class PriceDAOImpl
 
 		if (thereIsEqualByOtherId(price))
 		{
-			throw new DAOException("Item jÃ¡ cadastrado!");
+			throw new DAOException("Item já cadastrado!");
 		}
 
-		logger.info("Atualizar preÃ§o.");
+		logger.info("Atualizar preço.");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -650,13 +650,13 @@ public class PriceDAOImpl
 		}
 		catch (final ParameterException ex)
 		{
-			final String msg = "Erro ao atualizar preÃ§o! ";
+			final String msg = "Erro ao atualizar preço! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
 		catch (final SQLException ex)
 		{
-			final String msg = "Erro ao atualizar preÃ§o! ";
+			final String msg = "Erro ao atualizar preço! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
@@ -741,13 +741,13 @@ public class PriceDAOImpl
 		}
 		catch (final ParameterException ex)
 		{
-			final String msg = "Erro ao pesquisar lista de preÃ§os do cliente! ";
+			final String msg = "Erro ao pesquisar lista de preços do cliente! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
 		catch (final SQLException ex)
 		{
-			final String msg = "Erro ao pesquisar lista de preÃ§os do cliente! ";
+			final String msg = "Erro ao pesquisar lista de preços do cliente! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
@@ -769,12 +769,12 @@ public class PriceDAOImpl
 
 		if (idBusiness == null)
 		{
-			throw new DAOException("Informe id negÃ³cio!");
+			throw new DAOException("Informe id negócio!");
 		}
 
 		if (idBusiness.intValue() <= 0)
 		{
-			throw new DAOException("Informe id negÃ³cio!");
+			throw new DAOException("Informe id negócio!");
 		}
 
 		if (table == null)
@@ -845,13 +845,13 @@ public class PriceDAOImpl
 		}
 		catch (final ParameterException ex)
 		{
-			final String msg = "Erro ao pesquisar lista de preÃ§os do negÃ³cio! ";
+			final String msg = "Erro ao pesquisar lista de preços do negócio! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
 		catch (final SQLException ex)
 		{
-			final String msg = "Erro ao pesquisar lista de preÃ§os do negÃ³cio! ";
+			final String msg = "Erro ao pesquisar lista de preços do negócio! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
@@ -873,12 +873,12 @@ public class PriceDAOImpl
 
 		if (idBusiness == null)
 		{
-			throw new DAOException("Informe id negÃ³cio!");
+			throw new DAOException("Informe id negócio!");
 		}
 
 		if (idBusiness.intValue() <= 0)
 		{
-			throw new DAOException("Informe id negÃ³cio!");
+			throw new DAOException("Informe id negócio!");
 		}
 
 		try
@@ -931,7 +931,7 @@ public class PriceDAOImpl
 		}
 		catch (final ParameterException ex)
 		{
-			final String msg = "Erro ao pesquisar todas as listas de preÃ§os do negÃ³cio! ";
+			final String msg = "Erro ao pesquisar todas as listas de preços do negócio! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
@@ -949,12 +949,12 @@ public class PriceDAOImpl
 
 		if (idBusiness == null)
 		{
-			throw new DAOException("Informe id negÃ³cio!");
+			throw new DAOException("Informe id negócio!");
 		}
 
 		if (idBusiness.intValue() <= 0)
 		{
-			throw new DAOException("Informe id negÃ³cio!");
+			throw new DAOException("Informe id negócio!");
 		}
 
 		Connection conn = null;
@@ -1014,13 +1014,13 @@ public class PriceDAOImpl
 		}
 		catch (final ParameterException ex)
 		{
-			final String msg = "Erro ao pesquisar lista de preÃ§os do negÃ³cio! ";
+			final String msg = "Erro ao pesquisar lista de preços do negócio! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
 		catch (final SQLException ex)
 		{
-			final String msg = "Erro ao pesquisar lista de preÃ§os do negÃ³cio! ";
+			final String msg = "Erro ao pesquisar lista de preços do negócio! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
 		}
