@@ -268,14 +268,14 @@ public class ToolUtils
 				// --------- Multiplique a última casa por 2 a seguinte por 3 a seguinte por 4 e assim por
 				// diante.
 				d1 = d1 + (11 - n_Count) * digitoCPF;
-				// --------- Para o segundo digito repita o procedimento incluindo o primeiro digito calculado
+				// --------- Para o segundo dígito repita o procedimento incluindo o primeiro dígito calculado
 				// no passo anterior.
 				d2 = d2 + (12 - n_Count) * digitoCPF;
 			}
 			;
 			// --------- Primeiro resto da divisão por 11.
 			resto = (d1 % 11);
-			// --------- Se o resultado for 0 ou 1 o digito é 0 caso contrário o digito é 11 menos o resultado
+			// --------- Se o resultado for 0 ou 1 o digito é 0 caso contrário o dígito é 11 menos o resultado
 			// anterior.
 			if (resto < 2)
 			{
@@ -288,7 +288,7 @@ public class ToolUtils
 			d2 += 2 * digito1;
 			// --------- Segundo resto da divisão por 11.
 			resto = (d2 % 11);
-			// --------- Se o resultado for 0 ou 1 o digito é 0 caso contrário o digito é 11 menos o resultado
+			// --------- Se o resultado for 0 ou 1 o dígito é 0 caso contrário o dígito é 11 menos o resultado
 			// anterior.
 			if (resto < 2)
 			{
@@ -298,11 +298,11 @@ public class ToolUtils
 			{
 				digito2 = 11 - resto;
 			}
-			// --------- Digito verificador do CPF que está sendo validado.
+			// --------- Dígito verificador do CPF que está sendo validado.
 			final String nDigVerific = s_aux.substring(s_aux.length() - 2, s_aux.length());
 			// --------- Concatenando o primeiro resto com o segundo.
 			nDigResult = String.valueOf(digito1) + String.valueOf(digito2);
-			// --------- Comparar o digito verificador do cpf com o primeiro resto + o segundo resto.
+			// --------- Comparar o dígito verificador do cpf com o primeiro resto + o segundo resto.
 			return nDigVerific.equals(nDigResult);
 		case 14:
 			int soma = 0, dig;
@@ -759,8 +759,8 @@ public class ToolUtils
 		int digito = 0;
 		// Modulo 11:
 		// Ex.: 5555555555-8
-		// digito verificador Ã© o 8
-		// multiplica-se cada digito do numero de 2 Ã  9 , da direita para a esquerda
+		// dígito verificador é o 8
+		// multiplica-se cada dígito do numero de 2 a  9 , da direita para a esquerda
 		// somando cada resultado
 		// (5*3)+(5*2)+(5*9)+(5*8)+(5*7)+(5*6)+(5*5)+(5*4)+(5*3)+(5*2) = 245;
 		int soma = 0;
@@ -781,10 +781,10 @@ public class ToolUtils
 		}
 		// calcula o modulo 11 do resultado da soma
 		final int resultado = (soma % 11);
-		// Se o modulo for igual a 0 ou 1 o digito verificador será 0
+		// Se o modulo for igual a 0 ou 1 o dígito verificador será 0
 		// se o modulo for maior que 1 deve-se diminuir de 11
 		//
-		// 11 - 3 = 8; // digito verificador Ã© 8
+		// 11 - 3 = 8; // dígito verificador é 8
 		if ((resultado == 0) || (resultado == 1))
 		{
 			digito = 0;

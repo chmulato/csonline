@@ -39,7 +39,7 @@ public class NumeroDocValidation implements Validator<Object> {
 		}
 		if (there) {
 			final FacesMessage message = new FacesMessage();
-			message.setSummary("Digite um Número de Documento!");
+			message.setSummary("Digite um número de documento.");
 			throw new ValidatorException(message);
 		}
 	}

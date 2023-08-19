@@ -64,7 +64,7 @@ public class CEPConverter implements Converter<Object> {
 				return a.valueToString(result);
 			} catch (final ParseException e1) {
 				LOGGER.error(e1.getMessage());
-				throw new ConverterException("erro de conversao");
+				throw new ConverterException("Erro de conversão.");
 			}
 		}
 		return "";

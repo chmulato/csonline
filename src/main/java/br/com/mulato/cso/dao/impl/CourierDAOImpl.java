@@ -218,7 +218,7 @@ public class CourierDAOImpl
 
 		if (courier.getMobile() == null)
 		{
-			throw new DAOException("Informe nÃºmero do celular do entregador!");
+			throw new DAOException("Informe número do celular do entregador!");
 		}
 
 		if (courier.getFactor_courier() == null)
@@ -403,7 +403,7 @@ public class CourierDAOImpl
 
 		if (courier.getMobile() == null)
 		{
-			throw new DAOException("Informe nÃºmero do celular do entregador!");
+			throw new DAOException("Informe número do celular do entregador!");
 		}
 
 		if (courier.getFactor_courier() == null)

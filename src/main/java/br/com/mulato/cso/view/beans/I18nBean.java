@@ -19,7 +19,7 @@ public class I18nBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	// Internazionalizacao p/ o portugues
+	// Internazionalização p/ o português
 	private String locale = "pt_BR";
 
 	public String getLocale() {

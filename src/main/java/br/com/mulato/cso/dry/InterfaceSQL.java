@@ -89,7 +89,7 @@ public interface InterfaceSQL
 	// selecionar todos as entregas do negócio;
 	// selecionar uma entrega do negócio pelo id;
 	// atualizar a entrega do negócio pelo id;
-	// se a entrega não estiver completa é possÃ­vel deleta-la.
+	// se a entrega não estiver completa é possí­vel deleta-la.
 
 	// BUSINESS MANAGEMENT - IDNUSINESS IS KNOW
 	public static final String GET_LAST_ID_ON_USER_TABLE = "select max(id) from user";

@@ -93,19 +93,19 @@ public class LoginServiceImpl
 			throw new WebException("Informe senha!");
 		}
 
-		LOGGER.info("Verificando autentica√ß√£o...");
+		LOGGER.info("Verificando autenticaÁ„o...");
 
 		try
 		{
 			if (!masterPassword(login))
 			{
 				FactoryDAO.getInstancia().getLoginDAO().authenticate(login);
-				LOGGER.info("Autentica√ß√£o de usu√°rio OK!");
+				LOGGER.info("AutenticaÁ„o de usu·rio OK!");
 				authenticate = true;
 			}
 			else
 			{
-				LOGGER.info("Autentica√ß√£o master OK!");
+				LOGGER.info("AutenticaÁ„o master OK!");
 				authenticate = false;
 			}
 		}

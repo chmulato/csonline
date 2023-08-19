@@ -50,7 +50,7 @@ public class AbstractController
 
 	public final String LOGOMARCA_JPG = "logomarca.jpg";
 
-	public final String SUBJECT_MESSAGE_EMAIL = "Documentos para importaçío no sistema CSO";
+	public final String SUBJECT_MESSAGE_EMAIL = "Documentos para importação no sistema CSO";
 
 	public final String FILE_TYPE_TXT = ".txt";
 
@@ -76,7 +76,7 @@ public class AbstractController
 	@SuppressWarnings("rawtypes")
 	protected String getParameter (final String parameterId) throws WebException
 	{
-		final String msg = "Parí¢metro de navegaçío inválido! ";
+		final String msg = "Parâmetro de navegação inválido! ";
 		String value = null;
 		try
 		{
@@ -99,7 +99,7 @@ public class AbstractController
 
 	public void criarLogomarca (final byte[] bytes)
 	{
-		LOGGER.info("salvando logomarca.JPG na pasta tmp do servidor ...");
+		LOGGER.info("Salvando logomarca.JPG na pasta tmp do servidor ...");
 		if (bytes != null)
 		{
 			final File image = new File(getTempPath() + "/" + LOGOMARCA_JPG);
@@ -130,7 +130,7 @@ public class AbstractController
 
 	public void exportReportPDF (final JasperPrint jasperPrint) throws ReportException
 	{
-		final String msg = "Erro ao exportar o relatário para o usuário: ";
+		final String msg = "Erro ao exportar o relatório para o usuário: ";
 		try
 		{
 			final HttpServletResponse response = (HttpServletResponse)getExternalContext().getResponse();
@@ -143,12 +143,12 @@ public class AbstractController
 		catch (final RuntimeException e)
 		{
 			LOGGER.error(msg + e.getMessage());
-			throw new ReportException("Nío foi possí­vel montar seu relatório. Tente mais tarde.");
+			throw new ReportException("Não foi possí­vel montar seu relatório. Tente mais tarde.");
 		}
 		catch (IOException | JRException e)
 		{
 			LOGGER.error(msg + e.getMessage());
-			throw new ReportException("Nío foi possí­vel montar seu relatório. Tente mais tarde.");
+			throw new ReportException("Não foi possí­vel montar seu relatório. Tente mais tarde.");
 		}
 
 	}
@@ -169,12 +169,12 @@ public class AbstractController
 		catch (final RuntimeException e)
 		{
 			LOGGER.error(msg + e.getMessage());
-			throw new ReportException("Nío foi possí­vel montar seu relatório. Tente mais tarde.");
+			throw new ReportException("Não foi possí­vel montar seu relatório. Tente mais tarde.");
 		}
 		catch (IOException | JRException e)
 		{
 			LOGGER.error(msg + e.getMessage());
-			throw new ReportException("Nío foi possí­vel montar seu relatório. Tente mais tarde.");
+			throw new ReportException("Não foi possí­vel montar seu relatório. Tente mais tarde.");
 		}
 
 	}
@@ -196,7 +196,7 @@ public class AbstractController
 		catch (IOException | JRException e)
 		{
 			LOGGER.error(msg + e.getMessage());
-			throw new ReportException("Nío foi possí­vel montar seu relatório. Tente mais tarde.");
+			throw new ReportException("Não foi possí­vel montar seu relatório. Tente mais tarde.");
 		}
 	}
 
@@ -233,7 +233,7 @@ public class AbstractController
 		}
 		catch (final FileNotFoundException e)
 		{
-			msg = "Erro ao realizar download do arquivo temporario " + filename + ": ";
+			msg = "Erro ao realizar download do arquivo temporário " + filename + ": ";
 			LOGGER.error(msg + e.getMessage());
 			FacesMessages.mensErro("Por favor, contate o suporte. Houve um problema ao gerar o termo solicitado.");
 		}

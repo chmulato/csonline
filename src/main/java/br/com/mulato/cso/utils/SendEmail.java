@@ -207,7 +207,7 @@ public class SendEmail
              *  3 - sua senha
              */
             tr.connect(server, username, password);
-            mimeMessage.saveChanges(); // nío esqueca isso
+            mimeMessage.saveChanges(); // não esqueçaa isso
             //envio da mensagem
             tr.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
             tr.close();

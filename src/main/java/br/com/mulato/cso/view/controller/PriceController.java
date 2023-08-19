@@ -79,7 +79,7 @@ public class PriceController
 				if ((loginController.getUserIdLogged() == null) || (loginController.getUserIdLogged().intValue() <= 0))
 				{
 
-					throw new WebException("Id do usuário logado nío encontrado.");
+					throw new WebException("Id do usuário logado não encontrado.");
 
 				}
 
@@ -87,7 +87,7 @@ public class PriceController
 				    (loginController.getBusinessVO().getId().intValue() <= 0))
 				{
 
-					throw new WebException("Negócio da sessío nío encontrado.");
+					throw new WebException("Negócio da sessão não encontrado.");
 
 				}
 				else
@@ -170,7 +170,7 @@ public class PriceController
 				else
 				{
 
-					throw new WebException("Perfil do usuário nío encontrado.");
+					throw new WebException("Perfil do usuário não encontrado.");
 
 				}
 
@@ -178,7 +178,7 @@ public class PriceController
 			else
 			{
 
-				throw new WebException("Sessío nío carregada! Logar novamente.");
+				throw new WebException("Sessão não carregada! Logar novamente.");
 
 			}
 
@@ -296,7 +296,7 @@ public class PriceController
 		}
 		catch (final Exception e)
 		{
-			FacesMessages.mensErro("Falha na inserçío no banco de dados!");
+			FacesMessages.mensErro("Falha na inserção no banco de dados!");
 		}
 
 		return goToBackPage(path);

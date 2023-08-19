@@ -340,7 +340,7 @@ public class DeliveryController
 
 			if (getDescription() == null)
 			{
-				throw new WebException("Informe descriçío!");
+				throw new WebException("Informe descrição!");
 			}
 
 			if (getDescription().equals(""))

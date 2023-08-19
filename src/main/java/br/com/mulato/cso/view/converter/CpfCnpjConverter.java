@@ -69,7 +69,7 @@ public class CpfCnpjConverter implements Converter<Object> {
 				return a.valueToString(result);
 			} catch (final ParseException e1) {
 				LOGGER.error(e1.getMessage());
-				throw new ConverterException("CPF/CNPJ inv√°lido!");
+				throw new ConverterException("CPF/CNPJ inv·lido.");
 			}
 		}
 		return "";

@@ -17,7 +17,7 @@ public class AuthenticationService
 
 		if (null == authCredentials)
 		{
-			LOGGER.error("Modelo de autenticaÃ§Ã£o invÃ¡lido! Objeto authCredentials=" + authCredentials);
+			LOGGER.error("Modelo de autenticação inválido! Objeto authCredentials=" + authCredentials);
 			return false;
 		}
 
@@ -55,7 +55,7 @@ public class AuthenticationService
 						}
 						else
 						{
-							LOGGER.error("Autenticação do usuáo não válida!");
+							LOGGER.error("Autenticação do usuário não válida!");
 						}
 					}
 					else

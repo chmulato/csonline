@@ -26,7 +26,7 @@ public class SessionListener
 	{
 		if ((event != null) && (event.getSession() != null) && (event.getSession().getId() != null))
 		{
-			LOGGER.info("Sessão corrente criada - Níºmero: " + event.getSession().getId() + " - Dia/Hora: " +
+			LOGGER.info("Sessão corrente criada - Número: " + event.getSession().getId() + " - Dia/Hora: " +
 			    ToolUtils.converteDateToString(new Date(), "dd/MM/yyyy hh:mm:ss"));
 		}
 	}
