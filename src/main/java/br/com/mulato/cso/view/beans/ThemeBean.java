@@ -74,7 +74,7 @@ public class ThemeBean implements Serializable {
 
 	public ThemeBean() {
 		super();
-		LOGGER.info("DefiniÃ§Ã£o da aparÃªncia da aplicaÃ§Ã£o!");
+		LOGGER.info("Definição da aparência da aplicação!");
 		final FacesContext facesContext = FacesContext.getCurrentInstance();
 		final ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
 		try {
