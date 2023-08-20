@@ -1,12 +1,12 @@
 package br.com.mulato.cso.view.controller;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
+
 import javax.faces.application.Application;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+
 import org.apache.log4j.Logger;
+
 import br.com.mulato.cso.dry.AbstractController;
 import br.com.mulato.cso.dry.FactoryService;
 import br.com.mulato.cso.exception.WebException;
@@ -15,14 +15,7 @@ import br.com.mulato.cso.model.CourierVO;
 import br.com.mulato.cso.model.LoginVO;
 import br.com.mulato.cso.view.beans.FacesMessages;
 
-@ManagedBean(name = "courierMB")
-@RequestScoped
-public class CourierController
-    extends AbstractController
-    implements Serializable
-{
-
-	private static final long serialVersionUID = 1L;
+public class CourierController extends AbstractController {
 
 	private static final Logger LOGGER = Logger.getLogger(CourierController.class);
 

@@ -1,16 +1,16 @@
 package br.com.mulato.cso.view.controller;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.faces.application.Application;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+
 import org.apache.log4j.Logger;
+
 import br.com.mulato.cso.dry.AbstractController;
 import br.com.mulato.cso.dry.FactoryService;
 import br.com.mulato.cso.exception.WebException;
@@ -20,14 +20,7 @@ import br.com.mulato.cso.model.CustomerVO;
 import br.com.mulato.cso.model.DeliveryVO;
 import br.com.mulato.cso.view.beans.FacesMessages;
 
-@ManagedBean(name = "deliveryViewMB")
-@RequestScoped
-public class DeliveryViewController
-    extends AbstractController
-    implements Serializable
-{
-
-	private static final long serialVersionUID = 1L;
+public class DeliveryViewController extends AbstractController {
 
 	private static final Logger LOGGER = Logger.getLogger(DeliveryViewController.class);
 
