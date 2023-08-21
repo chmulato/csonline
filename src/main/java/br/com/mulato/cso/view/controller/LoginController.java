@@ -3,14 +3,15 @@ package br.com.mulato.cso.view.controller;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import javax.faces.application.Application;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.servlet.ServletContext;
+
 import org.apache.log4j.Logger;
+
 import br.com.mulato.cso.dry.AbstractController;
 import br.com.mulato.cso.dry.FactoryService;
 import br.com.mulato.cso.exception.WebException;
@@ -20,12 +21,7 @@ import br.com.mulato.cso.model.UserVO;
 import br.com.mulato.cso.view.beans.FacesMessages;
 import br.com.mulato.cso.view.beans.ThemeBean;
 
-@ManagedBean(name = "loginMB")
-@SessionScoped
-public class LoginController
-    extends AbstractController
-    implements Serializable
-{
+public class LoginController extends AbstractController implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

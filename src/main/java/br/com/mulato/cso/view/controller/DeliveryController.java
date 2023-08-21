@@ -8,11 +8,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
 import javax.faces.application.Application;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+
 import org.apache.log4j.Logger;
+
 import br.com.mulato.cso.dry.AbstractController;
 import br.com.mulato.cso.dry.FactoryService;
 import br.com.mulato.cso.exception.WebException;
@@ -23,12 +24,7 @@ import br.com.mulato.cso.model.DeliveryVO;
 import br.com.mulato.cso.model.SmsVO;
 import br.com.mulato.cso.view.beans.FacesMessages;
 
-@ManagedBean(name = "deliveryMB")
-@RequestScoped
-public class DeliveryController
-    extends AbstractController
-    implements Serializable
-{
+public class DeliveryController extends AbstractController implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

@@ -11,9 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import br.com.mulato.cso.view.controller.LoginController;
 
-public class PageListener
-    implements PhaseListener
-{
+public class PageListener implements PhaseListener {
 
 	private static final Logger LOGGER = Logger.getLogger(PageListener.class);
 

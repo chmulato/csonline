@@ -1,18 +1,13 @@
 package br.com.mulato.cso.view.controller;
 
 import java.io.Serializable;
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
+
 import org.apache.log4j.Logger;
+
 import br.com.mulato.cso.dry.AbstractController;
 import br.com.mulato.cso.exception.WebException;
 
-@ManagedBean(name = "contadorMB")
-@ApplicationScoped
-public class ContadorController
-    extends AbstractController
-    implements Serializable
-{
+public class ContadorController extends AbstractController implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

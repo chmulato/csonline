@@ -10,9 +10,7 @@ import br.com.mulato.cso.exception.ParameterException;
 import br.com.mulato.cso.service.impl.SMSServiceImpl;
 import br.com.mulato.cso.utils.InitProperties;
 
-public class BackgroundListener
-    implements ServletContextListener
-{
+public class BackgroundListener implements ServletContextListener {
 
 	private static final Logger LOGGER = Logger.getLogger(BackgroundListener.class);
 

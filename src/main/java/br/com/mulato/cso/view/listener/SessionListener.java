@@ -10,9 +10,7 @@ import org.apache.log4j.Logger;
 import br.com.mulato.cso.utils.ToolUtils;
 import br.com.mulato.cso.view.controller.ContadorController;
 
-public class SessionListener
-    implements HttpSessionListener
-{
+public class SessionListener implements HttpSessionListener {
 
 	private static final Logger LOGGER = Logger.getLogger(SessionListener.class);
 
