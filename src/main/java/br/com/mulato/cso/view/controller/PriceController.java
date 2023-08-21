@@ -1,5 +1,6 @@
 package br.com.mulato.cso.view.controller;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -20,7 +21,9 @@ import br.com.mulato.cso.utils.vo.TableVO;
 import br.com.mulato.cso.utils.vo.VehicleVO;
 import br.com.mulato.cso.view.beans.FacesMessages;
 
-public class PriceController extends AbstractController {
+public class PriceController extends AbstractController implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOGGER = Logger.getLogger(PriceController.class);
 

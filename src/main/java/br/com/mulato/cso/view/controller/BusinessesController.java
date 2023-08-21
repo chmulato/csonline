@@ -1,5 +1,6 @@
 package br.com.mulato.cso.view.controller;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.el.ELException;
@@ -14,7 +15,9 @@ import br.com.mulato.cso.exception.WebException;
 import br.com.mulato.cso.model.BusinessVO;
 import br.com.mulato.cso.view.beans.FacesMessages;
 
-public class BusinessesController extends AbstractController {
+public class BusinessesController extends AbstractController implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOGGER = Logger.getLogger(BusinessesController.class);
 

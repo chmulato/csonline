@@ -10,6 +10,10 @@
 		<param-value>/WEB-INF/faces-config.xml</param-value>
 	</context-param>
 	<context-param>
+		<param-name>javax.faces.WEBAPP_RESOURCES_DIRECTORY</param-name>
+		<param-value>/WEB-INF/resources</param-value>
+	</context-param>
+	<context-param>
 		<param-name>javax.faces.PROJECT_STAGE</param-name>
 		<param-value>Development</param-value>
 	</context-param>
@@ -20,7 +24,7 @@
 	<context-param>
 		<description>Theme Default</description>
 		<param-name>themeDefault</param-name>
-		<param-value>aristo</param-value>
+		<param-value>nova-light</param-value>
 	</context-param>
 	<context-param>
 		<description>Tempo de sessão (segundos)</description>

@@ -1,5 +1,7 @@
 package br.com.mulato.cso.view.controller;
 
+import java.io.Serializable;
+
 import javax.faces.application.Application;
 import javax.faces.context.FacesContext;
 
@@ -12,7 +14,9 @@ import br.com.mulato.cso.model.BusinessVO;
 import br.com.mulato.cso.model.LoginVO;
 import br.com.mulato.cso.view.beans.FacesMessages;
 
-public class BusinessController extends AbstractController {
+public class BusinessController extends AbstractController implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOGGER = Logger.getLogger(BusinessController.class);
 

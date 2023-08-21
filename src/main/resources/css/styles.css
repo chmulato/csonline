@@ -1,0 +1,8 @@
+.ui-widget,
+        .ui-widget .ui-widget {
+               font-size: 11px !important;
+         }
+
+.ui-menuitem-link {
+      line-height: 10px !important;
+}

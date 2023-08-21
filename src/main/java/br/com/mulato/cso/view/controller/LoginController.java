@@ -1,5 +1,6 @@
 package br.com.mulato.cso.view.controller;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -20,7 +21,9 @@ import br.com.mulato.cso.model.UserVO;
 import br.com.mulato.cso.view.beans.FacesMessages;
 import br.com.mulato.cso.view.beans.ThemeBean;
 
-public class LoginController extends AbstractController {
+public class LoginController extends AbstractController implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOGGER = Logger.getLogger(LoginController.class);
 

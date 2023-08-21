@@ -1,11 +1,15 @@
 package br.com.mulato.cso.view.controller;
 
+import java.io.Serializable;
+
 import org.apache.log4j.Logger;
 
 import br.com.mulato.cso.dry.AbstractController;
 import br.com.mulato.cso.exception.WebException;
 
-public class ContadorController extends AbstractController {
+public class ContadorController extends AbstractController implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOGGER = Logger.getLogger(ContadorController.class);
 

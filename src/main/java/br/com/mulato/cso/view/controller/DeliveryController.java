@@ -1,5 +1,6 @@
 package br.com.mulato.cso.view.controller;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
@@ -23,7 +24,9 @@ import br.com.mulato.cso.model.DeliveryVO;
 import br.com.mulato.cso.model.SmsVO;
 import br.com.mulato.cso.view.beans.FacesMessages;
 
-public class DeliveryController extends AbstractController {
+public class DeliveryController extends AbstractController implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOGGER = Logger.getLogger(DeliveryController.class);
 
