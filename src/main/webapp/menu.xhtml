@@ -15,7 +15,7 @@
 			<p:menu id="id_menu">
 				
 				<p:submenu label="#{rotulo.admin}" rendered="#{loginMB.menuChange}">
-					<p:menuitem value="#{rotulo.change_password}" action="#{menuMB.changePassword}" rendered="#{loginMB.menuChange}" ajax="true" />
+					<p:menuitem value="#{rotulo.change_password}" action="#{changeMB.changePassword}" rendered="#{loginMB.menuChange}" ajax="true" />
 				</p:submenu>
 				
 				<p:submenu label="#{rotulo.users}" rendered="#{loginMB.menuUsers}">

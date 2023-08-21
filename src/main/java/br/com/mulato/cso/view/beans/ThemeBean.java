@@ -29,6 +29,7 @@ public class ThemeBean implements Serializable {
 
 	static {
 		THEMES = new ArrayList<>(31);
+		THEMES.add(new SelectItem("aristo", "Aristo"));
 		THEMES.add(new SelectItem("black-tie", "Black-Tie"));
 		THEMES.add(new SelectItem("blitzer", "Blitzer"));
 		THEMES.add(new SelectItem("bluesky", "Bluesky"));
@@ -44,7 +45,6 @@ public class ThemeBean implements Serializable {
 		THEMES.add(new SelectItem("hot-sneaks", "Hot-Sneaks"));
 		THEMES.add(new SelectItem("humanity", "Humanity"));
 		THEMES.add(new SelectItem("le-frog", "Le-Frog"));
-		THEMES.add(new SelectItem("nova-light", "Nova-Light"));
 		THEMES.add(new SelectItem("midnight", "Midnight"));
 		THEMES.add(new SelectItem("mint-choc", "Mint-Choc"));
 		THEMES.add(new SelectItem("overcast", "Overcast"));

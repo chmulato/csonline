@@ -81,11 +81,6 @@
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
 	<managed-bean>
-		<managed-bean-name>menuMB</managed-bean-name>
-		<managed-bean-class>br.com.mulato.cso.view.controller.MenuController</managed-bean-class>
-		<managed-bean-scope>request</managed-bean-scope>
-	</managed-bean>
-	<managed-bean>
 		<managed-bean-name>priceMB</managed-bean-name>
 		<managed-bean-class>br.com.mulato.cso.view.controller.PriceController</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
@@ -111,15 +106,6 @@
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
 	<!-- NAVIGATION RULES -->
-	<navigation-rule>
-		<from-view-id>resume.xhtml</from-view-id>
-		<navigation-case>
-			<from-action>#{menuMB.changePassword}</from-action>
-			<from-outcome>change_password</from-outcome>
-			<to-view-id>change_password.faces</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-	
 	<navigation-rule>
 		<from-view-id>/login.xhtml</from-view-id>
 		<navigation-case>
