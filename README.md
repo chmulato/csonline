@@ -16,7 +16,7 @@ CSOnline Delivery.
 
 Controle de Entregas.
 
-A aplicacao acessa via browser do sistema operacional na url: [https://www] caracore.com.br/csonline.
+A aplicacao acessa via browser do sistema operacional na url: [https://www] caracore.com.br/csonline
 
 Perfil de Administrador:
 
