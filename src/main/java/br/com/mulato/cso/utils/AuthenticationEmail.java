@@ -5,7 +5,6 @@ import javax.mail.PasswordAuthentication;
 
 /**
  * @author Christian Mulato
- * @date May/09th/2011
  */
 class AuthenticationEmail
     extends Authenticator
