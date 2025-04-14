@@ -9,7 +9,6 @@ import javax.faces.validator.ValidatorException;
 /**
  * @author Christian Mulato
  * @date Feb/11th/2011
- * @job www.unisistemas.com.br
  */
 public class NumeroDocValidation implements Validator<Object> {
 
@@ -39,7 +38,7 @@ public class NumeroDocValidation implements Validator<Object> {
 		}
 		if (there) {
 			final FacesMessage message = new FacesMessage();
-			message.setSummary("Digite um número de documento.");
+			message.setSummary("Digite um nÃºmero de documento.");
 			throw new ValidatorException(message);
 		}
 	}
