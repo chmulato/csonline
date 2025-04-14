@@ -11,7 +11,6 @@ import javax.faces.validator.ValidatorException;
 /**
  * @author Christian Mulato
  * @date Feb/24th/2011
- * @job www.unisistemas.com.br
  */
 public class EmailValidation implements Validator<Object> {
 
