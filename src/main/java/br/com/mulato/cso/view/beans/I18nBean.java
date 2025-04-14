@@ -10,7 +10,6 @@ import javax.faces.event.ActionEvent;
 
 /**
  * @author Christian Mulato
- * @date Feb/07th/2011
  */
 @ManagedBean(name = "i18nMB")
 @SessionScoped
