@@ -26,11 +26,6 @@
 			<version>13.0.0</version>
 		</dependency>
 		<dependency>
-			<groupId>org.primefaces.themes</groupId>
-			<artifactId>all-themes</artifactId>
-			<version>1.0.10</version>
-		</dependency>
-		<dependency>
 			<groupId>org.jboss.weld</groupId>
 			<artifactId>weld-core</artifactId>
 			<version>2.4.8.Final</version>
@@ -62,10 +57,9 @@
 			<version>2.20.0</version>
 		</dependency>
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.37</version>
-			<scope>provided</scope>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<version>8.0.33</version>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
@@ -80,22 +74,6 @@
 			<scope>test</scope>
 		</dependency>
 	<!-- ...existing code... -->
-	<plugin>
-	  <groupId>org.flywaydb</groupId>
-	  <artifactId>flyway-maven-plugin</artifactId>
-	  <version>9.22.3</version>
-	  <configuration>
-		<url>jdbc:mysql://localhost:3306/caracore_csodatabase</url>
-		<user>root</user>
-		<password>your_mysql_password</password>
-		<schemas>
-		  <schema>caracore_csodatabase</schema>
-		</schemas>
-		<locations>
-		  <location>filesystem:src/main/resources/db/migration</location>
-		</locations>
-	  </configuration>
-	</plugin>
 		<dependency>
 			<groupId>jakarta.platform</groupId>
 			<artifactId>jakarta.jakartaee-api</artifactId>
@@ -109,8 +87,9 @@
 			<plugin>
 				<groupId>org.flywaydb</groupId>
 				<artifactId>flyway-maven-plugin</artifactId>
-				<version>9.22.3</version>
+				<version>10.14.0</version>
 				<configuration>
+					<driver>com.mysql.cj.jdbc.Driver</driver>
 					<url>jdbc:mysql://localhost:3306/caracore_csodatabase</url>
 					<user>root</user>
 					<password>your_mysql_password</password>
