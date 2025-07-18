@@ -35,4 +35,4 @@ Veja no Youtube: https://youtu.be/vAMd647anMA
 
 Este projeto está licenciado sob a Licença MIT. Consulte o arquivo LICENSE para mais detalhes.
 
-Autor: Christian Valdimir Uhdre Mulato
+Autor: Christian Vladimir Uhdre Mulato
