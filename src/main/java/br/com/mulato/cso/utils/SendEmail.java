@@ -1,3 +1,4 @@
+// encoding: UTF-8
 package br.com.mulato.cso.utils;
 
 import java.util.Properties;
@@ -14,15 +15,15 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeBodyPart;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMultipart;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import br.com.mulato.cso.exception.WebException;
 
 /**
  * @author Christian Mulato
  */
 public class SendEmail {
-
-	private final static Logger LOGGER = Logger.getLogger(SendEmail.class);
+	private static final Logger LOGGER = LogManager.getLogger(SendEmail.class);
 
 	public SendEmail(final String[] recipient, final String subject, final String message) throws WebException {
 		if (InitProperties.getEmail_active()) {
@@ -38,9 +39,9 @@ public class SendEmail {
 		}
 	}
 
-	private void sendEmail (final String[] recipient, final String subject, final String message, final boolean attachment,
-		final String pathFileAttached, final String filename) throws WebException
-	{
+	private void sendEmail(final String[] recipient, final String subject, final String message,
+			final boolean attachment,
+			final String pathFileAttached, final String filename) throws WebException {
 
 		String msg;
 		final String username = InitProperties.getEmail_user();
@@ -54,128 +55,117 @@ public class SendEmail {
 		final boolean debug = InitProperties.getEmail_debug();
 		final String format = InitProperties.getEmail_format();
 
-		if ((protocolo == null) || (protocolo.equals("")))
-		{
+		if ((protocolo == null) || (protocolo.equals(""))) {
 			msg = "Informe protocolo do servidor p/ envio do email!";
 			LOGGER.error(msg);
 			throw new WebException(msg);
 		}
 
-		if ((server == null) || (server.equals("")))
-		{
+		if ((server == null) || (server.equals(""))) {
 			msg = "Informe endereí§o SMTP do servidor!";
 			LOGGER.error(msg);
 			throw new WebException(msg);
 		}
 
-		if ((port == null) || (port.equals("")))
-		{
+		if ((port == null) || (port.equals(""))) {
 			msg = "Informe a porta do servidor SMTP!";
 			LOGGER.error(msg);
 			throw new WebException(msg);
 		}
 
-		if ((authentication == null) || (authentication.equals("")))
-		{
+		if ((authentication == null) || (authentication.equals(""))) {
 			msg = "Informe se o servidor SMTP utiliza autenticaçío!";
 			LOGGER.error(msg);
 			throw new WebException(msg);
 		}
 
-		if ((username == null) || (username.equals("")))
-		{
+		if ((username == null) || (username.equals(""))) {
 			msg = "Informe a conta do usuário do servidor SMTP!";
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+			LOGGER.error(msg);
 			throw new WebException(msg);
 		}
 
-		if ((password == null) || (password.equals("")))
-		{
+		if ((password == null) || (password.equals(""))) {
 			msg = "Informe a senha do usuário do servidor SMTP!";
 			LOGGER.error(msg);
-	private static final Logger LOGGER = LogManager.getLogger(SendEmail.class);
+			throw new WebException(msg);
 		}
 
-		if ((recipient == null) || (recipient.length == 0))
-		{
+		if ((recipient == null) || (recipient.length == 0)) {
 			msg = "Informe a conta eletrí´nica p/ envio do(s) documento(s)!";
 			LOGGER.error(msg);
 			throw new WebException(msg);
 		}
 
-		if ((format == null) || (format.equals("")))
-		{
+		if ((format == null) || (format.equals(""))) {
 			msg = "Informe formato de e-mail p/ enviar!";
 			LOGGER.error(msg);
 			throw new WebException(msg);
 		}
 
-		try
-		{
+		try {
 
 			final Properties properties = new Properties();
 
-			//define protocolo de envio
+			// define protocolo de envio
 			properties.put("mail.transport.protocol", String.valueOf(protocolo));
-			//server SMTP
+			// server SMTP
 			properties.put("mail.smtp.host", server);
-			//para ativar autenticacao insira "true"
+			// para ativar autenticacao insira "true"
 			properties.put("mail.smtp.auth", authentication);
-			//conta que esta enviando o email
+			// conta que esta enviando o email
 			properties.put("mail.smtp.user", username);
 
-			if (debug)
-			{
+			if (debug) {
 				properties.put("mail.debug", "true");
 			}
 
-			//porta
+			// porta
 			properties.put("mail.smtp.port", port);
-			//mesma porta para o socket
+			// mesma porta para o socket
 			properties.put("mail.smtp.socketFactory.port", port);
 
 			// SSL on, the port default is 465
-			if (ssl)
-			{
+			if (ssl) {
 				properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 				properties.put("mail.smtp.socketFactory.fallback", "false");
 			}
 
 			// TLS on, the port default is 587
-			if (tls)
-			{
+			if (tls) {
 				properties.put("mail.smtp.starttls.enable", "true");
 			}
-		   
+
 			properties.put("mail.smtp.quitwait", "false");
 
-			//Cria um autenticador que sera usado a seguir
-			final AuthenticationEmail auth = new AuthenticationEmail (username, password);
+			// Cria um autenticador que sera usado a seguir
+			final AuthenticationEmail auth = new AuthenticationEmail(username, password);
 
-			//Session - objeto que ira realizar a conexão com o servidor
-			/*Como há necessidade de autenticação é criada uma autenticação que
+			// Session - objeto que ira realizar a conexão com o servidor
+			/*
+			 * Como há necessidade de autenticação é criada uma autenticação que
 			 * é responsável por solicitar e retornar o usuário e senha para
-			 * autenticação */
+			 * autenticação
+			 */
 			final Session session = Session.getDefaultInstance(properties, auth);
 
-			//Habilita o LOG das ações executadas durante o envio do email
+			// Habilita o LOG das ações executadas durante o envio do email
 			session.setDebug(true);
-			//Objeto que contém a mensagem
+			// Objeto que contém a mensagem
 			MimeMessage mimeMessage = new MimeMessage(session);
 
-			//Setando os destinatários
+			// Setando os destinatários
 			InternetAddress[] addressTo = new InternetAddress[recipient.length];
 			for (int i = 0; i < recipient.length; i++) {
 				addressTo[i] = new InternetAddress(recipient[i]);
 			}
 
-			mimeMessage.setRecipients(Message.RecipientType.TO, addressTo);             	
-			//Setando a origem do email
+			mimeMessage.setRecipients(Message.RecipientType.TO, addressTo);
+			// Setando a origem do email
 			mimeMessage.setFrom(new InternetAddress(username));
-			//Setando o assunto
+			// Setando o assunto
 			mimeMessage.setSubject(subject);
-			// Create the message part 
+			// Create the message part
 			BodyPart messageBodyPart = new MimeBodyPart();
 			// Fill the message
 			messageBodyPart.setText(message);
@@ -193,23 +183,21 @@ import org.apache.logging.log4j.Logger;
 			}
 			// Send the complete message parts
 			mimeMessage.setContent(multipart);
-			//Objeto encarregado de enviar os dados para o email
+			// Objeto encarregado de enviar os dados para o email
 			Transport tr;
-			//define smtp para transporte
-			tr = session.getTransport(protocolo); 
+			// define smtp para transporte
+			tr = session.getTransport(protocolo);
 			/*
-			 *  1 - define o servidor smtp
-			 *  2 - seu nome de usuario
-			 *  3 - sua senha
+			 * 1 - define o servidor smtp
+			 * 2 - seu nome de usuario
+			 * 3 - sua senha
 			 */
 			tr.connect(server, username, password);
 			mimeMessage.saveChanges(); // não esqueçaa isso
-			//envio da mensagem
+			// envio da mensagem
 			tr.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
 			tr.close();
-		}
-		catch (MessagingException e)
-		{
+		} catch (MessagingException e) {
 			msg = "Nío foi possí­vel enviar a mensagem! ";
 			LOGGER.error(msg + e.getMessage());
 			throw new WebException(msg);
