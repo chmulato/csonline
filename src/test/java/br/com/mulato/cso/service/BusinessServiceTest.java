@@ -1,6 +1,4 @@
-
-package test.java.br.com.mulato.cso.service;
-
+package br.com.mulato.cso.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
