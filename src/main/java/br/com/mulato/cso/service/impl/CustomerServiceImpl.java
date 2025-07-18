@@ -1,7 +1,6 @@
 package br.com.mulato.cso.service.impl;
 
 import java.util.List;
-import org.apache.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import br.com.mulato.cso.dry.FactoryDAO;
