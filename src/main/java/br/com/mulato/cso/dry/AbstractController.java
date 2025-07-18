@@ -9,11 +9,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Map;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import br.com.mulato.cso.exception.ReportException;
 import br.com.mulato.cso.exception.WebException;
@@ -50,7 +50,7 @@ public class AbstractController
 
 	public final String LOGOMARCA_JPG = "logomarca.jpg";
 
-	public final String SUBJECT_MESSAGE_EMAIL = "Documentos para importação no sistema CSO";
+	public final String SUBJECT_MESSAGE_EMAIL = "Documentos para importaï¿½ï¿½o no sistema CSO";
 
 	public final String FILE_TYPE_TXT = ".txt";
 
@@ -76,7 +76,7 @@ public class AbstractController
 	@SuppressWarnings("rawtypes")
 	protected String getParameter (final String parameterId) throws WebException
 	{
-		final String msg = "Parâmetro de navegação inválido! ";
+		final String msg = "Parï¿½metro de navegaï¿½ï¿½o invï¿½lido! ";
 		String value = null;
 		try
 		{
@@ -130,7 +130,7 @@ public class AbstractController
 
 	public void exportReportPDF (final JasperPrint jasperPrint) throws ReportException
 	{
-		final String msg = "Erro ao exportar o relatório para o usuário: ";
+		final String msg = "Erro ao exportar o relatï¿½rio para o usuï¿½rio: ";
 		try
 		{
 			final HttpServletResponse response = (HttpServletResponse)getExternalContext().getResponse();
@@ -143,19 +143,19 @@ public class AbstractController
 		catch (final RuntimeException e)
 		{
 			LOGGER.error(msg + e.getMessage());
-			throw new ReportException("Não foi possí­vel montar seu relatório. Tente mais tarde.");
+			throw new ReportException("Nï¿½o foi possï¿½ï¿½vel montar seu relatï¿½rio. Tente mais tarde.");
 		}
 		catch (IOException | JRException e)
 		{
 			LOGGER.error(msg + e.getMessage());
-			throw new ReportException("Não foi possí­vel montar seu relatório. Tente mais tarde.");
+			throw new ReportException("Nï¿½o foi possï¿½ï¿½vel montar seu relatï¿½rio. Tente mais tarde.");
 		}
 
 	}
 
 	public void exportReportRTF (final JasperPrint jasperPrint) throws ReportException
 	{
-		final String msg = "Erro ao exportar o relatário para o usuário: ";
+		final String msg = "Erro ao exportar o relatï¿½rio para o usuï¿½rio: ";
 		try
 		{
 			final HttpServletResponse response = (HttpServletResponse)getExternalContext().getResponse();
@@ -169,19 +169,19 @@ public class AbstractController
 		catch (final RuntimeException e)
 		{
 			LOGGER.error(msg + e.getMessage());
-			throw new ReportException("Não foi possí­vel montar seu relatório. Tente mais tarde.");
+			throw new ReportException("Nï¿½o foi possï¿½ï¿½vel montar seu relatï¿½rio. Tente mais tarde.");
 		}
 		catch (IOException | JRException e)
 		{
 			LOGGER.error(msg + e.getMessage());
-			throw new ReportException("Não foi possí­vel montar seu relatório. Tente mais tarde.");
+			throw new ReportException("Nï¿½o foi possï¿½ï¿½vel montar seu relatï¿½rio. Tente mais tarde.");
 		}
 
 	}
 
 	public void exportReportHTML (final JasperPrint jasperPrint) throws ReportException
 	{
-		final String msg = "Erro ao exportar relatório: ";
+		final String msg = "Erro ao exportar relatï¿½rio: ";
 		try
 		{
 			final PrintWriter printWriter = getResponse().getWriter();
@@ -196,13 +196,13 @@ public class AbstractController
 		catch (IOException | JRException e)
 		{
 			LOGGER.error(msg + e.getMessage());
-			throw new ReportException("Não foi possí­vel montar seu relatório. Tente mais tarde.");
+			throw new ReportException("Nï¿½o foi possï¿½ï¿½vel montar seu relatï¿½rio. Tente mais tarde.");
 		}
 	}
 
 	protected void downloadArquivo (final String filename, final String fileType)
 	{
-		String msg = "Erro ao realizar download do arquivo temporário ";
+		String msg = "Erro ao realizar download do arquivo temporï¿½rio ";
 		try
 		{
 			final File file = new File(getTempPath() + "/" + filename);
@@ -233,7 +233,7 @@ public class AbstractController
 		}
 		catch (final FileNotFoundException e)
 		{
-			msg = "Erro ao realizar download do arquivo temporário " + filename + ": ";
+			msg = "Erro ao realizar download do arquivo temporï¿½rio " + filename + ": ";
 			LOGGER.error(msg + e.getMessage());
 			FacesMessages.mensErro("Por favor, contate o suporte. Houve um problema ao gerar o termo solicitado.");
 		}

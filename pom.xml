@@ -54,7 +54,6 @@
 			<groupId>jakarta.platform</groupId>
 			<artifactId>jakarta.jakartaee-web-api</artifactId>
 			<version>10.0.0</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.jasperreports</groupId>
@@ -129,6 +128,7 @@
 				<configuration>
 					<source>11</source>
 					<target>11</target>
+					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -143,14 +143,14 @@
 						</goals>
 
 						<configuration>
-							<outputDirectory>${basedir}/target/csonline/resources
-							</outputDirectory>
+							<outputDirectory>${basedir}/target/csonline/resources</outputDirectory>
 							<resources>
 								<resource>
 									<directory>src/main/resources</directory>
 									<filtering>true</filtering>
 								</resource>
 							</resources>
+							<encoding>UTF-8</encoding>
 						</configuration>
 					</execution>
 				</executions>

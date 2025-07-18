@@ -2,11 +2,11 @@ package br.com.mulato.cso.view.beans;
 
 import java.io.Serializable;
 import java.util.Iterator;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 
 public class FacesMessages
-    implements Serializable
+	implements Serializable
 {
 
 	private static final long serialVersionUID = 1L;

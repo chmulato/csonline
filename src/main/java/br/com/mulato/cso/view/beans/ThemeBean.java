@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.faces.bean.ManagedBean;
-import jakarta.faces.bean.SessionScoped;
+import jakarta.inject.Named;
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.model.SelectItem;
 import jakarta.servlet.ServletContext;
@@ -15,7 +15,7 @@ import org.apache.log4j.Logger;
 import br.com.mulato.cso.exception.ParameterException;
 import br.com.mulato.cso.utils.InitProperties;
 
-@ManagedBean(name = "themeMB")
+@Named("themeMB")
 @SessionScoped
 public class ThemeBean implements Serializable {
 

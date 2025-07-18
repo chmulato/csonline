@@ -1,0 +1,350 @@
+,53] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[213,46] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[214,44] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[238,53] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[240,54] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[27,49] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[45,60] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[50,68] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[55,72] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[60,72] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[65,69] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[70,69] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[77,77] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[81,76] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[91,69] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[98,56] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[103,59] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[120,63] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[122,40] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[140,63] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[142,41] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[212,63] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[216,63] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[218,53] unmappable character (0xE7) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[218,63] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[237,63] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[241,63] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[243,53] unmappable character (0xE7) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[243,63] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[262,63] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[266,63] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[276,53] unmappable character (0xE7) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/DBConnection.java:[10,22] package jakarta.naming does not exist
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/DBConnection.java:[11,22] package jakarta.naming does not exist
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/DBConnection.java:[12,19] package jakarta.sql does not exist
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/DBConnection.java:[80,33] cannot find symbol
+[ERROR]   symbol:   class InitialContext
+[ERROR]   location: class br.com.mulato.cso.dry.DBConnection
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/DBConnection.java:[81,33] cannot find symbol
+[ERROR]   symbol:   class DataSource
+[ERROR]   location: class br.com.mulato.cso.dry.DBConnection
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/DBConnection.java:[82,54] cannot find symbol
+[ERROR]   symbol:   class InitialContext
+[ERROR]   location: class br.com.mulato.cso.dry.DBConnection
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/DBConnection.java:[91,55] cannot find symbol
+[ERROR]   symbol:   class DataSource
+[ERROR]   location: class br.com.mulato.cso.dry.DBConnection
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/DBConnection.java:[112,32] cannot find symbol
+[ERROR]   symbol:   class NamingException
+[ERROR]   location: class br.com.mulato.cso.dry.DBConnection
+[ERROR] -> [Help 1]
+[ERROR]
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR]
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+PS C:\dev\csonline> 
+ *  History restored 
+
+PS C:\dev\csonline> mvn clean install
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------------< br.com.mulato:csonline >-----------------------
+[INFO] Building csonline 1.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ war ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ csonline ---
+[INFO] Deleting C:\dev\csonline\target
+[INFO] 
+[INFO] --- resources:2.6:copy-resources (copy-resources) @ csonline ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 21 resources
+[INFO] 
+[INFO] --- jacoco:0.8.11:prepare-agent (default) @ csonline ---
+[INFO] argLine set to -javaagent:C:\\Users\\devel\\.m2\\repository\\org\\jacoco\\org.jacoco.agent\\0.8.11\\org.jacoco.agent-0.8.11-runtime.jar=destfile=C:\\dev\\csonline\\target\\jacoco.exec
+[INFO]
+[INFO] --- resources:2.6:resources (default-resources) @ csonline ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 21 resources
+[INFO] 
+[INFO] --- compiler:3.1:compile (default-compile) @ csonline ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 99 source files to C:\dev\csonline\target\classes
+[INFO] -------------------------------------------------------------
+[WARNING] COMPILATION WARNING :
+[INFO] -------------------------------------------------------------
+[WARNING] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/DBConnection.java: C:\dev\csonline\src\main\java\br\com\mulato\cso\dry\DBConnection.java uses or overrides a deprecated API.
+[WARNING] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/DBConnection.java: Recompile with -Xlint:deprecation for details.
+[WARNING] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java: Some input files use or override a deprecated API that is marked for removal.
+[WARNING] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java: Recompile with -Xlint:removal for details.
+[INFO] 4 warnings
+[INFO] -------------------------------------------------------------
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR :
+[INFO] -------------------------------------------------------------
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[178,60] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[182,60] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[198,63] unmappable character (0xE7) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[198,64] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[202,61] unmappable character (0xE2) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[209,44] unmappable character (0xE7) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[209,45] unmappable character (0xF5) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[301,60] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[305,60] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[321,63] unmappable character (0xE7) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[321,64] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[325,61] unmappable character (0xE2) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[332,47] unmappable character (0xE7) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[332,48] unmappable character (0xF5) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[401,57] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[401,63] unmappable character (0xE1) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[432,71] unmappable character (0xE1) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[466,60] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[470,66] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[473,64] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[571,87] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[575,87] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[848,59] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[941,82] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[945,82] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/FactoryService.java:[50,58] unmappable character (0xE7) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/FactoryService.java:[50,59] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/FactoryService.java:[50,69] unmappable character (0xE2) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/FactoryService.java:[57,50] unmappable character (0xE7) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/FactoryService.java:[57,51] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[20,35] unmappable character (0xE1) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[21,29] unmappable character (0xE1) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[23,35] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[24,29] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[25,28] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[26,26] unmappable character (0xEA) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[26,42] unmappable character (0xEA) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[26,59] unmappable character (0xEA) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[26,90] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[27,26] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[28,42] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[28,88] unmappable character (0xE9) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[28,92] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[72,29] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[73,28] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[74,19] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[74,22] unmappable character (0xE9) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[74,48] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[76,37] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[78,47] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[79,39] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[80,26] unmappable character (0xEA) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[82,40] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[83,51] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[84,42] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[85,42] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[86,39] unmappable character (0xEA) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[86,98] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[88,38] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[89,47] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[90,41] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[91,38] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[92,26] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[92,46] unmappable character (0xE9) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[92,52] unmappable character (0xEDAD) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[208,19] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[208,22] unmappable character (0xE9) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[210,38] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[211,53] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[213,46] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[214,44] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[238,53] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[240,54] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[27,49] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[45,60] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[50,68] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[55,72] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[60,72] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[65,69] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[70,69] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[77,77] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[81,76] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[91,69] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[98,56] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[103,59] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[120,63] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[122,40] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[140,63] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[142,41] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[212,63] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[216,63] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[218,53] unmappable character (0xE7) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[218,63] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[237,63] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[241,63] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[243,53] unmappable character (0xE7) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[243,63] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[262,63] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[266,63] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[276,53] unmappable character (0xE7) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/DBConnection.java:[10,22] package jakarta.naming does not exist
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/DBConnection.java:[11,22] package jakarta.naming does not exist
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/DBConnection.java:[12,19] package jakarta.sql does not exist
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/DBConnection.java:[80,33] cannot find symbol
+  symbol:   class InitialContext
+  location: class br.com.mulato.cso.dry.DBConnection
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/DBConnection.java:[81,33] cannot find symbol
+  symbol:   class DataSource
+  location: class br.com.mulato.cso.dry.DBConnection
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/DBConnection.java:[82,54] cannot find symbol
+  symbol:   class InitialContext
+  location: class br.com.mulato.cso.dry.DBConnection
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/DBConnection.java:[91,55] cannot find symbol
+  symbol:   class DataSource
+  location: class br.com.mulato.cso.dry.DBConnection
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/DBConnection.java:[112,32] cannot find symbol
+  symbol:   class NamingException
+  location: class br.com.mulato.cso.dry.DBConnection
+[INFO] 108 errors
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------    
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------    
+[INFO] Total time:  3.378 s
+[INFO] Finished at: 2025-07-18T13:41:09-03:00
+[INFO] ------------------------------------------------------------------------    
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.1:compile (default-compile) on project csonline: Compilation failure: Compilation failure:
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[178,60] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[182,60] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[198,63] unmappable character (0xE7) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[198,64] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[202,61] unmappable character (0xE2) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[209,44] unmappable character (0xE7) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[209,45] unmappable character (0xF5) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[301,60] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[305,60] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[321,63] unmappable character (0xE7) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[321,64] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[325,61] unmappable character (0xE2) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[332,47] unmappable character (0xE7) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[332,48] unmappable character (0xF5) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[401,57] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[401,63] unmappable character (0xE1) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[432,71] unmappable character (0xE1) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[466,60] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[470,66] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[473,64] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[571,87] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[575,87] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[848,59] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[941,82] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[945,82] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/FactoryService.java:[50,58] unmappable character (0xE7) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/FactoryService.java:[50,59] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/FactoryService.java:[50,69] unmappable character (0xE2) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/FactoryService.java:[57,50] unmappable character (0xE7) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/FactoryService.java:[57,51] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[20,35] unmappable character (0xE1) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[21,29] unmappable character (0xE1) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[23,35] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[24,29] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[25,28] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[26,26] unmappable character (0xEA) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[26,42] unmappable character (0xEA) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[26,59] unmappable character (0xEA) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[26,90] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[27,26] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[28,42] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[28,88] unmappable character (0xE9) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[28,92] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[72,29] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[73,28] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[74,19] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[74,22] unmappable character (0xE9) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[74,48] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[76,37] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[78,47] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[79,39] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[80,26] unmappable character (0xEA) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[82,40] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[83,51] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[84,42] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[85,42] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[86,39] unmappable character (0xEA) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[86,98] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[88,38] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[89,47] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[90,41] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[91,38] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[92,26] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[92,46] unmappable character (0xE9) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[92,52] unmappable character (0xEDAD) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[208,19] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[208,22] unmappable character (0xE9) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[210,38] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[211,53] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[213,46] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[214,44] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[238,53] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/InterfaceSQL.java:[240,54] unmappable character (0xE3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[27,49] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[45,60] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[50,68] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[55,72] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[60,72] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[65,69] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[70,69] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[77,77] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[81,76] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[91,69] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[98,56] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[103,59] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[120,63] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[122,40] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[140,63] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[142,41] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[212,63] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[216,63] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[218,53] unmappable character (0xE7) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[218,63] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[237,63] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[241,63] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[243,53] unmappable character (0xE7) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[243,63] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[262,63] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[266,63] unmappable character (0xF3) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/BusinessServiceImpl.java:[276,53] unmappable character (0xE7) for encoding UTF-8
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/DBConnection.java:[10,22] package jakarta.naming does not exist
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/DBConnection.java:[11,22] package jakarta.naming does not exist
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/DBConnection.java:[12,19] package jakarta.sql does not exist
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/DBConnection.java:[80,33] cannot find symbol
+[ERROR]   symbol:   class InitialContext
+[ERROR]   location: class br.com.mulato.cso.dry.DBConnection
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/DBConnection.java:[81,33] cannot find symbol
+[ERROR]   symbol:   class DataSource
+[ERROR]   location: class br.com.mulato.cso.dry.DBConnection
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/DBConnection.java:[82,54] cannot find symbol
+[ERROR]   symbol:   class InitialContext
+[ERROR]   location: class br.com.mulato.cso.dry.DBConnection
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/DBConnection.java:[91,55] cannot find symbol
+[ERROR]   symbol:   class DataSource
+[ERROR]   location: class br.com.mulato.cso.dry.DBConnection
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/DBConnection.java:[112,32] cannot find symbol
+[ERROR]   symbol:   class NamingException
+[ERROR]   location: class br.com.mulato.cso.dry.DBConnection
+[ERROR] -> [Help 1]
+[ERROR]
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR]
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+PS C:\dev\csonline> 

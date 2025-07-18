@@ -2,16 +2,16 @@ package br.com.mulato.cso.view.beans;
 
 import java.io.Serializable;
 import java.util.Locale;
-import jakarta.faces.bean.ManagedBean;
-import jakarta.faces.bean.SessionScoped;
+import jakarta.inject.Named;
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.component.UIViewRoot;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.ActionEvent;
 
 /**
  * @author Christian Mulato
  */
-@ManagedBean(name = "i18nMB")
+@Named("i18nMB")
 @SessionScoped
 public class I18nBean implements Serializable {
 
