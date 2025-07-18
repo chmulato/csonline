@@ -13,66 +13,57 @@ import br.com.mulato.cso.model.LoginVO;
 import br.com.mulato.cso.utils.InitProperties;
 
 public class LoginDAOImpl
-    implements LoginDAO
-{
+		implements LoginDAO {
 
 	private final static Logger logger = Logger.getLogger(UserDAOImpl.class);
 
 	@Override
 	public void setTransaction_active(boolean enable) throws DAOException {
-		
-		if (enable == TRANSACTION_ENABLE)
-		{
+
+		if (enable == TRANSACTION_ENABLE) {
 			DBConnection.onTransaction();
 		}
 
-		if (enable == TRANSACTION_DISABLE)
-		{
+		if (enable == TRANSACTION_DISABLE) {
 			DBConnection.offTransaction();
 		}
-		
+
 	}
 
 	@Override
-	public void authenticate (final LoginVO login) throws DAOException
-	{
+	public void authenticate(final LoginVO login) throws DAOException {
 
 		String usr = null;
 		String pwd = null;
 
-		if (login == null)
-		{
+		if (login == null) {
 			throw new DAOException("Informe seu login!");
 		}
 
-		if (login.getLogin() == null)
-		{
+		if (login.getLogin() == null) {
 			throw new DAOException("Informe seu login!");
 		}
 
-		if (login.getPassword() == null)
-		{
-			throw new DAOException("Informe seu senha!");
+		if (login.getPassword() == null) {
+			throw new DAOException("Informe sua senha!");
 		}
 
 		usr = login.getLogin().trim();
 		pwd = login.getPassword().trim();
 
-		logger.info("Verificar login e senha do usuário.");
+		logger.info("Verificar login e senha do usuÃ¡rio.");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
-		try
-		{
+		try {
 
 			final String SQL = SELECT_USER_BY_LOGIN_AND_PASSWORD;
 
 			conn = DBConnection.getConnectionDB();
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("SQL: " + SQL);
 			}
 
@@ -82,81 +73,62 @@ public class LoginDAOImpl
 
 			rs = stmt.executeQuery();
 
-			if (rs.next())
-			{
+			if (rs.next()) {
 				String pwd_db = rs.getString(rs.findColumn("PASSWORD"));
-				if (pwd_db != null)
-				{
+				if (pwd_db != null) {
 					pwd_db = pwd_db.trim();
-					if (!pwd.equals(pwd_db))
-					{
-						throw new DAOException("Usuário ou senha inválidos, tente novamente!");
+					if (!pwd.equals(pwd_db)) {
+						throw new DAOException("UsuÃ¡rio ou senha invÃ¡lidos, tente novamente!");
 					}
 				}
-			}
-			else
-			{
-				throw new DAOException("Usuário ou senha inválidos, tente novamente!");
+			} else {
+				throw new DAOException("UsuÃ¡rio ou senha invÃ¡lidos, tente novamente!");
 			}
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("SQL: OK!");
 			}
 
-		}
-		catch (final ParameterException ex)
-		{
-			final String msg = "Erro ao verificar usuário e senha! ";
+		} catch (final ParameterException ex) {
+			final String msg = "Erro ao verificar usuÃ¡rio e senha! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		catch (final SQLException ex)
-		{
-			final String msg = "Erro ao verificar usuário e senha! ";
+		} catch (final SQLException ex) {
+			final String msg = "Erro ao verificar usuï¿½rio e senha! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		finally
-		{
+		} finally {
 			DBConnection.closeConnection(conn, stmt, rs);
 		}
 	}
 
 	@SuppressWarnings("resource")
 	@Override
-	public void passwordChange (final LoginVO login) throws DAOException
-	{
+	public void passwordChange(final LoginVO login) throws DAOException {
 
 		boolean update = false;
 
-		if (login == null)
-		{
+		if (login == null) {
 			throw new DAOException("Informe login!");
 		}
 
-		if (login.getLogin() == null)
-		{
+		if (login.getLogin() == null) {
 			throw new DAOException("Informe login!");
 		}
 
-		if (login.getPassword() == null)
-		{
+		if (login.getPassword() == null) {
 			throw new DAOException("Informe senha!");
 		}
 
-		if (login.getNewPassword() == null)
-		{
+		if (login.getNewPassword() == null) {
 			throw new DAOException("Informe nova senha!");
 		}
 
-		if (login.getNewRepeat() == null)
-		{
+		if (login.getNewRepeat() == null) {
 			throw new DAOException("Repita sua nova senha!");
 		}
 
-		if (!login.getNewPassword().equals(login.getNewRepeat()))
-		{
+		if (!login.getNewPassword().equals(login.getNewRepeat())) {
 			throw new DAOException("Repita sua nova senha corretamente!");
 		}
 
@@ -166,17 +138,15 @@ public class LoginDAOImpl
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
-		try
-		{
+		try {
 
 			final String SQL = UPDATE_LOGIN_PASSWORD;
 
 			conn = DBConnection.getConnectionDB();
-			
+
 			DBConnection.onTransaction();
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("UPDATE: " + SQL);
 			}
 
@@ -186,21 +156,17 @@ public class LoginDAOImpl
 
 			rs = stmt.executeQuery();
 
-			if (rs.next())
-			{
+			if (rs.next()) {
 				String password = rs.getString(rs.findColumn("PASSWORD"));
-				if (password != null)
-				{
+				if (password != null) {
 					password = password.trim();
-					if (login.getPassword().equals(password))
-					{
+					if (login.getPassword().equals(password)) {
 						update = true;
 					}
 				}
 			}
 
-			if (update)
-			{
+			if (update) {
 				stmt = conn.prepareStatement(SQL);
 				stmt.setString(1, login.getNewPassword());
 				stmt.setString(2, login.getLogin());
@@ -209,49 +175,39 @@ public class LoginDAOImpl
 
 			DBConnection.offTransaction();
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("UPDATE: OK!");
 			}
 
-		}
-		catch (final ParameterException ex)
-		{
+		} catch (final ParameterException ex) {
 
 			final String msg = "Erro ao trocar senha! ";
 			logger.error(msg + ex.getMessage());
 
 			throw new DAOException(msg);
 
-		}
-		catch (final SQLException ex)
-		{
+		} catch (final SQLException ex) {
 
 			final String msg = "Erro ao trocar senha! ";
 			logger.error(msg + ex.getMessage());
 
 			throw new DAOException(msg);
 
-		}
-		finally
-		{
+		} finally {
 			DBConnection.closeConnection(conn, stmt, rs);
 		}
 	}
 
 	@Override
-	public boolean isThereLogin (final LoginVO login) throws DAOException
-	{
+	public boolean isThereLogin(final LoginVO login) throws DAOException {
 
 		boolean result = false;
 
-		if (login == null)
-		{
+		if (login == null) {
 			throw new DAOException("Informe login!");
 		}
 
-		if (login.getLogin() == null)
-		{
+		if (login.getLogin() == null) {
 			throw new DAOException("Informe login!");
 		}
 
@@ -261,13 +217,11 @@ public class LoginDAOImpl
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
-		try
-		{
+		try {
 
 			final String SQL = SELECT_USER_BY_LOGIN;
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("SQL: " + SQL);
 			}
 
@@ -277,31 +231,23 @@ public class LoginDAOImpl
 
 			rs = stmt.executeQuery();
 
-			if (rs.next())
-			{
+			if (rs.next()) {
 				result = true;
 			}
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("SQL: OK!");
 			}
 
-		}
-		catch (final ParameterException ex)
-		{
+		} catch (final ParameterException ex) {
 			final String msg = "Erro ao pesquisar login! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		catch (final SQLException ex)
-		{
+		} catch (final SQLException ex) {
 			final String msg = "Erro ao pesquisar login! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		finally
-		{
+		} finally {
 			DBConnection.closeConnection(conn, stmt, rs);
 		}
 

@@ -16,34 +16,27 @@ public class CourierServiceImpl implements CourierService {
 	private final static Logger LOGGER = Logger.getLogger(CourierServiceImpl.class);
 
 	@Override
-	public List<CourierVO> listAllCourierBusiness (final BusinessVO business) throws WebException
-	{
+	public List<CourierVO> listAllCourierBusiness(final BusinessVO business) throws WebException {
 
 		List<CourierVO> list = null;
 
-		if (business == null)
-		{
-			throw new WebException("Informe negócio.");
+		if (business == null) {
+			throw new WebException("Informe negï¿½cio.");
 		}
 
-		if (business.getId() == null)
-		{
-			throw new WebException("Informe id negócio!");
+		if (business.getId() == null) {
+			throw new WebException("Informe id negï¿½cio!");
 		}
 
-		if (business.getId() <= 0)
-		{
-			throw new WebException("Informe id negócio!");
+		if (business.getId() <= 0) {
+			throw new WebException("Informe id negï¿½cio!");
 		}
 
-		LOGGER.info("Listar todos os entregadores do negócio.");
+		LOGGER.info("Listar todos os entregadores do negï¿½cio.");
 
-		try
-		{
+		try {
 			list = FactoryDAO.getInstancia().getCourierDAO().listAllCourierBusiness(business);
-		}
-		catch (final DAOException e)
-		{
+		} catch (final DAOException e) {
 			LOGGER.error("Service error: " + e.getMessage());
 			throw new WebException(e.getMessage());
 		}
@@ -51,24 +44,19 @@ public class CourierServiceImpl implements CourierService {
 	}
 
 	@Override
-	public CourierVO find (final Integer idCourier) throws WebException
-	{
+	public CourierVO find(final Integer idCourier) throws WebException {
 
 		CourierVO courier = null;
 
-		if ((idCourier == null) || (idCourier <= 0))
-		{
+		if ((idCourier == null) || (idCourier <= 0)) {
 			throw new WebException("Informe id entregador.");
 		}
 
 		LOGGER.info("Buscar entregador.");
 
-		try
-		{
+		try {
 			courier = FactoryDAO.getInstancia().getCourierDAO().find(idCourier, true);
-		}
-		catch (final DAOException e)
-		{
+		} catch (final DAOException e) {
 			LOGGER.error("Service error: " + e.getMessage());
 			throw new WebException(e.getMessage());
 		}
@@ -76,139 +64,106 @@ public class CourierServiceImpl implements CourierService {
 	}
 
 	@Override
-	public void save (final CourierVO courier, final boolean update_password) throws WebException
-	{
+	public void save(final CourierVO courier, final boolean update_password) throws WebException {
 
-		if (courier == null)
-		{
+		if (courier == null) {
 			throw new DAOException("Informe entregador!");
 		}
 
-		if (courier.getName() == null)
-		{
+		if (courier.getName() == null) {
 			throw new DAOException("Informe nome do entregador!");
 		}
 
-		if (courier.getRole() == null)
-		{
+		if (courier.getRole() == null) {
 			throw new DAOException("Informe o perfil de entregador!");
 		}
 
-		if (!courier.getRole().equals("COURIER"))
-		{
+		if (!courier.getRole().equals("COURIER")) {
 			throw new DAOException("Informe o perfil de entregador!");
 		}
 
-		if (courier.getLogin() == null)
-		{
+		if (courier.getLogin() == null) {
 			throw new DAOException("Informe login do entregador!");
 		}
 
-		if (courier.getLogin().getLogin() == null)
-		{
+		if (courier.getLogin().getLogin() == null) {
 			throw new DAOException("Informe login do entregador!");
 		}
 
-		if (courier.getId() == null)
-		{
+		if (courier.getId() == null) {
 
-			if (courier.getLogin().getPassword() == null)
-			{
+			if (courier.getLogin().getPassword() == null) {
 				throw new WebException("Informe senha do entregador!");
 			}
 
-			if (courier.getLogin().getRepeat() == null)
-			{
+			if (courier.getLogin().getRepeat() == null) {
 				throw new WebException("Repita senha do entregador!");
 			}
 
-			if (!courier.getLogin().getPassword().equals(courier.getLogin().getRepeat()))
-			{
+			if (!courier.getLogin().getPassword().equals(courier.getLogin().getRepeat())) {
 				throw new WebException("Repita senha corretamente!");
 			}
 
-		}
-		else
-		{
-			if (update_password)
-			{
-				if (courier.getLogin().getPassword() == null)
-				{
+		} else {
+			if (update_password) {
+				if (courier.getLogin().getPassword() == null) {
 					throw new WebException("Informe senha do entregador!");
 				}
-				if (courier.getLogin().getRepeat() == null)
-				{
+				if (courier.getLogin().getRepeat() == null) {
 					throw new WebException("Repita senha do entregador!");
 				}
-				if (!courier.getLogin().getPassword().equals(courier.getLogin().getRepeat()))
-				{
+				if (!courier.getLogin().getPassword().equals(courier.getLogin().getRepeat())) {
 					throw new WebException("Repita senha corretamente!");
 				}
 			}
 		}
 
-		if (courier.getEmail() == null)
-		{
+		if (courier.getEmail() == null) {
 			throw new DAOException("Informe email do entregador!");
 		}
 
-		if (courier.getFactor_courier() == null)
-		{
+		if (courier.getFactor_courier() == null) {
 			throw new DAOException("Informe fator do entregador!");
 		}
 
-		if (courier.getBusiness() == null)
-		{
-			throw new DAOException("Informe negócio do entregador!");
+		if (courier.getBusiness() == null) {
+			throw new DAOException("Informe negÃ³cio do entregador!");
 		}
 
-		if (courier.getBusiness().getId() == null)
-		{
-			throw new DAOException("Informe negócio do entregador!");
+		if (courier.getBusiness().getId() == null) {
+			throw new DAOException("Informe negÃ³cio do entregador!");
 		}
 
-		if (courier.getBusiness().getId() <= 0)
-		{
-			throw new DAOException("Informe negócio do entregador!");
+		if (courier.getBusiness().getId() <= 0) {
+			throw new DAOException("Informe negÃ³cio do entregador!");
 		}
 
-		try
-		{
-			if (courier.getId() == null)
-			{
+		try {
+			if (courier.getId() == null) {
 				LOGGER.info("Salvar entregador.");
 				FactoryDAO.getInstancia().getCourierDAO().insert(courier);
-			}
-			else
-			{
+			} else {
 				LOGGER.info("Atualizar entregador.");
 				FactoryDAO.getInstancia().getCourierDAO().update(courier, update_password);
 			}
-		}
-		catch (final DAOException e)
-		{
+		} catch (final DAOException e) {
 			LOGGER.error("Service error: " + e.getMessage());
 			throw new WebException(e.getMessage());
 		}
 	}
 
 	@Override
-	public void delete (final Integer idCourier) throws WebException
-	{
+	public void delete(final Integer idCourier) throws WebException {
 
-		if ((idCourier == null) || (idCourier <= 0))
-		{
+		if ((idCourier == null) || (idCourier <= 0)) {
 			throw new WebException("Informe id entregador.");
 		}
 
 		LOGGER.info("Deletar entregador.");
 
-		try
-		{
+		try {
 			FactoryDAO.getInstancia().getCourierDAO().delete(idCourier);
-		}
-		catch (final DAOException e)
-		{
+		} catch (final DAOException e) {
 			LOGGER.error("Service error: " + e.getMessage());
 			throw new WebException(e.getMessage());
 		}
