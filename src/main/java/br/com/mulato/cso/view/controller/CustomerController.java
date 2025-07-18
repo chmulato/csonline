@@ -9,7 +9,8 @@ import java.util.Map;
 import jakarta.faces.application.Application;
 import jakarta.faces.context.FacesContext;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import br.com.mulato.cso.dry.AbstractController;
 import br.com.mulato.cso.dry.FactoryService;
@@ -25,7 +26,7 @@ public class CustomerController extends AbstractController implements Serializab
 
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger LOGGER = Logger.getLogger(CustomerController.class);
+	private static final Logger LOGGER = LogManager.getLogger(CustomerController.class);
 
 	private CustomerVO customerVO;
 
@@ -65,54 +66,49 @@ public class CustomerController extends AbstractController implements Serializab
 
 	private boolean customer_profile;
 
-	private void loadSession ()
-	{
+	private void loadSession() {
 
 		String profile;
 
 		boolean isLogged = false;
 
-		LOGGER.info("Carregando controle da p�gina de cliente ...");
+		LOGGER.info("Carregando controle da página de cliente ...");
 
-		try
-		{
+		try {
 
 			final FacesContext context = FacesContext.getCurrentInstance();
 			final Application app = context.getApplication();
-			final LoginController loginController = app.evaluateExpressionGet(context, "#{loginMB}", LoginController.class);
+			final LoginController loginController = app.evaluateExpressionGet(context, "#{loginMB}",
+					LoginController.class);
 
 			isLogged = loginController.isLogged();
 
-			if (isLogged)
-			{
+			if (isLogged) {
 
-				LOGGER.info("Sess�o carregada! ... Login: " + loginController.getUsername());
+				LOGGER.info("Sessão carregada! ... Login: " + loginController.getUsername());
 
 				profile = loginController.getProfile();
 
-				if ((loginController.getUserIdLogged() == null) || (loginController.getUserIdLogged().intValue() <= 0))
-				{
+				if ((loginController.getUserIdLogged() == null)
+						|| (loginController.getUserIdLogged().intValue() <= 0)) {
 
-					throw new WebException("Id do usu�rio logado n�o encontrado.");
+					throw new WebException("Id do usuário logado não encontrado.");
 
 				}
 
-				if (profile.equals("BUSINESS"))
-				{
+				if (profile.equals("BUSINESS")) {
 
 					// Edit Customer
 
 					label = "Editar";
 
-					if (loginController.getId() != null)
-					{
+					if (loginController.getId() != null) {
 
 						final Integer id = loginController.getId();
 
 						customerVO = FactoryService.getInstancia().getCustomerService().find(id);
 
-						if (customerVO != null)
-						{
+						if (customerVO != null) {
 
 							setId(customerVO.getId());
 							setRole(customerVO.getRole());
@@ -123,18 +119,15 @@ public class CustomerController extends AbstractController implements Serializab
 							setAddress(customerVO.getAddress());
 							setMobile(customerVO.getMobile());
 
-							if (customerVO.getBusiness() != null)
-							{
+							if (customerVO.getBusiness() != null) {
 
-								if (customerVO.getBusiness().getId() != null)
-								{
+								if (customerVO.getBusiness().getId() != null) {
 
 									setBusinessId(customerVO.getBusiness().getId());
 
 								}
 
-								if (customerVO.getBusiness().getName() != null)
-								{
+								if (customerVO.getBusiness().getName() != null) {
 
 									setBusiness(customerVO.getBusiness().getName());
 
@@ -143,13 +136,11 @@ public class CustomerController extends AbstractController implements Serializab
 
 							setFactor_customer(customerVO.getFactor_customer());
 
-							if (customerVO.getPrice_table() != null)
-							{
+							if (customerVO.getPrice_table() != null) {
 
 								final TableVO tableVO = InitProperties.getTableVO(customerVO.getPrice_table());
 
-								if ((tableVO != null) && (tableVO.getId() != null))
-								{
+								if ((tableVO != null) && (tableVO.getId() != null)) {
 									setIdTable(tableVO.getId());
 								}
 
@@ -157,9 +148,7 @@ public class CustomerController extends AbstractController implements Serializab
 
 						}
 
-					}
-					else
-					{
+					} else {
 
 						// Add New Customer
 
@@ -174,9 +163,7 @@ public class CustomerController extends AbstractController implements Serializab
 
 					}
 
-				}
-				else if (profile.equals("CUSTOMER"))
-				{
+				} else if (profile.equals("CUSTOMER")) {
 
 					customer_profile = true;
 
@@ -185,8 +172,7 @@ public class CustomerController extends AbstractController implements Serializab
 					customerVO = FactoryService.getInstancia().getCustomerService().find(customerId);
 
 					// Customer profile only see your customer date
-					if (customerVO != null)
-					{
+					if (customerVO != null) {
 
 						readonly = true;
 
@@ -201,18 +187,15 @@ public class CustomerController extends AbstractController implements Serializab
 						setAddress(customerVO.getAddress());
 						setMobile(customerVO.getMobile());
 
-						if (customerVO.getBusiness() != null)
-						{
+						if (customerVO.getBusiness() != null) {
 
-							if (customerVO.getBusiness().getId() != null)
-							{
+							if (customerVO.getBusiness().getId() != null) {
 
 								setBusinessId(customerVO.getBusiness().getId());
 
 							}
 
-							if (customerVO.getBusiness().getName() != null)
-							{
+							if (customerVO.getBusiness().getName() != null) {
 
 								setBusiness(customerVO.getBusiness().getName());
 
@@ -221,13 +204,11 @@ public class CustomerController extends AbstractController implements Serializab
 
 						setFactor_customer(customerVO.getFactor_customer());
 
-						if (customerVO.getPrice_table() != null)
-						{
+						if (customerVO.getPrice_table() != null) {
 
 							final TableVO tableVO = InitProperties.getTableVO(customerVO.getPrice_table());
 
-							if ((tableVO != null) && (tableVO.getId() != null))
-							{
+							if ((tableVO != null) && (tableVO.getId() != null)) {
 								setIdTable(tableVO.getId());
 							}
 
@@ -235,159 +216,126 @@ public class CustomerController extends AbstractController implements Serializab
 
 					}
 
-				}
-				else
-				{
+				} else {
 
-					throw new WebException("Perfil do usu�rio n�o encontrado.");
+					throw new WebException("Perfil do usuário não encontrado.");
 
 				}
 
-			}
-			else
-			{
+			} else {
 
-				throw new WebException("Sess�o n�o carregada! Logar novamente.");
+				throw new WebException("Sessão não carregada! Faça login novamente.");
 
 			}
 
-		}
-		catch (final WebException e)
-		{
+		} catch (final WebException e) {
 			FacesMessages.mensErro(e.getMessage());
 		}
 	}
 
-	public String save ()
-	{
+	public String save() {
 
 		int idBusiness = 0;
 
 		boolean insert = false;
 
-		try
-		{
+		try {
 
-			if ((getId() == null) || getId().equals(new Integer(0)))
-			{
+			if ((getId() == null) || getId().equals(new Integer(0))) {
 				insert = true;
 			}
 
-			if (getRole() == null)
-			{
+			if (getRole() == null) {
 				throw new WebException("Informe perfil!");
 			}
 
-			if (getRole().equals(""))
-			{
+			if (getRole().equals("")) {
 				throw new WebException("Informe perfil!");
 			}
 
-			if (!getRole().equals("CUSTOMER"))
-			{
+			if (!getRole().equals("CUSTOMER")) {
 				throw new WebException("Informe perfil de cliente!");
 			}
 
-			if (getName() == null)
-			{
+			if (getName() == null) {
 				throw new WebException("Informe nome!");
 			}
 
-			if (getName().equals(""))
-			{
+			if (getName().equals("")) {
 				throw new WebException("Informe nome!");
 			}
 
-			if (getLogin() == null)
-			{
+			if (getLogin() == null) {
 				throw new WebException("Informe login!");
 			}
 
-			if (getLogin().equals(""))
-			{
+			if (getLogin().equals("")) {
 				throw new WebException("Informe login!");
 			}
 
-			if (insert)
-			{
+			if (insert) {
 
-				if (getPassword() == null)
-				{
+				if (getPassword() == null) {
 					throw new WebException("Informe senha!");
 				}
 
-				if (getPassword().equals(""))
-				{
+				if (getPassword().equals("")) {
 					throw new WebException("Informe senha!");
 				}
 
-				if (getRepeat() == null)
-				{
+				if (getRepeat() == null) {
 					throw new WebException("Repita sua senha!");
 				}
 
-				if (getRepeat().equals(""))
-				{
+				if (getRepeat().equals("")) {
 					throw new WebException("Repita sua senha!");
 				}
 
 			}
 
-			if (getEmail() == null)
-			{
+			if (getEmail() == null) {
 				throw new WebException("Informe e-mail!");
 			}
 
-			if (getEmail().equals(""))
-			{
+			if (getEmail().equals("")) {
 				throw new WebException("Informe e-mail!");
 			}
 
-			if (getAddress() == null)
-			{
-				throw new WebException("Informe endere�o!");
+			if (getAddress() == null) {
+				throw new WebException("Informe endereço!");
 			}
 
-			if (getAddress().equals(""))
-			{
-				throw new WebException("Informe endere�o!");
+			if (getAddress().equals("")) {
+				throw new WebException("Informe endereço!");
 			}
 
-			if (getMobile() == null)
-			{
-				throw new WebException("Informe n�mero de celular!");
+			if (getMobile() == null) {
+				throw new WebException("Informe número de celular!");
 			}
 
-			if (getMobile().equals(""))
-			{
-				throw new WebException("Informe n�mero de celular!");
+			if (getMobile().equals("")) {
+				throw new WebException("Informe número de celular!");
 			}
 
-			if (getBusinessId() == null)
-			{
-				throw new WebException("Informe id neg�cio!");
+			if (getBusinessId() == null) {
+				throw new WebException("Informe o id do negócio!");
 			}
 
 			idBusiness = Integer.parseInt(getBusinessId().toString());
 
-			if (idBusiness <= 0)
-			{
-				throw new WebException("Informe id neg�cio!");
+			if (idBusiness <= 0) {
+				throw new WebException("Informe o id do negócio!");
 			}
 
-			if (getFactor_customer() == null)
-			{
+			if (getFactor_customer() == null) {
 				throw new WebException("Informe fator!");
 			}
 
 			customerVO = new CustomerVO();
 
-			if (insert)
-			{
+			if (insert) {
 				customerVO.setId(null);
-			}
-			else
-			{
+			} else {
 				customerVO.setId(getId());
 			}
 
@@ -397,8 +345,7 @@ public class CustomerController extends AbstractController implements Serializab
 			final LoginVO login = new LoginVO();
 			login.setLogin(getLogin());
 
-			if (insert)
-			{
+			if (insert) {
 				login.setPassword(getPassword());
 				login.setRepeat(getRepeat());
 			}
@@ -416,13 +363,11 @@ public class CustomerController extends AbstractController implements Serializab
 
 			customerVO.setFactor_customer(getFactor_customer());
 
-			if (getIdTable() != null)
-			{
+			if (getIdTable() != null) {
 
 				final TableVO tableVO = InitProperties.getTableVO(getIdTable());
 
-				if ((tableVO != null) && (tableVO.getName() != null))
-				{
+				if ((tableVO != null) && (tableVO.getName() != null)) {
 					customerVO.setPrice_table(tableVO.getName());
 				}
 
@@ -432,22 +377,17 @@ public class CustomerController extends AbstractController implements Serializab
 
 			FacesMessages.mensInfo("Cliente salvo com sucesso!");
 
-		}
-		catch (final WebException e)
-		{
+		} catch (final WebException e) {
 			FacesMessages.mensErro(e.getMessage());
-		}
-		catch (final Exception e)
-		{
-			FacesMessages.mensErro("Falha na inser��o no banco de dados!");
+		} catch (final Exception e) {
+			FacesMessages.mensErro("Falha na inserção no banco de dados!");
 		}
 
 		return goToBackPage("customers");
 
 	}
 
-	public CustomerController ()
-	{
+	public CustomerController() {
 		super();
 		loadSession();
 	}
@@ -458,222 +398,178 @@ public class CustomerController extends AbstractController implements Serializab
 	 * @return
 	 * @throws WebException
 	 */
-	public Map<String, Object> getTables () throws WebException
-	{
+	public Map<String, Object> getTables() throws WebException {
 		final Map<String, Object> itemMap = new LinkedHashMap<String, Object>();
 		final List<TableVO> tables = InitProperties.getListPriceTable();
-		if ((tables != null) && (tables.size() > 0))
-		{
-			for (final TableVO table : tables)
-			{
+		if ((tables != null) && (tables.size() > 0)) {
+			for (final TableVO table : tables) {
 				itemMap.put(table.getName(), table.getId());
 			}
 		}
 		return itemMap;
 	}
 
-	public String viewCustomer ()
-	{
+	public String viewCustomer() {
 		return goToPage("customer");
 	}
 
-	public String cancel ()
-	{
+	public String cancel() {
 		return goToPage("customers");
 	}
 
-	public String cancel_customer ()
-	{
+	public String cancel_customer() {
 		return goToPage("resume");
 	}
 
-	public CustomerVO getCustomerVO ()
-	{
+	public CustomerVO getCustomerVO() {
 		return customerVO;
 	}
 
-	public void setCustomerVO (final CustomerVO customerVO)
-	{
+	public void setCustomerVO(final CustomerVO customerVO) {
 		this.customerVO = customerVO;
 	}
 
-	public String getLabel ()
-	{
+	public String getLabel() {
 		return label;
 	}
 
-	public void setLabel (final String label)
-	{
+	public void setLabel(final String label) {
 		this.label = label;
 	}
 
-	public Integer getId ()
-	{
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId (final Integer id)
-	{
+	public void setId(final Integer id) {
 		this.id = id;
 	}
 
-	public String getRole ()
-	{
+	public String getRole() {
 		return role;
 	}
 
-	public void setRole (final String role)
-	{
+	public void setRole(final String role) {
 		this.role = role;
 	}
 
-	public String getName ()
-	{
+	public String getName() {
 		return name;
 	}
 
-	public void setName (final String name)
-	{
+	public void setName(final String name) {
 		this.name = name;
 	}
 
-	public String getLogin ()
-	{
+	public String getLogin() {
 		return login;
 	}
 
-	public void setLogin (final String login)
-	{
+	public void setLogin(final String login) {
 		this.login = login;
 	}
 
-	public String getPassword ()
-	{
+	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword (final String password)
-	{
+	public void setPassword(final String password) {
 		this.password = password;
 	}
 
-	public String getRepeat ()
-	{
+	public String getRepeat() {
 		return repeat;
 	}
 
-	public void setRepeat (final String repeat)
-	{
+	public void setRepeat(final String repeat) {
 		this.repeat = repeat;
 	}
 
-	public String getEmail ()
-	{
+	public String getEmail() {
 		return email;
 	}
 
-	public void setEmail (final String email)
-	{
+	public void setEmail(final String email) {
 		this.email = email;
 	}
 
-	public String getEmail2 ()
-	{
+	public String getEmail2() {
 		return email2;
 	}
 
-	public void setEmail2 (final String email2)
-	{
+	public void setEmail2(final String email2) {
 		this.email2 = email2;
 	}
 
-	public String getAddress ()
-	{
+	public String getAddress() {
 		return address;
 	}
 
-	public void setAddress (final String address)
-	{
+	public void setAddress(final String address) {
 		this.address = address;
 	}
 
-	public String getMobile ()
-	{
+	public String getMobile() {
 		return mobile;
 	}
 
-	public void setMobile (final String mobile)
-	{
+	public void setMobile(final String mobile) {
 		this.mobile = mobile;
 	}
 
-	public Integer getBusinessId ()
-	{
+	public Integer getBusinessId() {
 		return businessId;
 	}
 
-	public void setBusinessId (final Integer businessId)
-	{
+	public void setBusinessId(final Integer businessId) {
 		this.businessId = businessId;
 	}
 
-	public String getBusiness ()
-	{
+	public String getBusiness() {
 		return business;
 	}
 
-	public void setBusiness (final String business)
-	{
+	public void setBusiness(final String business) {
 		this.business = business;
 	}
 
-	public BigDecimal getFactor_customer ()
-	{
+	public BigDecimal getFactor_customer() {
 		return factor_customer;
 	}
 
-	public void setFactor_customer (final BigDecimal factor_customer)
-	{
+	public void setFactor_customer(final BigDecimal factor_customer) {
 		this.factor_customer = factor_customer;
 	}
 
-	public Integer getIdTable ()
-	{
+	public Integer getIdTable() {
 		return idTable;
 	}
 
-	public void setIdTable (final Integer idTable)
-	{
+	public void setIdTable(final Integer idTable) {
 		this.idTable = idTable;
 	}
 
-	public boolean isInsert ()
-	{
+	public boolean isInsert() {
 		return insert;
 	}
 
-	public void setInsert (final boolean insert)
-	{
+	public void setInsert(final boolean insert) {
 		this.insert = insert;
 	}
 
-	public boolean isReadonly ()
-	{
+	public boolean isReadonly() {
 		return readonly;
 	}
 
-	public void setReadonly (final boolean readonly)
-	{
+	public void setReadonly(final boolean readonly) {
 		this.readonly = readonly;
 	}
 
-	public boolean isCustomer_profile ()
-	{
+	public boolean isCustomer_profile() {
 		return customer_profile;
 	}
 
-	public void setCustomer_profile (final boolean customer_profile)
-	{
+	public void setCustomer_profile(final boolean customer_profile) {
 		this.customer_profile = customer_profile;
 	}
 }

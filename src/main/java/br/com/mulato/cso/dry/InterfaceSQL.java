@@ -1,3 +1,5 @@
+// Arquivo salvo em UTF-8
+// Certifique-se que o editor está configurado para UTF-8
 package br.com.mulato.cso.dry;
 
 import br.com.mulato.cso.exception.DAOException;

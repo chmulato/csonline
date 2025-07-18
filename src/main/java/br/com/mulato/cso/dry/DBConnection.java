@@ -1,4 +1,8 @@
 
+// Arquivo salvo em UTF-8
+// Certifique-se que o editor está configurado para UTF-8
+// Para garantir UTF-8 na conexão MySQL, o JDBC URL deve conter: useUnicode=true&characterEncoding=UTF-8
+// Exemplo: jdbc:mysql://host:3306/db?useUnicode=true&characterEncoding=UTF-8
 package br.com.mulato.cso.dry;
 
 import java.sql.Connection;
@@ -11,7 +15,9 @@ import java.util.Locale;
 import jakarta.naming.InitialContext;
 import jakarta.naming.NamingException;
 import jakarta.sql.DataSource;
-import org.apache.log4j.Logger;
+// Log4J 2.x
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import br.com.mulato.cso.exception.DAOException;
 import br.com.mulato.cso.exception.ParameterException;
@@ -23,7 +29,8 @@ import br.com.mulato.cso.utils.InitProperties;
  */
 public class DBConnection extends DBTransaction {
 
-	private final static Logger LOGGER = Logger.getLogger(DBConnection.class);
+	// Logger do Log4J 2.x
+	private static final Logger LOGGER = LogManager.getLogger(DBConnection.class);
 
 	private static boolean getting;
 	private static boolean jndiActive;
@@ -98,19 +105,36 @@ public class DBConnection extends DBTransaction {
 			}
 		} else {
 			try {
-				Class.forName(driver).newInstance();
-				return DriverManager.getConnection(urlCSO, username, password);
+				// Garante UTF-8 na conexão MySQL
+				String jdbcUrl = urlCSO;
+				if (driver != null && driver.toLowerCase().contains("mysql") && urlCSO != null) {
+					if (!urlCSO.contains("characterEncoding")) {
+						if (urlCSO.contains("?")) {
+							jdbcUrl += "&useUnicode=true&characterEncoding=UTF-8";
+						} else {
+							jdbcUrl += "?useUnicode=true&characterEncoding=UTF-8";
+						}
+					}
+				}
+				try {
+					Class.forName(driver).getDeclaredConstructor().newInstance();
+				} catch (ReflectiveOperationException e) {
+					msg = "Erro ao instanciar o driver de conexão.";
+					LOGGER.error(msg, e);
+					throw new DAOException(msg);
+				}
+				return DriverManager.getConnection(jdbcUrl, username, password);
 			} catch (final ClassNotFoundException cnf) {
 				msg = "Driver de conexão com o banco não encontrado.";
-				LOGGER.error(msg + cnf.getMessage());
+				LOGGER.error(msg, cnf);
 				throw new DAOException(msg);
 			} catch (final SQLException sql) {
 				msg = "Não foi possível abrir a conexão com o banco.";
-				LOGGER.error(msg + sql.getMessage());
+				LOGGER.error(msg, sql);
 				throw new DAOException(msg);
 			} catch (InstantiationException | IllegalAccessException e) {
 				msg = "Erro na conexão com o banco.";
-				LOGGER.error(msg + e.getMessage());
+				LOGGER.error(msg, e);
 				throw new DAOException(msg);
 			}
 		}
@@ -148,7 +172,7 @@ public class DBConnection extends DBTransaction {
 				conn.close();
 			}
 		} catch (final Exception e) {
-			LOGGER.error(msg + e.getMessage());
+			LOGGER.error(msg, e);
 			throw new DAOException(msg);
 		}
 	}

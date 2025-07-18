@@ -6,11 +6,12 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
 import javax.swing.text.MaskFormatter;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class CEPConverter implements Converter<Object> {
 
-	private final static Logger LOGGER = Logger.getLogger(CEPConverter.class);
+	private static final Logger LOGGER = LogManager.getLogger(CEPConverter.class);
 
 	// FIELDS
 	public static final String CONVERTER_ID = "jsf.CEP";
@@ -51,7 +52,7 @@ public class CEPConverter implements Converter<Object> {
 		}
 		if (value instanceof String) {
 			String result = ((String) value).trim();
-			result = result.replaceAll("[^0-9]", "");// retira tudo que nao eh numero
+			result = result.replaceAll("[^0-9]", "");// retira tudo que não é número
 			MaskFormatter a;
 			try {
 				if (result.length() < 9) {
@@ -64,7 +65,7 @@ public class CEPConverter implements Converter<Object> {
 				return a.valueToString(result);
 			} catch (final ParseException e1) {
 				LOGGER.error(e1.getMessage());
-				throw new ConverterException("Erro de convers�o.");
+				throw new ConverterException("Erro de conversão.");
 			}
 		}
 		return "";

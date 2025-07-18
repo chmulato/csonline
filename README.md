@@ -1,38 +1,49 @@
-Aplicação Web CSOnline.
+# CSOnline Delivery
 
-Java SDK 8
+Aplicação Web para controle de entregas.
 
-JSF Web Page
+## Descrição
 
-Database com MySQL
+CSOnline Delivery é uma aplicação desenvolvida em Java (SDK 8) utilizando JSF para gerenciamento de entregas. O sistema roda em Tomcat 9 e utiliza MySQL como banco de dados relacional.
 
-Tomcat 9 com build e deploy com WAR
+Acesse via navegador: [https://www.caracore.com.br/csonline](https://www.caracore.com.br/csonline)
 
-Projeto CSOnline Delivery:
+## Funcionalidades
 
-Este projeto tem como objetivo executar uma aplicacao de controle de entregas:
+- Cadastro e controle de entregas
+- Perfil de administrador
+- Interface web responsiva
 
-CSOnline Delivery.
+## Requisitos
 
-Controle de Entregas.
+- Java SDK 8
+- Apache Tomcat 9
+- MySQL Database
 
-A aplicacao acessa via browser do sistema operacional na url: [https://www] caracore.com.br/csonline
+## Instalação
 
-Perfil de Administrador:
+1. Clone o repositório.
+2. Configure o banco de dados MySQL conforme o padrão do projeto.
+3. Faça o build do projeto e gere o arquivo WAR.
+4. Faça o deploy do WAR no Tomcat 9.
 
-User:       chmulato
-Password:   admin
+## Perfil de Administrador
 
-O banco de dados da aplicacao no site e' o MySQL database.
+- Usuário: `chmulato`
+- Senha: `admin`
 
-Este banco de dados segue o padrao (SGDB) de bancos relacionais.
+## Demonstração
 
-Veja no Youtube: https://youtu.be/vAMd647anMA
-
----
+Veja no Youtube: [https://youtu.be/vAMd647anMA](https://youtu.be/vAMd647anMA)
 
 ## Licença
 
 Este projeto está licenciado sob a Licença MIT. Consulte o arquivo LICENSE para mais detalhes.
 
-Autor: Christian Vladimir Uhdre Mulato
+## Autor
+
+Christian Vladimir Uhdre Mulato
+
+## Contato
+
+Para dúvidas ou sugestões, entre em contato pelo site ou pelo e-mail disponível no perfil do autor.

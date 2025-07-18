@@ -1,6 +1,9 @@
+// Arquivo salvo em UTF-8
+// Certifique-se que o editor está configurado para UTF-8
 package br.com.mulato.cso.dry;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import br.com.mulato.cso.dry.impl.FactoryServiceImpl;
 import br.com.mulato.cso.exception.ParameterException;
 import br.com.mulato.cso.exception.WebException;
@@ -20,7 +23,7 @@ import br.com.mulato.cso.utils.InitProperties;
 // Classe abstrata Factory Service
 public abstract class FactoryService {
 
-	private final static Logger LOGGER = Logger.getLogger(FactoryService.class);
+	private static final Logger LOGGER = LogManager.getLogger(FactoryService.class);
 
 	private static FactoryService instancia;
 

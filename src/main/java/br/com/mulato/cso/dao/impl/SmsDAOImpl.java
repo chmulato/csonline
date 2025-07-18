@@ -7,7 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import br.com.mulato.cso.dao.SmsDAO;
 import br.com.mulato.cso.dry.DBConnection;
 import br.com.mulato.cso.dry.FactoryDAO;
@@ -23,7 +24,7 @@ public class SmsDAOImpl
 
 	private static final long serialVersionUID = 1L;
 
-	private final static Logger logger = Logger.getLogger(SmsDAOImpl.class);
+	private static final Logger logger = LogManager.getLogger(SmsDAOImpl.class);
 
 	private final static int SMS_SIZE_MESSAGE = 255;
 
@@ -49,7 +50,7 @@ public class SmsDAOImpl
 
 		int id = 0;
 
-		logger.info("Salvar mensagem de sms em peda�os.");
+		logger.info("Salvar mensagem de sms em pedaços.");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -237,11 +238,11 @@ public class SmsDAOImpl
 		}
 
 		if (!tools.validarNumero(sms.getTo())) {
-			throw new DAOException("Informe n�mero de celular v�lido a receber da mensagem!");
+			throw new DAOException("Informe número de celular válido a receber da mensagem!");
 		}
 
 		if (!tools.validarNumero(sms.getFrom())) {
-			throw new DAOException("Informe n�mero de celular v�lido de envio da mensagem!");
+			throw new DAOException("Informe número de celular válido de envio da mensagem!");
 		}
 
 		String message = sms.getMessage().trim();
@@ -301,11 +302,11 @@ public class SmsDAOImpl
 		SmsVO result = null;
 
 		if (id == null) {
-			throw new DAOException("Informe Id mensagem de sms!");
+			throw new DAOException("Informe o id da mensagem de sms!");
 		}
 
 		if (id.intValue() <= 0) {
-			throw new DAOException("Informe Id mensagem de sms!");
+			throw new DAOException("Informe o id da mensagem de sms!");
 		}
 
 		logger.info("Pesquisar mensagem de sms pelo id.");
@@ -385,11 +386,11 @@ public class SmsDAOImpl
 		boolean thereIs = false;
 
 		if (idDelivery == null) {
-			throw new DAOException("Informe Id da entrega!");
+			throw new DAOException("Informe o id da entrega!");
 		}
 
 		if (idDelivery.intValue() <= 0) {
-			throw new DAOException("Informe Id da entrega!");
+			throw new DAOException("Informe o id da entrega!");
 		}
 
 		logger.info("Pesquisar sms da entrega.");
@@ -482,7 +483,7 @@ public class SmsDAOImpl
 		}
 
 		if (!tools.validarNumero(mobile)) {
-			throw new DAOException("Informe n�mero de celular v�lido!");
+			throw new DAOException("Informe número de celular válido!");
 		}
 
 		logger.info("Pesquisar todas mensagens do celular.");
