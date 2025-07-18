@@ -1,3 +1,5 @@
+// Arquivo salvo em UTF-8
+// Certifique-se que o editor está configurado para UTF-8
 package br.com.mulato.cso.view.controller;
 
 import java.io.Serializable;
@@ -9,7 +11,8 @@ import java.util.Map;
 import jakarta.faces.application.Application;
 import jakarta.faces.context.FacesContext;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import br.com.mulato.cso.dry.AbstractController;
 import br.com.mulato.cso.dry.FactoryService;
@@ -25,7 +28,7 @@ public class PriceController extends AbstractController implements Serializable 
 
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger LOGGER = Logger.getLogger(PriceController.class);
+	private static final Logger LOGGER = LogManager.getLogger(PriceController.class);
 
 	private BusinessVO businessVO;
 
@@ -47,8 +50,7 @@ public class PriceController extends AbstractController implements Serializable 
 
 	private boolean insert;
 
-	private void loadSession ()
-	{
+	private void loadSession() {
 
 		String profile;
 
@@ -56,88 +58,77 @@ public class PriceController extends AbstractController implements Serializable 
 
 		LOGGER.info("Carregando controle da p�gina de entregas do neg�cio ...");
 
-		try
-		{
+		try {
 
 			final FacesContext context = FacesContext.getCurrentInstance();
 			final Application app = context.getApplication();
-			final LoginController loginController = app.evaluateExpressionGet(context, "#{loginMB}", LoginController.class);
+			final LoginController loginController = app.evaluateExpressionGet(context, "#{loginMB}",
+					LoginController.class);
 
 			isLogged = loginController.isLogged();
 
-			if (isLogged)
-			{
+			if (isLogged) {
 
 				LOGGER.info("Sess�o carregada! ... Login: " + loginController.getUsername());
 
 				profile = loginController.getProfile();
 
-				if ((loginController.getUserIdLogged() == null) || (loginController.getUserIdLogged().intValue() <= 0))
-				{
+				if ((loginController.getUserIdLogged() == null)
+						|| (loginController.getUserIdLogged().intValue() <= 0)) {
 
 					throw new WebException("Id do usu�rio logado n�o encontrado.");
 
 				}
 
 				if ((loginController.getBusinessVO() == null) || (loginController.getBusinessVO().getId() == null) ||
-					(loginController.getBusinessVO().getId().intValue() <= 0))
-				{
+						(loginController.getBusinessVO().getId().intValue() <= 0)) {
 
 					throw new WebException("Neg�cio da sess�o n�o encontrado.");
 
-				}
-				else
-				{
+				} else {
 
 					businessVO = loginController.getBusinessVO();
 
 				}
 
-				if (profile.equals("BUSINESS"))
-				{
+				if (profile.equals("BUSINESS")) {
 
 					// Edit Price
 
 					label = "Editar";
 
-					if (loginController.getId() != null)
-					{
+					if (loginController.getId() != null) {
 
 						final Integer id = loginController.getId();
 
 						final PriceVO price = FactoryService.getInstancia().getPriceService().find(id);
 
-						if (price != null)
-						{
+						if (price != null) {
 
 							setId(price.getId());
 
-							if ((price.getBusiness() != null) && (price.getBusiness().getId() != null) && (price.getBusiness().getName() != null))
-							{
+							if ((price.getBusiness() != null) && (price.getBusiness().getId() != null)
+									&& (price.getBusiness().getName() != null)) {
 								setIdBusiness(price.getBusiness().getId());
 								setBusiness(price.getBusiness().getName());
 
 							}
 
-							if (price.getTable() != null)
-							{
+							if (price.getTable() != null) {
 
 								final TableVO tableVO = InitProperties.getTableVO(price.getTable());
 
-								if ((tableVO != null) && (tableVO.getId() != null))
-								{
+								if ((tableVO != null) && (tableVO.getId() != null)) {
 									setIdTable(tableVO.getId());
 								}
 
 							}
 
-							if (price.getVehicle() != null)
-							{
+							if (price.getVehicle() != null) {
 
 								final VehicleVO vehicleVO = InitProperties.getVehicleVO(price.getVehicle());
 
-								if ((vehicleVO != null) && (vehicleVO.getId() != null))
-								{
+								if ((vehicleVO != null) && (vehicleVO.getId() != null)) {
 									setIdVehicle(vehicleVO.getId());
 								}
 
@@ -148,9 +139,7 @@ public class PriceController extends AbstractController implements Serializable 
 
 						}
 
-					}
-					else
-					{
+					} else {
 						// Add New Price
 
 						label = "Incluir";
@@ -162,31 +151,24 @@ public class PriceController extends AbstractController implements Serializable 
 
 					}
 
-				}
-				else
-				{
+				} else {
 
 					throw new WebException("Perfil do usu�rio n�o encontrado.");
 
 				}
 
-			}
-			else
-			{
+			} else {
 
 				throw new WebException("Sess�o n�o carregada! Logar novamente.");
 
 			}
 
-		}
-		catch (final WebException e)
-		{
+		} catch (final WebException e) {
 			FacesMessages.mensErro(e.getMessage());
 		}
 	}
 
-	public String save ()
-	{
+	public String save() {
 
 		String path = "pricetable";
 
@@ -194,57 +176,45 @@ public class PriceController extends AbstractController implements Serializable 
 
 		int business_id = 0;
 
-		try
-		{
+		try {
 
-			if ((getId() == null) || getId().equals(new Integer(0)))
-			{
+			if ((getId() == null) || getId().equals(new Integer(0))) {
 				insert = true;
 			}
 
-			if ((getIdBusiness() == null) || getIdBusiness().equals(new Integer(0)))
-			{
+			if ((getIdBusiness() == null) || getIdBusiness().equals(new Integer(0))) {
 				throw new WebException("Informe id neg�cio!");
 			}
 
-			if (getLocal() == null)
-			{
+			if (getLocal() == null) {
 				throw new WebException("Informe endere�o de destino!");
 			}
 
-			if (getLocal().equals(""))
-			{
+			if (getLocal().equals("")) {
 				throw new WebException("Informe endere�o de destino!");
 			}
 
-			if ((getIdTable() == null) || getIdTable().equals(new Integer(0)))
-			{
+			if ((getIdTable() == null) || getIdTable().equals(new Integer(0))) {
 				throw new WebException("Informe nome da tabela!");
 			}
 
-			if ((getIdVehicle() == null) || getIdVehicle().equals(new Integer(0)))
-			{
+			if ((getIdVehicle() == null) || getIdVehicle().equals(new Integer(0))) {
 				throw new WebException("Informe ve��culo!");
 			}
 
-			if (getPrice() == null)
-			{
+			if (getPrice() == null) {
 				throw new WebException("Informe valor da corrida!");
 			}
 
-			if (getPrice().equals(new BigDecimal(0)))
-			{
+			if (getPrice().equals(new BigDecimal(0))) {
 				throw new WebException("Informe valor da corrida!");
 			}
 
 			final PriceVO price = new PriceVO();
 
-			if (insert)
-			{
+			if (insert) {
 				price.setId(null);
-			}
-			else
-			{
+			} else {
 				price.setId(getId());
 			}
 
@@ -254,24 +224,20 @@ public class PriceController extends AbstractController implements Serializable 
 			business.setId(business_id);
 			price.setBusiness(business);
 
-			if (getIdTable() != null)
-			{
+			if (getIdTable() != null) {
 
 				final TableVO tb = InitProperties.getTableVO(getIdTable());
 
-				if ((tb != null) && (tb.getName() != null))
-				{
+				if ((tb != null) && (tb.getName() != null)) {
 					price.setTable(tb.getName());
 				}
 			}
 
-			if (getIdVehicle() != null)
-			{
+			if (getIdVehicle() != null) {
 
 				final VehicleVO vc = InitProperties.getVehicleVO(getIdVehicle());
 
-				if ((vc != null) && (vc.getVehicle() != null))
-				{
+				if ((vc != null) && (vc.getVehicle() != null)) {
 					price.setVehicle(vc.getVehicle());
 				}
 			}
@@ -285,13 +251,9 @@ public class PriceController extends AbstractController implements Serializable 
 
 			path = "pricetables";
 
-		}
-		catch (final WebException e)
-		{
+		} catch (final WebException e) {
 			FacesMessages.mensErro(e.getMessage());
-		}
-		catch (final Exception e)
-		{
+		} catch (final Exception e) {
 			FacesMessages.mensErro("Falha na inser��o no banco de dados!");
 		}
 
@@ -299,8 +261,7 @@ public class PriceController extends AbstractController implements Serializable 
 
 	}
 
-	public PriceController ()
-	{
+	public PriceController() {
 		super();
 		loadSession();
 	}
@@ -311,14 +272,11 @@ public class PriceController extends AbstractController implements Serializable 
 	 * @return
 	 * @throws WebException
 	 */
-	public Map<String, Object> getTables () throws WebException
-	{
+	public Map<String, Object> getTables() throws WebException {
 		final Map<String, Object> itemMap = new LinkedHashMap<String, Object>();
 		final List<TableVO> tables = InitProperties.getListPriceTable();
-		if ((tables != null) && (tables.size() > 0))
-		{
-			for (final TableVO table : tables)
-			{
+		if ((tables != null) && (tables.size() > 0)) {
+			for (final TableVO table : tables) {
 				itemMap.put(table.getName(), table.getId());
 			}
 		}
@@ -331,112 +289,90 @@ public class PriceController extends AbstractController implements Serializable 
 	 * @return
 	 * @throws WebException
 	 */
-	public Map<String, Object> getVehicles () throws WebException
-	{
+	public Map<String, Object> getVehicles() throws WebException {
 		final Map<String, Object> itemMap = new LinkedHashMap<String, Object>();
 		final List<VehicleVO> vehicles = InitProperties.getListVehicle();
-		if ((vehicles != null) && (vehicles.size() > 0))
-		{
-			for (final VehicleVO vehicle : vehicles)
-			{
+		if ((vehicles != null) && (vehicles.size() > 0)) {
+			for (final VehicleVO vehicle : vehicles) {
 				itemMap.put(vehicle.getVehicle(), vehicle.getId());
 			}
 		}
 		return itemMap;
 	}
 
-	public String cancel ()
-	{
+	public String cancel() {
 		return goToPage("pricetables");
 	}
 
-	public String getLabel ()
-	{
+	public String getLabel() {
 		return label;
 	}
 
-	public void setLabel (final String label)
-	{
+	public void setLabel(final String label) {
 		this.label = label;
 	}
 
-	public Integer getId ()
-	{
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId (final Integer id)
-	{
+	public void setId(final Integer id) {
 		this.id = id;
 	}
 
-	public Integer getIdBusiness ()
-	{
+	public Integer getIdBusiness() {
 		return idBusiness;
 	}
 
-	public void setIdBusiness (final Integer idBusiness)
-	{
+	public void setIdBusiness(final Integer idBusiness) {
 		this.idBusiness = idBusiness;
 	}
 
-	public String getBusiness ()
-	{
+	public String getBusiness() {
 		return business;
 	}
 
-	public void setBusiness (final String business)
-	{
+	public void setBusiness(final String business) {
 		this.business = business;
 	}
 
-	public Integer getIdTable ()
-	{
+	public Integer getIdTable() {
 		return idTable;
 	}
 
-	public void setIdTable (final Integer idTable)
-	{
+	public void setIdTable(final Integer idTable) {
 		this.idTable = idTable;
 	}
 
-	public Integer getIdVehicle ()
-	{
+	public Integer getIdVehicle() {
 		return idVehicle;
 	}
 
-	public void setIdVehicle (final Integer idVehicle)
-	{
+	public void setIdVehicle(final Integer idVehicle) {
 		this.idVehicle = idVehicle;
 	}
 
-	public String getLocal ()
-	{
+	public String getLocal() {
 		return local;
 	}
 
-	public void setLocal (final String local)
-	{
+	public void setLocal(final String local) {
 		this.local = local;
 	}
 
-	public BigDecimal getPrice ()
-	{
+	public BigDecimal getPrice() {
 		return price;
 	}
 
-	public void setPrice (final BigDecimal price)
-	{
+	public void setPrice(final BigDecimal price) {
 		this.price = price;
 	}
 
-	public boolean isInsert ()
-	{
+	public boolean isInsert() {
 		return insert;
 	}
 
-	public void setInsert (final boolean insert)
-	{
+	public void setInsert(final boolean insert) {
 		this.insert = insert;
 	}
 }

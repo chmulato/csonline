@@ -20,24 +20,20 @@ import br.com.mulato.cso.exception.WebException;
 /**
  * @author Christian Mulato
  */
-public class SendEmail
-{
+public class SendEmail {
 
 	private final static Logger LOGGER = Logger.getLogger(SendEmail.class);
 
-	public SendEmail (final String[] recipient, final String subject, final String message) throws WebException
-	{
-		if (InitProperties.getEmail_active())
-		{
+	public SendEmail(final String[] recipient, final String subject, final String message) throws WebException {
+		if (InitProperties.getEmail_active()) {
 			sendEmail(recipient, subject, message, false, null, null);
 		}
 	}
 
-	public SendEmail (final String[] recipient, final String subject, final String message, final String pathFileAttached, final String filename)
-		throws WebException
-	{
-		if (InitProperties.getEmail_active())
-		{
+	public SendEmail(final String[] recipient, final String subject, final String message,
+			final String pathFileAttached, final String filename)
+			throws WebException {
+		if (InitProperties.getEmail_active()) {
 			sendEmail(recipient, subject, message, true, pathFileAttached, filename);
 		}
 	}
@@ -89,7 +85,8 @@ public class SendEmail
 		if ((username == null) || (username.equals("")))
 		{
 			msg = "Informe a conta do usuário do servidor SMTP!";
-			LOGGER.error(msg);
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 			throw new WebException(msg);
 		}
 
@@ -97,7 +94,7 @@ public class SendEmail
 		{
 			msg = "Informe a senha do usuário do servidor SMTP!";
 			LOGGER.error(msg);
-			throw new WebException(msg);
+	private static final Logger LOGGER = LogManager.getLogger(SendEmail.class);
 		}
 
 		if ((recipient == null) || (recipient.length == 0))

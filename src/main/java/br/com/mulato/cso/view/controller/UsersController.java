@@ -1,3 +1,4 @@
+// encoding: UTF-8
 package br.com.mulato.cso.view.controller;
 
 import java.io.Serializable;
@@ -7,7 +8,8 @@ import jakarta.el.ELException;
 import jakarta.faces.application.Application;
 import jakarta.faces.context.FacesContext;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import br.com.mulato.cso.dry.AbstractController;
 import br.com.mulato.cso.dry.FactoryService;
@@ -19,7 +21,7 @@ public class UsersController extends AbstractController implements Serializable 
 
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger LOGGER = Logger.getLogger(UsersController.class);
+	private static final Logger LOGGER = LogManager.getLogger(UsersController.class);
 
 	private List<UserVO> results;
 
@@ -27,113 +29,88 @@ public class UsersController extends AbstractController implements Serializable 
 
 	private boolean no_items;
 
-	private void loadSession ()
-	{
+	private void loadSession() {
 		String msg = "Carregando controle da p�gina de usu�rios ...";
 		LOGGER.info(msg);
-		try
-		{
+		try {
 			final FacesContext context = FacesContext.getCurrentInstance();
 			final Application app = context.getApplication();
-			final LoginController loginController = app.evaluateExpressionGet(context, "#{loginMB}", LoginController.class);
-			if (loginController.isLogged())
-			{
+			final LoginController loginController = app.evaluateExpressionGet(context, "#{loginMB}",
+					LoginController.class);
+			if (loginController.isLogged()) {
 				LOGGER.info("Sess�o carregada! ... Login: " + loginController.getUsername());
-				if (loginController.getProfile().equals("ADMINISTRATOR"))
-				{
+				if (loginController.getProfile().equals("ADMINISTRATOR")) {
 					results = FactoryService.getInstancia().getAdminService().listAllUsers();
-					if ((results != null) && (results.size() > 0))
-					{
+					if ((results != null) && (results.size() > 0)) {
 						setResults(results);
-					}
-					else
-					{
+					} else {
 						setNo_items(true);
 					}
-				}
-				else
-				{
+				} else {
 					msg = "Perfil do usu�rio n�o encontrado.";
 					LOGGER.error(msg);
 					throw new WebException(msg);
 				}
-			}
-			else
-			{
+			} else {
 				msg = "Sess�o n�o carregada! Logar novamente.";
 				LOGGER.error(msg);
 				throw new WebException(msg);
 			}
-		}
-		catch (final WebException e)
-		{
+		} catch (final WebException e) {
 			FacesMessages.mensErro(e.getMessage());
 		}
 	}
 
-	public UsersController ()
-	{
+	public UsersController() {
 		super();
 		loadSession();
 	}
 
-	public String edit ()
-	{
-		try
-		{
+	public String edit() {
+		try {
 			parameter = super.getParameter("id");
-			if ((parameter != null) && (!parameter.equals("")))
-			{
+			if ((parameter != null) && (!parameter.equals(""))) {
 				final FacesContext context = FacesContext.getCurrentInstance();
 				final Application app = context.getApplication();
-				final LoginController loginController = app.evaluateExpressionGet(context, "#{loginMB}", LoginController.class);
-				if (loginController != null)
-				{
+				final LoginController loginController = app.evaluateExpressionGet(context, "#{loginMB}",
+						LoginController.class);
+				if (loginController != null) {
 					loginController.setId(Integer.parseInt(parameter));
 					return goToPage("user");
 				}
 			}
-		}
-		catch (NumberFormatException | WebException | ELException e)
-		{
+		} catch (NumberFormatException | WebException | ELException e) {
 			LOGGER.error(e.getMessage());
 			FacesMessages.mensErro(e.getMessage());
 		}
 		return goToPage("users");
 	}
 
-	public String listAll ()
-	{
+	public String listAll() {
 		return goToPage("users");
 	}
 
-	public List<UserVO> getResults ()
-	{
+	public List<UserVO> getResults() {
 		return results;
 	}
 
-	public void setResults (final List<UserVO> results)
-	{
+	public void setResults(final List<UserVO> results) {
 		this.results = results;
 	}
 
-	public String getParameter ()
-	{
+	public String getParameter() {
 		return parameter;
 	}
 
-	public void setParameter (final String parameter)
-	{
+	public void setParameter(final String parameter) {
 		this.parameter = parameter;
 	}
 
-	public boolean isNo_items ()
-	{
+	public boolean isNo_items() {
 		return no_items;
 	}
 
-	public void setNo_items (final boolean no_items)
-	{
+	public void setNo_items(final boolean no_items) {
 		this.no_items = no_items;
 	}
 }

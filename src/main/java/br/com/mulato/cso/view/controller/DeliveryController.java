@@ -1,3 +1,5 @@
+// Arquivo salvo em UTF-8
+// Certifique-se que o editor está configurado para UTF-8
 package br.com.mulato.cso.view.controller;
 
 import java.io.Serializable;
@@ -12,7 +14,8 @@ import java.util.Map.Entry;
 import jakarta.faces.application.Application;
 import jakarta.faces.context.FacesContext;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import br.com.mulato.cso.dry.AbstractController;
 import br.com.mulato.cso.dry.FactoryService;
@@ -28,7 +31,7 @@ public class DeliveryController extends AbstractController implements Serializab
 
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger LOGGER = Logger.getLogger(DeliveryController.class);
+	private static final Logger LOGGER = LogManager.getLogger(DeliveryController.class);
 
 	private BusinessVO businessVO;
 
@@ -80,8 +83,7 @@ public class DeliveryController extends AbstractController implements Serializab
 
 	private boolean send_sms;
 
-	private void loadSession ()
-	{
+	private void loadSession() {
 
 		String profile;
 
@@ -89,79 +91,69 @@ public class DeliveryController extends AbstractController implements Serializab
 
 		LOGGER.info("Carregando controle da p�gina de entregas do neg�cio ...");
 
-		try
-		{
+		try {
 
 			final FacesContext context = FacesContext.getCurrentInstance();
 			final Application app = context.getApplication();
-			final LoginController loginController = app.evaluateExpressionGet(context, "#{loginMB}", LoginController.class);
+			final LoginController loginController = app.evaluateExpressionGet(context, "#{loginMB}",
+					LoginController.class);
 
 			isLogged = loginController.isLogged();
 
-			if (isLogged)
-			{
+			if (isLogged) {
 
 				LOGGER.info("Sess�o carregada! ... Login: " + loginController.getUsername());
 
 				profile = loginController.getProfile();
 
-				if ((loginController.getUserIdLogged() == null) || (loginController.getUserIdLogged().intValue() <= 0))
-				{
+				if ((loginController.getUserIdLogged() == null)
+						|| (loginController.getUserIdLogged().intValue() <= 0)) {
 
 					throw new WebException("Id do usu�rio logado n�o encontrado.");
 
 				}
 
 				if ((loginController.getBusinessVO() == null) || (loginController.getBusinessVO().getId() == null) ||
-					(loginController.getBusinessVO().getId().intValue() <= 0))
-				{
+						(loginController.getBusinessVO().getId().intValue() <= 0)) {
 
 					throw new WebException("Neg�cio da sess�o n�o encontrado.");
 
-				}
-				else
-				{
+				} else {
 
 					businessVO = loginController.getBusinessVO();
 
 				}
 
-				if (profile.equals("BUSINESS"))
-				{
+				if (profile.equals("BUSINESS")) {
 
 					// Edit Delivery
 
 					label = "Editar";
 
-					if (loginController.getId() != null)
-					{
+					if (loginController.getId() != null) {
 
 						final Integer id = loginController.getId();
 
 						final DeliveryVO delivery = FactoryService.getInstancia().getDeliveryService().find(id);
 
-						if (delivery != null)
-						{
+						if (delivery != null) {
 
 							setId(delivery.getId());
 
 							if ((delivery.getBusiness() != null) && (delivery.getBusiness().getId() != null) &&
-								(delivery.getBusiness().getName() != null))
-							{
+									(delivery.getBusiness().getName() != null)) {
 								setIdBusiness(delivery.getBusiness().getId());
 								setBusiness_name(delivery.getBusiness().getName());
 							}
 
 							if ((delivery.getCustomer() != null) && (delivery.getCustomer().getId() != null) &&
-								(delivery.getCustomer().getName() != null))
-							{
+									(delivery.getCustomer().getName() != null)) {
 								setIdCustomer(delivery.getCustomer().getId());
 								setCustomer_name(delivery.getCustomer().getName());
 							}
 
 							if ((delivery.getCourier() != null) && (delivery.getCourier().getId() != null) &&
-								(delivery.getCourier().getName() != null))
-							{
+									(delivery.getCourier().getName() != null)) {
 								setIdCourier(delivery.getCourier().getId());
 								setCourier_name(delivery.getCourier().getName());
 							}
@@ -181,9 +173,7 @@ public class DeliveryController extends AbstractController implements Serializab
 
 						}
 
-					}
-					else
-					{
+					} else {
 						// Add New Delivery
 
 						label = "Incluir";
@@ -195,37 +185,29 @@ public class DeliveryController extends AbstractController implements Serializab
 
 					}
 
-				}
-				else
-				{
+				} else {
 
 					throw new WebException("Perfil do usu�rio n�o encontrado.");
 
 				}
 
-			}
-			else
-			{
+			} else {
 
 				throw new WebException("Sess�o n�o carregada! Logar novamente.");
 
 			}
 
-		}
-		catch (final WebException e)
-		{
+		} catch (final WebException e) {
 			FacesMessages.mensErro(e.getMessage());
 		}
 	}
 
-	public String send ()
-	{
+	public String send() {
 		send_mail = true;
 		return save();
 	}
 
-	public String sendSms ()
-	{
+	public String sendSms() {
 
 		boolean error = false;
 
@@ -233,45 +215,34 @@ public class DeliveryController extends AbstractController implements Serializab
 
 		send_sms = true;
 
-		try
-		{
+		try {
 
-			if (getTxtSms() == null)
-			{
+			if (getTxtSms() == null) {
 				throw new WebException("Escreva a mensagem SMS!");
 			}
 
-			if (getTxtSms().equals(""))
-			{
+			if (getTxtSms().equals("")) {
 				throw new WebException("Escreva a mensagem SMS!");
 			}
 
-		}
-		catch (final WebException e)
-		{
+		} catch (final WebException e) {
 			error = true;
 			FacesMessages.mensErro(e.getMessage());
-		}
-		catch (final Exception e)
-		{
+		} catch (final Exception e) {
 			error = true;
 			FacesMessages.mensErro("Escreva a mensagem SMS!");
 		}
 
-		if (error)
-		{
+		if (error) {
 			send_sms = false;
 			return goToBackPage(path);
-		}
-		else
-		{
+		} else {
 			return save();
 		}
 
 	}
 
-	public String save ()
-	{
+	public String save() {
 
 		String path = "delivery";
 
@@ -281,105 +252,83 @@ public class DeliveryController extends AbstractController implements Serializab
 		int customer_id = 0;
 		int courier_id = 0;
 
-		try
-		{
+		try {
 
-			if ((getId() == null) || getId().equals(new Integer(0)))
-			{
+			if ((getId() == null) || getId().equals(new Integer(0))) {
 				insert = true;
 			}
 
-			if ((getIdBusiness() == null) || getIdBusiness().equals(new Integer(0)))
-			{
+			if ((getIdBusiness() == null) || getIdBusiness().equals(new Integer(0))) {
 				throw new WebException("Informe id neg�cio!");
 			}
 
-			if ((getIdCustomer() == null) || getIdCustomer().equals(new Integer(0)))
-			{
+			if ((getIdCustomer() == null) || getIdCustomer().equals(new Integer(0))) {
 				throw new WebException("Selecione cliente!");
 			}
 
-			if ((getIdCourier() == null) || getIdCourier().equals(new Integer(0)))
-			{
+			if ((getIdCourier() == null) || getIdCourier().equals(new Integer(0))) {
 				throw new WebException("Selecione entregador!");
 			}
 
-			if (getStart() == null)
-			{
+			if (getStart() == null) {
 				throw new WebException("Informe endere�o de in��cio da corrida!");
 			}
 
-			if (getStart().equals(""))
-			{
+			if (getStart().equals("")) {
 				throw new WebException("Informe endere�o de in��cio da corrida!");
 			}
 
-			if (getDestination() == null)
-			{
+			if (getDestination() == null) {
 				throw new WebException("Informe endere�o de destino!");
 			}
 
-			if (getDestination().equals(""))
-			{
+			if (getDestination().equals("")) {
 				throw new WebException("Informe endere�o de destino!");
 			}
 
-			if (getContact() == null)
-			{
+			if (getContact() == null) {
 				throw new WebException("Informe o contato!");
 			}
 
-			if (getContact().equals(""))
-			{
+			if (getContact().equals("")) {
 				throw new WebException("Informe o contato!");
 			}
 
-			if (getDescription() == null)
-			{
+			if (getDescription() == null) {
 				throw new WebException("Informe descri��o!");
 			}
 
-			if (getDescription().equals(""))
-			{
+			if (getDescription().equals("")) {
 				throw new WebException("Informe descri��o!");
 			}
 
-			if (getKm() == null)
-			{
+			if (getKm() == null) {
 				throw new WebException("Informe dist�ncia em quil�metros!");
 			}
 
-			if (getKm().equals(new BigDecimal(0)))
-			{
+			if (getKm().equals(new BigDecimal(0))) {
 				throw new WebException("Informe dist�ncia em quil�metros!");
 			}
 
-			if (getCost() == null)
-			{
+			if (getCost() == null) {
 				throw new WebException("Informe valor da corrida!");
 			}
 
-			if (getCost().equals(new BigDecimal(0)))
-			{
+			if (getCost().equals(new BigDecimal(0))) {
 				throw new WebException("Informe valor da corrida!");
 			}
 
-			if (getCompleted() == true)
-			{
-				if (getReceived() == false)
-				{
+			if (getCompleted() == true) {
+				if (getReceived() == false) {
 					throw new WebException("Primeiramente, inicie a corrida da entrega!");
 				}
 			}
 
 			final DeliveryVO delivery = new DeliveryVO();
 
-			if (insert)
-			{
+			if (insert) {
 				delivery.setId(null);
-			}
-			else
-			{
+			} else {
 				delivery.setId(getId());
 			}
 
@@ -409,24 +358,19 @@ public class DeliveryController extends AbstractController implements Serializab
 			delivery.setAdditionalCost(getAdditionalCost());
 			delivery.setCost(getCost());
 
-			if ((send_mail) || (send_sms))
-			{
+			if ((send_mail) || (send_sms)) {
 				delivery.setReceived(true);
 				delivery.setCompleted(false);
-			}
-			else
-			{
+			} else {
 				delivery.setReceived(getReceived());
 				delivery.setCompleted(getCompleted());
 			}
 
-			if (insert)
-			{
+			if (insert) {
 				delivery.setCompleted(false);
 			}
 
-			if (send_sms)
-			{
+			if (send_sms) {
 				final SmsVO sms = new SmsVO();
 				sms.setMessage(getTxtSms());
 				sms.setType('S');
@@ -435,31 +379,21 @@ public class DeliveryController extends AbstractController implements Serializab
 
 			FactoryService.getInstancia().getDeliveryService().saveDeliveryByBusiness(delivery, send_mail, send_sms);
 
-			if (send_mail)
-			{
+			if (send_mail) {
 				path = "deliveries";
 				FacesMessages.mensInfo("Email enviado com sucesso!");
-			}
-			else
-			{
-				if (send_sms)
-				{
+			} else {
+				if (send_sms) {
 					path = "deliveries";
 					FacesMessages.mensInfo("SMS enviado com sucesso!");
-				}
-				else
-				{
+				} else {
 					FacesMessages.mensInfo("Entrega salva com sucesso!");
 				}
 			}
 
-		}
-		catch (final WebException e)
-		{
+		} catch (final WebException e) {
 			FacesMessages.mensErro(e.getMessage());
-		}
-		catch (final Exception e)
-		{
+		} catch (final Exception e) {
 			FacesMessages.mensErro("Falha na inser��o no banco de dados!");
 		}
 
@@ -467,8 +401,7 @@ public class DeliveryController extends AbstractController implements Serializab
 
 	}
 
-	public DeliveryController ()
-	{
+	public DeliveryController() {
 		super();
 		loadSession();
 	}
@@ -479,18 +412,16 @@ public class DeliveryController extends AbstractController implements Serializab
 	 * @return
 	 * @throws WebException
 	 */
-	public Map<String, Object> getCouriers () throws WebException
-	{
+	public Map<String, Object> getCouriers() throws WebException {
 
 		final Map<String, Object> itemMap = new LinkedHashMap<String, Object>();
 
-		if ((businessVO != null) && (businessVO.getId() != null))
-		{
+		if ((businessVO != null) && (businessVO.getId() != null)) {
 
-			final List<CourierVO> listCouriers = FactoryService.getInstancia().getCourierService().listAllCourierBusiness(businessVO);
+			final List<CourierVO> listCouriers = FactoryService.getInstancia().getCourierService()
+					.listAllCourierBusiness(businessVO);
 
-			for (final CourierVO courier : listCouriers)
-			{
+			for (final CourierVO courier : listCouriers) {
 
 				// label, value
 				itemMap.put(courier.getName(), courier.getId());
@@ -508,18 +439,16 @@ public class DeliveryController extends AbstractController implements Serializab
 	 * @return
 	 * @throws WebException
 	 */
-	public Map<String, Object> getCustomers () throws WebException
-	{
+	public Map<String, Object> getCustomers() throws WebException {
 
 		final Map<String, Object> itemMap = new LinkedHashMap<String, Object>();
 
-		if ((businessVO != null) && (businessVO.getId() != null))
-		{
+		if ((businessVO != null) && (businessVO.getId() != null)) {
 
-			final List<CustomerVO> listCustomers = FactoryService.getInstancia().getCustomerService().listAllCustomerBusiness(businessVO);
+			final List<CustomerVO> listCustomers = FactoryService.getInstancia().getCustomerService()
+					.listAllCustomerBusiness(businessVO);
 
-			for (final CustomerVO customer : listCustomers)
-			{
+			for (final CustomerVO customer : listCustomers) {
 
 				// label, value
 				itemMap.put(customer.getName(), customer.getId());
@@ -531,193 +460,155 @@ public class DeliveryController extends AbstractController implements Serializab
 
 	}
 
-	public String cancel ()
-	{
+	public String cancel() {
 		return goToPage("deliveries");
 	}
 
-	public String getLabel ()
-	{
+	public String getLabel() {
 		return label;
 	}
 
-	public void setLabel (final String label)
-	{
+	public void setLabel(final String label) {
 		this.label = label;
 	}
 
-	public Integer getId ()
-	{
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId (final Integer id)
-	{
+	public void setId(final Integer id) {
 		this.id = id;
 	}
 
-	public Integer getIdBusiness ()
-	{
+	public Integer getIdBusiness() {
 		return idBusiness;
 	}
 
-	public void setIdBusiness (final Integer idBusiness)
-	{
+	public void setIdBusiness(final Integer idBusiness) {
 		this.idBusiness = idBusiness;
 	}
 
-	public String getBusiness_name ()
-	{
+	public String getBusiness_name() {
 		return business_name;
 	}
 
-	public void setBusiness_name (final String business_name)
-	{
+	public void setBusiness_name(final String business_name) {
 		this.business_name = business_name;
 	}
 
-	public Integer getIdCustomer ()
-	{
+	public Integer getIdCustomer() {
 		return idCustomer;
 	}
 
-	public void setIdCustomer (final Integer idCustomer)
-	{
+	public void setIdCustomer(final Integer idCustomer) {
 		this.idCustomer = idCustomer;
 	}
 
-	public String getCustomer_name ()
-	{
+	public String getCustomer_name() {
 		return customer_name;
 	}
 
-	public void setCustomer_name (final String customer_name)
-	{
+	public void setCustomer_name(final String customer_name) {
 		this.customer_name = customer_name;
 	}
 
-	public Integer getIdCourier ()
-	{
+	public Integer getIdCourier() {
 		return idCourier;
 	}
 
-	public void setIdCourier (final Integer idCourier)
-	{
+	public void setIdCourier(final Integer idCourier) {
 		this.idCourier = idCourier;
 	}
 
-	public String getCourier_name ()
-	{
+	public String getCourier_name() {
 		return courier_name;
 	}
 
-	public void setCourier_name (final String courier_name)
-	{
+	public void setCourier_name(final String courier_name) {
 		this.courier_name = courier_name;
 	}
 
-	public Date getDatetime ()
-	{
+	public Date getDatetime() {
 		return datetime;
 	}
 
-	public void setDatetime (final Date datetime)
-	{
+	public void setDatetime(final Date datetime) {
 		this.datetime = datetime;
 	}
 
-	public String getStart ()
-	{
+	public String getStart() {
 		return start;
 	}
 
-	public void setStart (final String start)
-	{
+	public void setStart(final String start) {
 		this.start = start;
 	}
 
-	public String getDestination ()
-	{
+	public String getDestination() {
 		return destination;
 	}
 
-	public void setDestination (final String destination)
-	{
+	public void setDestination(final String destination) {
 		this.destination = destination;
 	}
 
-	public String getContact ()
-	{
+	public String getContact() {
 		return contact;
 	}
 
-	public void setContact (final String contact)
-	{
+	public void setContact(final String contact) {
 		this.contact = contact;
 	}
 
-	public String getDescription ()
-	{
+	public String getDescription() {
 		return description;
 	}
 
-	public void setDescription (final String description)
-	{
+	public void setDescription(final String description) {
 		this.description = description;
 	}
 
-	public BigDecimal getVolume ()
-	{
+	public BigDecimal getVolume() {
 		return volume;
 	}
 
-	public void setVolume (final BigDecimal volume)
-	{
+	public void setVolume(final BigDecimal volume) {
 		this.volume = volume;
 	}
 
-	public BigDecimal getWeight ()
-	{
+	public BigDecimal getWeight() {
 		return weight;
 	}
 
-	public void setWeight (final BigDecimal weight)
-	{
+	public void setWeight(final BigDecimal weight) {
 		this.weight = weight;
 	}
 
-	public BigDecimal getKm ()
-	{
+	public BigDecimal getKm() {
 		return km;
 	}
 
-	public void setKm (final BigDecimal km)
-	{
+	public void setKm(final BigDecimal km) {
 		this.km = km;
 	}
 
-	public BigDecimal getAdditionalCost ()
-	{
+	public BigDecimal getAdditionalCost() {
 		return additionalCost;
 	}
 
-	public void setAdditionalCost (final BigDecimal additionalCost)
-	{
+	public void setAdditionalCost(final BigDecimal additionalCost) {
 		this.additionalCost = additionalCost;
 	}
 
-	public BigDecimal getCost ()
-	{
+	public BigDecimal getCost() {
 		return cost;
 	}
 
-	public void setCost (final BigDecimal cost)
-	{
+	public void setCost(final BigDecimal cost) {
 		this.cost = cost;
 	}
 
-	public String getTxtSms ()
-	{
+	public String getTxtSms() {
 
 		boolean nonEmpty = false;
 
@@ -729,18 +620,13 @@ public class DeliveryController extends AbstractController implements Serializab
 		String txtDescriptionValue = "   ";
 		String txtKmValue = "   ";
 
-		try
-		{
+		try {
 
-			if (getIdCustomer() != null)
-			{
-				if ((getCustomers() != null) && (getCustomers().size() > 0))
-				{
+			if (getIdCustomer() != null) {
+				if ((getCustomers() != null) && (getCustomers().size() > 0)) {
 					final Map<String, Object> map = getCustomers();
-					for (final Entry<String, Object> entry : map.entrySet())
-					{
-						if (entry.getValue().equals(getIdCustomer()))
-						{
+					for (final Entry<String, Object> entry : map.entrySet()) {
+						if (entry.getValue().equals(getIdCustomer())) {
 							txtCustomerValue = entry.getKey();
 							nonEmpty = true;
 							break;
@@ -749,47 +635,40 @@ public class DeliveryController extends AbstractController implements Serializab
 				}
 			}
 
-		}
-		catch (final WebException e)
-		{
+		} catch (final WebException e) {
 			txtCustomerValue = "N�o Encontrado!";
 		}
 
-		if (getContact() != null)
-		{
+		if (getContact() != null) {
 			txtContactValue = getContact();
 			nonEmpty = true;
 		}
 
-		if (getStart() != null)
-		{
+		if (getStart() != null) {
 			txtStartValue = getStart();
 			nonEmpty = true;
 		}
 
-		if (getDestination() != null)
-		{
+		if (getDestination() != null) {
 			txtDestinationValue = getDestination();
 			nonEmpty = true;
 		}
 
-		if (getDescription() != null)
-		{
+		if (getDescription() != null) {
 			txtDescriptionValue = getDescription();
 			nonEmpty = true;
 		}
 
-		if (getKm() != null)
-		{
+		if (getKm() != null) {
 			txtKmValue = km.setScale(2, RoundingMode.HALF_DOWN).toString();
 			txtKmValue = txtKmValue.replace(".", ",");
 			nonEmpty = true;
 		}
 
-		if (nonEmpty)
-		{
-			result = " Cliente: " + txtCustomerValue + " Contato: " + txtContactValue + " Base: " + txtStartValue + " Dest: " + txtDestinationValue +
-				" Obs: " + txtDescriptionValue + " Km: " + txtKmValue;
+		if (nonEmpty) {
+			result = " Cliente: " + txtCustomerValue + " Contato: " + txtContactValue + " Base: " + txtStartValue
+					+ " Dest: " + txtDestinationValue +
+					" Obs: " + txtDescriptionValue + " Km: " + txtKmValue;
 		}
 
 		txtSms = result;
@@ -797,38 +676,31 @@ public class DeliveryController extends AbstractController implements Serializab
 		return txtSms;
 	}
 
-	public void setTxtSms (final String txtSms)
-	{
+	public void setTxtSms(final String txtSms) {
 		this.txtSms = txtSms;
 	}
 
-	public boolean getCompleted ()
-	{
+	public boolean getCompleted() {
 		return completed;
 	}
 
-	public void setCompleted (final boolean completed)
-	{
+	public void setCompleted(final boolean completed) {
 		this.completed = completed;
 	}
 
-	public boolean getReceived ()
-	{
+	public boolean getReceived() {
 		return received;
 	}
 
-	public void setReceived (final boolean received)
-	{
+	public void setReceived(final boolean received) {
 		this.received = received;
 	}
 
-	public boolean isInsert ()
-	{
+	public boolean isInsert() {
 		return insert;
 	}
 
-	public void setInsert (final boolean insert)
-	{
+	public void setInsert(final boolean insert) {
 		this.insert = insert;
 	}
 }

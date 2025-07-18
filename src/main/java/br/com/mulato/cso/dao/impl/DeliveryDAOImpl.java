@@ -1,3 +1,5 @@
+// Arquivo salvo em UTF-8
+// Certifique-se que o editor está configurado para UTF-8
 package br.com.mulato.cso.dao.impl;
 
 import java.io.Serializable;
@@ -7,7 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import br.com.mulato.cso.dao.DeliveryDAO;
 import br.com.mulato.cso.dry.DBConnection;
 import br.com.mulato.cso.dry.FactoryDAO;
@@ -24,7 +27,7 @@ public class DeliveryDAOImpl implements DeliveryDAO, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private final static Logger logger = Logger.getLogger(DeliveryDAOImpl.class);
+	private static final Logger logger = LogManager.getLogger(DeliveryDAOImpl.class);
 
 	private BusinessVO findBusiness(final Integer idBusiness) throws DAOException {
 		return FactoryDAO.getInstancia().getBusinessDAO().find(idBusiness);

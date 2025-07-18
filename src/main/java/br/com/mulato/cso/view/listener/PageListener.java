@@ -1,3 +1,5 @@
+// Arquivo salvo em UTF-8
+// Certifique-se que o editor está configurado para UTF-8
 package br.com.mulato.cso.view.listener;
 
 import java.io.IOException;
@@ -8,30 +10,29 @@ import jakarta.faces.event.PhaseEvent;
 import jakarta.faces.event.PhaseId;
 import jakarta.faces.event.PhaseListener;
 import jakarta.servlet.http.HttpSession;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import br.com.mulato.cso.view.controller.LoginController;
 
 public class PageListener implements PhaseListener {
 
-	private static final Logger LOGGER = Logger.getLogger(PageListener.class);
+	private static final Logger LOGGER = LogManager.getLogger(PageListener.class);
 
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public void afterPhase (final PhaseEvent event)
-	{
+	public void afterPhase(final PhaseEvent event) {
 	}
 
 	// executa antes de qualquer renderizar ao usu�rio
 	@Override
-	public void beforePhase (final PhaseEvent event)
-	{
+	public void beforePhase(final PhaseEvent event) {
 
 		final FacesContext facesContext = FacesContext.getCurrentInstance();
 		final Application application = facesContext.getApplication();
 		final String page = facesContext.getViewRoot().getViewId();
 		final ExternalContext externalContext = facesContext.getExternalContext();
-		final HttpSession httpSession = (HttpSession)externalContext.getSession(false);
+		final HttpSession httpSession = (HttpSession) externalContext.getSession(false);
 
 		boolean timeout;
 		boolean validaPaginas;
@@ -44,24 +45,18 @@ public class PageListener implements PhaseListener {
 		LOGGER.info("Timeout: " + timeout);
 
 		// recupera os dados que estao na sess�o LoginController
-		final LoginController loginController = application.evaluateExpressionGet(facesContext, "#{loginMB}", LoginController.class);
+		final LoginController loginController = application.evaluateExpressionGet(facesContext, "#{loginMB}",
+				LoginController.class);
 
-		if (loginController != null)
-		{
-			if (timeout)
-			{
+		if (loginController != null) {
+			if (timeout) {
 				loginController.logout();
-				try
-				{
+				try {
 					externalContext.redirect(externalContext.getRequestContextPath() + "/login.faces");
-				}
-				catch (final IOException ex)
-				{
+				} catch (final IOException ex) {
 					LOGGER.error(ex.getMessage());
 				}
-			}
-			else
-			{
+			} else {
 				validaPaginas = page.equals("/logout.xhtml")
 						|| page.equals("/resume.xhtml")
 						|| page.equals("/user.xhtml")
@@ -84,23 +79,17 @@ public class PageListener implements PhaseListener {
 						|| page.equals("/messages.xhtml");
 
 				// verifica as p�ginas que n�o possuem acesso externo
-				if (validaPaginas)
-				{
-					if (!loginController.isLogged())
-					{
-						try
-						{
+				if (validaPaginas) {
+					if (!loginController.isLogged()) {
+						try {
 							externalContext.redirect(externalContext.getRequestContextPath() + "/login.faces");
-						}
-						catch (final IOException ex)
-						{
+						} catch (final IOException ex) {
 							LOGGER.error(ex.getMessage());
 						}
 					}
 				}
 				// se abrir encerra todas sess�es
-				if (page.equals("/logout.xhtml"))
-				{
+				if (page.equals("/logout.xhtml")) {
 					loginController.logout();
 				}
 			}
@@ -108,8 +97,7 @@ public class PageListener implements PhaseListener {
 	}
 
 	@Override
-	public PhaseId getPhaseId ()
-	{
+	public PhaseId getPhaseId() {
 		return PhaseId.RENDER_RESPONSE;
 	}
 }

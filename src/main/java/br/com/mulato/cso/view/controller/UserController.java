@@ -1,3 +1,5 @@
+// Arquivo salvo em UTF-8
+// Certifique-se que o editor está configurado para UTF-8
 package br.com.mulato.cso.view.controller;
 
 import java.io.Serializable;
@@ -5,7 +7,8 @@ import java.io.Serializable;
 import jakarta.faces.application.Application;
 import jakarta.faces.context.FacesContext;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import br.com.mulato.cso.dry.AbstractController;
 import br.com.mulato.cso.dry.FactoryService;
@@ -17,7 +20,7 @@ public class UserController extends AbstractController implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger LOGGER = Logger.getLogger(UserController.class);
+	private static final Logger LOGGER = LogManager.getLogger(UserController.class);
 
 	private UserVO userVO;
 
@@ -37,34 +40,29 @@ public class UserController extends AbstractController implements Serializable {
 
 	private String mobile;
 
-	private void loadSessao ()
-	{
+	private void loadSessao() {
 		String msg = "Carregando controle da p�gina de usu�rio ...";
 		String profile;
 		boolean isLogged;
 		LOGGER.info(msg);
-		try
-		{
+		try {
 			final FacesContext context = FacesContext.getCurrentInstance();
 			final Application app = context.getApplication();
-			final LoginController loginController = app.evaluateExpressionGet(context, "#{loginMB}", LoginController.class);
+			final LoginController loginController = app.evaluateExpressionGet(context, "#{loginMB}",
+					LoginController.class);
 			isLogged = loginController.isLogged();
-			if (isLogged)
-			{
+			if (isLogged) {
 				LOGGER.info("Sess�o carregada! ... Login: " + loginController.getUsername());
 				profile = loginController.getProfile();
-				if ((loginController.getUserIdLogged() == null) || (loginController.getUserIdLogged() <= 0))
-				{
+				if ((loginController.getUserIdLogged() == null) || (loginController.getUserIdLogged() <= 0)) {
 					msg = "Id do usu�rio logado n�o encontrado.";
 					LOGGER.error(msg);
 					throw new WebException(msg);
 				}
-				if (profile.equals("ADMINISTRATOR"))
-				{
+				if (profile.equals("ADMINISTRATOR")) {
 					LOGGER.info("Id do administrador: " + loginController.getId());
 					userVO = FactoryService.getInstancia().getAdminService().find(loginController.getId());
-					if (userVO != null)
-					{
+					if (userVO != null) {
 						setId(userVO.getId());
 						setRole(userVO.getRole());
 						setName(userVO.getName());
@@ -74,116 +72,92 @@ public class UserController extends AbstractController implements Serializable {
 						setAddress(userVO.getAddress());
 						setMobile(userVO.getMobile());
 					}
-				}
-				else
-				{
+				} else {
 					msg = "Perfil do usu�rio n�o encontrado.";
 					LOGGER.error(msg);
 					throw new WebException(msg);
 				}
-			}
-			else
-			{
+			} else {
 				msg = "Sess�o n�o carregada! Logar novamente.";
 				LOGGER.error(msg);
 				throw new WebException(msg);
 			}
-		}
-		catch (final WebException e)
-		{
+		} catch (final WebException e) {
 			LOGGER.error(e.getMessage());
 			FacesMessages.mensErro(e.getMessage());
 		}
 	}
 
-	public UserController ()
-	{
+	public UserController() {
 		super();
 		loadSessao();
 	}
 
-	public String cancel ()
-	{
+	public String cancel() {
 		return goToPage("users");
 	}
 
-	public Integer getId ()
-	{
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId (final Integer id)
-	{
+	public void setId(final Integer id) {
 		this.id = id;
 	}
 
-	public String getRole ()
-	{
+	public String getRole() {
 		return role;
 	}
 
-	public void setRole (final String role)
-	{
+	public void setRole(final String role) {
 		this.role = role;
 	}
 
-	public String getName ()
-	{
+	public String getName() {
 		return name;
 	}
 
-	public void setName (final String name)
-	{
+	public void setName(final String name) {
 		this.name = name;
 	}
 
-	public String getLogin ()
-	{
+	public String getLogin() {
 		return login;
 	}
 
-	public void setLogin (final String login)
-	{
+	public void setLogin(final String login) {
 		this.login = login;
 	}
 
-	public String getEmail ()
-	{
+	public String getEmail() {
 		return email;
 	}
 
-	public void setEmail (final String email)
-	{
+	public void setEmail(final String email) {
 		this.email = email;
 	}
 
-	public String getEmail2 ()
-	{
+	public String getEmail2() {
 		return email2;
 	}
 
-	public void setEmail2 (final String email2)
-	{
+	public void setEmail2(final String email2) {
 		this.email2 = email2;
 	}
 
-	public String getAddress ()
-	{
+	public String getAddress() {
 		return address;
 	}
 
-	public void setAddress (final String address)
-	{
+	public void setAddress(final String address) {
 		this.address = address;
 	}
 
-	public String getMobile ()
-	{
+	public String getMobile() {
 		return mobile;
 	}
 
-	public void setMobile (final String mobile)
-	{
+	public void setMobile(final String mobile) {
 		this.mobile = mobile;
 	}
 }
