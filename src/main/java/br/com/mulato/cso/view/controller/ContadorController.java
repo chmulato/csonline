@@ -39,12 +39,12 @@ public class ContadorController extends AbstractController implements Serializab
 	public void maisUm (final int soma)
 	{
 		total = new Integer(total + soma);
-		LOGGER.info("Soma mais um usu·rio logado. Total logado= " + getUsuariosLogados());
+		LOGGER.info("Soma mais um usu√°rio logado. Total logado= " + getUsuariosLogados());
 	}
 
 	public void menosUm (final int menos)
 	{
 		total = new Integer(total - menos);
-		LOGGER.info("Diminue um usu·rio que deixou a aplicaÁ„o. Total logado= " + getUsuariosLogados());
+		LOGGER.info("Diminui um usu√°rio que deixou a aplica√ß√£o. Total logado= " + getUsuariosLogados());
 	}
 }
