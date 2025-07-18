@@ -1,193 +1,138 @@
-PS C:\dev\csonline> mvn clean install
-[INFO] Scanning for projects...
-[INFO] 
-[INFO] -----------------------< br.com.mulato:csonline >-----------------------
-[INFO] Building csonline 1.0
-[INFO]   from pom.xml
-[INFO] --------------------------------[ war ]---------------------------------
-[INFO] 
-[INFO] --- clean:3.2.0:clean (default-clean) @ csonline ---
-[INFO] Deleting C:\dev\csonline\target
-[INFO] 
-[INFO] --- resources:2.6:copy-resources (copy-resources) @ csonline ---
-[INFO] Using 'UTF-8' encoding to copy filtered resources.
-[INFO] Copying 21 resources
-[INFO] 
-[INFO] --- jacoco:0.8.11:prepare-agent (default) @ csonline ---
-[INFO] argLine set to -javaagent:C:\\Users\\devel\\.m2\\repository\\org\\jacoco\\org.jacoco.agent\\0.8.11\\org.jacoco.agent-0.8.11-runtime.jar=destfile=C:\\dev\\csonline\\target\\jacoco.exec
-[INFO]
-[INFO] --- resources:2.6:resources (default-resources) @ csonline ---
-[INFO] Using 'UTF-8' encoding to copy filtered resources.
-[INFO] Copying 21 resources
-[INFO] 
-[INFO] --- compiler:3.1:compile (default-compile) @ csonline ---
-[INFO] Changes detected - recompiling the module!
-[INFO] Compiling 99 source files to C:\dev\csonline\target\classes
-[INFO] -------------------------------------------------------------
-[ERROR] COMPILATION ERROR :
-[INFO] -------------------------------------------------------------
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[25,35] package net.sf.jasperreports.engine does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[26,35] package net.sf.jasperreports.engine does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[27,35] package net.sf.jasperreports.engine does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[28,35] package net.sf.jasperreports.engine does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[29,42] package net.sf.jasperreports.engine.export does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[30,42] package net.sf.jasperreports.engine.export does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[31,42] package net.sf.jasperreports.engine.export does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[32,42] package net.sf.jasperreports.j2ee.servlets does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[48,23] cannot find symbol
-  symbol:   class JRExporter
-  location: class br.com.mulato.cso.dry.AbstractController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[50,23] cannot find symbol
-  symbol:   class JRExporter
-  location: class br.com.mulato.cso.dry.AbstractController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[52,23] cannot find symbol
-  symbol:   class JRHtmlExporter
-  location: class br.com.mulato.cso.dry.AbstractController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[118,43] cannot find symbol
-  symbol:   class JasperPrint
-  location: class br.com.mulato.cso.dry.AbstractController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[137,43] cannot find symbol
-  symbol:   class JasperPrint
-  location: class br.com.mulato.cso.dry.AbstractController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[157,44] cannot find symbol
-  symbol:   class JasperPrint
-  location: class br.com.mulato.cso.dry.AbstractController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[225,16] cannot find symbol
-  symbol:   class JRExporter
-  location: class br.com.mulato.cso.dry.AbstractController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[229,16] cannot find symbol
-  symbol:   class JRExporter
-  location: class br.com.mulato.cso.dry.AbstractController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[233,16] cannot find symbol
-  symbol:   class JRHtmlExporter
-  location: class br.com.mulato.cso.dry.AbstractController
-[INFO] 17 errors
-[INFO] -------------------------------------------------------------
-[INFO] ------------------------------------------------------------------------   
-[INFO] BUILD FAILURE
-[INFO] ------------------------------------------------------------------------   
-[INFO] Total time:  2.631 s
-[INFO] Finished at: 2025-07-18T15:44:21-03:00
-[INFO] ------------------------------------------------------------------------   
-[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.1:compile (default-compile) on project csonline: Compilation failure: Compilation failure:
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[25,35] package net.sf.jasperreports.engine does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[26,35] package net.sf.jasperreports.engine does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[27,35] package net.sf.jasperreports.engine does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[28,35] package net.sf.jasperreports.engine does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[29,42] package net.sf.jasperreports.engine.export does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[30,42] package net.sf.jasperreports.engine.export does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[31,42] package net.sf.jasperreports.engine.export does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[32,42] package net.sf.jasperreports.j2ee.servlets does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[48,23] cannot find symbol
-[ERROR]   symbol:   class JRExporter
-[ERROR]   location: class br.com.mulato.cso.dry.AbstractController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[50,23] cannot find symbol
-[ERROR]   symbol:   class JRExporter
-[ERROR]   location: class br.com.mulato.cso.dry.AbstractController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[52,23] cannot find symbol
-[ERROR]   symbol:   class JRHtmlExporter
-[ERROR]   location: class br.com.mulato.cso.dry.AbstractController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[118,43] cannot find symbol
-[ERROR]   symbol:   class JasperPrint
-[ERROR]   location: class br.com.mulato.cso.dry.AbstractController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[137,43] cannot find symbol
-[ERROR]   symbol:   class JasperPrint
-[ERROR]   location: class br.com.mulato.cso.dry.AbstractController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[157,44] cannot find symbol
-[ERROR]   symbol:   class JasperPrint
-[ERROR]   location: class br.com.mulato.cso.dry.AbstractController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[225,16] cannot find symbol
-[ERROR]   symbol:   class JRExporter
-[ERROR]   location: class br.com.mulato.cso.dry.AbstractController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[229,16] cannot find symbol
-[ERROR]   symbol:   class JRExporter
-[ERROR]   location: class br.com.mulato.cso.dry.AbstractController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[233,16] cannot find symbol
-[ERROR]   symbol:   class JRHtmlExporter
-[ERROR]   location: class br.com.mulato.cso.dry.AbstractController
-[ERROR] -> [Help 1]
-[ERROR]
-[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
-[ERROR] Re-run Maven using the -X switch to enable full debug logging.
-[ERROR]
-[ERROR] For more information about the errors and possible solutions, please read the following articles:
-[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
-PS C:\dev\csonline> mvn clean install
-[INFO] Scanning for projects...
-[INFO] 
-[INFO] -----------------------< br.com.mulato:csonline >-----------------------   
-[INFO] Building csonline 1.0
-[INFO]   from pom.xml
-[INFO] --------------------------------[ war ]---------------------------------   
-[INFO] 
-[INFO] --- clean:3.2.0:clean (default-clean) @ csonline ---
-[INFO] Deleting C:\dev\csonline\target
-[INFO] 
-[INFO] --- resources:2.6:copy-resources (copy-resources) @ csonline ---
-[INFO] Using 'UTF-8' encoding to copy filtered resources.
-[INFO] Copying 21 resources
-[INFO] 
-[INFO] --- jacoco:0.8.11:prepare-agent (default) @ csonline ---
-[INFO] argLine set to -javaagent:C:\\Users\\devel\\.m2\\repository\\org\\jacoco\\org.jacoco.agent\\0.8.11\\org.jacoco.agent-0.8.11-runtime.jar=destfile=C:\\dev\\csonline\\target\\jacoco.exec
-[INFO]
-[INFO] --- resources:2.6:resources (default-resources) @ csonline ---
-[INFO] Using 'UTF-8' encoding to copy filtered resources.
-[INFO] Copying 21 resources
-[INFO] 
-[INFO] --- compiler:3.1:compile (default-compile) @ csonline ---
-[INFO] Changes detected - recompiling the module!
-[INFO] Compiling 99 source files to C:\dev\csonline\target\classes
-[WARNING] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java: Some input files use or override a deprecated API that is marked for removal.
-[WARNING] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java: Recompile with -Xlint:removal for details.
-[INFO]
-[INFO] --- resources:2.6:testResources (default-testResources) @ csonline ---     
-[INFO] Using 'UTF-8' encoding to copy filtered resources.
-[INFO] Copying 0 resource
-[INFO]
-[INFO] --- compiler:3.1:testCompile (default-testCompile) @ csonline ---
-[INFO] Changes detected - recompiling the module!
-[INFO] Compiling 1 source file to C:\dev\csonline\target\test-classes
-[INFO] -------------------------------------------------------------
-[ERROR] COMPILATION ERROR :
-[INFO] -------------------------------------------------------------
-[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/service/BusinessServiceTest.java:[39,61] cannot find symbol
-  symbol:   class BusinessDAO
-  location: package br.com.mulato.cso.dry
-[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/service/BusinessServiceTest.java:[74,61] cannot find symbol
-  symbol:   class BusinessDAO
-  location: package br.com.mulato.cso.dry
-[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/service/BusinessServiceTest.java:[94,61] cannot find symbol
-  symbol:   class BusinessDAO
-  location: package br.com.mulato.cso.dry
-[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/service/BusinessServiceTest.java:[113,61] cannot find symbol
-  symbol:   class BusinessDAO
-  location: package br.com.mulato.cso.dry
-[INFO] 4 errors
-[INFO] -------------------------------------------------------------
-[INFO] ------------------------------------------------------------------------   
-[INFO] BUILD FAILURE
-[INFO] ------------------------------------------------------------------------   
-[INFO] Total time:  4.259 s
-[INFO] Finished at: 2025-07-18T15:46:21-03:00
-[INFO] ------------------------------------------------------------------------   
-[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.1:testCompile (default-testCompile) on project csonline: Compilation failure: Compilation failure:
-[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/service/BusinessServiceTest.java:[39,61] cannot find symbol
-[ERROR]   symbol:   class BusinessDAO
-[ERROR]   location: package br.com.mulato.cso.dry
-[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/service/BusinessServiceTest.java:[74,61] cannot find symbol
-[ERROR]   symbol:   class BusinessDAO
-[ERROR]   location: package br.com.mulato.cso.dry
-[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/service/BusinessServiceTest.java:[94,61] cannot find symbol
-[ERROR]   symbol:   class BusinessDAO
-[ERROR]   location: package br.com.mulato.cso.dry
-[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/service/BusinessServiceTest.java:[113,61] cannot find symbol
-[ERROR]   symbol:   class BusinessDAO
-[ERROR]   location: package br.com.mulato.cso.dry
-[ERROR] -> [Help 1]
-[ERROR]
-[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
-[ERROR] Re-run Maven using the -X switch to enable full debug logging.
-[ERROR]
-[ERROR] For more information about the errors and possible solutions, please read the following articles:
-[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
-PS C:\dev\csonline> 
+PS C:\dev\csonline> cd\                                       
+PS C:\> cd .\flyway\
+PS C:\flyway> .\flyway -v    
+WARNING: No locations configured and default location 'sql' not found.
+Flyway Community Edition 11.10.3 by Redgate
+
+See release notes here: https://rd.gt/416ObMi
+Plugin Name       | Version        
+----------------- | ---------------
+DB2 for z/OS      | 10.20.0        
+OceanBase         | 10.20.0        
+TiDB              | 10.20.0        
+YugabyteDB        | 10.20.0        
+ClickHouse        | 10.20.0        
+CUBRID            | 10.20.0        
+Databricks        | 10.20.0        
+DuckDB            | 10.20.0        
+Apache Ignite     | 10.20.0        
+Timeplus          | 10.20.0
+Redgate Compare   | 1.38.0.974
+SQLFluff          | not installed
+PS C:\flyway> flyway -url="jdbc:mysql://localhost:3306/caracore_csodatabase" -user="root" -password="admin" -locations="filesystem:C:/dev/csonline/src/main/resources/db/migration" migrate
+flyway: The term 'flyway' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+
+Suggestion [3,General]: The command "flyway" was not found, but does exist in the current location. PowerShell does not load commands from the current location by default. If you trust this command, instead type: ".\flyway". See "get-help about_Command_Precedence" for more details.
+PS C:\flyway> .\flyway -url="jdbc:mysql://localhost:3306/caracore_csodatabase" -user="root" -password="admin" -locations="filesystem:C:/dev/csonline/src/main/resources/db/migration" migrate
+Flyway Community Edition 11.10.3 by Redgate
+
+See release notes here: https://rd.gt/416ObMi
+
+Flyway Pipelines are not active for this project. Learn more here: https://flyway.red-gate.com
+ERROR: Unable to obtain connection from database (jdbc:mysql://localhost:3306/caracore_csodatabase) for user 'root': Could not connect to address=(host=localhost)(port=3306)(type=master) : RSA public key is not available client side (option serverRsaPublicKeyFile not set)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+SQL State  : S1009
+Error Code : 0
+Message    : Could not connect to address=(host=localhost)(port=3306)(type=master) : RSA public key is not available client side (option serverRsaPublicKeyFile not set)
+
+Caused by: java.sql.SQLTransientConnectionException: Could not connect to address=(host=localhost)(port=3306)(type=master) : RSA public key is not available client side (option serverRsaPublicKeyFile not set)
+Caused by: java.sql.SQLException: RSA public key is not available client side (option serverRsaPublicKeyFile not set)       
+PS C:\flyway> .\flyway -url="jdbc:mysql://localhost:3306/caracore_csodatabase?allowPublicKeyRetrieval=true&useSSL=false" -user="root" -password="admin" -locations="filesystem:C:/dev/csonline/src/main/resources/db/migration" migrate
+Usage
+    flyway [options] [command]
+    flyway help [command]
+
+Commands
+    help                     Print this usage info and exit   
+    auth                     Authenticates Flyway with Redgate licensing
+    migrate                  Migrates the database
+    clean                    Drops all objects in the configured schemas
+    info                     Prints the information about applied, current and pending migrations
+    validate                 Validates the applied migrations against the ones on the classpath
+    baseline                 Baselines an existing database at the baselineVersion
+    repair                   Repairs the schema history table 
+    check                    Produces reports to increase confidence in your deployments
+    version, -v, --version   Print the Flyway version and edition
+    list-engines             Lists the database engines that Flyway has loaded support for.
+    diff                     Compares two comparison sources and returns a summary of the differences
+    diffText                 Shows the object differences for changes computed by flyway diff
+    snapshot                 [enterprise] Produces a snapshot of the database specified in flyway.url
+                             A snapshot can be generated from a database environment, build environment, schema model folder or empty source using the snapshot.source argument
+    model                    Applies the changes from flyway diff to the schema model
+    generate                 Generates a migration script based on the changes from flyway diff
+    add                      Creates a new empty migration script
+    undo                     [teams] Undoes the most recently applied versioned migration
+    deploy                   Deploys an individual script to an environment
+    prepare                  Writes a deployment script from a schemaModel, an environment, a diff artifact, or migrations to disk
+    init                     Initialize a new Flyway project. Also allows for the upgrading of Flyway .conf files, and the porting of SQL Source Control and Source Control for Oracle projects to Flyway.
+
+Configuration parameters (Format: -key=value)
+    driver                         Fully qualified classname of the JDBC driver
+    url                            Jdbc url to use to connect to the database
+    user                           User to use to connect to the database
+    password                       Password to use to connect to the database
+    (To see all configuration options please run flyway --help)
+
+Flags
+    -X                Print debug output
+    -q                Suppress all output, except for errors and warnings
+    --help, -h, -?    Print this usage info and exit
+
+Flyway Usage Example
+    flyway -user=myuser -password=s3cr3t -url=jdbc:h2:mem -placeholders.abc=def migrate
+    flyway help check
+
+More info at https://rd.gt/3Cc1xKC
+'useSSL' não é reconhecido como um comando interno
+ou externo, um programa operável ou um arquivo em lotes.      
+PS C:\flyway> .\flyway -url="jdbc:mysql://localhost:3306/caracore_csodatabase" -user="root" -password="admin" -locations="filesystem:C:/dev/csonline/src/main/resources/db/migration" migrate^C
+PS C:\flyway> .\flyway -url="jdbc:mysql://localhost:3306/caracore_csodatabase?allowPublicKeyRetrieval=true&useSSL=false" -user="root" -password="admin" -locations="filesystem:C:/dev/csonline/src/main/resources/db/migration" info   
+Usage
+    flyway [options] [command]
+    flyway help [command]
+
+Commands
+    help                     Print this usage info and exit   
+    auth                     Authenticates Flyway with Redgate licensing
+    migrate                  Migrates the database
+    clean                    Drops all objects in the configured schemas
+    info                     Prints the information about applied, current and pending migrations
+    validate                 Validates the applied migrations against the ones on the classpath
+    baseline                 Baselines an existing database at the baselineVersion
+    repair                   Repairs the schema history table 
+    check                    Produces reports to increase confidence in your deployments
+    version, -v, --version   Print the Flyway version and edition
+    list-engines             Lists the database engines that Flyway has loaded support for.
+    diff                     Compares two comparison sources and returns a summary of the differences
+    diffText                 Shows the object differences for changes computed by flyway diff
+    snapshot                 [enterprise] Produces a snapshot of the database specified in flyway.url
+                             A snapshot can be generated from a database environment, build environment, schema model folder or empty source using the snapshot.source argument
+    model                    Applies the changes from flyway diff to the schema model
+    generate                 Generates a migration script based on the changes from flyway diff
+    add                      Creates a new empty migration script
+    undo                     [teams] Undoes the most recently applied versioned migration
+    deploy                   Deploys an individual script to an environment
+    prepare                  Writes a deployment script from a schemaModel, an environment, a diff artifact, or migrations to disk
+    init                     Initialize a new Flyway project. Also allows for the upgrading of Flyway .conf files, and the porting of SQL Source Control and Source Control for Oracle projects to Flyway.
+
+Configuration parameters (Format: -key=value)
+    driver                         Fully qualified classname of the JDBC driver
+    url                            Jdbc url to use to connect to the database
+    user                           User to use to connect to the database
+    password                       Password to use to connect to the database
+    (To see all configuration options please run flyway --help)
+
+Flags
+    -X                Print debug output
+    -q                Suppress all output, except for errors and warnings
+    --help, -h, -?    Print this usage info and exit
+
+Flyway Usage Example
+    flyway -user=myuser -password=s3cr3t -url=jdbc:h2:mem -placeholders.abc=def migrate
+    flyway help check
+
+More info at https://rd.gt/3Cc1xKC
+'useSSL' não é reconhecido como um comando interno
+ou externo, um programa operável ou um arquivo em lotes.      
+PS C:\flyway> 

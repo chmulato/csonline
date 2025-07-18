@@ -1,16 +1,16 @@
 version: "3.8"
 services:
   db:
-    image: mysql:8.0
-    container_name: csonline-mysql
+    image: postgres:15
+    container_name: csonline-postgres
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: admin
-      MYSQL_DATABASE: caracore_csodatabase
-      MYSQL_PASSWORD: admin
+      POSTGRES_DB: caracore_csodatabase
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - db_data:/var/lib/mysql
+      - pg_data:/var/lib/postgresql/data
 volumes:
-  db_data:
+  pg_data:

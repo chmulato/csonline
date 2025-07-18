@@ -1,12 +1,12 @@
--- MySQL 8.0 compatible dump
+
+-- PostgreSQL 15 compatible dump
 -- Database: caracore_csodatabase
 
 DROP TABLE IF EXISTS customer;
 CREATE TABLE customer (
-  ID int NOT NULL AUTO_INCREMENT,
-  NAME varchar(255) NOT NULL,
-  PRIMARY KEY (ID)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  ID SERIAL PRIMARY KEY,
+  NAME VARCHAR(255) NOT NULL
+);
 
 INSERT INTO customer (NAME) VALUES
   ('Cliente 1'),

@@ -57,9 +57,9 @@
 			<version>2.20.0</version>
 		</dependency>
 		<dependency>
-			<groupId>com.mysql</groupId>
-			<artifactId>mysql-connector-j</artifactId>
-			<version>8.0.33</version>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.7.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
@@ -89,10 +89,10 @@
 				<artifactId>flyway-maven-plugin</artifactId>
 				<version>10.14.0</version>
 				<configuration>
-					<driver>com.mysql.cj.jdbc.Driver</driver>
-					<url>jdbc:mysql://localhost:3306/caracore_csodatabase</url>
-					<user>root</user>
-					<password>your_mysql_password</password>
+					<driver>org.postgresql.Driver</driver>
+					<url>jdbc:postgresql://localhost:5432/caracore_csodatabase</url>
+					<user>admin</user>
+					<password>admin</password>
 					<schemas>
 						<schema>caracore_csodatabase</schema>
 					</schemas>

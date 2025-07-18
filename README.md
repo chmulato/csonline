@@ -4,7 +4,7 @@ Aplicação Web para controle de entregas.
 
 ## Descrição
 
-CSOnline Delivery é uma aplicação desenvolvida em Java (SDK 8) utilizando JSF para gerenciamento de entregas. O sistema roda em Tomcat 9 e utiliza MySQL como banco de dados relacional.
+CSOnline Delivery é uma aplicação desenvolvida em Java (SDK 11) utilizando Jakarta EE 10 e PrimeFaces para gerenciamento de entregas. O sistema roda em Jakarta EE 10 (Tomcat compatível) e utiliza PostgreSQL 15 como banco de dados relacional.
 
 Acesse via navegador: [https://www.caracore.com.br/csonline](https://www.caracore.com.br/csonline)
 
@@ -16,16 +16,16 @@ Acesse via navegador: [https://www.caracore.com.br/csonline](https://www.caracor
 
 ## Requisitos
 
-- Java SDK 8
-- Apache Tomcat 9
-- MySQL Database
+- Java SDK 11
+- Jakarta EE 10 (compatível com Tomcat)
+- PostgreSQL 15
 
 ## Instalação
 
 1. Clone o repositório.
-2. Configure o banco de dados MySQL conforme o padrão do projeto.
+2. Configure o banco de dados PostgreSQL 15 conforme o padrão do projeto (consulte os scripts em `doc/dump`).
 3. Faça o build do projeto e gere o arquivo WAR.
-4. Faça o deploy do WAR no Tomcat 9.
+4. Faça o deploy do WAR em um servidor Jakarta EE 10 (ou Tomcat compatível).
 
 ## Perfil de Administrador
 
