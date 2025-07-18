@@ -28,3 +28,11 @@ O banco de dados da aplicacao no site e' o MySQL database.
 Este banco de dados segue o padrao (SGDB) de bancos relacionais.
 
 Veja no Youtube: https://youtu.be/vAMd647anMA
+
+---
+
+## Licença
+
+Este projeto está licenciado sob a Licença MIT. Consulte o arquivo LICENSE para mais detalhes.
+
+Autor: Christian Valdimir Uhdre Mulato
