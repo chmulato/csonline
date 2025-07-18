@@ -18,48 +18,39 @@ import br.com.mulato.cso.utils.InitProperties;
  * @date October/10th/2013
  */
 // Classe abstrata Factory Service
-public abstract class FactoryService
-{
+public abstract class FactoryService {
 
 	private final static Logger LOGGER = Logger.getLogger(FactoryService.class);
 
 	private static FactoryService instancia;
 
-	public abstract AdminService getAdminService () throws WebException;
+	public abstract AdminService getAdminService() throws WebException;
 
-	public abstract BusinessService getBusinessService () throws WebException;
+	public abstract BusinessService getBusinessService() throws WebException;
 
-	public abstract CourierService getCourierService () throws WebException;
+	public abstract CourierService getCourierService() throws WebException;
 
-	public abstract CustomerService getCustomerService () throws WebException;
+	public abstract CustomerService getCustomerService() throws WebException;
 
-	public abstract DeliveryService getDeliveryService () throws WebException;
+	public abstract DeliveryService getDeliveryService() throws WebException;
 
-	public abstract PriceService getPriceService () throws WebException;
+	public abstract PriceService getPriceService() throws WebException;
 
-	public abstract LoginService getLoginService () throws WebException;
+	public abstract LoginService getLoginService() throws WebException;
 
-	public static FactoryService getInstancia ()
-	{
-		try
-		{
-			if (InitProperties.getSingletonService())
-			{
-				if (instancia == null)
-				{
-					LOGGER.info("CriaÁ„o da inst‚ncia FactoryServiceImpl.");
+	public static FactoryService getInstancia() {
+		try {
+			if (InitProperties.getSingletonService()) {
+				if (instancia == null) {
+					LOGGER.info("Cria√ß√£o da inst√¢ncia FactoryServiceImpl.");
 					instancia = new FactoryServiceImpl();
 				}
 				return instancia;
-			}
-			else
-			{
-				LOGGER.info("CriaÁ„o da classe FactoryServiceImpl.");
+			} else {
+				LOGGER.info("Cria√ß√£o da classe FactoryServiceImpl.");
 				return new FactoryServiceImpl();
 			}
-		}
-		catch (final ParameterException e)
-		{
+		} catch (final ParameterException e) {
 			LOGGER.error("Erro ao definir tipo de instanciamento da classe. " + e.getMessage());
 		}
 		return new FactoryServiceImpl();
