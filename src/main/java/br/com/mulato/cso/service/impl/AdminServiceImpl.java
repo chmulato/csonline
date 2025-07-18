@@ -16,18 +16,14 @@ public class AdminServiceImpl implements AdminService {
 	private final static Logger LOGGER = Logger.getLogger(AdminServiceImpl.class);
 
 	@Override
-	public List<UserVO> listAllUsers () throws WebException
-	{
+	public List<UserVO> listAllUsers() throws WebException {
 		List<UserVO> list = null;
-		LOGGER.info("Listar todos os usuários.");
-		try
-		{
+		LOGGER.info("Listar todos os usuÃ¡rios.");
+		try {
 			FactoryDAO.onTransaction();
 			list = FactoryDAO.getInstancia().getUserDAO().listAll();
 			FactoryDAO.offTransaction();
-		}
-		catch (final DAOException e)
-		{
+		} catch (final DAOException e) {
 			LOGGER.error("Service error: " + e.getMessage());
 			throw new WebException(e.getMessage());
 		}
@@ -35,20 +31,15 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public UserVO find (final Integer id) throws WebException
-	{
+	public UserVO find(final Integer id) throws WebException {
 		UserVO user = null;
-		if ((id == null) || (id <= 0))
-		{
-			throw new WebException("Informe id usuário.");
+		if ((id == null) || (id <= 0)) {
+			throw new WebException("Informe id usuÃ¡rio.");
 		}
-		LOGGER.info("Pesquisar usuário pelo id.");
-		try
-		{
+		LOGGER.info("Pesquisar usuÃ¡rio pelo id.");
+		try {
 			user = FactoryDAO.getInstancia().getUserDAO().find(id, false);
-		}
-		catch (final DAOException e)
-		{
+		} catch (final DAOException e) {
 			LOGGER.error("Service error: " + e.getMessage());
 			throw new WebException(e.getMessage());
 		}
@@ -56,24 +47,18 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public UserVO findByLogin (final LoginVO login) throws WebException
-	{
+	public UserVO findByLogin(final LoginVO login) throws WebException {
 		UserVO user = null;
-		if (login == null)
-		{
-			throw new WebException("Informe usuário.");
+		if (login == null) {
+			throw new WebException("Informe usuÃ¡rio.");
 		}
-		if (login.getLogin() == null)
-		{
-			throw new WebException("Informe usuário.");
+		if (login.getLogin() == null) {
+			throw new WebException("Informe usuÃ¡rio.");
 		}
-		LOGGER.info("Pesquisar usuário por login.");
-		try
-		{
+		LOGGER.info("Pesquisar usuÃ¡rio por login.");
+		try {
 			user = FactoryDAO.getInstancia().getUserDAO().findByLogin(login);
-		}
-		catch (final DAOException e)
-		{
+		} catch (final DAOException e) {
 			LOGGER.error("Service error: " + e.getMessage());
 			throw new WebException(e.getMessage());
 		}
@@ -81,20 +66,15 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public UserVO findGetPasswordTo (final Integer id) throws WebException
-	{
+	public UserVO findGetPasswordTo(final Integer id) throws WebException {
 		UserVO user = null;
-		if ((id == null) || (id <= 0))
-		{
-			throw new WebException("Informe id usuário.");
+		if ((id == null) || (id <= 0)) {
+			throw new WebException("Informe id usuÃ¡rio.");
 		}
-		LOGGER.info("Pesquisar usuário pelo id.");
-		try
-		{
+		LOGGER.info("Pesquisar usuÃ¡rio pelo id.");
+		try {
 			user = FactoryDAO.getInstancia().getUserDAO().find(id, true);
-		}
-		catch (final DAOException e)
-		{
+		} catch (final DAOException e) {
 			LOGGER.error("Service error: " + e.getMessage());
 			throw new WebException(e.getMessage());
 		}

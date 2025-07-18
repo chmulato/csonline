@@ -78,12 +78,11 @@ public class DBConnection extends DBTransaction {
 					dataSource = (DataSource) initialContext.lookup(jndiCSO);
 				}
 				if (dataSource == null) {
-					msg = "Não foi possível carregar data source de conexão com o banco.";
+					msg = "Não foi possível carregar o data source de conexão com o banco.";
 					LOGGER.error(msg);
 					throw new DAOException(msg);
 				} else {
 					setConnection(dataSource.getConnection());
-
 				}
 				if (getConnection() == null) {
 					msg = "Não foi possível abrir a conexão com o banco.";
@@ -92,7 +91,7 @@ public class DBConnection extends DBTransaction {
 				}
 				return getConnection();
 			} catch (NamingException | SQLException e) {
-				msg = "Erro na conexão com o banco. ";
+				msg = "Erro na conexão com o banco.";
 				LOGGER.error(msg + e.getMessage());
 				throw new DAOException(msg);
 			}
@@ -101,15 +100,15 @@ public class DBConnection extends DBTransaction {
 				Class.forName(driver).newInstance();
 				return DriverManager.getConnection(urlCSO, username, password);
 			} catch (final ClassNotFoundException cnf) {
-				msg = "Driver de conexão com o banco não encontrado. ";
+				msg = "Driver de conexão com o banco não encontrado.";
 				LOGGER.error(msg + cnf.getMessage());
 				throw new DAOException(msg);
 			} catch (final SQLException sql) {
-				msg = "Não foi possível abrir a conexão com o banco. ";
+				msg = "Não foi possível abrir a conexão com o banco.";
 				LOGGER.error(msg + sql.getMessage());
 				throw new DAOException(msg);
 			} catch (InstantiationException | IllegalAccessException e) {
-				msg = "Erro na conexão com o banco. ";
+				msg = "Erro na conexão com o banco.";
 				LOGGER.error(msg + e.getMessage());
 				throw new DAOException(msg);
 			}
@@ -131,7 +130,7 @@ public class DBConnection extends DBTransaction {
 
 	public static void close(final Connection conn, final Statement stmt, final ResultSet rs) throws DAOException {
 
-		final String msg = "Desconexão com a base de dados não efetuada corretamente. ";
+		final String msg = "Desconexão com a base de dados não efetuada corretamente.";
 
 		try {
 

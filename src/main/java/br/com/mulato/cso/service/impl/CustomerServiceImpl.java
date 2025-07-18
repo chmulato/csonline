@@ -11,42 +11,34 @@ import br.com.mulato.cso.model.PriceVO;
 import br.com.mulato.cso.service.CustomerService;
 
 public class CustomerServiceImpl
-    implements CustomerService
-{
+		implements CustomerService {
 
 	private static final long serialVersionUID = 1L;
 
 	private final static Logger LOGGER = Logger.getLogger(CustomerServiceImpl.class);
 
 	@Override
-	public List<CustomerVO> listAllCustomerBusiness (final BusinessVO business) throws WebException
-	{
+	public List<CustomerVO> listAllCustomerBusiness(final BusinessVO business) throws WebException {
 
 		List<CustomerVO> list = null;
 
-		if (business == null)
-		{
-			throw new WebException("Informe negócio.");
+		if (business == null) {
+			throw new WebException("Informe negï¿½cio.");
 		}
 
-		if (business.getId() == null)
-		{
-			throw new WebException("Informe id negócio!");
+		if (business.getId() == null) {
+			throw new WebException("Informe id negï¿½cio!");
 		}
 
-		if (business.getId() <= 0)
-		{
-			throw new WebException("Informe id negócio!");
+		if (business.getId() <= 0) {
+			throw new WebException("Informe id negï¿½cio!");
 		}
 
-		LOGGER.info("Listar todos os clientes do negócio.");
+		LOGGER.info("Listar todos os clientes do negï¿½cio.");
 
-		try
-		{
+		try {
 			list = FactoryDAO.getInstancia().getCustomerDAO().listAllCustomerBusiness(business);
-		}
-		catch (final DAOException e)
-		{
+		} catch (final DAOException e) {
 			LOGGER.error("Service error: " + e.getMessage());
 			throw new WebException(e.getMessage());
 		}
@@ -54,123 +46,96 @@ public class CustomerServiceImpl
 	}
 
 	@Override
-	public void save (final CustomerVO customer) throws WebException
-	{
+	public void save(final CustomerVO customer) throws WebException {
 
-		if (customer == null)
-		{
+		if (customer == null) {
 			throw new DAOException("Informe cliente!");
 		}
 
-		if (customer.getName() == null)
-		{
+		if (customer.getName() == null) {
 			throw new DAOException("Informe nome do cliente!");
 		}
 
-		if (customer.getRole() == null)
-		{
+		if (customer.getRole() == null) {
 			throw new DAOException("Informe o perfil de cliente!");
 		}
 
-		if (!customer.getRole().equals("CUSTOMER"))
-		{
+		if (!customer.getRole().equals("CUSTOMER")) {
 			throw new DAOException("Informe o perfil de cliente!");
 		}
 
-		if (customer.getLogin() == null)
-		{
+		if (customer.getLogin() == null) {
 			throw new DAOException("Informe login do cliente!");
 		}
 
-		if (customer.getLogin().getLogin() == null)
-		{
+		if (customer.getLogin().getLogin() == null) {
 			throw new DAOException("Informe login do cliente!");
 		}
 
-		if (customer.getId() == null)
-		{
+		if (customer.getId() == null) {
 
-			if (customer.getLogin().getPassword() == null)
-			{
+			if (customer.getLogin().getPassword() == null) {
 				throw new WebException("Informe senha do cliente!");
 			}
 
-			if (customer.getLogin().getRepeat() == null)
-			{
+			if (customer.getLogin().getRepeat() == null) {
 				throw new WebException("Repita senha do cliente!");
 			}
 
-			if (!customer.getLogin().getPassword().equals(customer.getLogin().getRepeat()))
-			{
+			if (!customer.getLogin().getPassword().equals(customer.getLogin().getRepeat())) {
 				throw new WebException("Repita senha corretamente!");
 			}
 
 		}
 
-		if (customer.getEmail() == null)
-		{
+		if (customer.getEmail() == null) {
 			throw new DAOException("Informe email do cliente!");
 		}
 
-		if (customer.getFactor_customer() == null)
-		{
+		if (customer.getFactor_customer() == null) {
 			throw new DAOException("Informe fator do cliente!");
 		}
 
-		if (customer.getBusiness() == null)
-		{
-			throw new DAOException("Informe negócio do cliente!");
+		if (customer.getBusiness() == null) {
+			throw new DAOException("Informe negï¿½cio do cliente!");
 		}
 
-		if (customer.getBusiness().getId() == null)
-		{
-			throw new DAOException("Informe negócio do cliente!");
+		if (customer.getBusiness().getId() == null) {
+			throw new DAOException("Informe negï¿½cio do cliente!");
 		}
 
-		if (customer.getBusiness().getId() <= 0)
-		{
-			throw new DAOException("Informe negócio do cliente!");
+		if (customer.getBusiness().getId() <= 0) {
+			throw new DAOException("Informe negï¿½cio do cliente!");
 		}
 
-		try
-		{
-			if (customer.getId() == null)
-			{
+		try {
+			if (customer.getId() == null) {
 				LOGGER.info("Salvar cliente.");
 				FactoryDAO.getInstancia().getCustomerDAO().insert(customer);
-			}
-			else
-			{
+			} else {
 				LOGGER.info("Atualizar cliente.");
 				FactoryDAO.getInstancia().getCustomerDAO().update(customer);
 			}
-		}
-		catch (final DAOException e)
-		{
+		} catch (final DAOException e) {
 			LOGGER.error("Service error: " + e.getMessage());
 			throw new WebException(e.getMessage());
 		}
 	}
 
 	@Override
-	public CustomerVO find (final Integer idCustomer) throws WebException
-	{
+	public CustomerVO find(final Integer idCustomer) throws WebException {
 
 		CustomerVO customer = null;
 
-		if ((idCustomer == null) || (idCustomer <= 0))
-		{
+		if ((idCustomer == null) || (idCustomer <= 0)) {
 			throw new WebException("Informe id cliente.");
 		}
 
 		LOGGER.info("Buscar cliente.");
 
-		try
-		{
+		try {
 			customer = FactoryDAO.getInstancia().getCustomerDAO().find(idCustomer, true);
-		}
-		catch (final DAOException e)
-		{
+		} catch (final DAOException e) {
 			LOGGER.error("Service error: " + e.getMessage());
 			throw new WebException(e.getMessage());
 		}
@@ -178,51 +143,40 @@ public class CustomerServiceImpl
 	}
 
 	@Override
-	public void delete (final Integer idCustomer) throws WebException
-	{
+	public void delete(final Integer idCustomer) throws WebException {
 
-		if ((idCustomer == null) || (idCustomer <= 0))
-		{
+		if ((idCustomer == null) || (idCustomer <= 0)) {
 			throw new WebException("Informe id cliente.");
 		}
 
 		LOGGER.info("Deletar cliente.");
 
-		try
-		{
+		try {
 			FactoryDAO.getInstancia().getCustomerDAO().delete(idCustomer);
-		}
-		catch (final DAOException e)
-		{
+		} catch (final DAOException e) {
 			LOGGER.error("Service error: " + e.getMessage());
 			throw new WebException(e.getMessage());
 		}
 	}
 
 	@Override
-	public List<PriceVO> listAllPriceCustomer (final String nameTable) throws WebException
-	{
+	public List<PriceVO> listAllPriceCustomer(final String nameTable) throws WebException {
 
 		List<PriceVO> list = null;
 
-		if (nameTable == null)
-		{
-			throw new WebException("Informe nome da tabela de preço do cliente.");
+		if (nameTable == null) {
+			throw new WebException("Informe nome da tabela de preÃ§o do cliente.");
 		}
 
-		if (nameTable.equals(""))
-		{
-			throw new WebException("Informe nome da tabela de preço do cliente.");
+		if (nameTable.equals("")) {
+			throw new WebException("Informe nome da tabela de preÃ§o do cliente.");
 		}
 
-		LOGGER.info("Pesquisar lista de preços do cliente.");
+		LOGGER.info("Pesquisar lista de preÃ§os do cliente.");
 
-		try
-		{
+		try {
 			list = FactoryDAO.getInstancia().getPriceDAO().listAllPriceCustomer(nameTable);
-		}
-		catch (final DAOException e)
-		{
+		} catch (final DAOException e) {
 			LOGGER.error("Service error: " + e.getMessage());
 			throw new WebException(e.getMessage());
 		}

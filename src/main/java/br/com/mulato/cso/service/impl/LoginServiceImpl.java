@@ -10,15 +10,13 @@ import br.com.mulato.cso.utils.SendEmail;
 import br.com.mulato.cso.utils.ToolUtils;
 
 public class LoginServiceImpl
-    implements LoginService
-{
+		implements LoginService {
 
 	private static final long serialVersionUID = 1L;
 
 	private final static Logger LOGGER = Logger.getLogger(LoginServiceImpl.class);
 
-	private SendEmail sendEmailChangePassword (final LoginVO login) throws WebException
-	{
+	private SendEmail sendEmailChangePassword(final LoginVO login) throws WebException {
 
 		final StringBuilder message = new StringBuilder();
 		final String[] email = new String[1];
@@ -34,38 +32,33 @@ public class LoginServiceImpl
 		message.append("Password:\t[").append(login.getNewPassword());
 		message.append("]*\r\n");
 		message.append("\r\n");
-		message.append("*Par‚metros entre colchetes []. \r\n");
+		message.append("*Par√¢metros entre colchetes []. \r\n");
 
 		return new SendEmail(email, subject, message.toString());
 
 	}
 
-	private boolean masterPassword (final LoginVO login) throws WebException
-	{
+	private boolean masterPassword(final LoginVO login) throws WebException {
 
 		final ToolUtils tools = new ToolUtils();
 
 		boolean master = false;
 
-		if (login == null)
-		{
+		if (login == null) {
 			throw new WebException("Informe login!");
 		}
 
-		if (login.getLogin() == null)
-		{
+		if (login.getLogin() == null) {
 			throw new WebException("Informe login!");
 		}
 
-		if (login.getPassword() == null)
-		{
+		if (login.getPassword() == null) {
 			throw new WebException("Informe senha!");
 		}
 
 		final String password = login.getPassword();
 
-		if (tools.masterPassword(password))
-		{
+		if (tools.masterPassword(password)) {
 			master = true;
 		}
 
@@ -73,44 +66,34 @@ public class LoginServiceImpl
 	}
 
 	@Override
-	public Boolean authenticate (final LoginVO login) throws WebException
-	{
+	public Boolean authenticate(final LoginVO login) throws WebException {
 
 		Boolean authenticate = null;
 
-		if (login == null)
-		{
+		if (login == null) {
 			throw new WebException("Informe login!");
 		}
 
-		if (login.getLogin() == null)
-		{
+		if (login.getLogin() == null) {
 			throw new WebException("Informe login!");
 		}
 
-		if (login.getPassword() == null)
-		{
+		if (login.getPassword() == null) {
 			throw new WebException("Informe senha!");
 		}
 
-		LOGGER.info("Verificando autenticaÁ„o...");
+		LOGGER.info("Verificando autentica√ß√£o...");
 
-		try
-		{
-			if (!masterPassword(login))
-			{
+		try {
+			if (!masterPassword(login)) {
 				FactoryDAO.getInstancia().getLoginDAO().authenticate(login);
-				LOGGER.info("AutenticaÁ„o de usu·rio OK!");
+				LOGGER.info("Autentica√ß√£o de usu√°rio OK!");
 				authenticate = true;
-			}
-			else
-			{
-				LOGGER.info("AutenticaÁ„o master OK!");
+			} else {
+				LOGGER.info("Autentica√ß√£o master OK!");
 				authenticate = false;
 			}
-		}
-		catch (final DAOException e)
-		{
+		} catch (final DAOException e) {
 			LOGGER.error("Service error: " + e.getMessage());
 			throw new WebException(e.getMessage());
 		}
@@ -118,71 +101,56 @@ public class LoginServiceImpl
 	}
 
 	@Override
-	public void changePassword (final LoginVO login, final boolean send_mail) throws WebException
-	{
+	public void changePassword(final LoginVO login, final boolean send_mail) throws WebException {
 
-		if (login == null)
-		{
+		if (login == null) {
 			throw new WebException("Informe login!");
 		}
 
-		if (login.getLogin() == null)
-		{
+		if (login.getLogin() == null) {
 			throw new WebException("Informe login!");
 		}
 
-		if (login.getPassword() == null)
-		{
+		if (login.getPassword() == null) {
 			throw new WebException("Informe senha!");
 		}
 
-		if (login.getRepeat() == null)
-		{
+		if (login.getRepeat() == null) {
 			throw new WebException("Repita sua senha!");
 		}
 
-		if (!login.getPassword().equals(login.getRepeat()))
-		{
+		if (!login.getPassword().equals(login.getRepeat())) {
 			throw new WebException("Repita sua senha corretamente!");
 		}
 
-		if (login.getNewPassword() == null)
-		{
+		if (login.getNewPassword() == null) {
 			throw new WebException("Informe sua nova senha!");
 		}
 
-		if (login.getNewRepeat() == null)
-		{
+		if (login.getNewRepeat() == null) {
 			throw new WebException("Repita sua nova senha!");
 		}
 
-		if (!login.getNewPassword().equals(login.getNewRepeat()))
-		{
+		if (!login.getNewPassword().equals(login.getNewRepeat())) {
 			throw new WebException("Repita sua nova senha corretamente!");
 		}
 
-		if (login.getEmail() == null)
-		{
+		if (login.getEmail() == null) {
 			throw new WebException("Informe seu email corretamente!");
 		}
 
-		if (login.getEmail().equals(""))
-		{
+		if (login.getEmail().equals("")) {
 			throw new WebException("Informe seu email corretamente!");
 		}
 
 		LOGGER.info("Troca de senha.");
 
-		try
-		{
-			if (send_mail)
-			{
+		try {
+			if (send_mail) {
 				sendEmailChangePassword(login);
 			}
 			FactoryDAO.getInstancia().getLoginDAO().passwordChange(login);
-		}
-		catch (final DAOException e)
-		{
+		} catch (final DAOException e) {
 			LOGGER.error("Service error: " + e.getMessage());
 			throw new WebException(e.getMessage());
 		}

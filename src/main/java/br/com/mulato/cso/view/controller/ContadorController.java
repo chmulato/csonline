@@ -15,35 +15,29 @@ public class ContadorController extends AbstractController implements Serializab
 
 	private static Integer total;
 
-	public Integer getTotal ()
-	{
+	public Integer getTotal() {
 		return total;
 	}
 
-	public ContadorController () throws WebException
-	{
+	public ContadorController() throws WebException {
 		super();
-		if (total == null)
-		{
+		if (total == null) {
 			total = 4;
 		}
 	}
 
-	public Integer getUsuariosLogados ()
-	{
+	public Integer getUsuariosLogados() {
 		int total = getTotal();
 		total = (total / 4);
 		return total - 1;
 	}
 
-	public void maisUm (final int soma)
-	{
+	public void maisUm(final int soma) {
 		total = new Integer(total + soma);
 		LOGGER.info("Soma mais um usuário logado. Total logado= " + getUsuariosLogados());
 	}
 
-	public void menosUm (final int menos)
-	{
+	public void menosUm(final int menos) {
 		total = new Integer(total - menos);
 		LOGGER.info("Diminui um usuário que deixou a aplicação. Total logado= " + getUsuariosLogados());
 	}

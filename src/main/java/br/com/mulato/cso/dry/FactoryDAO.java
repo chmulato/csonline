@@ -19,77 +19,65 @@ import br.com.mulato.cso.utils.InitProperties;
  * @date October/05th/2013
  */
 // Classe abstrata DAO Factory
-public abstract class FactoryDAO
-{
-	
+public abstract class FactoryDAO {
+
 	private final static Logger LOGGER = Logger.getLogger(FactoryDAO.class);
-	
+
 	private static FactoryDAO instancia;
-	
+
 	protected static final boolean TRANSACTION_ENABLE = true;
-	
+
 	protected static final boolean TRANSACTION_DISABLE = false;
-	
+
 	private static boolean transaction_active = false;
 
-	public abstract LoginDAO getLoginDAO () throws DAOException;
+	public abstract LoginDAO getLoginDAO() throws DAOException;
 
-	public abstract UserDAO getUserDAO () throws DAOException;
+	public abstract UserDAO getUserDAO() throws DAOException;
 
-	public abstract BusinessDAO getBusinessDAO () throws DAOException;
+	public abstract BusinessDAO getBusinessDAO() throws DAOException;
 
-	public abstract CustomerDAO getCustomerDAO () throws DAOException;
+	public abstract CustomerDAO getCustomerDAO() throws DAOException;
 
-	public abstract CourierDAO getCourierDAO () throws DAOException;
+	public abstract CourierDAO getCourierDAO() throws DAOException;
 
-	public abstract DeliveryDAO getDeliveryDAO () throws DAOException;
+	public abstract DeliveryDAO getDeliveryDAO() throws DAOException;
 
-	public abstract PriceDAO getPriceDAO () throws DAOException;
+	public abstract PriceDAO getPriceDAO() throws DAOException;
 
-	public abstract SmsDAO getSmsDAO () throws DAOException;
+	public abstract SmsDAO getSmsDAO() throws DAOException;
 
-	public static FactoryDAO getInstancia ()
-	{
-		try
-		{
-			if (InitProperties.getSingletonDAO())
-			{
-				if (instancia == null)
-				{
-					LOGGER.info("CriaÁ„o da inst‚cia FactoryDAOImpl.");
+	public static FactoryDAO getInstancia() {
+		try {
+			if (InitProperties.getSingletonDAO()) {
+				if (instancia == null) {
+					LOGGER.info("Cria√ß√£o da inst√¢ncia FactoryDAOImpl.");
 					instancia = new FactoryDAOImpl();
 				}
 				return instancia;
-			}
-			else
-			{
-				LOGGER.info("CriaÁ„o da classe FactoryDAOImpl.");
+			} else {
+				LOGGER.info("Cria√ß√£o da classe FactoryDAOImpl.");
 				return new FactoryDAOImpl();
 			}
-		}
-		catch (final ParameterException e)
-		{
+		} catch (final ParameterException e) {
 			LOGGER.error("Erro ao definir tipo de instanciamento da classe. " + e.getMessage());
 		}
 		return new FactoryDAOImpl();
 	}
-	
-	protected static boolean getTransaction() throws DAOException
-	{
+
+	protected static boolean getTransaction() throws DAOException {
 		return transaction_active;
 	}
-	
-	public static boolean onTransaction() throws DAOException
-	{
+
+	public static boolean onTransaction() throws DAOException {
 		transaction_active = TRANSACTION_ENABLE;
-		LOGGER.info("Acesso ao banco de dados - TransaÁ„o ativada ...");
+		LOGGER.info("Acesso ao banco de dados - Transa√ß√£o ativada ...");
 		return transaction_active;
 	}
-	
-	public static boolean offTransaction() throws DAOException
-	{
+
+	public static boolean offTransaction() throws DAOException {
 		transaction_active = TRANSACTION_DISABLE;
-		LOGGER.info("Acesso ao banco de dados - TransaÁ„o desativa ...");
+		LOGGER.info("Acesso ao banco de dados - Transa√ß√£o desativada ...");
 		return transaction_active;
 	}
 
