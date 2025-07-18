@@ -7,7 +7,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: admin
       MYSQL_DATABASE: caracore_csodatabase
-      MYSQL_USER: root
       MYSQL_PASSWORD: admin
     ports:
       - "3306:3306"

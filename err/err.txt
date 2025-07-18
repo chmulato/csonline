@@ -26,282 +26,168 @@ PS C:\dev\csonline> mvn clean install
 [INFO] -------------------------------------------------------------
 [ERROR] COMPILATION ERROR :
 [INFO] -------------------------------------------------------------
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[10,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[27,30] cannot find symbol
-  symbol:   class Logger
-  location: class br.com.mulato.cso.dao.impl.DeliveryDAOImpl
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/UserController.java:[8,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/UserController.java:[20,30] cannot find symbol
-  symbol:   class Logger
-  location: class br.com.mulato.cso.view.controller.UserController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/DeliveryController.java:[15,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/DeliveryController.java:[31,30] cannot find symbol
-  symbol:   class Logger
-  location: class br.com.mulato.cso.view.controller.DeliveryController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/utils/ReadEmails.java:[19,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/utils/ReadEmails.java:[30,30] cannot find symbol
-  symbol:   class Logger
-  location: class br.com.mulato.cso.utils.ReadEmails
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/DeliveryViewController.java:[13,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/DeliveryViewController.java:[28,30] cannot find symbol
-  symbol:   class Logger
-  location: class br.com.mulato.cso.view.controller.DeliveryViewController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/CustomersController.java:[9,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/CustomersController.java:[22,30] cannot find symbol
-  symbol:   class Logger
-  location: class br.com.mulato.cso.view.controller.CustomersController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/PriceDAOImpl.java:[10,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/PriceDAOImpl.java:[27,30] cannot find symbol
-  symbol:   class Logger
-  location: class br.com.mulato.cso.dao.impl.PriceDAOImpl
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/listener/BackgroundListener.java:[8,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/listener/BackgroundListener.java:[15,30] cannot find symbol
-  symbol:   class Logger
-  location: class br.com.mulato.cso.view.listener.BackgroundListener
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/listener/PageListener.java:[11,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/listener/PageListener.java:[16,30] cannot find symbol
-  symbol:   class Logger
-  location: class br.com.mulato.cso.view.listener.PageListener
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/PriceController.java:[12,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/PriceController.java:[28,30] cannot find symbol
-  symbol:   class Logger
-  location: class br.com.mulato.cso.view.controller.PriceController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/utils/SendEmail.java:[17,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/utils/SendEmail.java:[26,30] cannot find symbol
-  symbol:   class Logger
-  location: class br.com.mulato.cso.utils.SendEmail
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/CourierController.java:[9,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/CourierController.java:[23,30] cannot find symbol
-  symbol:   class Logger
-  location: class br.com.mulato.cso.view.controller.CourierController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/UsersController.java:[10,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/UsersController.java:[22,30] cannot find symbol
-  symbol:   class Logger
-  location: class br.com.mulato.cso.view.controller.UsersController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/CouriersController.java:[9,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/CouriersController.java:[22,30] cannot find symbol
-  symbol:   class Logger
-  location: class br.com.mulato.cso.view.controller.CouriersController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/DeliveryCustomerController.java:[13,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/DeliveryCustomerController.java:[28,30] cannot find symbol
-  symbol:   class Logger
-  location: class br.com.mulato.cso.view.controller.DeliveryCustomerController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/converter/CMC7Converter.java:[9,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/converter/CMC7Converter.java:[13,30] cannot find symbol
-  symbol:   class Logger
-  location: class br.com.mulato.cso.view.converter.CMC7Converter
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/PricesController.java:[9,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/PricesController.java:[21,30] cannot find symbol
-  symbol:   class Logger
-  location: class br.com.mulato.cso.view.controller.PricesController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/SMSController.java:[13,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/SMSController.java:[27,30] cannot find symbol
-  symbol:   class Logger
-  location: class br.com.mulato.cso.view.controller.SMSController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/UserDAOImpl.java:[10,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/UserDAOImpl.java:[25,30] cannot find symbol
-  symbol:   class Logger
-  location: class br.com.mulato.cso.dao.impl.UserDAOImpl
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/utils/SendSms.java:[3,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/utils/SendSms.java:[8,30] cannot find symbol
-  symbol:   class Logger
-  location: class br.com.mulato.cso.utils.SendSms
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/BusinessesController.java:[10,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/BusinessesController.java:[22,30] cannot find symbol
-  symbol:   class Logger
-  location: class br.com.mulato.cso.view.controller.BusinessesController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/utils/ToolUtils.java:[14,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/utils/ToolUtils.java:[23,30] cannot find symbol
-  symbol:   class Logger
-  location: class br.com.mulato.cso.utils.ToolUtils
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/ChangePasswordController.java:[8,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/ChangePasswordController.java:[21,30] cannot find symbol
-  symbol:   class Logger
-  location: class br.com.mulato.cso.view.controller.ChangePasswordController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/utils/InitProperties.java:[8,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/utils/InitProperties.java:[15,30] cannot find symbol
-  symbol:   class Logger
-  location: class br.com.mulato.cso.utils.InitProperties
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/BusinessController.java:[8,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/BusinessController.java:[21,30] cannot find symbol
-  symbol:   class Logger
-  location: class br.com.mulato.cso.view.controller.BusinessController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/CourierServiceImpl.java:[4,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/CourierServiceImpl.java:[16,30] cannot find symbol
-  symbol:   class Logger
-  location: class br.com.mulato.cso.service.impl.CourierServiceImpl
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/FactoryDAO.java:[3,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/FactoryDAO.java:[24,30] cannot find symbol
-  symbol:   class Logger
-  location: class br.com.mulato.cso.dry.FactoryDAO
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/LoginDAOImpl.java:[7,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/LoginDAOImpl.java:[18,30] cannot find symbol
-  symbol:   class Logger
-  location: class br.com.mulato.cso.dao.impl.LoginDAOImpl
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/CustomerDAOImpl.java:[10,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/CustomerDAOImpl.java:[27,30] cannot find symbol
-  symbol:   class Logger
-  location: class br.com.mulato.cso.dao.impl.CustomerDAOImpl
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/DeliveryCourierController.java:[13,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/DeliveryCourierController.java:[28,30] cannot find symbol
-  symbol:   class Logger
-  location: class br.com.mulato.cso.view.controller.DeliveryCourierController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/ws/AuthenticationService.java:[6,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/ws/AuthenticationService.java:[13,30] cannot find symbol
-  symbol:   class Logger
-  location: class br.com.mulato.cso.ws.AuthenticationService
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/DeliveryServiceImpl.java:[5,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/DeliveryServiceImpl.java:[25,30] cannot find symbol
-  symbol:   class Logger
-  location: class br.com.mulato.cso.service.impl.DeliveryServiceImpl
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/DBConnection.java:[15,22] package jakarta.naming does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/DBConnection.java:[16,22] package jakarta.naming does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/DBConnection.java:[17,19] package jakarta.sql does not exist
-[INFO] 67 errors
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[25,35] package net.sf.jasperreports.engine does not exist
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[26,35] package net.sf.jasperreports.engine does not exist
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[27,35] package net.sf.jasperreports.engine does not exist
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[28,35] package net.sf.jasperreports.engine does not exist
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[29,42] package net.sf.jasperreports.engine.export does not exist
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[30,42] package net.sf.jasperreports.engine.export does not exist
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[31,42] package net.sf.jasperreports.engine.export does not exist
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[32,42] package net.sf.jasperreports.j2ee.servlets does not exist
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[48,23] cannot find symbol
+  symbol:   class JRExporter
+  location: class br.com.mulato.cso.dry.AbstractController
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[50,23] cannot find symbol
+  symbol:   class JRExporter
+  location: class br.com.mulato.cso.dry.AbstractController
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[52,23] cannot find symbol
+  symbol:   class JRHtmlExporter
+  location: class br.com.mulato.cso.dry.AbstractController
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[118,43] cannot find symbol
+  symbol:   class JasperPrint
+  location: class br.com.mulato.cso.dry.AbstractController
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[137,43] cannot find symbol
+  symbol:   class JasperPrint
+  location: class br.com.mulato.cso.dry.AbstractController
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[157,44] cannot find symbol
+  symbol:   class JasperPrint
+  location: class br.com.mulato.cso.dry.AbstractController
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[225,16] cannot find symbol
+  symbol:   class JRExporter
+  location: class br.com.mulato.cso.dry.AbstractController
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[229,16] cannot find symbol
+  symbol:   class JRExporter
+  location: class br.com.mulato.cso.dry.AbstractController
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[233,16] cannot find symbol
+  symbol:   class JRHtmlExporter
+  location: class br.com.mulato.cso.dry.AbstractController
+[INFO] 17 errors
 [INFO] -------------------------------------------------------------
-[INFO] ------------------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------   
 [INFO] BUILD FAILURE
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time:  2.666 s
-[INFO] Finished at: 2025-07-18T14:46:44-03:00
-[INFO] ------------------------------------------------------------------------
-[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.1:compile (default-compile) on project csonline: Compilation failure: Compilation failure:      
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[10,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[27,30] cannot find symbol
-[ERROR]   symbol:   class Logger
-[ERROR]   location: class br.com.mulato.cso.dao.impl.DeliveryDAOImpl
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/UserController.java:[8,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/UserController.java:[20,30] cannot find symbol
-[ERROR]   symbol:   class Logger
-[ERROR]   location: class br.com.mulato.cso.view.controller.UserController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/DeliveryController.java:[15,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/DeliveryController.java:[31,30] cannot find symbol
-[ERROR]   symbol:   class Logger
-[ERROR]   location: class br.com.mulato.cso.view.controller.DeliveryController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/utils/ReadEmails.java:[19,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/utils/ReadEmails.java:[30,30] cannot find symbol
-[ERROR]   symbol:   class Logger
-[ERROR]   location: class br.com.mulato.cso.utils.ReadEmails
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/DeliveryViewController.java:[13,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/DeliveryViewController.java:[28,30] cannot find symbol
-[ERROR]   symbol:   class Logger
-[ERROR]   location: class br.com.mulato.cso.view.controller.DeliveryViewController      
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/CustomersController.java:[9,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/CustomersController.java:[22,30] cannot find symbol
-[ERROR]   symbol:   class Logger
-[ERROR]   location: class br.com.mulato.cso.view.controller.CustomersController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/PriceDAOImpl.java:[10,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/PriceDAOImpl.java:[27,30] cannot find symbol
-[ERROR]   symbol:   class Logger
-[ERROR]   location: class br.com.mulato.cso.dao.impl.PriceDAOImpl
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/listener/BackgroundListener.java:[8,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/listener/BackgroundListener.java:[15,30] cannot find symbol
-[ERROR]   symbol:   class Logger
-[ERROR]   location: class br.com.mulato.cso.view.listener.BackgroundListener
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/listener/PageListener.java:[11,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/listener/PageListener.java:[16,30] cannot find symbol
-[ERROR]   symbol:   class Logger
-[ERROR]   location: class br.com.mulato.cso.view.listener.PageListener
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/PriceController.java:[12,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/PriceController.java:[28,30] cannot find symbol
-[ERROR]   symbol:   class Logger
-[ERROR]   location: class br.com.mulato.cso.view.controller.PriceController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/utils/SendEmail.java:[17,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/utils/SendEmail.java:[26,30] cannot find symbol
-[ERROR]   symbol:   class Logger
-[ERROR]   location: class br.com.mulato.cso.utils.SendEmail
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/CourierController.java:[9,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/CourierController.java:[23,30] cannot find symbol
-[ERROR]   symbol:   class Logger
-[ERROR]   location: class br.com.mulato.cso.view.controller.CourierController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/UsersController.java:[10,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/UsersController.java:[22,30] cannot find symbol
-[ERROR]   symbol:   class Logger
-[ERROR]   location: class br.com.mulato.cso.view.controller.UsersController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/CouriersController.java:[9,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/CouriersController.java:[22,30] cannot find symbol
-[ERROR]   symbol:   class Logger
-[ERROR]   location: class br.com.mulato.cso.view.controller.CouriersController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/DeliveryCustomerController.java:[13,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/DeliveryCustomerController.java:[28,30] cannot find symbol
-[ERROR]   symbol:   class Logger
-[ERROR]   location: class br.com.mulato.cso.view.controller.DeliveryCustomerController  
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/converter/CMC7Converter.java:[9,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/converter/CMC7Converter.java:[13,30] cannot find symbol
-[ERROR]   symbol:   class Logger
-[ERROR]   location: class br.com.mulato.cso.view.converter.CMC7Converter
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/PricesController.java:[9,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/PricesController.java:[21,30] cannot find symbol
-[ERROR]   symbol:   class Logger
-[ERROR]   location: class br.com.mulato.cso.view.controller.PricesController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/SMSController.java:[13,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/SMSController.java:[27,30] cannot find symbol
-[ERROR]   symbol:   class Logger
-[ERROR]   location: class br.com.mulato.cso.view.controller.SMSController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/UserDAOImpl.java:[10,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/UserDAOImpl.java:[25,30] cannot find symbol
-[ERROR]   symbol:   class Logger
-[ERROR]   location: class br.com.mulato.cso.dao.impl.UserDAOImpl
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/utils/SendSms.java:[3,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/utils/SendSms.java:[8,30] cannot find symbol
-[ERROR]   symbol:   class Logger
-[ERROR]   location: class br.com.mulato.cso.utils.SendSms
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/BusinessesController.java:[10,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/BusinessesController.java:[22,30] cannot find symbol
-[ERROR]   symbol:   class Logger
-[ERROR]   location: class br.com.mulato.cso.view.controller.BusinessesController        
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/utils/ToolUtils.java:[14,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/utils/ToolUtils.java:[23,30] cannot find symbol
-[ERROR]   symbol:   class Logger
-[ERROR]   location: class br.com.mulato.cso.utils.ToolUtils
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/ChangePasswordController.java:[8,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/ChangePasswordController.java:[21,30] cannot find symbol
-[ERROR]   symbol:   class Logger
-[ERROR]   location: class br.com.mulato.cso.view.controller.ChangePasswordController    
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/utils/InitProperties.java:[8,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/utils/InitProperties.java:[15,30] cannot find symbol
-[ERROR]   symbol:   class Logger
-[ERROR]   location: class br.com.mulato.cso.utils.InitProperties
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/BusinessController.java:[8,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/BusinessController.java:[21,30] cannot find symbol
-[ERROR]   symbol:   class Logger
-[ERROR]   location: class br.com.mulato.cso.view.controller.BusinessController
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/CourierServiceImpl.java:[4,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/CourierServiceImpl.java:[16,30] cannot find symbol
-[ERROR]   symbol:   class Logger
-[ERROR]   location: class br.com.mulato.cso.service.impl.CourierServiceImpl
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/FactoryDAO.java:[3,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/FactoryDAO.java:[24,30] cannot find symbol
-[ERROR]   symbol:   class Logger
-[ERROR]   location: class br.com.mulato.cso.dry.FactoryDAO
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/LoginDAOImpl.java:[7,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/LoginDAOImpl.java:[18,30] cannot find symbol
-[ERROR]   symbol:   class Logger
-[ERROR]   location: class br.com.mulato.cso.dao.impl.LoginDAOImpl
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/CustomerDAOImpl.java:[10,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/CustomerDAOImpl.java:[27,30] cannot find symbol
-[ERROR]   symbol:   class Logger
-[ERROR]   location: class br.com.mulato.cso.dao.impl.CustomerDAOImpl
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/DeliveryCourierController.java:[13,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/DeliveryCourierController.java:[28,30] cannot find symbol
-[ERROR]   symbol:   class Logger
-[ERROR]   location: class br.com.mulato.cso.view.controller.DeliveryCourierController   
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/ws/AuthenticationService.java:[6,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/ws/AuthenticationService.java:[13,30] cannot find symbol
-[ERROR]   symbol:   class Logger
-[ERROR]   location: class br.com.mulato.cso.ws.AuthenticationService
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/DeliveryServiceImpl.java:[5,24] package org.apache.log4j does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/service/impl/DeliveryServiceImpl.java:[25,30] cannot find symbol
-[ERROR]   symbol:   class Logger
-[ERROR]   location: class br.com.mulato.cso.service.impl.DeliveryServiceImpl
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/DBConnection.java:[15,22] package jakarta.naming does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/DBConnection.java:[16,22] package jakarta.naming does not exist
-[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/DBConnection.java:[17,19] package jakarta.sql does not exist
+[INFO] ------------------------------------------------------------------------   
+[INFO] Total time:  2.631 s
+[INFO] Finished at: 2025-07-18T15:44:21-03:00
+[INFO] ------------------------------------------------------------------------   
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.1:compile (default-compile) on project csonline: Compilation failure: Compilation failure:
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[25,35] package net.sf.jasperreports.engine does not exist
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[26,35] package net.sf.jasperreports.engine does not exist
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[27,35] package net.sf.jasperreports.engine does not exist
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[28,35] package net.sf.jasperreports.engine does not exist
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[29,42] package net.sf.jasperreports.engine.export does not exist
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[30,42] package net.sf.jasperreports.engine.export does not exist
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[31,42] package net.sf.jasperreports.engine.export does not exist
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[32,42] package net.sf.jasperreports.j2ee.servlets does not exist
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[48,23] cannot find symbol
+[ERROR]   symbol:   class JRExporter
+[ERROR]   location: class br.com.mulato.cso.dry.AbstractController
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[50,23] cannot find symbol
+[ERROR]   symbol:   class JRExporter
+[ERROR]   location: class br.com.mulato.cso.dry.AbstractController
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[52,23] cannot find symbol
+[ERROR]   symbol:   class JRHtmlExporter
+[ERROR]   location: class br.com.mulato.cso.dry.AbstractController
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[118,43] cannot find symbol
+[ERROR]   symbol:   class JasperPrint
+[ERROR]   location: class br.com.mulato.cso.dry.AbstractController
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[137,43] cannot find symbol
+[ERROR]   symbol:   class JasperPrint
+[ERROR]   location: class br.com.mulato.cso.dry.AbstractController
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[157,44] cannot find symbol
+[ERROR]   symbol:   class JasperPrint
+[ERROR]   location: class br.com.mulato.cso.dry.AbstractController
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[225,16] cannot find symbol
+[ERROR]   symbol:   class JRExporter
+[ERROR]   location: class br.com.mulato.cso.dry.AbstractController
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[229,16] cannot find symbol
+[ERROR]   symbol:   class JRExporter
+[ERROR]   location: class br.com.mulato.cso.dry.AbstractController
+[ERROR] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dry/AbstractController.java:[233,16] cannot find symbol
+[ERROR]   symbol:   class JRHtmlExporter
+[ERROR]   location: class br.com.mulato.cso.dry.AbstractController
 [ERROR] -> [Help 1]
 [ERROR]
-[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.     
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
 [ERROR] Re-run Maven using the -X switch to enable full debug logging.
 [ERROR]
 [ERROR] For more information about the errors and possible solutions, please read the following articles:
-[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException  
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+PS C:\dev\csonline> mvn clean install
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------------< br.com.mulato:csonline >-----------------------   
+[INFO] Building csonline 1.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ war ]---------------------------------   
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ csonline ---
+[INFO] Deleting C:\dev\csonline\target
+[INFO] 
+[INFO] --- resources:2.6:copy-resources (copy-resources) @ csonline ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 21 resources
+[INFO] 
+[INFO] --- jacoco:0.8.11:prepare-agent (default) @ csonline ---
+[INFO] argLine set to -javaagent:C:\\Users\\devel\\.m2\\repository\\org\\jacoco\\org.jacoco.agent\\0.8.11\\org.jacoco.agent-0.8.11-runtime.jar=destfile=C:\\dev\\csonline\\target\\jacoco.exec
+[INFO]
+[INFO] --- resources:2.6:resources (default-resources) @ csonline ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 21 resources
+[INFO] 
+[INFO] --- compiler:3.1:compile (default-compile) @ csonline ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 99 source files to C:\dev\csonline\target\classes
+[WARNING] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java: Some input files use or override a deprecated API that is marked for removal.
+[WARNING] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java: Recompile with -Xlint:removal for details.
+[INFO]
+[INFO] --- resources:2.6:testResources (default-testResources) @ csonline ---     
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 0 resource
+[INFO]
+[INFO] --- compiler:3.1:testCompile (default-testCompile) @ csonline ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 1 source file to C:\dev\csonline\target\test-classes
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR :
+[INFO] -------------------------------------------------------------
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/service/BusinessServiceTest.java:[39,61] cannot find symbol
+  symbol:   class BusinessDAO
+  location: package br.com.mulato.cso.dry
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/service/BusinessServiceTest.java:[74,61] cannot find symbol
+  symbol:   class BusinessDAO
+  location: package br.com.mulato.cso.dry
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/service/BusinessServiceTest.java:[94,61] cannot find symbol
+  symbol:   class BusinessDAO
+  location: package br.com.mulato.cso.dry
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/service/BusinessServiceTest.java:[113,61] cannot find symbol
+  symbol:   class BusinessDAO
+  location: package br.com.mulato.cso.dry
+[INFO] 4 errors
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------   
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------   
+[INFO] Total time:  4.259 s
+[INFO] Finished at: 2025-07-18T15:46:21-03:00
+[INFO] ------------------------------------------------------------------------   
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.1:testCompile (default-testCompile) on project csonline: Compilation failure: Compilation failure:
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/service/BusinessServiceTest.java:[39,61] cannot find symbol
+[ERROR]   symbol:   class BusinessDAO
+[ERROR]   location: package br.com.mulato.cso.dry
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/service/BusinessServiceTest.java:[74,61] cannot find symbol
+[ERROR]   symbol:   class BusinessDAO
+[ERROR]   location: package br.com.mulato.cso.dry
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/service/BusinessServiceTest.java:[94,61] cannot find symbol
+[ERROR]   symbol:   class BusinessDAO
+[ERROR]   location: package br.com.mulato.cso.dry
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/service/BusinessServiceTest.java:[113,61] cannot find symbol
+[ERROR]   symbol:   class BusinessDAO
+[ERROR]   location: package br.com.mulato.cso.dry
+[ERROR] -> [Help 1]
+[ERROR]
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR]
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
 PS C:\dev\csonline> 

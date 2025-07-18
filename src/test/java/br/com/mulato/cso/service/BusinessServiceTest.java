@@ -36,7 +36,7 @@ public class BusinessServiceTest {
     public void testListAllBusinessSuccess() throws WebException {
         List<BusinessVO> mockList = Collections.singletonList(new BusinessVO());
         try (MockedStatic<FactoryDAO> factoryMock = Mockito.mockStatic(FactoryDAO.class)) {
-            var businessDAOMock = mock(br.com.mulato.cso.dry.BusinessDAO.class);
+            var businessDAOMock = mock(br.com.mulato.cso.dao.BusinessDAO.class);
             factoryMock.when(FactoryDAO::getInstancia).thenReturn(mock(br.com.mulato.cso.dry.FactoryDAO.class));
             when(FactoryDAO.getInstancia().getBusinessDAO()).thenReturn(businessDAOMock);
             when(businessDAOMock.listAll()).thenReturn(mockList);
@@ -71,7 +71,7 @@ public class BusinessServiceTest {
 
         try (MockedStatic<FactoryDAO> factoryMock = Mockito.mockStatic(FactoryDAO.class)) {
             var factory = mock(br.com.mulato.cso.dry.FactoryDAO.class);
-            var businessDAOMock = mock(br.com.mulato.cso.dry.BusinessDAO.class);
+            var businessDAOMock = mock(br.com.mulato.cso.dao.BusinessDAO.class);
             factoryMock.when(FactoryDAO::getInstancia).thenReturn(factory);
             when(factory.getBusinessDAO()).thenReturn(businessDAOMock);
             doNothing().when(businessDAOMock).insert(vo);
@@ -91,7 +91,7 @@ public class BusinessServiceTest {
         BusinessVO vo = new BusinessVO();
         try (MockedStatic<FactoryDAO> factoryMock = Mockito.mockStatic(FactoryDAO.class)) {
             var factory = mock(br.com.mulato.cso.dry.FactoryDAO.class);
-            var businessDAOMock = mock(br.com.mulato.cso.dry.BusinessDAO.class);
+            var businessDAOMock = mock(br.com.mulato.cso.dao.BusinessDAO.class);
             factoryMock.when(FactoryDAO::getInstancia).thenReturn(factory);
             when(factory.getBusinessDAO()).thenReturn(businessDAOMock);
             when(businessDAOMock.find(1)).thenReturn(vo);
@@ -110,7 +110,7 @@ public class BusinessServiceTest {
     public void testDeleteBusinessSuccess() throws DAOException, WebException {
         try (MockedStatic<FactoryDAO> factoryMock = Mockito.mockStatic(FactoryDAO.class)) {
             var factory = mock(br.com.mulato.cso.dry.FactoryDAO.class);
-            var businessDAOMock = mock(br.com.mulato.cso.dry.BusinessDAO.class);
+            var businessDAOMock = mock(br.com.mulato.cso.dao.BusinessDAO.class);
             factoryMock.when(FactoryDAO::getInstancia).thenReturn(factory);
             when(factory.getBusinessDAO()).thenReturn(businessDAOMock);
             doNothing().when(businessDAOMock).delete(1);

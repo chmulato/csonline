@@ -1,4 +1,3 @@
-
 -- MySQL 8.0 compatible dump
 -- Database: caracore_csodatabase
 

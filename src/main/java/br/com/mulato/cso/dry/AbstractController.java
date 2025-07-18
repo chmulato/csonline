@@ -1,3 +1,4 @@
+// encoding: UTF-8
 // Arquivo salvo em UTF-8
 // Certifique-se que o editor está configurado para UTF-8
 package br.com.mulato.cso.dry;
@@ -18,17 +19,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import br.com.mulato.cso.exception.ReportException;
 import br.com.mulato.cso.exception.WebException;
 import br.com.mulato.cso.view.beans.FacesMessages;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRExporter;
-import net.sf.jasperreports.engine.JRExporterParameter;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.export.JRHtmlExporter;
-import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.engine.export.JRRtfExporter;
-import net.sf.jasperreports.j2ee.servlets.ImageServlet;
 
 public class AbstractController {
 
@@ -43,12 +35,6 @@ public class AbstractController {
 	public final String TYPE_DOC = "application/vnd.ms-word";
 
 	public final String TYPE_RTF = "application/rtf";
-
-	private final JRExporter exporterPDF = new JRPdfExporter();
-
-	private final JRExporter exporterRTF = new JRRtfExporter();
-
-	private final JRHtmlExporter exporterHTML = new JRHtmlExporter();
 
 	public final String LOGOMARCA_JPG = "logomarca.jpg";
 
@@ -114,62 +100,6 @@ public class AbstractController {
 		}
 	}
 
-	public void exportReportPDF(final JasperPrint jasperPrint) throws ReportException {
-		final String msg = "Erro ao exportar o relat�rio para o usu�rio: ";
-		try {
-			final HttpServletResponse response = (HttpServletResponse) getExternalContext().getResponse();
-			response.setContentType(TYPE_PDF);
-			exporterPDF.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-			exporterPDF.setParameter(JRExporterParameter.OUTPUT_STREAM, response.getOutputStream());
-			exporterPDF.exportReport();
-			getFacesCurrentInstance().responseComplete();
-		} catch (final RuntimeException e) {
-			LOGGER.error(msg + e.getMessage());
-			throw new ReportException("N�o foi poss��vel montar seu relat�rio. Tente mais tarde.");
-		} catch (IOException | JRException e) {
-			LOGGER.error(msg + e.getMessage());
-			throw new ReportException("N�o foi poss��vel montar seu relat�rio. Tente mais tarde.");
-		}
-
-	}
-
-	public void exportReportRTF(final JasperPrint jasperPrint) throws ReportException {
-		final String msg = "Erro ao exportar o relat�rio para o usu�rio: ";
-		try {
-			final HttpServletResponse response = (HttpServletResponse) getExternalContext().getResponse();
-			response.setContentType(TYPE_RTF);
-			response.addHeader("Content-disposition", "attachment; filename=relatorioWord.rtf");
-			exporterRTF.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-			exporterRTF.setParameter(JRExporterParameter.OUTPUT_STREAM, response.getOutputStream());
-			exporterRTF.exportReport();
-			getFacesCurrentInstance().responseComplete();
-		} catch (final RuntimeException e) {
-			LOGGER.error(msg + e.getMessage());
-			throw new ReportException("N�o foi poss��vel montar seu relat�rio. Tente mais tarde.");
-		} catch (IOException | JRException e) {
-			LOGGER.error(msg + e.getMessage());
-			throw new ReportException("N�o foi poss��vel montar seu relat�rio. Tente mais tarde.");
-		}
-
-	}
-
-	public void exportReportHTML(final JasperPrint jasperPrint) throws ReportException {
-		final String msg = "Erro ao exportar relat�rio: ";
-		try {
-			final PrintWriter printWriter = getResponse().getWriter();
-			getResponse().setContentType(TYPE_HTML);
-			getResponse().setCharacterEncoding("ISO-8859-1");
-			getRequest().getSession().setAttribute(ImageServlet.DEFAULT_JASPER_PRINT_SESSION_ATTRIBUTE, jasperPrint);
-			exporterHTML.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-			exporterHTML.setParameter(JRExporterParameter.OUTPUT_WRITER, printWriter);
-			exporterHTML.setParameter(JRExporterParameter.CHARACTER_ENCODING, "ISO-8859-1");
-			exporterHTML.exportReport();
-		} catch (IOException | JRException e) {
-			LOGGER.error(msg + e.getMessage());
-			throw new ReportException("N�o foi poss��vel montar seu relat�rio. Tente mais tarde.");
-		}
-	}
-
 	protected void downloadArquivo(final String filename, final String fileType) {
 		String msg = "Erro ao realizar download do arquivo tempor�rio ";
 		try {
@@ -221,15 +151,4 @@ public class AbstractController {
 		return (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
 	}
 
-	public JRExporter getExporterPDF() {
-		return exporterPDF;
-	}
-
-	public JRExporter getExporterRTF() {
-		return exporterRTF;
-	}
-
-	public JRHtmlExporter getExporterHTML() {
-		return exporterHTML;
-	}
 }
