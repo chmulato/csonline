@@ -1,11 +1,13 @@
+// encoding: UTF-8
 package br.com.mulato.cso.utils;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import br.com.mulato.cso.exception.WebException;
 
 public class SendSms {
 
-	private final static Logger LOGGER = Logger.getLogger(SendSms.class);
+	private final static Logger LOGGER = LogManager.getLogger(SendSms.class);
 
 	private SendEmail sendSms(String to, final String from, final String message) throws WebException {
 		final String[] email = new String[1];
