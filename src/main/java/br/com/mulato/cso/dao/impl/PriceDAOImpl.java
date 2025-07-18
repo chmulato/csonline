@@ -20,50 +20,42 @@ import br.com.mulato.cso.utils.InitProperties;
 import br.com.mulato.cso.utils.vo.TableVO;
 
 public class PriceDAOImpl
-	implements PriceDAO, Serializable
-{
+		implements PriceDAO, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private final static Logger logger = Logger.getLogger(PriceDAOImpl.class);
 
-	private BusinessVO findBusiness (final Integer idBusiness) throws DAOException
-	{
+	private BusinessVO findBusiness(final Integer idBusiness) throws DAOException {
 		return FactoryDAO.getInstancia().getBusinessDAO().find(idBusiness);
 	}
 
 	@Override
 	public void setTransaction_active(boolean enable) throws DAOException {
-		
-		if (enable == TRANSACTION_ENABLE)
-		{
+
+		if (enable == TRANSACTION_ENABLE) {
 			DBConnection.onTransaction();
 		}
 
-		if (enable == TRANSACTION_DISABLE)
-		{
+		if (enable == TRANSACTION_DISABLE) {
 			DBConnection.offTransaction();
 		}
-		
+
 	}
 
-	private boolean thereIsEqualByOtherId (final PriceVO price) throws DAOException
-	{
+	private boolean thereIsEqualByOtherId(final PriceVO price) throws DAOException {
 
 		boolean result = false;
 
-		if (price == null)
-		{
+		if (price == null) {
 			throw new DAOException("Informe preço!");
 		}
 
-		if (price.getId() == null)
-		{
+		if (price.getId() == null) {
 			throw new DAOException("Informe id preço!");
 		}
 
-		if (price.getId().intValue() < 0)
-		{
+		if (price.getId().intValue() < 0) {
 			throw new DAOException("Informe id preço!");
 		}
 
@@ -71,14 +63,12 @@ public class PriceDAOImpl
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
-		try
-		{
+		try {
 
 			final String SQL = SELECT_PRICE_EQUAL_OTHER_ID;
 			conn = DBConnection.getConnectionDB();
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("SQL: " + SQL);
 			}
 
@@ -92,31 +82,23 @@ public class PriceDAOImpl
 
 			rs = stmt.executeQuery();
 
-			if (rs.next())
-			{
+			if (rs.next()) {
 				result = true;
 			}
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("SQL: OK!");
 			}
 
-		}
-		catch (final ParameterException ex)
-		{
+		} catch (final ParameterException ex) {
 			final String msg = "Erro ao pesquisar pre�o! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		catch (final SQLException ex)
-		{
+		} catch (final SQLException ex) {
 			final String msg = "Erro ao pesquisar pre�o! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		finally
-		{
+		} finally {
 			DBConnection.closeConnection(conn, stmt, rs);
 		}
 
@@ -124,13 +106,11 @@ public class PriceDAOImpl
 
 	}
 
-	private boolean thereIsEqual (final PriceVO price) throws DAOException
-	{
+	private boolean thereIsEqual(final PriceVO price) throws DAOException {
 
 		boolean result = false;
 
-		if (price == null)
-		{
+		if (price == null) {
 			throw new DAOException("Informe preço!");
 		}
 
@@ -138,14 +118,12 @@ public class PriceDAOImpl
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
-		try
-		{
+		try {
 
 			final String SQL = SELECT_PRICE_EQUAL;
 			conn = DBConnection.getConnectionDB();
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("SQL: " + SQL);
 			}
 
@@ -158,31 +136,23 @@ public class PriceDAOImpl
 
 			rs = stmt.executeQuery();
 
-			if (rs.next())
-			{
+			if (rs.next()) {
 				result = true;
 			}
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("SQL: OK!");
 			}
 
-		}
-		catch (final ParameterException ex)
-		{
+		} catch (final ParameterException ex) {
 			final String msg = "Erro ao pesquisar pre�o! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		catch (final SQLException ex)
-		{
+		} catch (final SQLException ex) {
 			final String msg = "Erro ao pesquisar pre�o! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		finally
-		{
+		} finally {
 			DBConnection.closeConnection(conn, stmt, rs);
 		}
 
@@ -191,18 +161,15 @@ public class PriceDAOImpl
 	}
 
 	@Override
-	public PriceVO find (final Integer id) throws DAOException
-	{
+	public PriceVO find(final Integer id) throws DAOException {
 
 		PriceVO result = null;
 
-		if (id == null)
-		{
+		if (id == null) {
 			throw new DAOException("Informe Id tabela de preço!");
 		}
 
-		if (id.intValue() <= 0)
-		{
+		if (id.intValue() <= 0) {
 			throw new DAOException("Informe Id tabela de preço!");
 		}
 
@@ -210,14 +177,12 @@ public class PriceDAOImpl
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
-		try
-		{
+		try {
 
 			final String SQL = SELECT_PRICE_BY_ID;
 			conn = DBConnection.getConnectionDB();
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("SQL: " + SQL);
 			}
 
@@ -226,8 +191,7 @@ public class PriceDAOImpl
 
 			rs = stmt.executeQuery();
 
-			if (rs.next())
-			{
+			if (rs.next()) {
 
 				result = new PriceVO();
 
@@ -238,8 +202,7 @@ public class PriceDAOImpl
 				result.setPrice(rs.getBigDecimal("PRICE"));
 
 				final int idBusiness = rs.getInt(rs.findColumn("IDBUSINESS"));
-				if (idBusiness > 0)
-				{
+				if (idBusiness > 0) {
 					BusinessVO vo = new BusinessVO();
 					vo = findBusiness(idBusiness);
 					result.setBusiness(vo);
@@ -247,26 +210,19 @@ public class PriceDAOImpl
 
 			}
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("SQL: OK!");
 			}
 
-		}
-		catch (final ParameterException ex)
-		{
+		} catch (final ParameterException ex) {
 			final String msg = "Erro ao pesquisar pre�o! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		catch (final SQLException ex)
-		{
+		} catch (final SQLException ex) {
 			final String msg = "Erro ao pesquisar pre�o! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		finally
-		{
+		} finally {
 			DBConnection.closeConnection(conn, stmt, rs);
 		}
 
@@ -274,11 +230,9 @@ public class PriceDAOImpl
 	}
 
 	@Override
-	public void delete (final Integer id) throws DAOException
-	{
+	public void delete(final Integer id) throws DAOException {
 
-		if ((id == null) || (id.intValue() <= 0))
-		{
+		if ((id == null) || (id.intValue() <= 0)) {
 			throw new DAOException("Informe id preço!");
 		}
 
@@ -288,13 +242,11 @@ public class PriceDAOImpl
 		PreparedStatement stmt = null;
 		final ResultSet rs = null;
 
-		try
-		{
+		try {
 
 			final String SQL = DELETE_PRICE_BY_ID;
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("DELETE: " + SQL);
 			}
 
@@ -304,36 +256,27 @@ public class PriceDAOImpl
 			stmt.setInt(1, id);
 			stmt.executeUpdate();
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("DELETE: OK!");
 			}
 
-		}
-		catch (final ParameterException ex)
-		{
+		} catch (final ParameterException ex) {
 			final String msg = "Erro ao deletar pre�o! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		catch (final SQLException ex)
-		{
+		} catch (final SQLException ex) {
 			final String msg = "Erro ao deletar pre�o! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		finally
-		{
+		} finally {
 			DBConnection.closeConnection(conn, stmt, rs);
 		}
 	}
 
 	@Override
-	public void deleteBusinessValues (final Integer idBusiness) throws DAOException
-	{
+	public void deleteBusinessValues(final Integer idBusiness) throws DAOException {
 
-		if ((idBusiness == null) || (idBusiness.intValue() <= 0))
-		{
+		if ((idBusiness == null) || (idBusiness.intValue() <= 0)) {
 			throw new DAOException("Informe id negócio!");
 		}
 
@@ -343,13 +286,11 @@ public class PriceDAOImpl
 		PreparedStatement stmt = null;
 		final ResultSet rs = null;
 
-		try
-		{
+		try {
 
 			final String SQL = DELETE_BUSINESS_VALUES;
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("DELETE: " + SQL);
 			}
 
@@ -360,89 +301,70 @@ public class PriceDAOImpl
 
 			stmt.executeUpdate();
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("DELETE: OK!");
 			}
 
-		}
-		catch (final ParameterException ex)
-		{
+		} catch (final ParameterException ex) {
 			final String msg = "Erro ao deletar pre�os do neg�cio! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		catch (final SQLException ex)
-		{
+		} catch (final SQLException ex) {
 			final String msg = "Erro ao deletar pre�os do neg�cio! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		finally
-		{
+		} finally {
 			DBConnection.closeConnection(conn, stmt, rs);
 		}
 	}
 
 	@SuppressWarnings("resource")
 	@Override
-	public int insert (final PriceVO price) throws DAOException
-	{
+	public int insert(final PriceVO price) throws DAOException {
 
 		int id = 0;
 
-		if (price == null)
-		{
+		if (price == null) {
 			throw new DAOException("Informe preço!");
 		}
 
-		if (price.getBusiness() == null)
-		{
+		if (price.getBusiness() == null) {
 			throw new DAOException("Informe o negócio!");
 		}
 
-		if (price.getBusiness().getId() == null)
-		{
+		if (price.getBusiness().getId() == null) {
 			throw new DAOException("Informe o negócio!");
 		}
 
-		if (price.getBusiness().getId().intValue() <= 0)
-		{
+		if (price.getBusiness().getId().intValue() <= 0) {
 			throw new DAOException("Informe o negócio!");
 		}
 
-		if (price.getTable() == null)
-		{
+		if (price.getTable() == null) {
 			throw new DAOException("Informe tabela de preço!");
 		}
 
-		if (price.getTable().equals(""))
-		{
+		if (price.getTable().equals("")) {
 			throw new DAOException("Informe tabela de preço!");
 		}
 
-		if (price.getVehicle() == null)
-		{
+		if (price.getVehicle() == null) {
 			throw new DAOException("Informe tipo de transporte!");
 		}
 
-		if (price.getVehicle().equals(""))
-		{
+		if (price.getVehicle().equals("")) {
 			throw new DAOException("Informe tipo de transporte!");
 		}
 
-		if (price.getLocal() == null)
-		{
+		if (price.getLocal() == null) {
 			throw new DAOException("Informe local!");
 		}
 
-		if (price.getLocal().equals(""))
-		{
+		if (price.getLocal().equals("")) {
 			throw new DAOException("Informe local!");
 		}
 
-		if (thereIsEqual(price))
-		{
+		if (thereIsEqual(price)) {
 			throw new DAOException("Item já cadastrado!");
 		}
 
@@ -452,25 +374,22 @@ public class PriceDAOImpl
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
-		try
-		{
+		try {
 
 			final String SQL = INSERT_PRICE;
 
 			conn = DBConnection.getConnectionDB();
-			
+
 			DBConnection.onTransaction();
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("INSERT: " + SQL);
 			}
 
 			stmt = conn.prepareStatement(GET_LAST_ID_ON_PRICE_TABLE);
 			rs = stmt.executeQuery();
 
-			if (rs.next())
-			{
+			if (rs.next()) {
 				id = rs.getInt(1);
 			}
 
@@ -483,21 +402,15 @@ public class PriceDAOImpl
 			stmt.setString(3, price.getTable());
 			stmt.setString(4, price.getVehicle());
 
-			if (price.getLocal() == null)
-			{
+			if (price.getLocal() == null) {
 				stmt.setString(5, "");
-			}
-			else
-			{
+			} else {
 				stmt.setString(5, price.getLocal().trim().toUpperCase());
 			}
 
-			if (price.getPrice() == null)
-			{
+			if (price.getPrice() == null) {
 				stmt.setNull(6, java.sql.Types.DECIMAL);
-			}
-			else
-			{
+			} else {
 				stmt.setBigDecimal(6, price.getPrice());
 			}
 
@@ -505,32 +418,25 @@ public class PriceDAOImpl
 
 			DBConnection.offTransaction();
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("INSERT: OK!");
 			}
 
-		}
-		catch (final ParameterException ex)
-		{
+		} catch (final ParameterException ex) {
 
 			final String msg = "Erro ao salvar pre�o! ";
 			logger.error(msg + ex.getMessage());
 
 			throw new DAOException(msg);
 
-		}
-		catch (final SQLException ex)
-		{
+		} catch (final SQLException ex) {
 
 			final String msg = "Erro ao salvar pre�o! ";
 			logger.error(msg + ex.getMessage());
 
 			throw new DAOException(msg);
 
-		}
-		finally
-		{
+		} finally {
 			DBConnection.closeConnection(conn, stmt, rs);
 		}
 
@@ -538,61 +444,49 @@ public class PriceDAOImpl
 	}
 
 	@Override
-	public void update (final PriceVO price) throws DAOException
-	{
+	public void update(final PriceVO price) throws DAOException {
 
-		if (price == null)
-		{
+		if (price == null) {
 			throw new DAOException("Informe preço!");
 		}
 
-		if (price.getId() == null)
-		{
+		if (price.getId() == null) {
 			throw new DAOException("Informe id preço!");
 		}
 
-		if (price.getId().intValue() < 0)
-		{
+		if (price.getId().intValue() < 0) {
 			throw new DAOException("Informe id preço!");
 		}
 
-		if (price.getBusiness() == null)
-		{
+		if (price.getBusiness() == null) {
 			throw new DAOException("Informe o negócio!");
 		}
 
-		if (price.getBusiness().getId() == null)
-		{
+		if (price.getBusiness().getId() == null) {
 			throw new DAOException("Informe o negócio!");
 		}
 
-		if (price.getBusiness().getId().intValue() <= 0)
-		{
+		if (price.getBusiness().getId().intValue() <= 0) {
 			throw new DAOException("Informe o negócio!");
 		}
 
-		if (price.getTable() == null)
-		{
+		if (price.getTable() == null) {
 			throw new DAOException("Informe tabela de preço!");
 		}
 
-		if (price.getTable().equals(""))
-		{
+		if (price.getTable().equals("")) {
 			throw new DAOException("Informe tabela de preço!");
 		}
 
-		if (price.getVehicle() == null)
-		{
+		if (price.getVehicle() == null) {
 			throw new DAOException("Informe tipo de transporte!");
 		}
 
-		if (price.getVehicle().equals(""))
-		{
+		if (price.getVehicle().equals("")) {
 			throw new DAOException("Informe tipo de transporte!");
 		}
 
-		if (thereIsEqualByOtherId(price))
-		{
+		if (thereIsEqualByOtherId(price)) {
 			throw new DAOException("Item já cadastrado!");
 		}
 
@@ -602,15 +496,13 @@ public class PriceDAOImpl
 		PreparedStatement stmt = null;
 		final ResultSet rs = null;
 
-		try
-		{
+		try {
 
 			final String SQL = UPDATE_PRICE_BY_ID;
 
 			conn = DBConnection.getConnectionDB();
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("UPDATE: " + SQL);
 			}
 
@@ -620,21 +512,15 @@ public class PriceDAOImpl
 			stmt.setString(2, price.getTable());
 			stmt.setString(3, price.getVehicle());
 
-			if (price.getLocal() == null)
-			{
+			if (price.getLocal() == null) {
 				stmt.setString(4, "");
-			}
-			else
-			{
+			} else {
 				stmt.setString(4, price.getLocal().trim().toUpperCase());
 			}
 
-			if (price.getPrice() == null)
-			{
+			if (price.getPrice() == null) {
 				stmt.setNull(5, java.sql.Types.DECIMAL);
-			}
-			else
-			{
+			} else {
 				stmt.setBigDecimal(5, price.getPrice());
 			}
 
@@ -642,45 +528,35 @@ public class PriceDAOImpl
 
 			stmt.executeUpdate();
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("UPDATE: OK!");
 			}
 
-		}
-		catch (final ParameterException ex)
-		{
+		} catch (final ParameterException ex) {
 			final String msg = "Erro ao atualizar pre�o! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		catch (final SQLException ex)
-		{
+		} catch (final SQLException ex) {
 			final String msg = "Erro ao atualizar pre�o! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		finally
-		{
+		} finally {
 			DBConnection.closeConnection(conn, stmt, rs);
 		}
 	}
 
 	@Override
-	public List<PriceVO> listAllPriceCustomer (final String nameTable) throws DAOException
-	{
+	public List<PriceVO> listAllPriceCustomer(final String nameTable) throws DAOException {
 
 		List<PriceVO> result = null;
 
 		boolean thereIs = false;
 
-		if (nameTable == null)
-		{
+		if (nameTable == null) {
 			throw new DAOException("Informe nome da tabela cliente!");
 		}
 
-		if (nameTable.equals(""))
-		{
+		if (nameTable.equals("")) {
 			throw new DAOException("Informe nome da tabela cliente!");
 		}
 
@@ -688,14 +564,12 @@ public class PriceDAOImpl
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
-		try
-		{
+		try {
 
 			final String SQL = SELECT_CUSTOMER_VALUES;
 			conn = DBConnection.getConnectionDB();
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("SQL: " + SQL);
 			}
 
@@ -704,11 +578,9 @@ public class PriceDAOImpl
 
 			rs = stmt.executeQuery();
 
-			while (rs.next())
-			{
+			while (rs.next()) {
 
-				if (!thereIs)
-				{
+				if (!thereIs) {
 					result = new ArrayList<PriceVO>();
 					thereIs = true;
 				}
@@ -722,8 +594,7 @@ public class PriceDAOImpl
 				price.setPrice(rs.getBigDecimal("PRICE"));
 
 				final int idBusiness = rs.getInt(rs.findColumn("IDBUSINESS"));
-				if (idBusiness > 0)
-				{
+				if (idBusiness > 0) {
 					BusinessVO vo = new BusinessVO();
 					vo = findBusiness(idBusiness);
 					price.setBusiness(vo);
@@ -733,26 +604,19 @@ public class PriceDAOImpl
 
 			}
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("SQL: OK!");
 			}
 
-		}
-		catch (final ParameterException ex)
-		{
+		} catch (final ParameterException ex) {
 			final String msg = "Erro ao pesquisar lista de pre�os do cliente! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		catch (final SQLException ex)
-		{
+		} catch (final SQLException ex) {
 			final String msg = "Erro ao pesquisar lista de pre�os do cliente! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		finally
-		{
+		} finally {
 			DBConnection.closeConnection(conn, stmt, rs);
 		}
 
@@ -760,30 +624,25 @@ public class PriceDAOImpl
 	}
 
 	@Override
-	public List<PriceVO> listAllPriceBusinessByTable (final Integer idBusiness, final String table) throws DAOException
-	{
+	public List<PriceVO> listAllPriceBusinessByTable(final Integer idBusiness, final String table) throws DAOException {
 
 		List<PriceVO> result = null;
 
 		boolean thereIs = false;
 
-		if (idBusiness == null)
-		{
+		if (idBusiness == null) {
 			throw new DAOException("Informe id negócio!");
 		}
 
-		if (idBusiness.intValue() <= 0)
-		{
+		if (idBusiness.intValue() <= 0) {
 			throw new DAOException("Informe id negócio!");
 		}
 
-		if (table == null)
-		{
+		if (table == null) {
 			throw new DAOException("Informe nome da tabela!");
 		}
 
-		if (table.equals(""))
-		{
+		if (table.equals("")) {
 			throw new DAOException("Informe nome da tabela!");
 		}
 
@@ -791,15 +650,13 @@ public class PriceDAOImpl
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
-		try
-		{
+		try {
 
 			final String SQL = SELECT_BUSINESS_VALUES_BY_PRICE_TABLE;
-			
+
 			conn = DBConnection.getConnectionDB();
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("SQL: " + SQL);
 			}
 
@@ -809,11 +666,9 @@ public class PriceDAOImpl
 
 			rs = stmt.executeQuery();
 
-			while (rs.next())
-			{
+			while (rs.next()) {
 
-				if (!thereIs)
-				{
+				if (!thereIs) {
 					result = new ArrayList<PriceVO>();
 					thereIs = true;
 				}
@@ -826,8 +681,7 @@ public class PriceDAOImpl
 				price.setLocal(rs.getString("LOCAL"));
 				price.setPrice(rs.getBigDecimal("PRICE"));
 
-				if (idBusiness.intValue() > 0)
-				{
+				if (idBusiness.intValue() > 0) {
 					BusinessVO vo = new BusinessVO();
 					vo = findBusiness(idBusiness);
 					price.setBusiness(vo);
@@ -837,26 +691,19 @@ public class PriceDAOImpl
 
 			}
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("SQL: OK!");
 			}
 
-		}
-		catch (final ParameterException ex)
-		{
+		} catch (final ParameterException ex) {
 			final String msg = "Erro ao pesquisar lista de pre�os do neg�cio! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		catch (final SQLException ex)
-		{
+		} catch (final SQLException ex) {
 			final String msg = "Erro ao pesquisar lista de pre�os do neg�cio! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		finally
-		{
+		} finally {
 			DBConnection.closeConnection(conn, stmt, rs);
 		}
 
@@ -864,36 +711,29 @@ public class PriceDAOImpl
 	}
 
 	@Override
-	public List<PriceListVO> listAllPriceListBusiness (final Integer idBusiness) throws DAOException
-	{
+	public List<PriceListVO> listAllPriceListBusiness(final Integer idBusiness) throws DAOException {
 
 		List<PriceListVO> result = null;
 
 		boolean thereIs = false;
 
-		if (idBusiness == null)
-		{
+		if (idBusiness == null) {
 			throw new DAOException("Informe id negócio!");
 		}
 
-		if (idBusiness.intValue() <= 0)
-		{
+		if (idBusiness.intValue() <= 0) {
 			throw new DAOException("Informe id negócio!");
 		}
 
-		try
-		{
+		try {
 
 			final int total = InitProperties.getListPriceTable().size();
 
-			if (total > 0)
-			{
+			if (total > 0) {
 
-				for (int i = 0; i < total; i++)
-				{
+				for (int i = 0; i < total; i++) {
 
-					if (!thereIs)
-					{
+					if (!thereIs) {
 						result = new ArrayList<PriceListVO>();
 						thereIs = true;
 					}
@@ -902,16 +742,13 @@ public class PriceDAOImpl
 
 					final List<TableVO> listTable = InitProperties.getListPriceTable();
 
-					if ((listTable != null) && (listTable.size() > 0))
-					{
+					if ((listTable != null) && (listTable.size() > 0)) {
 
-						for (final TableVO table : listTable)
-						{
+						for (final TableVO table : listTable) {
 
 							final List<PriceVO> listPrices = listAllPriceBusinessByTable(idBusiness, table.getName());
 
-							if ((listPrices != null) && (listPrices.size() > 0))
-							{
+							if ((listPrices != null) && (listPrices.size() > 0)) {
 
 								priceList.setTable(table.getName());
 
@@ -928,9 +765,7 @@ public class PriceDAOImpl
 				}
 			}
 
-		}
-		catch (final ParameterException ex)
-		{
+		} catch (final ParameterException ex) {
 			final String msg = "Erro ao pesquisar todas as listas de pre�os do neg�cio! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
@@ -940,20 +775,17 @@ public class PriceDAOImpl
 	}
 
 	@Override
-	public List<PriceVO> listAllPriceBusiness (final Integer idBusiness) throws DAOException
-	{
+	public List<PriceVO> listAllPriceBusiness(final Integer idBusiness) throws DAOException {
 
 		List<PriceVO> result = null;
 
 		boolean thereIs = false;
 
-		if (idBusiness == null)
-		{
+		if (idBusiness == null) {
 			throw new DAOException("Informe id negócio!");
 		}
 
-		if (idBusiness.intValue() <= 0)
-		{
+		if (idBusiness.intValue() <= 0) {
 			throw new DAOException("Informe id negócio!");
 		}
 
@@ -961,15 +793,13 @@ public class PriceDAOImpl
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
-		try
-		{
+		try {
 
 			final String SQL = SELECT_BUSINESS_VALUES;
-			
+
 			conn = DBConnection.getConnectionDB();
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("SQL: " + SQL);
 			}
 
@@ -978,11 +808,9 @@ public class PriceDAOImpl
 
 			rs = stmt.executeQuery();
 
-			while (rs.next())
-			{
+			while (rs.next()) {
 
-				if (!thereIs)
-				{
+				if (!thereIs) {
 					result = new ArrayList<PriceVO>();
 					thereIs = true;
 				}
@@ -995,8 +823,7 @@ public class PriceDAOImpl
 				price.setLocal(rs.getString("LOCAL"));
 				price.setPrice(rs.getBigDecimal("PRICE"));
 
-				if (idBusiness.intValue() > 0)
-				{
+				if (idBusiness.intValue() > 0) {
 					BusinessVO vo = new BusinessVO();
 					vo = findBusiness(idBusiness);
 					price.setBusiness(vo);
@@ -1006,26 +833,19 @@ public class PriceDAOImpl
 
 			}
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("SQL: OK!");
 			}
 
-		}
-		catch (final ParameterException ex)
-		{
+		} catch (final ParameterException ex) {
 			final String msg = "Erro ao pesquisar lista de pre�os do neg�cio! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		catch (final SQLException ex)
-		{
+		} catch (final SQLException ex) {
 			final String msg = "Erro ao pesquisar lista de pre�os do neg�cio! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		finally
-		{
+		} finally {
 			DBConnection.closeConnection(conn, stmt, rs);
 		}
 
