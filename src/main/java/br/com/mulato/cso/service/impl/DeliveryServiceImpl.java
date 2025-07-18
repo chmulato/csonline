@@ -1,8 +1,10 @@
+// encoding: UTF-8
 package br.com.mulato.cso.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import br.com.mulato.cso.dry.FactoryDAO;
 import br.com.mulato.cso.exception.DAOException;
 import br.com.mulato.cso.exception.WebException;
@@ -22,7 +24,7 @@ public class DeliveryServiceImpl
 
 	private static final long serialVersionUID = 1L;
 
-	private final static Logger LOGGER = Logger.getLogger(DeliveryServiceImpl.class);
+	private static final Logger LOGGER = LogManager.getLogger(DeliveryServiceImpl.class);
 
 	private SendSms sendSMSFromBusinessDelivery(final SmsVO sms) throws WebException {
 

@@ -1,7 +1,9 @@
+// encoding: UTF-8
 package br.com.mulato.cso.service.impl;
 
 import java.util.List;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import br.com.mulato.cso.dry.FactoryDAO;
 import br.com.mulato.cso.exception.DAOException;
 import br.com.mulato.cso.exception.WebException;
@@ -13,7 +15,7 @@ public class CourierServiceImpl implements CourierService {
 
 	private static final long serialVersionUID = 1L;
 
-	private final static Logger LOGGER = Logger.getLogger(CourierServiceImpl.class);
+	private static final Logger LOGGER = LogManager.getLogger(CourierServiceImpl.class);
 
 	@Override
 	public List<CourierVO> listAllCourierBusiness(final BusinessVO business) throws WebException {

@@ -1,6 +1,8 @@
+// encoding: UTF-8
 package br.com.mulato.cso.dry;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import br.com.mulato.cso.dao.BusinessDAO;
 import br.com.mulato.cso.dao.CourierDAO;
 import br.com.mulato.cso.dao.CustomerDAO;
@@ -21,7 +23,7 @@ import br.com.mulato.cso.utils.InitProperties;
 // Classe abstrata DAO Factory
 public abstract class FactoryDAO {
 
-	private final static Logger LOGGER = Logger.getLogger(FactoryDAO.class);
+	private static final Logger LOGGER = LogManager.getLogger(FactoryDAO.class);
 
 	private static FactoryDAO instancia;
 

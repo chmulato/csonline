@@ -1,10 +1,12 @@
+// encoding: UTF-8
 package br.com.mulato.cso.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import br.com.mulato.cso.dao.LoginDAO;
 import br.com.mulato.cso.dry.DBConnection;
 import br.com.mulato.cso.exception.DAOException;
@@ -15,7 +17,7 @@ import br.com.mulato.cso.utils.InitProperties;
 public class LoginDAOImpl
 		implements LoginDAO {
 
-	private final static Logger logger = Logger.getLogger(UserDAOImpl.class);
+	private static final Logger logger = LogManager.getLogger(LoginDAOImpl.class);
 
 	@Override
 	public void setTransaction_active(boolean enable) throws DAOException {
