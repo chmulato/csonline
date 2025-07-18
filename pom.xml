@@ -98,6 +98,14 @@
 			<version>5.2.0</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- Adicione estas dependências -->
+		<dependency>
+			<groupId>jakarta.platform</groupId>
+			<artifactId>jakarta.jakartaee-api</artifactId>
+			<version>10.0.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- ...existing code... -->
 	</dependencies>
 	<build>
 		<finalName>csonline</finalName>

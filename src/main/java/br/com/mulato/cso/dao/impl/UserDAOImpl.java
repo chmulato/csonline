@@ -17,9 +17,8 @@ import br.com.mulato.cso.model.LoginVO;
 import br.com.mulato.cso.model.UserVO;
 import br.com.mulato.cso.utils.InitProperties;
 
-public class UserDAOImpl 
-    implements UserDAO, Serializable
-{
+public class UserDAOImpl
+		implements UserDAO, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -27,49 +26,42 @@ public class UserDAOImpl
 
 	@Override
 	public void setTransaction_active(boolean enable) throws DAOException {
-		
-		if (enable == TRANSACTION_ENABLE)
-		{
+
+		if (enable == TRANSACTION_ENABLE) {
 			DBConnection.onTransaction();
 		}
 
-		if (enable == TRANSACTION_DISABLE)
-		{
+		if (enable == TRANSACTION_DISABLE) {
 			DBConnection.offTransaction();
 		}
-		
+
 	}
 
 	@Override
-	public UserVO find (final Integer id, final boolean getPasswordTo) throws DAOException
-	{
+	public UserVO find(final Integer id, final boolean getPasswordTo) throws DAOException {
 
 		UserVO result = null;
 
-		if (id == null)
-		{
-			throw new DAOException("Informe Id usuário!");
+		if (id == null) {
+			throw new DAOException("Informe Id usuÃ¡rio!");
 		}
 
-		if (id.intValue() <= 0)
-		{
-			throw new DAOException("Informe Id usuário!");
+		if (id.intValue() <= 0) {
+			throw new DAOException("Informe Id usuÃ¡rio!");
 		}
 
 		Connection conn = null;
 
-		logger.info("Pesquisar de usuário.");
+		logger.info("Pesquisar de usuÃ¡rio.");
 
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
-		try
-		{
+		try {
 
 			final String SQL = SELECT_USER_BY_ID;
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("SQL: " + SQL);
 			}
 
@@ -81,8 +73,7 @@ public class UserDAOImpl
 
 			rs = stmt.executeQuery();
 
-			if (rs.next())
-			{
+			if (rs.next()) {
 
 				result = new UserVO();
 
@@ -93,8 +84,7 @@ public class UserDAOImpl
 				final LoginVO login = new LoginVO();
 				login.setLogin(rs.getString(rs.findColumn("LOGIN")));
 
-				if (getPasswordTo)
-				{
+				if (getPasswordTo) {
 					login.setPassword((rs.getString(rs.findColumn("PASSWORD"))));
 				}
 
@@ -107,26 +97,19 @@ public class UserDAOImpl
 
 			}
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("SQL: OK!");
 			}
 
-		}
-		catch (final ParameterException ex)
-		{
-			final String msg = "Erro ao pesquisar usuário! ";
+		} catch (final ParameterException ex) {
+			final String msg = "Erro ao pesquisar usuÃ¡rio! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		catch (final SQLException ex)
-		{
-			final String msg = "Erro ao pesquisar usuário! ";
+		} catch (final SQLException ex) {
+			final String msg = "Erro ao pesquisar usuÃ¡rio! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		finally
-		{
+		} finally {
 			DBConnection.closeConnection(conn, stmt, rs);
 		}
 
@@ -134,26 +117,23 @@ public class UserDAOImpl
 	}
 
 	@Override
-	public List<UserVO> listAll () throws DAOException
-	{
+	public List<UserVO> listAll() throws DAOException {
 
 		List<UserVO> result = null;
 
 		boolean thereIs = false;
 
-		logger.info("Pesquisar lista de usuários.");
+		logger.info("Pesquisar lista de usuÃ¡rios.");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
-		try
-		{
+		try {
 
 			final String SQL = SELECT_ALL_USER;
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("SQL: " + SQL);
 			}
 
@@ -161,11 +141,9 @@ public class UserDAOImpl
 			stmt = conn.prepareStatement(SQL);
 			rs = stmt.executeQuery();
 
-			while (rs.next())
-			{
+			while (rs.next()) {
 
-				if (!thereIs)
-				{
+				if (!thereIs) {
 					result = new ArrayList<UserVO>();
 					thereIs = true;
 				}
@@ -189,34 +167,26 @@ public class UserDAOImpl
 
 			}
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("SQL: OK!");
 			}
 
-		}
-		catch (final ParameterException ex)
-		{
-			final String msg = "Erro ao pesquisar lista de usuários! ";
+		} catch (final ParameterException ex) {
+			final String msg = "Erro ao pesquisar lista de usuÃ¡rios! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		catch (final SQLException ex)
-		{
-			final String msg = "Erro ao pesquisar lista de usuários! ";
+		} catch (final SQLException ex) {
+			final String msg = "Erro ao pesquisar lista de usuÃ¡rios! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		finally
-		{
+		} finally {
 			DBConnection.closeConnection(conn, stmt, rs);
 		}
 		return result;
 	}
 
 	@Override
-	public List<BusinessVO> listAllBusiness () throws DAOException
-	{
+	public List<BusinessVO> listAllBusiness() throws DAOException {
 
 		List<BusinessVO> result = null;
 
@@ -226,15 +196,13 @@ public class UserDAOImpl
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
-		logger.info("Pesquisar lista de negócios.");
+		logger.info("Pesquisar lista de negÃ³cios.");
 
-		try
-		{
+		try {
 
 			final String SQL = SELECT_ALL_BUSINESS;
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("SQL: " + SQL);
 			}
 
@@ -242,11 +210,9 @@ public class UserDAOImpl
 			stmt = conn.prepareStatement(SQL);
 			rs = stmt.executeQuery();
 
-			while (rs.next())
-			{
+			while (rs.next()) {
 
-				if (!thereIs)
-				{
+				if (!thereIs) {
 					result = new ArrayList<BusinessVO>();
 					thereIs = true;
 				}
@@ -270,26 +236,19 @@ public class UserDAOImpl
 
 			}
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("SQL: OK!");
 			}
 
-		}
-		catch (final ParameterException ex)
-		{
-			final String msg = "Erro ao pesquisar lista de negócios! ";
+		} catch (final ParameterException ex) {
+			final String msg = "Erro ao pesquisar lista de negÃ³cios! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		catch (final SQLException ex)
-		{
-			final String msg = "Erro ao pesquisar lista de negócios! ";
+		} catch (final SQLException ex) {
+			final String msg = "Erro ao pesquisar lista de negÃ³cios! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		finally
-		{
+		} finally {
 			DBConnection.closeConnection(conn, stmt, rs);
 		}
 
@@ -297,34 +256,29 @@ public class UserDAOImpl
 	}
 
 	@Override
-	public UserVO findByLogin (final LoginVO login) throws DAOException
-	{
+	public UserVO findByLogin(final LoginVO login) throws DAOException {
 
 		UserVO result = null;
 
-		if (login == null)
-		{
-			throw new DAOException("Informe usuário!");
+		if (login == null) {
+			throw new DAOException("Informe usuÃ¡rio!");
 		}
 
-		if (login.getLogin() == null)
-		{
+		if (login.getLogin() == null) {
 			throw new DAOException("Informe login!");
 		}
 
-		logger.info("Pesquisar de usuário por login.");
+		logger.info("Pesquisar de usuÃ¡rio por login.");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
-		try
-		{
+		try {
 
 			final String SQL = SELECT_USER_BY_LOGIN;
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("SQL: " + SQL);
 			}
 
@@ -334,8 +288,7 @@ public class UserDAOImpl
 
 			rs = stmt.executeQuery();
 
-			if (rs.next())
-			{
+			if (rs.next()) {
 
 				result = new UserVO();
 
@@ -354,26 +307,19 @@ public class UserDAOImpl
 
 			}
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("SQL: OK!");
 			}
 
-		}
-		catch (final ParameterException ex)
-		{
-			final String msg = "Erro ao pesquisar usuário pelo login! ";
+		} catch (final ParameterException ex) {
+			final String msg = "Erro ao pesquisar usuÃ¡rio pelo login! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		catch (final SQLException ex)
-		{
-			final String msg = "Erro ao pesquisar usuário pelo login! ";
+		} catch (final SQLException ex) {
+			final String msg = "Erro ao pesquisar usuÃ¡rio pelo login! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		finally
-		{
+		} finally {
 			DBConnection.closeConnection(conn, stmt, rs);
 		}
 
