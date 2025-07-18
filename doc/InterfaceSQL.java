@@ -1,18 +1,18 @@
+// encoding: UTF-8
 package br.com.mulato.cso.dry;
 
 import br.com.mulato.cso.exception.DAOException;
 
-public interface InterfaceSQL
-{
-	
+public interface InterfaceSQL {
+
 	// ########### TRANSACTION PARAMETERS #################### //
-	
+
 	public final boolean TRANSACTION_ENABLE = true;
-	
+
 	public final boolean TRANSACTION_DISABLE = false;
-	
-	public void setTransaction_active(boolean  enable) throws DAOException;
-	
+
+	public void setTransaction_active(boolean enable) throws DAOException;
+
 	// ########### ADMINISTRATOR PROFILE'S QUERIES ########### //
 	// PERFIL DO ADMINISTRADOR
 	// selecionar login com a senha;
@@ -23,9 +23,11 @@ public interface InterfaceSQL
 	// selecionar todos os negócios;
 	// selecionar um negócio pelo id;
 	// atualizar um negócio pelo id;
-	// verificar se têm entrega, se têm cliente e se têm motoboy, se OK=0 deletar negócio.
+	// verificar se têm entrega, se têm cliente e se têm motoboy, se OK=0 deletar
+	// negócio.
 	// Inserir um negócio;
-	// obs.: o perfil administrador não inclui cliente, motoboy e nem entrega. Também não pode visualizar
+	// obs.: o perfil administrador não inclui cliente, motoboy e nem entrega.
+	// Também não pode visualizar
 	// estas abas
 
 	public static final String SELECT_USER_BY_LOGIN_AND_PASSWORD = "select u.* from user u where u.login=? and u.password=?";
@@ -45,12 +47,12 @@ public interface InterfaceSQL
 	public static final String SELECT_BUSINESS_BY_ID = "select u.* from user u where u.id=?";
 
 	public static final String SELECT_DELIVERY_BUSINESS_BY_IDDELIVERY = "select u.*, d.* from user as u" +
-	    " inner join delivery as d on u.id=d.idbusiness where d.id=?";
+			" inner join delivery as d on u.id=d.idbusiness where d.id=?";
 
 	public static final String SELECT_ALL_DELIVERY_NOT_COMPLETED = "select * from delivery where (received='1' and completed='0') order by datatime";
 
 	public static final String UPDATE_BUSINESS = "update user set" +
-	    " name=?, email=?, email2=?, address=?, mobile=? where (role='BUSINESS' and id=?)";
+			" name=?, email=?, email2=?, address=?, mobile=? where (role='BUSINESS' and id=?)";
 
 	public static final String COUNT_DELIVERY_BUSINESS = "select count(id) from delivery where idbusiness=?";
 
@@ -60,8 +62,9 @@ public interface InterfaceSQL
 
 	public static final String DELETE_BUSINESS_BY_ID = "delete from user where (role='BUSINESS' and id=?)";
 
-	public static final String INSERT_BUSINESS = "insert into user" + " (id, role, name, login, password, email, email2, address, mobile)" +
-	    "  values (?,?,?,?,?,?,?,?,?)";
+	public static final String INSERT_BUSINESS = "insert into user"
+			+ " (id, role, name, login, password, email, email2, address, mobile)" +
+			"  values (?,?,?,?,?,?,?,?,?)";
 
 	public static final String UPDATE_LOGIN_PASSWORD = "update user set password=? where login=?";
 
@@ -83,7 +86,8 @@ public interface InterfaceSQL
 	// selecionar todos os entregadores do negócio;
 	// atualizar um entregador do negócio pelo id;
 	// selecionar o entregador do negócio pelo id;
-	// verificar se o entregador têm entregas realizadas, se OK=0 deletar o entregador do negócio.
+	// verificar se o entregador têm entregas realizadas, se OK=0 deletar o
+	// entregador do negócio.
 	// DELIVERY
 	// incluir uma entrega do negócio selecionando um entregador;
 	// selecionar todos as entregas do negócio;
@@ -96,26 +100,29 @@ public interface InterfaceSQL
 
 	// INSERT A CUSTOMER BUSINESS
 	public static final String INSERT_CUSTOMER_BUSINESS_01 = "insert into user" +
-	    " (id, role, name, login, password, email, email2, address, mobile)" + "  values (?,?,?,?,?,?,?,?,?)";
+			" (id, role, name, login, password, email, email2, address, mobile)" + "  values (?,?,?,?,?,?,?,?,?)";
 
 	public static final String INSERT_CUSTOMER_BUSINESS_02 = "insert into customer" +
-	    " (id, idbusiness, idcustomer, factor_customer, price_table) values (?,?,?,?,?)";
+			" (id, idbusiness, idcustomer, factor_customer, price_table) values (?,?,?,?,?)";
 
 	// UPDATE A CUSTOMER BUSINESS
 	// ID=IDCUSTOMER
 	public static final String UPDATE_CUSTOMER_01 = "update user set" +
-	    " name=?, email=?, email2=?, address=?, mobile=? where (role='CUSTOMER' and id=?)";
+			" name=?, email=?, email2=?, address=?, mobile=? where (role='CUSTOMER' and id=?)";
 
 	// IDBUSINESS=IDDBUSINESS AND IDCUSTOMER=IDCUSTOMER
-	public static final String UPDATE_CUSTOMER_02 = "update customer set" + " factor_customer=?, price_table=? where (idbusiness=? and idcustomer=?)";
+	public static final String UPDATE_CUSTOMER_02 = "update customer set"
+			+ " factor_customer=?, price_table=? where (idbusiness=? and idcustomer=?)";
 
 	// SELECT ALL CUSTOMER BUSINESS
-	public static final String SELECT_ALL_CUSTOMER_BUSINESS = "select u.*, cu.*" + " from user as u inner join customer as cu" +
-	    " on u.id=cu.idcustomer" + " where cu.idbusiness=?"; // ID=IDBUSINESS
+	public static final String SELECT_ALL_CUSTOMER_BUSINESS = "select u.*, cu.*"
+			+ " from user as u inner join customer as cu" +
+			" on u.id=cu.idcustomer" + " where cu.idbusiness=?"; // ID=IDBUSINESS
 
 	// SELECT CUSTOMER BUSINESS BY IDCUSTOMER
-	public static final String SELECT_CUSTOMER_BUSINESS_BY_IDCUSTOMER = "select u.*, cu.*" + " from user as u inner join customeras cu" +
-	    " on u.id=cu.idbusiness" + " where cu.idcustomer=?"; // ID=IDCUSTOMER
+	public static final String SELECT_CUSTOMER_BUSINESS_BY_IDCUSTOMER = "select u.*, cu.*"
+			+ " from user as u inner join customeras cu" +
+			" on u.id=cu.idbusiness" + " where cu.idcustomer=?"; // ID=IDCUSTOMER
 
 	// DELETE CUSTOMER BUSINESS
 	// CHECK: IS THERE A DELIVERY?
@@ -131,31 +138,35 @@ public interface InterfaceSQL
 
 	// COURIER MANAGEMENT - IBNUSINESS IS KNOW
 	// INSERT A COURIER BUSINESS
-	public static final String INSERT_COURIER_01 = "insert into user" + " (id, role, name, login, password, email, email2, address, mobile)" +
-	    "  values (?,?,?,?,?,?,?,?,?)";
+	public static final String INSERT_COURIER_01 = "insert into user"
+			+ " (id, role, name, login, password, email, email2, address, mobile)" +
+			"  values (?,?,?,?,?,?,?,?,?)";
 
-	public static final String INSERT_COURIER_02 = "insert into team" + " (id, idbusiness, idcourier, factor_courier) values (?,?,?,?)";
+	public static final String INSERT_COURIER_02 = "insert into team"
+			+ " (id, idbusiness, idcourier, factor_courier) values (?,?,?,?)";
 
 	// UPDATE A COURIER BUSINESS
 	// ID=IDCOURIER
 	public static final String UPDATE_COURIER_01 = "update user set" +
-	    " name=?, email=?, email2=?, address=?, mobile=? where (role='COURIER' and id=?)";
+			" name=?, email=?, email2=?, address=?, mobile=? where (role='COURIER' and id=?)";
 
 	// IDBUSINESS=IDDBUSINESS AND IDCOURIER=IDCCOURIER
 	public static final String UPDATE_COURIER_02 = "update team set factor_courier=? where (idbusiness=? and idcourier=?)";
 
 	public static final String UPDATE_COURIER_03 = "update user set" +
-	    " name=?, password=?, email=?, email2=?, address=?, mobile=? where (role='COURIER' and id=?)";
+			" name=?, password=?, email=?, email2=?, address=?, mobile=? where (role='COURIER' and id=?)";
 
 	// SELECT ALL COURIER BUSINESS
 	// IDBUSINESS=IDDBUSINESS
-	public static final String SELECT_ALL_COURIER_BUSINESS = "select u.*, t.*" + " from user as u inner join team as t" +
-	    " on	u.id=t.idcourier where t.idbusiness=?";
+	public static final String SELECT_ALL_COURIER_BUSINESS = "select u.*, t.*" + " from user as u inner join team as t"
+			+
+			" on	u.id=t.idcourier where t.idbusiness=?";
 
 	// SELECT COURIER BUSINESS BY IDCOURIER
 	// IDCOURIER=IDCOURIER
-	public static final String SELECT_COURIER_BUSINESS_BY_IDCOURIER = "select u.*, t.*" + " from user as u inner join team as t" +
-	    " on u.id=t.idbusiness where t.idcourier=?";
+	public static final String SELECT_COURIER_BUSINESS_BY_IDCOURIER = "select u.*, t.*"
+			+ " from user as u inner join team as t" +
+			" on u.id=t.idbusiness where t.idcourier=?";
 
 	// DELETE COURIER BUSINESS
 	// CHECK: IS THERE A DELIVERY?
@@ -174,8 +185,9 @@ public interface InterfaceSQL
 	public static final String GET_LAST_ID_ON_TEAM_TABLE = "select max(id) from team";
 
 	public static final String INSERT_DELIVERY = "insert into delivery" +
-	    " (id, idbusiness, idcustomer, idcourier, start, destination, contact, description, volume, weight, km, additional_cost, cost, received, completed)" +
-	    "  values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			" (id, idbusiness, idcustomer, idcourier, start, destination, contact, description, volume, weight, km, additional_cost, cost, received, completed)"
+			+
+			"  values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 	// SELECT ALL DELIVERY BUSINESS COMPLETED
 	public static final String SELECT_ALL_DELIVERY_BUSINESS_COMPLETED = "select * from delivery where (idbusiness=? AND completed='1')";
@@ -189,8 +201,8 @@ public interface InterfaceSQL
 	// UPDATE DELIVERY BY ID
 	// ID=ID DELIVERY
 	public static final String UPDATE_DELIVERY_BY_ID = "update delivery set" +
-	    " idbusiness=?, idcustomer=?, idcourier=?, start=?, destination=?, contact=?, description=?," +
-	    " volume=?, weight=?, km=?, additional_cost=?, cost=?, received=?, completed=? where id=?";
+			" idbusiness=?, idcustomer=?, idcourier=?, start=?, destination=?, contact=?, description=?," +
+			" volume=?, weight=?, km=?, additional_cost=?, cost=?, received=?, completed=? where id=?";
 
 	// AND, DELETE DELIVERY USING 02 STEPS
 	// SELECT DELIVERY BY ID
@@ -216,7 +228,8 @@ public interface InterfaceSQL
 	// CUSTOMER MANAGEMENT - IBCUSTOMER IS KNOW
 	// SELECT CUSTOMER BY IDCUSTOMER
 	// ID=IDCUSTOMER
-	public static final String SELECT_CUSTOMER_BY_ID = "select u.*, cu.* from user u inner join customer cu" + " on u.id=cu.idcustomer where u.id=?";
+	public static final String SELECT_CUSTOMER_BY_ID = "select u.*, cu.* from user u inner join customer cu"
+			+ " on u.id=cu.idcustomer where u.id=?";
 
 	// CUSTOMER MANAGEMENT - ID IS KNOW
 	public static final String GET_LAST_ID_ON_DELIVERY_TABLE = "select max(id) from delivery";
@@ -244,7 +257,7 @@ public interface InterfaceSQL
 	// SELECT COURIER BY ID
 	// ID=IDCOURIER
 	public static final String SELECT_COURIER_BY_ID = "select u.*, t.*" + " from user as u inner join team as t" +
-	    " on u.id=t.idcourier where u.id=?";
+			" on u.id=t.idcourier where u.id=?";
 
 	// SELECT ALL DELIVERY COURIER NOT COMPLETED
 	// IDCOURIER=IDCOURIER
@@ -255,13 +268,15 @@ public interface InterfaceSQL
 	public static final String SELECT_ALL_DELIVERY_COURIER_COMPLETED = "select * from delivery where (idcourier=? and completed='1')";
 
 	// INSERT PRICE VALUES
-	public static final String INSERT_PRICE = "insert into price" + " (id, idbusiness, table_name, vehicle, local, price) values (?,?,?,?,?,?)";
+	public static final String INSERT_PRICE = "insert into price"
+			+ " (id, idbusiness, table_name, vehicle, local, price) values (?,?,?,?,?,?)";
 
 	// GET LAST ID PRICE TABLE
 	public static final String GET_LAST_ID_ON_PRICE_TABLE = "select max(id) from price";
 
 	// UPDATE PRICE VALUES BY ID
-	public static final String UPDATE_PRICE_BY_ID = "update price set" + " idbusiness=?, table_name=?, vehicle=?, local=?, price=? where id=?";
+	public static final String UPDATE_PRICE_BY_ID = "update price set"
+			+ " idbusiness=?, table_name=?, vehicle=?, local=?, price=? where id=?";
 
 	// SELECT PRICE BY ID
 	public static final String SELECT_PRICE_BY_ID = "select * from price where id=?";
@@ -295,11 +310,11 @@ public interface InterfaceSQL
 
 	// INSERT SMS SENDER
 	public static final String INSERT_SMS_SENT = "insert into sms" +
-	    " (id, idelivery, piece, type, mobile_to, mobile_from, message) values (?,?,?,'S',?,?,?)";
+			" (id, idelivery, piece, type, mobile_to, mobile_from, message) values (?,?,?,'S',?,?,?)";
 
 	// INSERT SMS RECEIVER
 	public static final String INSERT_SMS_RECEIVED = "insert into sms" +
-	    " (id, iddelivery, piece, type, mobile_to, mobile_from, message) values (?,?,?,'R',?,?,?)";
+			" (id, iddelivery, piece, type, mobile_to, mobile_from, message) values (?,?,?,'R',?,?,?)";
 
 	// UPDATE SMS RECEIVER
 	public static final String UPDATE_SMS_RECEIVED = "update sms set iddelivery=? where (id=? and type='R')";
@@ -314,6 +329,7 @@ public interface InterfaceSQL
 	public static final String SELECT_SMS_DELIVERY_BY_MOBILE_FROM = "select * from sms where mobile_from=? order by desc datetime limit 10";
 
 	// SELECT SMS BY MOBILE NUMBER
-	public static final String SELECT_SMS_MOBILE = "select * from sms" + " where (mobile_from=? or mobile_to=?)" + " order by datetime desc limit 10";
+	public static final String SELECT_SMS_MOBILE = "select * from sms" + " where (mobile_from=? or mobile_to=?)"
+			+ " order by datetime desc limit 10";
 
 }

@@ -12,9 +12,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 import java.util.Locale;
-import jakarta.naming.InitialContext;
-import jakarta.naming.NamingException;
-import jakarta.sql.DataSource;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 // Log4J 2.x
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -124,17 +124,9 @@ public class DBConnection extends DBTransaction {
 					throw new DAOException(msg);
 				}
 				return DriverManager.getConnection(jdbcUrl, username, password);
-			} catch (final ClassNotFoundException cnf) {
-				msg = "Driver de conexão com o banco não encontrado.";
-				LOGGER.error(msg, cnf);
-				throw new DAOException(msg);
 			} catch (final SQLException sql) {
 				msg = "Não foi possível abrir a conexão com o banco.";
 				LOGGER.error(msg, sql);
-				throw new DAOException(msg);
-			} catch (InstantiationException | IllegalAccessException e) {
-				msg = "Erro na conexão com o banco.";
-				LOGGER.error(msg, e);
 				throw new DAOException(msg);
 			}
 		}
