@@ -75,8 +75,7 @@ public class DeliveryCustomerController extends AbstractController implements Se
 
 	private boolean send_mail;
 
-	private void loadSession ()
-	{
+	private void loadSession() {
 
 		String profile;
 
@@ -84,76 +83,66 @@ public class DeliveryCustomerController extends AbstractController implements Se
 
 		LOGGER.info("Carregando controle da p�gina de entregas do cliente ...");
 
-		try
-		{
+		try {
 
 			final FacesContext context = FacesContext.getCurrentInstance();
 			final Application app = context.getApplication();
-			final LoginController loginController = app.evaluateExpressionGet(context, "#{loginMB}", LoginController.class);
+			final LoginController loginController = app.evaluateExpressionGet(context, "#{loginMB}",
+					LoginController.class);
 
 			isLogged = loginController.isLogged();
 
-			if (isLogged)
-			{
+			if (isLogged) {
 
 				LOGGER.info("Sess�o carregada! ... Login: " + loginController.getUsername());
 
 				profile = loginController.getProfile();
 
-				if ((loginController.getUserIdLogged() == null) || (loginController.getUserIdLogged().intValue() <= 0))
-				{
+				if ((loginController.getUserIdLogged() == null)
+						|| (loginController.getUserIdLogged().intValue() <= 0)) {
 
 					throw new WebException("Id do usu�rio logado n�o encontrado.");
 
 				}
 
 				if ((loginController.getBusinessVO() == null) || (loginController.getBusinessVO().getId() == null) ||
-					(loginController.getBusinessVO().getId().intValue() <= 0))
-				{
+						(loginController.getBusinessVO().getId().intValue() <= 0)) {
 
 					throw new WebException("Neg�cio da sess�o n�o encontrado.");
 
-				}
-				else
-				{
+				} else {
 
 					businessVO = loginController.getBusinessVO();
 
 				}
 
-				if (profile.equals("CUSTOMER"))
-				{
+				if (profile.equals("CUSTOMER")) {
 
 					// Edit Delivery
-					if (loginController.getId() != null)
-					{
+					if (loginController.getId() != null) {
 
 						final Integer id = loginController.getId();
 
 						final DeliveryVO delivery = FactoryService.getInstancia().getDeliveryService().find(id);
 
-						if (delivery != null)
-						{
+						if (delivery != null) {
 
 							setId(delivery.getId());
 
 							if ((delivery.getBusiness() != null) && (delivery.getBusiness().getId() != null) &&
-								(delivery.getBusiness().getName() != null))
-							{
+									(delivery.getBusiness().getName() != null)) {
 								setIdBusiness(delivery.getBusiness().getId());
 								setBusiness_name(delivery.getBusiness().getName());
 							}
 
 							if ((delivery.getCustomer() != null) && (delivery.getCustomer().getId() != null) &&
-								(delivery.getCustomer().getName() != null))
-							{
+									(delivery.getCustomer().getName() != null)) {
 								setIdCustomer(delivery.getCustomer().getId());
 								setCustomer_name(delivery.getCustomer().getName());
 							}
 
 							if ((delivery.getCourier() != null) && (delivery.getCourier().getId() != null) &&
-								(delivery.getCourier().getName() != null))
-							{
+									(delivery.getCourier().getName() != null)) {
 								setIdCourier(delivery.getCourier().getId());
 								setCourier_name(delivery.getCourier().getName());
 							}
@@ -173,25 +162,17 @@ public class DeliveryCustomerController extends AbstractController implements Se
 
 						}
 
-						if (getReceived())
-						{
+						if (getReceived()) {
 							label = "Visualizar";
-						}
-						else
-						{
-							if (getCompleted())
-							{
+						} else {
+							if (getCompleted()) {
 								label = "Visualizar";
-							}
-							else
-							{
+							} else {
 								label = "Editar";
 							}
 						}
 
-					}
-					else
-					{
+					} else {
 						// Add New Delivery
 
 						label = "Incluir";
@@ -200,8 +181,7 @@ public class DeliveryCustomerController extends AbstractController implements Se
 
 						final CustomerVO customer = FactoryService.getInstancia().getCustomerService().find(idCustomer);
 
-						if ((customer == null) || (customer.getId() == null) || (customer.getName() == null))
-						{
+						if ((customer == null) || (customer.getId() == null) || (customer.getName() == null)) {
 
 							throw new WebException("Dados do cliente logado n�o encontrado.");
 
@@ -217,37 +197,29 @@ public class DeliveryCustomerController extends AbstractController implements Se
 
 					}
 
-				}
-				else
-				{
+				} else {
 
 					throw new WebException("Perfil do usu�rio n�o encontrado.");
 
 				}
 
-			}
-			else
-			{
+			} else {
 
 				throw new WebException("Sess�o n�o carregada! Logar novamente.");
 
 			}
 
-		}
-		catch (final WebException e)
-		{
+		} catch (final WebException e) {
 			FacesMessages.mensErro(e.getMessage());
 		}
 	}
 
-	public String send ()
-	{
+	public String send() {
 		send_mail = true;
 		return save();
 	}
 
-	public String save ()
-	{
+	public String save() {
 
 		String path = "delivery_customer";
 
@@ -256,92 +228,73 @@ public class DeliveryCustomerController extends AbstractController implements Se
 		int business_id = 0;
 		int customer_id = 0;
 
-		try
-		{
+		try {
 
-			if ((getId() == null) || getId().equals(new Integer(0)))
-			{
+			if ((getId() == null) || getId().equals(new Integer(0))) {
 				insert = true;
 			}
 
-			if ((getIdBusiness() == null) || getIdBusiness().equals(new Integer(0)))
-			{
+			if ((getIdBusiness() == null) || getIdBusiness().equals(new Integer(0))) {
 				throw new WebException("Informe id neg�cio!");
 			}
 
-			if ((getIdCustomer() == null) || getIdCustomer().equals(new Integer(0)))
-			{
+			if ((getIdCustomer() == null) || getIdCustomer().equals(new Integer(0))) {
 				throw new WebException("Selecione cliente!");
 			}
 
-			if (getStart() == null)
-			{
+			if (getStart() == null) {
 				throw new WebException("Informe endere�o de início da corrida!");
 			}
 
-			if (getStart().equals(""))
-			{
+			if (getStart().equals("")) {
 				throw new WebException("Informe endere�o de início da corrida!");
 			}
 
-			if (getDestination() == null)
-			{
+			if (getDestination() == null) {
 				throw new WebException("Informe endere�o de destino!");
 			}
 
-			if (getDestination().equals(""))
-			{
+			if (getDestination().equals("")) {
 				throw new WebException("Informe endere�o de destino!");
 			}
 
-			if (getContact() == null)
-			{
+			if (getContact() == null) {
 				throw new WebException("Informe o contato!");
 			}
 
-			if (getContact().equals(""))
-			{
+			if (getContact().equals("")) {
 				throw new WebException("Informe o contato!");
 			}
 
-			if (getDescription() == null)
-			{
+			if (getDescription() == null) {
 				throw new WebException("Informe descri��o!");
 			}
 
-			if (getDescription().equals(""))
-			{
+			if (getDescription().equals("")) {
 				throw new WebException("Informe descri��o!");
 			}
 
-			if (getKm() == null)
-			{
+			if (getKm() == null) {
 				throw new WebException("Informe dist�ncia em quil�metros!");
 			}
 
-			if (getKm().equals(new BigDecimal(0)))
-			{
+			if (getKm().equals(new BigDecimal(0))) {
 				throw new WebException("Informe dist�ncia em quil�metros!");
 			}
 
-			if (getCost() == null)
-			{
+			if (getCost() == null) {
 				throw new WebException("Informe valor da corrida!");
 			}
 
-			if (getCost().equals(new BigDecimal(0)))
-			{
+			if (getCost().equals(new BigDecimal(0))) {
 				throw new WebException("Informe valor da corrida!");
 			}
 
 			final DeliveryVO delivery = new DeliveryVO();
 
-			if (insert)
-			{
+			if (insert) {
 				delivery.setId(null);
-			}
-			else
-			{
+			} else {
 				delivery.setId(getId());
 			}
 
@@ -371,23 +324,16 @@ public class DeliveryCustomerController extends AbstractController implements Se
 
 			FactoryService.getInstancia().getDeliveryService().saveDeliveryByCustomer(delivery, send_mail);
 
-			if (send_mail)
-			{
+			if (send_mail) {
 				path = "deliveries";
 				FacesMessages.mensInfo("Email enviado com sucesso!");
-			}
-			else
-			{
+			} else {
 				FacesMessages.mensInfo("Entrega salva com sucesso!");
 			}
 
-		}
-		catch (final WebException e)
-		{
+		} catch (final WebException e) {
 			FacesMessages.mensErro(e.getMessage());
-		}
-		catch (final Exception e)
-		{
+		} catch (final Exception e) {
 			FacesMessages.mensErro("Falha na inser��o no banco de dados!");
 		}
 
@@ -395,8 +341,7 @@ public class DeliveryCustomerController extends AbstractController implements Se
 
 	}
 
-	public DeliveryCustomerController ()
-	{
+	public DeliveryCustomerController() {
 		super();
 		loadSession();
 	}
@@ -407,18 +352,16 @@ public class DeliveryCustomerController extends AbstractController implements Se
 	 * @return
 	 * @throws WebException
 	 */
-	public Map<String, Object> getCouriers () throws WebException
-	{
+	public Map<String, Object> getCouriers() throws WebException {
 
 		final Map<String, Object> itemMap = new LinkedHashMap<String, Object>();
 
-		if ((businessVO != null) && (businessVO.getId() != null))
-		{
+		if ((businessVO != null) && (businessVO.getId() != null)) {
 
-			final List<CourierVO> listCouriers = FactoryService.getInstancia().getCourierService().listAllCourierBusiness(businessVO);
+			final List<CourierVO> listCouriers = FactoryService.getInstancia().getCourierService()
+					.listAllCourierBusiness(businessVO);
 
-			for (final CourierVO courier : listCouriers)
-			{
+			for (final CourierVO courier : listCouriers) {
 
 				// label, value
 				itemMap.put(courier.getName(), courier.getId());
@@ -436,18 +379,16 @@ public class DeliveryCustomerController extends AbstractController implements Se
 	 * @return
 	 * @throws WebException
 	 */
-	public Map<String, Object> getCustomers () throws WebException
-	{
+	public Map<String, Object> getCustomers() throws WebException {
 
 		final Map<String, Object> itemMap = new LinkedHashMap<String, Object>();
 
-		if ((businessVO != null) && (businessVO.getId() != null))
-		{
+		if ((businessVO != null) && (businessVO.getId() != null)) {
 
-			final List<CustomerVO> listCustomers = FactoryService.getInstancia().getCustomerService().listAllCustomerBusiness(businessVO);
+			final List<CustomerVO> listCustomers = FactoryService.getInstancia().getCustomerService()
+					.listAllCustomerBusiness(businessVO);
 
-			for (final CustomerVO customer : listCustomers)
-			{
+			for (final CustomerVO customer : listCustomers) {
 
 				// label, value
 				itemMap.put(customer.getName(), customer.getId());
@@ -459,218 +400,175 @@ public class DeliveryCustomerController extends AbstractController implements Se
 
 	}
 
-	public String cancel ()
-	{
+	public String cancel() {
 		return goToPage("deliveries");
 	}
 
-	public String getLabel ()
-	{
+	public String getLabel() {
 		return label;
 	}
 
-	public void setLabel (final String label)
-	{
+	public void setLabel(final String label) {
 		this.label = label;
 	}
 
-	public Integer getId ()
-	{
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId (final Integer id)
-	{
+	public void setId(final Integer id) {
 		this.id = id;
 	}
 
-	public Integer getIdBusiness ()
-	{
+	public Integer getIdBusiness() {
 		return idBusiness;
 	}
 
-	public void setIdBusiness (final Integer idBusiness)
-	{
+	public void setIdBusiness(final Integer idBusiness) {
 		this.idBusiness = idBusiness;
 	}
 
-	public String getBusiness_name ()
-	{
+	public String getBusiness_name() {
 		return business_name;
 	}
 
-	public void setBusiness_name (final String business_name)
-	{
+	public void setBusiness_name(final String business_name) {
 		this.business_name = business_name;
 	}
 
-	public Integer getIdCustomer ()
-	{
+	public Integer getIdCustomer() {
 		return idCustomer;
 	}
 
-	public void setIdCustomer (final Integer idCustomer)
-	{
+	public void setIdCustomer(final Integer idCustomer) {
 		this.idCustomer = idCustomer;
 	}
 
-	public String getCustomer_name ()
-	{
+	public String getCustomer_name() {
 		return customer_name;
 	}
 
-	public void setCustomer_name (final String customer_name)
-	{
+	public void setCustomer_name(final String customer_name) {
 		this.customer_name = customer_name;
 	}
 
-	public Integer getIdCourier ()
-	{
+	public Integer getIdCourier() {
 		return idCourier;
 	}
 
-	public void setIdCourier (final Integer idCourier)
-	{
+	public void setIdCourier(final Integer idCourier) {
 		this.idCourier = idCourier;
 	}
 
-	public String getCourier_name ()
-	{
+	public String getCourier_name() {
 		return courier_name;
 	}
 
-	public void setCourier_name (final String courier_name)
-	{
+	public void setCourier_name(final String courier_name) {
 		this.courier_name = courier_name;
 	}
 
-	public Date getDatetime ()
-	{
+	public Date getDatetime() {
 		return datetime;
 	}
 
-	public void setDatetime (final Date datetime)
-	{
+	public void setDatetime(final Date datetime) {
 		this.datetime = datetime;
 	}
 
-	public String getStart ()
-	{
+	public String getStart() {
 		return start;
 	}
 
-	public void setStart (final String start)
-	{
+	public void setStart(final String start) {
 		this.start = start;
 	}
 
-	public String getDestination ()
-	{
+	public String getDestination() {
 		return destination;
 	}
 
-	public void setDestination (final String destination)
-	{
+	public void setDestination(final String destination) {
 		this.destination = destination;
 	}
 
-	public String getContact ()
-	{
+	public String getContact() {
 		return contact;
 	}
 
-	public void setContact (final String contact)
-	{
+	public void setContact(final String contact) {
 		this.contact = contact;
 	}
 
-	public String getDescription ()
-	{
+	public String getDescription() {
 		return description;
 	}
 
-	public void setDescription (final String description)
-	{
+	public void setDescription(final String description) {
 		this.description = description;
 	}
 
-	public BigDecimal getVolume ()
-	{
+	public BigDecimal getVolume() {
 		return volume;
 	}
 
-	public void setVolume (final BigDecimal volume)
-	{
+	public void setVolume(final BigDecimal volume) {
 		this.volume = volume;
 	}
 
-	public BigDecimal getWeight ()
-	{
+	public BigDecimal getWeight() {
 		return weight;
 	}
 
-	public void setWeight (final BigDecimal weight)
-	{
+	public void setWeight(final BigDecimal weight) {
 		this.weight = weight;
 	}
 
-	public BigDecimal getKm ()
-	{
+	public BigDecimal getKm() {
 		return km;
 	}
 
-	public void setKm (final BigDecimal km)
-	{
+	public void setKm(final BigDecimal km) {
 		this.km = km;
 	}
 
-	public BigDecimal getAdditionalCost ()
-	{
+	public BigDecimal getAdditionalCost() {
 		return additionalCost;
 	}
 
-	public void setAdditionalCost (final BigDecimal additionalCost)
-	{
+	public void setAdditionalCost(final BigDecimal additionalCost) {
 		this.additionalCost = additionalCost;
 	}
 
-	public BigDecimal getCost ()
-	{
+	public BigDecimal getCost() {
 		return cost;
 	}
 
-	public void setCost (final BigDecimal cost)
-	{
+	public void setCost(final BigDecimal cost) {
 		this.cost = cost;
 	}
 
-	public boolean getCompleted ()
-	{
+	public boolean getCompleted() {
 		return completed;
 	}
 
-	public void setCompleted (final boolean completed)
-	{
+	public void setCompleted(final boolean completed) {
 		this.completed = completed;
 	}
 
-	public boolean getReceived ()
-	{
+	public boolean getReceived() {
 		return received;
 	}
 
-	public void setReceived (final boolean received)
-	{
+	public void setReceived(final boolean received) {
 		this.received = received;
 	}
 
-	public boolean isInsert ()
-	{
+	public boolean isInsert() {
 		return insert;
 	}
 
-	public void setInsert (final boolean insert)
-	{
+	public void setInsert(final boolean insert) {
 		this.insert = insert;
 	}
 }
