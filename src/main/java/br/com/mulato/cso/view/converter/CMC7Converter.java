@@ -1,3 +1,4 @@
+// encoding: UTF-8
 package br.com.mulato.cso.view.converter;
 
 import java.text.ParseException;
@@ -6,11 +7,12 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
 import javax.swing.text.MaskFormatter;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class CMC7Converter implements Converter<Object> {
 
-	private final static Logger LOGGER = Logger.getLogger(CMC7Converter.class);
+	private static final Logger LOGGER = LogManager.getLogger(CMC7Converter.class);
 
 	// FIELDS
 	public static final String CONVERTER_ID = "jsf.CMC7";

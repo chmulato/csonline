@@ -1,3 +1,4 @@
+// encoding: UTF-8
 package br.com.mulato.cso.utils;
 
 import java.io.IOException;
@@ -5,14 +6,15 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import br.com.mulato.cso.exception.ParameterException;
 import br.com.mulato.cso.utils.vo.TableVO;
 import br.com.mulato.cso.utils.vo.VehicleVO;
 
 public class InitProperties {
 
-	private final static Logger LOGGER = Logger.getLogger(InitProperties.class);
+	private static final Logger LOGGER = LogManager.getLogger(InitProperties.class);
 
 	private static boolean getting;
 	private static String jndiCSO;

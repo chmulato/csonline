@@ -1,3 +1,4 @@
+// encoding: UTF-8
 package br.com.mulato.cso.view.controller;
 
 import java.io.Serializable;
@@ -10,7 +11,8 @@ import java.util.Map;
 import jakarta.faces.application.Application;
 import jakarta.faces.context.FacesContext;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import br.com.mulato.cso.dry.AbstractController;
 import br.com.mulato.cso.dry.FactoryService;
@@ -25,7 +27,7 @@ public class DeliveryCustomerController extends AbstractController implements Se
 
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger LOGGER = Logger.getLogger(DeliveryCustomerController.class);
+	private static final Logger LOGGER = LogManager.getLogger(DeliveryCustomerController.class);
 
 	private BusinessVO businessVO;
 

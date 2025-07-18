@@ -1,3 +1,4 @@
+// encoding: UTF-8
 package br.com.mulato.cso.view.controller;
 
 import java.io.Serializable;
@@ -7,7 +8,8 @@ import jakarta.el.ELException;
 import jakarta.faces.application.Application;
 import jakarta.faces.context.FacesContext;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import br.com.mulato.cso.dry.AbstractController;
 import br.com.mulato.cso.dry.FactoryService;
@@ -19,7 +21,7 @@ public class BusinessesController extends AbstractController implements Serializ
 
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger LOGGER = Logger.getLogger(BusinessesController.class);
+	private static final Logger LOGGER = LogManager.getLogger(BusinessesController.class);
 
 	private List<BusinessVO> results;
 
@@ -29,200 +31,153 @@ public class BusinessesController extends AbstractController implements Serializ
 
 	private boolean no_items;
 
-	private void addItem ()
-	{
+	private void addItem() {
 
 		final FacesContext context = FacesContext.getCurrentInstance();
 		final Application app = context.getApplication();
 		final LoginController loginController = app.evaluateExpressionGet(context, "#{loginMB}", LoginController.class);
 
-		try
-		{
+		try {
 
-			if (loginController.isLogged() == true)
-			{
+			if (loginController.isLogged() == true) {
 				loginController.setId(null);
-			}
-			else
-			{
+			} else {
 				throw new WebException("Sess�o n�o carregada! Logar novamente.");
 			}
 
-		}
-		catch (final WebException e)
-		{
+		} catch (final WebException e) {
 			FacesMessages.mensErro(e.getMessage());
 		}
 
 	}
 
-	private void loadSession ()
-	{
+	private void loadSession() {
 
 		String profile;
 
 		LOGGER.info("Carregando controle da p�gina de neg�cios ...");
 
-		try
-		{
+		try {
 
 			final FacesContext context = FacesContext.getCurrentInstance();
 			final Application app = context.getApplication();
-			final LoginController loginController = app.evaluateExpressionGet(context, "#{loginMB}", LoginController.class);
+			final LoginController loginController = app.evaluateExpressionGet(context, "#{loginMB}",
+					LoginController.class);
 
-			if (loginController.isLogged())
-			{
+			if (loginController.isLogged()) {
 
 				LOGGER.info("Sess�o carregada! ... Login: " + loginController.getUsername());
 
 				profile = loginController.getProfile();
 
-				if (profile.equals("ADMINISTRATOR"))
-				{
+				if (profile.equals("ADMINISTRATOR")) {
 
 					admin_profile = true;
 
 					results = FactoryService.getInstancia().getBusinessService().listAllBusiness();
 
-					if ((results != null) && (results.size() > 0))
-					{
+					if ((results != null) && (results.size() > 0)) {
 						setResults(results);
-					}
-					else
-					{
+					} else {
 						setNo_items(true);
 					}
 
-				}
-				else
-				{
+				} else {
 					throw new WebException("Perfil do usu�rio n�o encontrado.");
 				}
-			}
-			else
-			{
+			} else {
 				throw new WebException("Sess�o n�o carregada! Logar novamente.");
 			}
 
-		}
-		catch (final WebException e)
-		{
+		} catch (final WebException e) {
 			FacesMessages.mensErro(e.getMessage());
 		}
 	}
 
-	public BusinessesController ()
-	{
+	public BusinessesController() {
 		super();
 		loadSession();
 	}
 
-	public String add ()
-	{
+	public String add() {
 		addItem();
 		return goToPage("business");
 	}
 
-	public String edit ()
-	{
-		try
-		{
+	public String edit() {
+		try {
 			parameter = super.getParameter("id");
-			if ((parameter != null) && (!parameter.equals("")))
-			{
+			if ((parameter != null) && (!parameter.equals(""))) {
 				final FacesContext context = FacesContext.getCurrentInstance();
 				final Application app = context.getApplication();
-				final LoginController loginController = app.evaluateExpressionGet(context, "#{loginMB}", LoginController.class);
-				if (loginController != null)
-				{
+				final LoginController loginController = app.evaluateExpressionGet(context, "#{loginMB}",
+						LoginController.class);
+				if (loginController != null) {
 					loginController.setId(Integer.parseInt(parameter));
 					return goToPage("business");
 				}
 			}
-		}
-		catch (NumberFormatException | WebException | ELException e)
-		{
+		} catch (NumberFormatException | WebException | ELException e) {
 			FacesMessages.mensErro(e.getMessage());
 		}
 		return goToPage("businesses");
 	}
 
-	public String delete ()
-	{
-		try
-		{
+	public String delete() {
+		try {
 			parameter = super.getParameter("id");
-			if ((parameter != null) && (!parameter.equals("")))
-			{
+			if ((parameter != null) && (!parameter.equals(""))) {
 				final Integer id = Integer.parseInt(parameter);
-				if (id != null)
-				{
+				if (id != null) {
 					FactoryService.getInstancia().getBusinessService().delete(id);
 					FacesMessages.mensInfo("Neg�cio deletado com sucesso!");
 				}
-			}
-			else
-			{
+			} else {
 				throw new WebException("Par�metro vazio! Informe id neg�cio.");
 			}
-		}
-		catch (final NumberFormatException e)
-		{
+		} catch (final NumberFormatException e) {
 			FacesMessages.mensErro(e.getMessage());
-		}
-		catch (final WebException e)
-		{
+		} catch (final WebException e) {
 			FacesMessages.mensErro(e.getMessage());
-		}
-		catch (final Exception e)
-		{
+		} catch (final Exception e) {
 			FacesMessages.mensErro(e.getMessage());
 		}
 		return goToPage("businesses");
 	}
 
-	public String listAll ()
-	{
+	public String listAll() {
 		return goToPage("businesses");
 	}
 
-	public List<BusinessVO> getResults ()
-	{
+	public List<BusinessVO> getResults() {
 		return results;
 	}
 
-	public void setResults (final List<BusinessVO> results)
-	{
+	public void setResults(final List<BusinessVO> results) {
 		this.results = results;
 	}
 
-	public String getParameter ()
-	{
+	public String getParameter() {
 		return parameter;
 	}
 
-	public void setParameter (final String parameter)
-	{
+	public void setParameter(final String parameter) {
 		this.parameter = parameter;
 	}
 
-	public boolean isAdmin_profile ()
-	{
+	public boolean isAdmin_profile() {
 		return admin_profile;
 	}
 
-	public void setAdmin_profile (final boolean admin_profile)
-	{
+	public void setAdmin_profile(final boolean admin_profile) {
 		this.admin_profile = admin_profile;
 	}
 
-	public boolean isNo_items ()
-	{
+	public boolean isNo_items() {
 		return no_items;
 	}
 
-	public void setNo_items (final boolean no_items)
-	{
+	public void setNo_items(final boolean no_items) {
 		this.no_items = no_items;
 	}
 }
