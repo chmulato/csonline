@@ -1,138 +1,23 @@
-PS C:\dev\csonline> cd\                                       
-PS C:\> cd .\flyway\
-PS C:\flyway> .\flyway -v    
-WARNING: No locations configured and default location 'sql' not found.
-Flyway Community Edition 11.10.3 by Redgate
-
-See release notes here: https://rd.gt/416ObMi
-Plugin Name       | Version        
------------------ | ---------------
-DB2 for z/OS      | 10.20.0        
-OceanBase         | 10.20.0        
-TiDB              | 10.20.0        
-YugabyteDB        | 10.20.0        
-ClickHouse        | 10.20.0        
-CUBRID            | 10.20.0        
-Databricks        | 10.20.0        
-DuckDB            | 10.20.0        
-Apache Ignite     | 10.20.0        
-Timeplus          | 10.20.0
-Redgate Compare   | 1.38.0.974
-SQLFluff          | not installed
-PS C:\flyway> flyway -url="jdbc:mysql://localhost:3306/caracore_csodatabase" -user="root" -password="admin" -locations="filesystem:C:/dev/csonline/src/main/resources/db/migration" migrate
-flyway: The term 'flyway' is not recognized as a name of a cmdlet, function, script file, or executable program.
-Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
-
-Suggestion [3,General]: The command "flyway" was not found, but does exist in the current location. PowerShell does not load commands from the current location by default. If you trust this command, instead type: ".\flyway". See "get-help about_Command_Precedence" for more details.
-PS C:\flyway> .\flyway -url="jdbc:mysql://localhost:3306/caracore_csodatabase" -user="root" -password="admin" -locations="filesystem:C:/dev/csonline/src/main/resources/db/migration" migrate
-Flyway Community Edition 11.10.3 by Redgate
-
-See release notes here: https://rd.gt/416ObMi
-
-Flyway Pipelines are not active for this project. Learn more here: https://flyway.red-gate.com
-ERROR: Unable to obtain connection from database (jdbc:mysql://localhost:3306/caracore_csodatabase) for user 'root': Could not connect to address=(host=localhost)(port=3306)(type=master) : RSA public key is not available client side (option serverRsaPublicKeyFile not set)
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-SQL State  : S1009
-Error Code : 0
-Message    : Could not connect to address=(host=localhost)(port=3306)(type=master) : RSA public key is not available client side (option serverRsaPublicKeyFile not set)
-
-Caused by: java.sql.SQLTransientConnectionException: Could not connect to address=(host=localhost)(port=3306)(type=master) : RSA public key is not available client side (option serverRsaPublicKeyFile not set)
-Caused by: java.sql.SQLException: RSA public key is not available client side (option serverRsaPublicKeyFile not set)       
-PS C:\flyway> .\flyway -url="jdbc:mysql://localhost:3306/caracore_csodatabase?allowPublicKeyRetrieval=true&useSSL=false" -user="root" -password="admin" -locations="filesystem:C:/dev/csonline/src/main/resources/db/migration" migrate
-Usage
-    flyway [options] [command]
-    flyway help [command]
-
-Commands
-    help                     Print this usage info and exit   
-    auth                     Authenticates Flyway with Redgate licensing
-    migrate                  Migrates the database
-    clean                    Drops all objects in the configured schemas
-    info                     Prints the information about applied, current and pending migrations
-    validate                 Validates the applied migrations against the ones on the classpath
-    baseline                 Baselines an existing database at the baselineVersion
-    repair                   Repairs the schema history table 
-    check                    Produces reports to increase confidence in your deployments
-    version, -v, --version   Print the Flyway version and edition
-    list-engines             Lists the database engines that Flyway has loaded support for.
-    diff                     Compares two comparison sources and returns a summary of the differences
-    diffText                 Shows the object differences for changes computed by flyway diff
-    snapshot                 [enterprise] Produces a snapshot of the database specified in flyway.url
-                             A snapshot can be generated from a database environment, build environment, schema model folder or empty source using the snapshot.source argument
-    model                    Applies the changes from flyway diff to the schema model
-    generate                 Generates a migration script based on the changes from flyway diff
-    add                      Creates a new empty migration script
-    undo                     [teams] Undoes the most recently applied versioned migration
-    deploy                   Deploys an individual script to an environment
-    prepare                  Writes a deployment script from a schemaModel, an environment, a diff artifact, or migrations to disk
-    init                     Initialize a new Flyway project. Also allows for the upgrading of Flyway .conf files, and the porting of SQL Source Control and Source Control for Oracle projects to Flyway.
-
-Configuration parameters (Format: -key=value)
-    driver                         Fully qualified classname of the JDBC driver
-    url                            Jdbc url to use to connect to the database
-    user                           User to use to connect to the database
-    password                       Password to use to connect to the database
-    (To see all configuration options please run flyway --help)
-
-Flags
-    -X                Print debug output
-    -q                Suppress all output, except for errors and warnings
-    --help, -h, -?    Print this usage info and exit
-
-Flyway Usage Example
-    flyway -user=myuser -password=s3cr3t -url=jdbc:h2:mem -placeholders.abc=def migrate
-    flyway help check
-
-More info at https://rd.gt/3Cc1xKC
-'useSSL' não é reconhecido como um comando interno
-ou externo, um programa operável ou um arquivo em lotes.      
-PS C:\flyway> .\flyway -url="jdbc:mysql://localhost:3306/caracore_csodatabase" -user="root" -password="admin" -locations="filesystem:C:/dev/csonline/src/main/resources/db/migration" migrate^C
-PS C:\flyway> .\flyway -url="jdbc:mysql://localhost:3306/caracore_csodatabase?allowPublicKeyRetrieval=true&useSSL=false" -user="root" -password="admin" -locations="filesystem:C:/dev/csonline/src/main/resources/db/migration" info   
-Usage
-    flyway [options] [command]
-    flyway help [command]
-
-Commands
-    help                     Print this usage info and exit   
-    auth                     Authenticates Flyway with Redgate licensing
-    migrate                  Migrates the database
-    clean                    Drops all objects in the configured schemas
-    info                     Prints the information about applied, current and pending migrations
-    validate                 Validates the applied migrations against the ones on the classpath
-    baseline                 Baselines an existing database at the baselineVersion
-    repair                   Repairs the schema history table 
-    check                    Produces reports to increase confidence in your deployments
-    version, -v, --version   Print the Flyway version and edition
-    list-engines             Lists the database engines that Flyway has loaded support for.
-    diff                     Compares two comparison sources and returns a summary of the differences
-    diffText                 Shows the object differences for changes computed by flyway diff
-    snapshot                 [enterprise] Produces a snapshot of the database specified in flyway.url
-                             A snapshot can be generated from a database environment, build environment, schema model folder or empty source using the snapshot.source argument
-    model                    Applies the changes from flyway diff to the schema model
-    generate                 Generates a migration script based on the changes from flyway diff
-    add                      Creates a new empty migration script
-    undo                     [teams] Undoes the most recently applied versioned migration
-    deploy                   Deploys an individual script to an environment
-    prepare                  Writes a deployment script from a schemaModel, an environment, a diff artifact, or migrations to disk
-    init                     Initialize a new Flyway project. Also allows for the upgrading of Flyway .conf files, and the porting of SQL Source Control and Source Control for Oracle projects to Flyway.
-
-Configuration parameters (Format: -key=value)
-    driver                         Fully qualified classname of the JDBC driver
-    url                            Jdbc url to use to connect to the database
-    user                           User to use to connect to the database
-    password                       Password to use to connect to the database
-    (To see all configuration options please run flyway --help)
-
-Flags
-    -X                Print debug output
-    -q                Suppress all output, except for errors and warnings
-    --help, -h, -?    Print this usage info and exit
-
-Flyway Usage Example
-    flyway -user=myuser -password=s3cr3t -url=jdbc:h2:mem -placeholders.abc=def migrate
-    flyway help check
-
-More info at https://rd.gt/3Cc1xKC
-'useSSL' não é reconhecido como um comando interno
-ou externo, um programa operável ou um arquivo em lotes.      
-PS C:\flyway> 
+PS C:\dev\csonline> mvn flyway:migrate
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------------< br.com.mulato:csonline >-----------------------
+[INFO] Building csonline 2.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ war ]---------------------------------
+[INFO] 
+[INFO] --- flyway:10.14.0:migrate (default-cli) @ csonline ---
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  0.657 s
+[INFO] Finished at: 2025-07-18T17:28:31-03:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.flywaydb:flyway-maven-plugin:10.14.0:migrate (default-cli) on project csonline: org.flywaydb.core.api.FlywayException: No database found to handle jdbc:postgresql://localhost:5432/caracore_csodatabase -> [Help 1]
+[ERROR]
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.        
+[ERROR]
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
+PS C:\dev\csonline> 

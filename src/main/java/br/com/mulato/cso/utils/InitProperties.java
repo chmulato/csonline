@@ -103,34 +103,35 @@ public class InitProperties {
 					throw new ParameterException(msg);
 				}
 
-				if (properties.getProperty("jdbc.driver") != null) {
-					driver = properties.getProperty("jdbc.driver");
-				} else {
-					msg = "Informe par�metro driver!";
+				// Lógica para seleção dinâmica do banco de dados
+				String dbType = properties.getProperty("db.type") != null
+						? properties.getProperty("db.type").toLowerCase()
+						: "postgres";
+
+				driver = properties.getProperty("jdbc.driver." + dbType);
+				if (driver == null) {
+					msg = "Informe parâmetro driver para " + dbType + "!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
 
-				if (properties.getProperty("jdbc.username") != null) {
-					username = properties.getProperty("jdbc.username");
-				} else {
-					msg = "Informe par�metro username!";
+				username = properties.getProperty("jdbc.username." + dbType);
+				if (username == null) {
+					msg = "Informe parâmetro username para " + dbType + "!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
 
-				if (properties.getProperty("jdbc.password") != null) {
-					password = properties.getProperty("jdbc.password");
-				} else {
-					msg = "Informe par�metro password!";
+				password = properties.getProperty("jdbc.password." + dbType);
+				if (password == null) {
+					msg = "Informe parâmetro password para " + dbType + "!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
 
-				if (properties.getProperty("jdbc.url.cso") != null) {
-					urlDatabaseCSO = properties.getProperty("jdbc.url.cso");
-				} else {
-					msg = "Informe par�metro url cso!";
+				urlDatabaseCSO = properties.getProperty("jdbc.url.cso." + dbType);
+				if (urlDatabaseCSO == null) {
+					msg = "Informe parâmetro url cso para " + dbType + "!";
 					LOGGER.error(msg);
 					throw new ParameterException(msg);
 				}
