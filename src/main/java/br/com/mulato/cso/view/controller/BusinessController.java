@@ -1,3 +1,4 @@
+// encoding: UTF-8
 package br.com.mulato.cso.view.controller;
 
 import java.io.Serializable;
@@ -5,7 +6,8 @@ import java.io.Serializable;
 import jakarta.faces.application.Application;
 import jakarta.faces.context.FacesContext;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import br.com.mulato.cso.dry.AbstractController;
 import br.com.mulato.cso.dry.FactoryService;
@@ -18,7 +20,7 @@ public class BusinessController extends AbstractController implements Serializab
 
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger LOGGER = Logger.getLogger(BusinessController.class);
+	private static final Logger LOGGER = LogManager.getLogger(BusinessController.class);
 
 	private BusinessVO businessVO;
 

@@ -1,3 +1,4 @@
+// encoding: UTF-8
 package br.com.mulato.cso.dao.impl;
 
 import java.io.Serializable;
@@ -7,7 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import br.com.mulato.cso.dao.CustomerDAO;
 import br.com.mulato.cso.dry.DBConnection;
 import br.com.mulato.cso.dry.FactoryDAO;
@@ -24,7 +26,7 @@ public class CustomerDAOImpl
 
 	private static final long serialVersionUID = 1L;
 
-	private final static Logger logger = Logger.getLogger(CustomerDAOImpl.class);
+	private final static Logger logger = LogManager.getLogger(CustomerDAOImpl.class);
 
 	private boolean isThereLogin(final LoginVO login) throws DAOException {
 		return FactoryDAO.getInstancia().getLoginDAO().isThereLogin(login);
