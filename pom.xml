@@ -73,7 +73,6 @@
 			<version>5.2.0</version>
 			<scope>test</scope>
 		</dependency>
-	<!-- ...existing code... -->
 		<dependency>
 			<groupId>jakarta.platform</groupId>
 			<artifactId>jakarta.jakartaee-api</artifactId>
@@ -84,76 +83,83 @@
 	<build>
 		<finalName>csonline</finalName>
 		<plugins>
-			<plugin>
-				<groupId>org.flywaydb</groupId>
-				<artifactId>flyway-maven-plugin</artifactId>
-				<version>10.14.0</version>
-				<configuration>
-					<driver>org.postgresql.Driver</driver>
-					<url>jdbc:postgresql://localhost:5432/caracore_csodatabase</url>
-					<user>admin</user>
-					<password>admin</password>
-					<schemas>
-						<schema>caracore_csodatabase</schema>
-					</schemas>
-					<locations>
-						<location>filesystem:src/main/resources/db/migration</location>
-					</locations>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.11</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>report</id>
-						<phase>test</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
-				<configuration>
-					<source>11</source>
-					<target>11</target>
-					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.6</version>
-				<executions>
-					<execution>
-						<id>copy-resources</id>
-						<phase>validate</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
+<plugin>
+	<groupId>org.flywaydb</groupId>
+	<artifactId>flyway-maven-plugin</artifactId>
+	<version>10.14.0</version>
+	<dependencies>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.7.3</version>
+		</dependency>
+	</dependencies>
+	<configuration>
+		<driver>org.postgresql.Driver</driver>
+		<url>jdbc:postgresql://localhost:5432/caracore_csodatabase</url>
+		<user>admin</user>
+		<password>admin</password>
+		<schemas>
+			<schema>caracore_csodatabase</schema>
+		</schemas>
+		<locations>
+			<location>filesystem:src/main/resources/db/migration</location>
+		</locations>
+	</configuration>
+</plugin>
+		<plugin>
+			<groupId>org.jacoco</groupId>
+			<artifactId>jacoco-maven-plugin</artifactId>
+			<version>0.8.11</version>
+			<executions>
+				<execution>
+					<goals>
+						<goal>prepare-agent</goal>
+					</goals>
+				</execution>
+				<execution>
+					<id>report</id>
+					<phase>test</phase>
+					<goals>
+						<goal>report</goal>
+					</goals>
+				</execution>
+			</executions>
+		</plugin>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<version>3.1</version>
+			<configuration>
+				<source>11</source>
+				<target>11</target>
+				<encoding>UTF-8</encoding>
+			</configuration>
+		</plugin>
+		<plugin>
+			<artifactId>maven-resources-plugin</artifactId>
+			<version>2.6</version>
+			<executions>
+				<execution>
+					<id>copy-resources</id>
+					<phase>validate</phase>
+					<goals>
+						<goal>copy-resources</goal>
+					</goals>
 
-						<configuration>
-							<outputDirectory>${basedir}/target/csonline/resources</outputDirectory>
-							<resources>
-								<resource>
-									<directory>src/main/resources</directory>
-									<filtering>true</filtering>
-								</resource>
-							</resources>
-							<encoding>UTF-8</encoding>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+					<configuration>
+						<outputDirectory>${basedir}/target/csonline/resources</outputDirectory>
+						<resources>
+							<resource>
+								<directory>src/main/resources</directory>
+								<filtering>true</filtering>
+							</resource>
+						</resources>
+						<encoding>UTF-8</encoding>
+					</configuration>
+				</execution>
+			</executions>
+		</plugin>
 		</plugins>
 	</build>
 
