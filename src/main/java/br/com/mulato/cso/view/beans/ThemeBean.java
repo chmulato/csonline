@@ -10,7 +10,8 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.model.SelectItem;
 import jakarta.servlet.ServletContext;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import br.com.mulato.cso.exception.ParameterException;
 import br.com.mulato.cso.utils.InitProperties;
@@ -21,7 +22,7 @@ public class ThemeBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private final static Logger LOGGER = Logger.getLogger(ThemeBean.class);
+	private static final Logger LOGGER = LogManager.getLogger(ThemeBean.class);
 
 	private String theme;
 

@@ -54,6 +54,7 @@
 			<groupId>jakarta.platform</groupId>
 			<artifactId>jakarta.jakartaee-web-api</artifactId>
 			<version>10.0.0</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.jasperreports</groupId>
@@ -76,9 +77,14 @@
 			<version>1.13.1</version>
 		</dependency>
 		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.17</version>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>2.20.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.20.0</version>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
@@ -97,13 +103,6 @@
 			<artifactId>mockito-core</artifactId>
 			<version>5.2.0</version>
 			<scope>test</scope>
-		</dependency>
-		<!-- Adicione estas dependências -->
-		<dependency>
-			<groupId>jakarta.platform</groupId>
-			<artifactId>jakarta.jakartaee-api</artifactId>
-			<version>10.0.0</version>
-			<scope>provided</scope>
 		</dependency>
 		<!-- ...existing code... -->
 	</dependencies>

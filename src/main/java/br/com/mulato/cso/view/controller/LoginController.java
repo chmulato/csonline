@@ -10,7 +10,8 @@ import jakarta.faces.event.ActionEvent;
 import jakarta.faces.event.ValueChangeEvent;
 import jakarta.servlet.ServletContext;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import br.com.mulato.cso.dry.AbstractController;
 import br.com.mulato.cso.dry.FactoryService;
@@ -25,7 +26,7 @@ public class LoginController extends AbstractController implements Serializable 
 
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger LOGGER = Logger.getLogger(LoginController.class);
+	private static final Logger LOGGER = LogManager.getLogger(LoginController.class);
 
 	private BusinessVO businessVO;
 
@@ -47,26 +48,22 @@ public class LoginController extends AbstractController implements Serializable 
 
 	private String numberSession;
 
-	public LoginController ()
-	{
+	public LoginController() {
 		super();
 	}
 
-	public String logar ()
-	{
+	public String logar() {
 		return goToPage("login");
 	}
 
-	public String reset (final ActionEvent event)
-	{
+	public String reset(final ActionEvent event) {
 		logged = false;
 		username = null;
 		password = null;
 		return goToPage("login");
 	}
 
-	public String login ()
-	{
+	public String login() {
 
 		String path = "login";
 
@@ -75,26 +72,21 @@ public class LoginController extends AbstractController implements Serializable 
 		timeSystem = null;
 		userIdLogged = null;
 
-		try
-		{
+		try {
 
-			if (username == null)
-			{
+			if (username == null) {
 				throw new WebException("Informe login do usu�rio!");
 			}
 
-			if (password == null)
-			{
+			if (password == null) {
 				throw new WebException("Informe senha do usu�rio!");
 			}
 
-			if (username.equals(""))
-			{
+			if (username.equals("")) {
 				throw new WebException("Informe login do usu�rio!");
 			}
 
-			if (password.equals(""))
-			{
+			if (password.equals("")) {
 				throw new WebException("Informe senha do usu�rio!");
 			}
 
@@ -108,17 +100,16 @@ public class LoginController extends AbstractController implements Serializable 
 
 			final Boolean authenticate = FactoryService.getInstancia().getLoginService().authenticate(login);
 
-			if ((authenticate != null) && (authenticate.booleanValue() == false))
-			{
+			if ((authenticate != null) && (authenticate.booleanValue() == false)) {
 				master = true;
 			}
 
 			final FacesContext context = FacesContext.getCurrentInstance();
 			final Application app = context.getApplication();
-			final ContadorController contadorController = app.evaluateExpressionGet(context, "#{contadorMB}", ContadorController.class);
+			final ContadorController contadorController = app.evaluateExpressionGet(context, "#{contadorMB}",
+					ContadorController.class);
 
-			if (contadorController != null)
-			{
+			if (contadorController != null) {
 				contadorController.maisUm(4);
 			}
 
@@ -130,30 +121,25 @@ public class LoginController extends AbstractController implements Serializable 
 
 			final UserVO user = FactoryService.getInstancia().getAdminService().findByLogin(login);
 
-			if (user == null)
-			{
+			if (user == null) {
 				throw new WebException("Usu�rio n�o encontrado!");
 			}
 
-			if (user.getId() == null)
-			{
+			if (user.getId() == null) {
 				throw new WebException("Usu�rio n�o encontrado!");
 			}
 
-			if (user.getId().intValue() <= 0)
-			{
+			if (user.getId().intValue() <= 0) {
 				throw new WebException("Usu�rio n�o encontrado!");
 			}
 
-			if ((user.getRole() == null) || (user.getRole().equals("")))
-			{
+			if ((user.getRole() == null) || (user.getRole().equals(""))) {
 				throw new WebException("Perfil n�o encontrado!");
 			}
 
 			profile = user.getRole().toUpperCase().trim();
 
-			if (profile.equals("ADMINISTRATOR"))
-			{
+			if (profile.equals("ADMINISTRATOR")) {
 
 				userIdLogged = user.getId();
 
@@ -161,23 +147,18 @@ public class LoginController extends AbstractController implements Serializable 
 
 				profile = "ADMINISTRATOR";
 
-			}
-			else if (profile.equals("BUSINESS"))
-			{
+			} else if (profile.equals("BUSINESS")) {
 
 				userIdLogged = user.getId();
 
 				final BusinessVO vo = FactoryService.getInstancia().getBusinessService().find(user.getId());
 
-				if (vo != null)
-				{
+				if (vo != null) {
 
 					businessVO = vo;
 					id = user.getId();
 
-				}
-				else
-				{
+				} else {
 
 					throw new WebException("Neg�cio n�o encontrado!");
 
@@ -187,23 +168,19 @@ public class LoginController extends AbstractController implements Serializable 
 
 				profile = "BUSINESS";
 
-			}
-			else if (profile.equals("CUSTOMER"))
-			{
+			} else if (profile.equals("CUSTOMER")) {
 
 				userIdLogged = user.getId();
 
-				final BusinessVO vo = FactoryService.getInstancia().getBusinessService().findBusinessByCustomerId(user.getId());
+				final BusinessVO vo = FactoryService.getInstancia().getBusinessService()
+						.findBusinessByCustomerId(user.getId());
 
-				if (vo != null)
-				{
+				if (vo != null) {
 
 					businessVO = vo;
 					id = user.getId();
 
-				}
-				else
-				{
+				} else {
 
 					throw new WebException("Neg�cio do cliente n�o encontrado!");
 
@@ -213,25 +190,21 @@ public class LoginController extends AbstractController implements Serializable 
 
 				profile = "CUSTOMER";
 
-			}
-			else if (profile.equals("COURIER"))
-			{
+			} else if (profile.equals("COURIER")) {
 
 				userIdLogged = user.getId();
 
 				path = "resume";
 
-				final BusinessVO vo = FactoryService.getInstancia().getBusinessService().findBusinessByCourierId(user.getId());
+				final BusinessVO vo = FactoryService.getInstancia().getBusinessService()
+						.findBusinessByCourierId(user.getId());
 
-				if (vo != null)
-				{
+				if (vo != null) {
 
 					businessVO = vo;
 					id = user.getId();
 
-				}
-				else
-				{
+				} else {
 
 					throw new WebException("Neg�cio do entregador n�o encontrado!");
 
@@ -244,7 +217,7 @@ public class LoginController extends AbstractController implements Serializable 
 			LOGGER.info("Usu�rio encontrado: " + user);
 
 			final FacesContext facesContext = FacesContext.getCurrentInstance();
-			final ServletContext servletContext = (ServletContext)facesContext.getExternalContext().getContext();
+			final ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
 
 			final String timeout = servletContext.getInitParameter("timeout");
 
@@ -256,311 +229,242 @@ public class LoginController extends AbstractController implements Serializable 
 			final SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 			timeSystem = fmt.format(new Date());
 
-		}
-		catch (final WebException e)
-		{
+		} catch (final WebException e) {
 			FacesMessages.mensErro(e.getMessage());
 		}
 
 		return goToBackPage(path);
 	}
 
-	public String logout ()
-	{
+	public String logout() {
 		logged = false;
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 		return goToBackPage("login");
 	}
 
-	public String changeTheme (final ValueChangeEvent event)
-	{
-		final String theme = (String)event.getNewValue();
-		if (theme != null)
-		{
+	public String changeTheme(final ValueChangeEvent event) {
+		final String theme = (String) event.getNewValue();
+		if (theme != null) {
 			final FacesContext context = FacesContext.getCurrentInstance();
 			final Application app = context.getApplication();
 			final ThemeBean themeBean = app.evaluateExpressionGet(context, "#{themeMB}", ThemeBean.class);
-			if (themeBean != null)
-			{
+			if (themeBean != null) {
 				themeBean.setTheme(theme);
 				return goToPage("theme");
-			}
-			else
-			{
+			} else {
 				return goToPage("login");
 			}
-		}
-		else
-		{
+		} else {
 			return goToPage("login");
 		}
 	}
 
-	public boolean getMenuChange ()
-	{
+	public boolean getMenuChange() {
 		boolean cond = false;
-		if (profile != null)
-		{
-			if ((profile.equals("ADMINISTRATOR")) || (profile.equals("BUSINESS")) || (profile.equals("CUSTOMER")))
-			{
+		if (profile != null) {
+			if ((profile.equals("ADMINISTRATOR")) || (profile.equals("BUSINESS")) || (profile.equals("CUSTOMER"))) {
 				cond = true;
 			}
 		}
 		return cond;
 	}
 
-	public boolean getMenuUsers ()
-	{
+	public boolean getMenuUsers() {
 		boolean cond = false;
-		if (profile != null)
-		{
-			if (profile.equals("ADMINISTRATOR"))
-			{
+		if (profile != null) {
+			if (profile.equals("ADMINISTRATOR")) {
 				cond = true;
 			}
 		}
 		return cond;
 	}
 
-	public boolean getMenuViewBusiness ()
-	{
+	public boolean getMenuViewBusiness() {
 		boolean cond = false;
-		if (profile != null)
-		{
-			if (profile.equals("BUSINESS"))
-			{
+		if (profile != null) {
+			if (profile.equals("BUSINESS")) {
 				cond = true;
 			}
 		}
 		return cond;
 	}
 
-	public boolean getMenuAllBusinesses ()
-	{
+	public boolean getMenuAllBusinesses() {
 		boolean cond = false;
-		if (profile != null)
-		{
-			if (profile.equals("ADMINISTRATOR"))
-			{
+		if (profile != null) {
+			if (profile.equals("ADMINISTRATOR")) {
 				cond = true;
 			}
 		}
 		return cond;
 	}
 
-	public boolean getMenuBusinesses ()
-	{
+	public boolean getMenuBusinesses() {
 		boolean cond = false;
-		if (profile != null)
-		{
-			if ((profile.equals("ADMINISTRATOR")) || (profile.equals("BUSINESS")))
-			{
+		if (profile != null) {
+			if ((profile.equals("ADMINISTRATOR")) || (profile.equals("BUSINESS"))) {
 				cond = true;
 			}
 		}
 		return cond;
 	}
 
-	public boolean getMenuTables ()
-	{
+	public boolean getMenuTables() {
 		boolean cond = false;
-		if (profile != null)
-		{
-			if ((profile.equals("BUSINESS")) || (profile.equals("CUSTOMER")))
-			{
+		if (profile != null) {
+			if ((profile.equals("BUSINESS")) || (profile.equals("CUSTOMER"))) {
 				cond = true;
 			}
 		}
 		return cond;
 	}
 
-	public boolean getMenuViewCustomer ()
-	{
+	public boolean getMenuViewCustomer() {
 		boolean cond = false;
-		if (profile != null)
-		{
-			if (profile.equals("CUSTOMER"))
-			{
+		if (profile != null) {
+			if (profile.equals("CUSTOMER")) {
 				cond = true;
 			}
 		}
 		return cond;
 	}
 
-	public boolean getMenuCustomers ()
-	{
+	public boolean getMenuCustomers() {
 		boolean cond = false;
-		if (profile != null)
-		{
-			if ((profile.equals("BUSINESS")) || (profile.equals("CUSTOMER")))
-			{
+		if (profile != null) {
+			if ((profile.equals("BUSINESS")) || (profile.equals("CUSTOMER"))) {
 				cond = true;
 			}
 		}
 		return cond;
 	}
 
-	public boolean getMenuAllCustomers ()
-	{
+	public boolean getMenuAllCustomers() {
 		boolean cond = false;
-		if (profile != null)
-		{
-			if (profile.equals("BUSINESS"))
-			{
+		if (profile != null) {
+			if (profile.equals("BUSINESS")) {
 				cond = true;
 			}
 		}
 		return cond;
 	}
 
-	public boolean getMenuViewCourier ()
-	{
+	public boolean getMenuViewCourier() {
 		boolean cond = false;
-		if (profile != null)
-		{
-			if (profile.equals("COURIER"))
-			{
+		if (profile != null) {
+			if (profile.equals("COURIER")) {
 				cond = true;
 			}
 		}
 		return cond;
 	}
 
-	public boolean getMenuCouriers ()
-	{
+	public boolean getMenuCouriers() {
 		boolean cond = false;
-		if (profile != null)
-		{
-			if ((profile.equals("BUSINESS")) || (profile.equals("COURIER")))
-			{
+		if (profile != null) {
+			if ((profile.equals("BUSINESS")) || (profile.equals("COURIER"))) {
 				cond = true;
 			}
 		}
 		return cond;
 	}
 
-	public boolean getMenuAllCouriers ()
-	{
+	public boolean getMenuAllCouriers() {
 		boolean cond = false;
-		if (profile != null)
-		{
-			if (profile.equals("BUSINESS"))
-			{
+		if (profile != null) {
+			if (profile.equals("BUSINESS")) {
 				cond = true;
 			}
 		}
 		return cond;
 	}
 
-	public boolean getMenuViewDelivery ()
-	{
+	public boolean getMenuViewDelivery() {
 		boolean cond = false;
-		if (profile != null)
-		{
-			if (profile.equals("BUSINESS"))
-			{
+		if (profile != null) {
+			if (profile.equals("BUSINESS")) {
 				cond = true;
 			}
 		}
 		return cond;
 	}
 
-	public boolean getMenuAllDeliveries ()
-	{
+	public boolean getMenuAllDeliveries() {
 		boolean cond = false;
-		if (profile != null)
-		{
-			if ((profile.equals("BUSINESS")) || (profile.equals("CUSTOMER")) || (profile.equals("COURIER")))
-			{
+		if (profile != null) {
+			if ((profile.equals("BUSINESS")) || (profile.equals("CUSTOMER")) || (profile.equals("COURIER"))) {
 				cond = true;
 			}
 		}
 		return cond;
 	}
 
-	public boolean getMenuExit ()
-	{
+	public boolean getMenuExit() {
 		final boolean cond = true;
 		return cond;
 	}
 
-	public boolean getOpenTabsExit ()
-	{
+	public boolean getOpenTabsExit() {
 		boolean openTabs = false;
-		if (getMenuExit())
-		{
+		if (getMenuExit()) {
 			openTabs = true;
 		}
 		return openTabs;
 	}
 
-	public BusinessVO getBusinessVO ()
-	{
+	public BusinessVO getBusinessVO() {
 		return businessVO;
 	}
 
-	public String getProfile ()
-	{
+	public String getProfile() {
 		return profile;
 	}
 
-	public String getTimeSystem ()
-	{
+	public String getTimeSystem() {
 		return timeSystem;
 	}
 
-	public void setUsername (final String username)
-	{
+	public void setUsername(final String username) {
 		this.username = username;
 	}
 
-	public String getUsername ()
-	{
+	public String getUsername() {
 		return username;
 	}
 
-	public void setPassword (final String password)
-	{
+	public void setPassword(final String password) {
 		this.password = password;
 	}
 
-	public String getPassword ()
-	{
+	public String getPassword() {
 		return password;
 	}
 
-	public String getNumerSession ()
-	{
+	public String getNumerSession() {
 		return numberSession;
 	}
 
-	public boolean isLogged ()
-	{
+	public boolean isLogged() {
 		return logged;
 	}
 
-	public Integer getId ()
-	{
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId (final Integer id)
-	{
+	public void setId(final Integer id) {
 		this.id = id;
 	}
 
-	public boolean isMaster ()
-	{
+	public boolean isMaster() {
 		return master;
 	}
 
-	public void setMaster (final boolean master)
-	{
+	public void setMaster(final boolean master) {
 		this.master = master;
 	}
 
-	public Integer getUserIdLogged ()
-	{
+	public Integer getUserIdLogged() {
 		return userIdLogged;
 	}
 }

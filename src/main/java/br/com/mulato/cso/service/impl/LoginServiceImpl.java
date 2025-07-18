@@ -1,6 +1,7 @@
 package br.com.mulato.cso.service.impl;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import br.com.mulato.cso.dry.FactoryDAO;
 import br.com.mulato.cso.exception.DAOException;
 import br.com.mulato.cso.exception.WebException;
@@ -14,7 +15,7 @@ public class LoginServiceImpl
 
 	private static final long serialVersionUID = 1L;
 
-	private final static Logger LOGGER = Logger.getLogger(LoginServiceImpl.class);
+	private static final Logger LOGGER = LogManager.getLogger(LoginServiceImpl.class);
 
 	private SendEmail sendEmailChangePassword(final LoginVO login) throws WebException {
 
@@ -29,7 +30,7 @@ public class LoginServiceImpl
 		message.append("\r\n");
 		message.append("Login:\t\t[").append(login.getLogin());
 		message.append("]*\r\n");
-		message.append("Password:\t[").append(login.getNewPassword());
+		message.append("Senha:\t[").append(login.getNewPassword());
 		message.append("]*\r\n");
 		message.append("\r\n");
 		message.append("*Parâmetros entre colchetes []. \r\n");
@@ -53,7 +54,7 @@ public class LoginServiceImpl
 		}
 
 		if (login.getPassword() == null) {
-			throw new WebException("Informe senha!");
+			throw new WebException("Informe sua senha!");
 		}
 
 		final String password = login.getPassword();
@@ -79,7 +80,7 @@ public class LoginServiceImpl
 		}
 
 		if (login.getPassword() == null) {
-			throw new WebException("Informe senha!");
+			throw new WebException("Informe sua senha!");
 		}
 
 		LOGGER.info("Verificando autenticação...");
@@ -116,7 +117,7 @@ public class LoginServiceImpl
 		}
 
 		if (login.getRepeat() == null) {
-			throw new WebException("Repita sua senha!");
+			throw new WebException("Repita sua senha corretamente!");
 		}
 
 		if (!login.getPassword().equals(login.getRepeat())) {
@@ -136,11 +137,11 @@ public class LoginServiceImpl
 		}
 
 		if (login.getEmail() == null) {
-			throw new WebException("Informe seu email corretamente!");
+			throw new WebException("Informe seu e-mail corretamente!");
 		}
 
 		if (login.getEmail().equals("")) {
-			throw new WebException("Informe seu email corretamente!");
+			throw new WebException("Informe seu e-mail corretamente!");
 		}
 
 		LOGGER.info("Troca de senha.");

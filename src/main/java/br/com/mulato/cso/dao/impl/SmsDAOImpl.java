@@ -19,8 +19,7 @@ import br.com.mulato.cso.utils.InitProperties;
 import br.com.mulato.cso.utils.ToolUtils;
 
 public class SmsDAOImpl
-    implements SmsDAO, Serializable
-{
+		implements SmsDAO, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -28,62 +27,54 @@ public class SmsDAOImpl
 
 	private final static int SMS_SIZE_MESSAGE = 255;
 
-	private DeliveryVO findDelivery (final Integer idDelivery) throws DAOException
-	{
+	private DeliveryVO findDelivery(final Integer idDelivery) throws DAOException {
 		return FactoryDAO.getInstancia().getDeliveryDAO().find(idDelivery);
 	}
 
 	@Override
 	public void setTransaction_active(boolean enable) throws DAOException {
-		
-		if (enable == TRANSACTION_ENABLE)
-		{
+
+		if (enable == TRANSACTION_ENABLE) {
 			DBConnection.onTransaction();
 		}
 
-		if (enable == TRANSACTION_DISABLE)
-		{
+		if (enable == TRANSACTION_DISABLE) {
 			DBConnection.offTransaction();
 		}
-		
+
 	}
 
 	@SuppressWarnings("resource")
-	private int insertSMSPieces (final SmsVO sms) throws DAOException
-	{
+	private int insertSMSPieces(final SmsVO sms) throws DAOException {
 
 		int id = 0;
 
-		logger.info("Salvar mensagem de sms em pedaços.");
+		logger.info("Salvar mensagem de sms em pedaï¿½os.");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
-		try
-		{
+		try {
 
 			String SQL = INSERT_SMS_SENT;
 
-			if ((sms.getType() == 'R'))
-			{
+			if ((sms.getType() == 'R')) {
 				SQL = INSERT_SMS_RECEIVED;
 			}
 
 			conn = DBConnection.getConnectionDB();
-			
+
 			DBConnection.onTransaction();
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("INSERT: " + SQL);
 			}
 
 			stmt = conn.prepareStatement(GET_LAST_ID_ON_SMS_TABLE);
 			rs = stmt.executeQuery();
 
-			if (rs.next())
-			{
+			if (rs.next()) {
 				id = rs.getInt(1);
 			}
 
@@ -95,12 +86,9 @@ public class SmsDAOImpl
 
 			stmt.setInt(1, id);
 
-			if ((sms.getDelivery() == null) || (sms.getDelivery().getId() == null))
-			{
+			if ((sms.getDelivery() == null) || (sms.getDelivery().getId() == null)) {
 				stmt.setNull(2, java.sql.Types.INTEGER);
-			}
-			else
-			{
+			} else {
 				stmt.setInt(2, (sms.getDelivery().getId()));
 			}
 
@@ -113,68 +101,54 @@ public class SmsDAOImpl
 
 			DBConnection.offTransaction();
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("INSERT: OK!");
 			}
 
-		}
-		catch (final ParameterException ex)
-		{
+		} catch (final ParameterException ex) {
 
-			final String msg = "Erro ao salvar sms em pedaços! ";
+			final String msg = "Erro ao salvar sms em pedaÃ§os! ";
 			logger.error(msg + ex.getMessage());
 
 			throw new DAOException(msg);
 
-		}
-		catch (final SQLException ex)
-		{
+		} catch (final SQLException ex) {
 
-			final String msg = "Erro ao salvar sms em pedaços! ";
+			final String msg = "Erro ao salvar sms em pedaÃ§os! ";
 			logger.error(msg + ex.getMessage());
 
 			throw new DAOException(msg);
 
-		}
-		finally
-		{
+		} finally {
 			DBConnection.closeConnection(conn, stmt, rs);
 		}
 
 		return id;
 	}
 
-	public void update (final SmsVO sms) throws DAOException
-	{
+	public void update(final SmsVO sms) throws DAOException {
 
-		if (sms == null)
-		{
+		if (sms == null) {
 			throw new DAOException("Informe mensagem!");
 		}
 
-		if (sms.getId() == null)
-		{
+		if (sms.getId() == null) {
 			throw new DAOException("Informe id mensagem!");
 		}
 
-		if (sms.getId().intValue() <= 0)
-		{
+		if (sms.getId().intValue() <= 0) {
 			throw new DAOException("Informe id mensagem!");
 		}
 
-		if (sms.getDelivery() == null)
-		{
+		if (sms.getDelivery() == null) {
 			throw new DAOException("Informe entrega!");
 		}
 
-		if (sms.getDelivery().getId() == null)
-		{
+		if (sms.getDelivery().getId() == null) {
 			throw new DAOException("Informe id entrega!");
 		}
 
-		if (sms.getDelivery().getId().intValue() <= 0)
-		{
+		if (sms.getDelivery().getId().intValue() <= 0) {
 			throw new DAOException("Informe id entrega!");
 		}
 
@@ -183,26 +157,21 @@ public class SmsDAOImpl
 		Connection conn = null;
 		PreparedStatement stmt = null;
 
-		try
-		{
+		try {
 
 			final String SQL = UPDATE_SMS_RECEIVED;
 
 			conn = DBConnection.getConnectionDB();
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("UPDATE: " + SQL);
 			}
 
 			stmt = conn.prepareStatement(SQL);
 
-			if ((sms.getDelivery() == null) || (sms.getDelivery().getId() == null))
-			{
+			if ((sms.getDelivery() == null) || (sms.getDelivery().getId() == null)) {
 				stmt.setNull(1, java.sql.Types.INTEGER);
-			}
-			else
-			{
+			} else {
 				stmt.setInt(1, sms.getDelivery().getId());
 			}
 
@@ -210,32 +179,24 @@ public class SmsDAOImpl
 
 			stmt.executeUpdate();
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("UPDATE: OK!");
 			}
 
-		}
-		catch (final ParameterException ex)
-		{
+		} catch (final ParameterException ex) {
 			final String msg = "Erro ao atualizar mensagem! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		catch (final SQLException ex)
-		{
+		} catch (final SQLException ex) {
 			final String msg = "Erro ao atualizar mensagem! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		finally
-		{
+		} finally {
 			DBConnection.closeConnection(conn, stmt);
 		}
 	}
 
-	public int insert (final SmsVO sms) throws DAOException
-	{
+	public int insert(final SmsVO sms) throws DAOException {
 
 		String originalMsg;
 		final ToolUtils tools = new ToolUtils();
@@ -243,54 +204,44 @@ public class SmsDAOImpl
 		int id = 0;
 		short piece = 1;
 
-		if (sms == null)
-		{
+		if (sms == null) {
 			throw new DAOException("Informe sms!");
 		}
 
-		if ((sms.getType() != 'S') && (sms.getType() != 'R'))
-		{
+		if ((sms.getType() != 'S') && (sms.getType() != 'R')) {
 			throw new DAOException("Informe sms de envio ['S'] ou resposta ['R']!");
 		}
 
-		if (sms.getTo() == null)
-		{
+		if (sms.getTo() == null) {
 			throw new DAOException("Informe celular a receber mensagem!");
 		}
 
-		if (sms.getTo().equals(""))
-		{
+		if (sms.getTo().equals("")) {
 			throw new DAOException("Informe celular a receber mensagem!");
 		}
 
-		if (sms.getFrom() == null)
-		{
+		if (sms.getFrom() == null) {
 			throw new DAOException("Informe celular de envio da mensagem!");
 		}
 
-		if (sms.getFrom().equals(""))
-		{
+		if (sms.getFrom().equals("")) {
 			throw new DAOException("Informe celular de envio da mensagem!");
 		}
 
-		if (sms.getMessage() == null)
-		{
+		if (sms.getMessage() == null) {
 			throw new DAOException("Informe mensagem do sms!");
 		}
 
-		if (sms.getMessage().equals(""))
-		{
+		if (sms.getMessage().equals("")) {
 			throw new DAOException("Informe mensagem do sms!");
 		}
 
-		if (!tools.validarNumero(sms.getTo()))
-		{
-			throw new DAOException("Informe número de celular válido a receber da mensagem!");
+		if (!tools.validarNumero(sms.getTo())) {
+			throw new DAOException("Informe nï¿½mero de celular vï¿½lido a receber da mensagem!");
 		}
 
-		if (!tools.validarNumero(sms.getFrom()))
-		{
-			throw new DAOException("Informe número de celular válido de envio da mensagem!");
+		if (!tools.validarNumero(sms.getFrom())) {
+			throw new DAOException("Informe nï¿½mero de celular vï¿½lido de envio da mensagem!");
 		}
 
 		String message = sms.getMessage().trim();
@@ -300,8 +251,7 @@ public class SmsDAOImpl
 
 		logger.info("Mensagem de SMS p/ salvar: " + originalMsg + ". Total caracteres: " + originalMsg.length());
 
-		if (originalMsg.length() > SMS_SIZE_MESSAGE)
-		{
+		if (originalMsg.length() > SMS_SIZE_MESSAGE) {
 
 			String msg;
 
@@ -311,8 +261,7 @@ public class SmsDAOImpl
 
 			final int total = last / end;
 
-			for (int i = 0; i < total; i++)
-			{
+			for (int i = 0; i < total; i++) {
 
 				msg = originalMsg.substring(start, end);
 
@@ -323,7 +272,7 @@ public class SmsDAOImpl
 
 				start = start + SMS_SIZE_MESSAGE;
 				end = end + SMS_SIZE_MESSAGE;
-				piece = (short)(piece + 1);
+				piece = (short) (piece + 1);
 
 			}
 
@@ -334,9 +283,7 @@ public class SmsDAOImpl
 
 			id = insertSMSPieces(sms);
 
-		}
-		else
-		{
+		} else {
 
 			sms.setPiece(piece);
 
@@ -348,19 +295,16 @@ public class SmsDAOImpl
 	}
 
 	@Override
-	public SmsVO find (final Integer id) throws DAOException
-	{
+	public SmsVO find(final Integer id) throws DAOException {
 
 		final ToolUtils tools = new ToolUtils();
 		SmsVO result = null;
 
-		if (id == null)
-		{
+		if (id == null) {
 			throw new DAOException("Informe Id mensagem de sms!");
 		}
 
-		if (id.intValue() <= 0)
-		{
+		if (id.intValue() <= 0) {
 			throw new DAOException("Informe Id mensagem de sms!");
 		}
 
@@ -370,14 +314,12 @@ public class SmsDAOImpl
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
-		try
-		{
+		try {
 
 			final String SQL = SELECT_SMS_BY_ID;
 			conn = DBConnection.getConnectionDB();
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("SQL: " + SQL);
 			}
 
@@ -386,8 +328,7 @@ public class SmsDAOImpl
 
 			rs = stmt.executeQuery();
 
-			if (rs.next())
-			{
+			if (rs.next()) {
 
 				result = new SmsVO();
 
@@ -395,8 +336,7 @@ public class SmsDAOImpl
 
 				final int idDelivery = rs.getInt(rs.findColumn("IDDELIVERY"));
 
-				if (idDelivery > 0)
-				{
+				if (idDelivery > 0) {
 					final DeliveryVO vo = new DeliveryVO();
 					vo.setId(idDelivery);
 					result.setDelivery(vo);
@@ -408,8 +348,7 @@ public class SmsDAOImpl
 				result.setPiece(rs.getShort(rs.findColumn("PIECE")));
 				result.setType((rs.getString(rs.findColumn("TYPE")).charAt(0)));
 
-				if (rs.getString("DATETIME") != null)
-				{
+				if (rs.getString("DATETIME") != null) {
 					final String datetime = rs.getString(rs.findColumn("DATETIME"));
 					result.setDatetime(tools.converteDataStringToDateUtil(datetime, "yyyy-MM-dd hh:mm:ss"));
 				}
@@ -418,26 +357,19 @@ public class SmsDAOImpl
 
 			}
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("SQL: OK!");
 			}
 
-		}
-		catch (final ParameterException ex)
-		{
+		} catch (final ParameterException ex) {
 			final String msg = "Erro ao pesquisar mensagem de sms! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		catch (final SQLException ex)
-		{
+		} catch (final SQLException ex) {
 			final String msg = "Erro ao pesquisar mensagem de sms! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		finally
-		{
+		} finally {
 			DBConnection.closeConnection(conn, stmt, rs);
 		}
 
@@ -445,21 +377,18 @@ public class SmsDAOImpl
 	}
 
 	@Override
-	public List<SmsVO> listAllSmsDelivery (final Integer idDelivery) throws DAOException
-	{
+	public List<SmsVO> listAllSmsDelivery(final Integer idDelivery) throws DAOException {
 
 		final ToolUtils tools = new ToolUtils();
 		List<SmsVO> result = null;
 
 		boolean thereIs = false;
 
-		if (idDelivery == null)
-		{
+		if (idDelivery == null) {
 			throw new DAOException("Informe Id da entrega!");
 		}
 
-		if (idDelivery.intValue() <= 0)
-		{
+		if (idDelivery.intValue() <= 0) {
 			throw new DAOException("Informe Id da entrega!");
 		}
 
@@ -469,14 +398,12 @@ public class SmsDAOImpl
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
-		try
-		{
+		try {
 
 			final String SQL = SELECT_SMS_DELIVERY;
 			conn = DBConnection.getConnectionDB();
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("SQL: " + SQL);
 			}
 
@@ -485,11 +412,9 @@ public class SmsDAOImpl
 
 			rs = stmt.executeQuery();
 
-			while (rs.next())
-			{
+			while (rs.next()) {
 
-				if (!thereIs)
-				{
+				if (!thereIs) {
 					result = new ArrayList<SmsVO>();
 					thereIs = true;
 				}
@@ -498,8 +423,7 @@ public class SmsDAOImpl
 
 				sms.setId(rs.getInt(rs.findColumn("ID")));
 
-				if (idDelivery > 0)
-				{
+				if (idDelivery > 0) {
 					final DeliveryVO vo = new DeliveryVO();
 					vo.setId(idDelivery);
 					sms.setDelivery(vo);
@@ -508,8 +432,7 @@ public class SmsDAOImpl
 				sms.setPiece(rs.getShort(rs.findColumn("PIECE")));
 				sms.setType((rs.getString(rs.findColumn("TYPE")).charAt(0)));
 
-				if (rs.getString(rs.findColumn("DATETIME")) != null)
-				{
+				if (rs.getString(rs.findColumn("DATETIME")) != null) {
 					final String datetime = rs.getString(rs.findColumn("DATETIME"));
 					sms.setDatetime(tools.converteDataStringToDateUtil(datetime, "yyyy-MM-dd hh:mm:ss"));
 				}
@@ -523,26 +446,19 @@ public class SmsDAOImpl
 
 			}
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("SQL: OK!");
 			}
 
-		}
-		catch (final ParameterException ex)
-		{
+		} catch (final ParameterException ex) {
 			final String msg = "Erro ao listar mensagens da entrega! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		catch (final SQLException ex)
-		{
+		} catch (final SQLException ex) {
 			final String msg = "Erro ao listar mensagens da entrega! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		finally
-		{
+		} finally {
 			DBConnection.closeConnection(conn, stmt, rs);
 		}
 
@@ -550,27 +466,23 @@ public class SmsDAOImpl
 	}
 
 	@Override
-	public List<SmsVO> listAllSmsMobile (final String mobile) throws DAOException
-	{
+	public List<SmsVO> listAllSmsMobile(final String mobile) throws DAOException {
 
 		final ToolUtils tools = new ToolUtils();
 		List<SmsVO> result = null;
 
 		boolean thereIs = false;
 
-		if (mobile == null)
-		{
+		if (mobile == null) {
 			throw new DAOException("Informe celular!");
 		}
 
-		if (mobile.equals(""))
-		{
+		if (mobile.equals("")) {
 			throw new DAOException("Informe celular!");
 		}
 
-		if (!tools.validarNumero(mobile))
-		{
-			throw new DAOException("Informe número de celular válido!");
+		if (!tools.validarNumero(mobile)) {
+			throw new DAOException("Informe nï¿½mero de celular vï¿½lido!");
 		}
 
 		logger.info("Pesquisar todas mensagens do celular.");
@@ -579,14 +491,12 @@ public class SmsDAOImpl
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
-		try
-		{
+		try {
 
 			final String SQL = SELECT_SMS_MOBILE;
 			conn = DBConnection.getConnectionDB();
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("SQL: " + SQL);
 			}
 
@@ -596,11 +506,9 @@ public class SmsDAOImpl
 
 			rs = stmt.executeQuery();
 
-			while (rs.next())
-			{
+			while (rs.next()) {
 
-				if (!thereIs)
-				{
+				if (!thereIs) {
 					result = new ArrayList<SmsVO>();
 					thereIs = true;
 				}
@@ -611,12 +519,10 @@ public class SmsDAOImpl
 
 				final int idDelivery = rs.getInt(rs.findColumn("IDDELIVERY"));
 
-				if (idDelivery > 0)
-				{
+				if (idDelivery > 0) {
 					DeliveryVO vo = new DeliveryVO();
 					vo = findDelivery(idDelivery);
-					if (vo != null)
-					{
+					if (vo != null) {
 						sms.setDelivery(vo);
 					}
 				}
@@ -624,8 +530,7 @@ public class SmsDAOImpl
 				sms.setPiece(rs.getShort(rs.findColumn("PIECE")));
 				sms.setType((rs.getString(rs.findColumn("TYPE")).charAt(0)));
 
-				if (rs.getString(rs.findColumn("DATETIME")) != null)
-				{
+				if (rs.getString(rs.findColumn("DATETIME")) != null) {
 					final String datetime = rs.getString(rs.findColumn("DATETIME"));
 					sms.setDatetime(tools.converteDataStringToDateUtil(datetime, "yyyy-MM-dd hh:mm:ss"));
 				}
@@ -639,26 +544,19 @@ public class SmsDAOImpl
 
 			}
 
-			if (InitProperties.getViewSql())
-			{
+			if (InitProperties.getViewSql()) {
 				logger.info("SQL: OK!");
 			}
 
-		}
-		catch (final ParameterException ex)
-		{
+		} catch (final ParameterException ex) {
 			final String msg = "Erro ao listar todas mensagens do celular! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		catch (final SQLException ex)
-		{
+		} catch (final SQLException ex) {
 			final String msg = "Erro ao listar todas mensagens do celular! ";
 			logger.error(msg + ex.getMessage());
 			throw new DAOException(msg);
-		}
-		finally
-		{
+		} finally {
 			DBConnection.closeConnection(conn, stmt, rs);
 		}
 

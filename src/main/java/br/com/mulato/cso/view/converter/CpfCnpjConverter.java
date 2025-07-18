@@ -6,11 +6,12 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
 import javax.swing.text.MaskFormatter;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class CpfCnpjConverter implements Converter<Object> {
 
-	private final static Logger LOGGER = Logger.getLogger(CpfCnpjConverter.class);
+	private static final Logger LOGGER = LogManager.getLogger(CpfCnpjConverter.class);
 
 	// FIELDS
 	public static final String CONVERTER_ID = "jsf.CpfCnpj";
@@ -51,7 +52,7 @@ public class CpfCnpjConverter implements Converter<Object> {
 		if (value instanceof String) {
 			String result = ((String) value).trim();
 			result = result.replaceAll("[^0-9]", "");// retira tudo que n�o e
-														// n�mero
+			// retira tudo que não é número
 			MaskFormatter a;
 			try {
 				if (result.length() > 9) {
@@ -70,6 +71,7 @@ public class CpfCnpjConverter implements Converter<Object> {
 			} catch (final ParseException e1) {
 				LOGGER.error(e1.getMessage());
 				throw new ConverterException("CPF/CNPJ inv�lido.");
+				throw new ConverterException("CPF/CNPJ inválido.");
 			}
 		}
 		return "";

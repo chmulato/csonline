@@ -2,7 +2,8 @@ package br.com.mulato.cso.service.impl;
 
 import java.util.Date;
 import java.util.List;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import br.com.mulato.cso.dry.FactoryDAO;
 import br.com.mulato.cso.exception.WebException;
 import br.com.mulato.cso.model.SmsVO;
@@ -12,29 +13,23 @@ import br.com.mulato.cso.utils.ToolUtils;
 import br.com.mulato.cso.utils.vo.EmailVO;
 
 public class SMSServiceImpl
-    implements Runnable
-{
+		implements Runnable {
 
-	private final static Logger LOGGER = Logger.getLogger(SMSServiceImpl.class);
+	private static final Logger LOGGER = LogManager.getLogger(SMSServiceImpl.class);
 
 	@SuppressWarnings("static-access")
 	@Override
-	public void run ()
-	{
+	public void run() {
 		LOGGER.info("Lendo emails - dia/hora: " + ToolUtils.converteDateToString(new Date(), "dd/MM/yyyy hh:mm:ss"));
-		try
-		{
+		try {
 			final ReadEmails reading = new ReadEmails();
 			reading.setDeleteMessages(false);
 			reading.connectionAccountMail();
 			final List<EmailVO> listEmails = reading.getListAllEmails();
-			if ((listEmails != null) && (listEmails.size() > 0))
-			{
+			if ((listEmails != null) && (listEmails.size() > 0)) {
 				LOGGER.info("Salvando lista de mensagens...");
-				for (final EmailVO email : listEmails)
-				{
-					if (email != null)
-					{
+				for (final EmailVO email : listEmails) {
+					if (email != null) {
 						final SmsVO sms = new SmsVO();
 						sms.setFrom(email.getFrom());
 						sms.setTo(InitProperties.getSmsMobile());
@@ -48,14 +43,10 @@ public class SMSServiceImpl
 				reading.setDeleteMessages(true);
 				reading.connectionAccountMail();
 				reading.setListAllEmails(null);
-			}
-			else
-			{
+			} else {
 				LOGGER.info("Nenhum email recuperado!");
 			}
-		}
-		catch (final WebException e)
-		{
+		} catch (final WebException e) {
 			LOGGER.error("Erro durante a leitura dos email de sms! Error: " + e.getMessage());
 		}
 	}
