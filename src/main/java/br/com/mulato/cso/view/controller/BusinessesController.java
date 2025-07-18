@@ -3,9 +3,9 @@ package br.com.mulato.cso.view.controller;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.el.ELException;
-import javax.faces.application.Application;
-import javax.faces.context.FacesContext;
+import jakarta.el.ELException;
+import jakarta.faces.application.Application;
+import jakarta.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 
@@ -45,7 +45,7 @@ public class BusinessesController extends AbstractController implements Serializ
 			}
 			else
 			{
-				throw new WebException("Sessão não carregada! Logar novamente.");
+				throw new WebException("Sessï¿½o nï¿½o carregada! Logar novamente.");
 			}
 
 		}
@@ -61,7 +61,7 @@ public class BusinessesController extends AbstractController implements Serializ
 
 		String profile;
 
-		LOGGER.info("Carregando controle da página de negócios ...");
+		LOGGER.info("Carregando controle da pï¿½gina de negï¿½cios ...");
 
 		try
 		{
@@ -73,7 +73,7 @@ public class BusinessesController extends AbstractController implements Serializ
 			if (loginController.isLogged())
 			{
 
-				LOGGER.info("Sessão carregada! ... Login: " + loginController.getUsername());
+				LOGGER.info("Sessï¿½o carregada! ... Login: " + loginController.getUsername());
 
 				profile = loginController.getProfile();
 
@@ -96,12 +96,12 @@ public class BusinessesController extends AbstractController implements Serializ
 				}
 				else
 				{
-					throw new WebException("Perfil do usuário não encontrado.");
+					throw new WebException("Perfil do usuï¿½rio nï¿½o encontrado.");
 				}
 			}
 			else
 			{
-				throw new WebException("Sessão não carregada! Logar novamente.");
+				throw new WebException("Sessï¿½o nï¿½o carregada! Logar novamente.");
 			}
 
 		}
@@ -158,12 +158,12 @@ public class BusinessesController extends AbstractController implements Serializ
 				if (id != null)
 				{
 					FactoryService.getInstancia().getBusinessService().delete(id);
-					FacesMessages.mensInfo("Negócio deletado com sucesso!");
+					FacesMessages.mensInfo("Negï¿½cio deletado com sucesso!");
 				}
 			}
 			else
 			{
-				throw new WebException("Parâmetro vazio! Informe id negócio.");
+				throw new WebException("Parï¿½metro vazio! Informe id negï¿½cio.");
 			}
 		}
 		catch (final NumberFormatException e)

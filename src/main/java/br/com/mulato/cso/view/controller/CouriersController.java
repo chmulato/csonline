@@ -3,8 +3,8 @@ package br.com.mulato.cso.view.controller;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.faces.application.Application;
-import javax.faces.context.FacesContext;
+import jakarta.faces.application.Application;
+import jakarta.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 
@@ -42,7 +42,7 @@ public class CouriersController extends AbstractController implements Serializab
 			}
 			else
 			{
-				throw new WebException("Sessão não carregada! Logar novamente.");
+				throw new WebException("Sessï¿½o nï¿½o carregada! Logar novamente.");
 			}
 		}
 		catch (final WebException e)
@@ -55,7 +55,7 @@ public class CouriersController extends AbstractController implements Serializab
 	private void loadSession ()
 	{
 		String profile;
-		LOGGER.info("Carregando controle da página de entregadores ...");
+		LOGGER.info("Carregando controle da pï¿½gina de entregadores ...");
 
 		try
 		{
@@ -66,7 +66,7 @@ public class CouriersController extends AbstractController implements Serializab
 
 			if (loginController.isLogged())
 			{
-				LOGGER.info("Sessão carregada! ... Login: " + loginController.getUsername());
+				LOGGER.info("Sessï¿½o carregada! ... Login: " + loginController.getUsername());
 				profile = loginController.getProfile();
 				if (profile.equals("BUSINESS"))
 				{
@@ -84,12 +84,12 @@ public class CouriersController extends AbstractController implements Serializab
 				}
 				else
 				{
-					throw new WebException("Perfil do usuário não encontrado.");
+					throw new WebException("Perfil do usuï¿½rio nï¿½o encontrado.");
 				}
 			}
 			else
 			{
-				throw new WebException("Sessão não carregada! Logar novamente.");
+				throw new WebException("Sessï¿½o nï¿½o carregada! Logar novamente.");
 			}
 		}
 		catch (final WebException e)
@@ -162,7 +162,7 @@ public class CouriersController extends AbstractController implements Serializab
 			}
 			else
 			{
-				throw new WebException("Parâmetro vazio! Informe id entregador.");
+				throw new WebException("Parï¿½metro vazio! Informe id entregador.");
 			}
 		}
 		catch (final NumberFormatException e)

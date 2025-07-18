@@ -2,8 +2,8 @@ package br.com.mulato.cso.view.controller;
 
 import java.io.Serializable;
 
-import javax.faces.application.Application;
-import javax.faces.context.FacesContext;
+import jakarta.faces.application.Application;
+import jakarta.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 
@@ -52,7 +52,7 @@ public class ChangePasswordController extends AbstractController implements Seri
 	{
 		String profile;
 		boolean isLogged = false;
-		LOGGER.info("Carregando controle da página de usuário ...");
+		LOGGER.info("Carregando controle da pï¿½gina de usuï¿½rio ...");
 		try
 		{
 
@@ -64,11 +64,11 @@ public class ChangePasswordController extends AbstractController implements Seri
 
 			if (isLogged)
 			{
-				LOGGER.info("Sessão carregada! ... Login: " + loginController.getUsername());
+				LOGGER.info("Sessï¿½o carregada! ... Login: " + loginController.getUsername());
 				profile = loginController.getProfile();
 				if ((loginController.getUserIdLogged() == null) || (loginController.getUserIdLogged() <= 0))
 				{
-					throw new WebException("Id do usuário logado não encontrado.");
+					throw new WebException("Id do usuï¿½rio logado nï¿½o encontrado.");
 				}
 				if ((profile.equals("ADMINISTRATOR")) || (profile.equals("BUSINESS")) || (profile.equals("CUSTOMER")))
 				{
@@ -110,12 +110,12 @@ public class ChangePasswordController extends AbstractController implements Seri
 				}
 				else
 				{
-					throw new WebException("Perfil do usuário não encontrado.");
+					throw new WebException("Perfil do usuï¿½rio nï¿½o encontrado.");
 				}
 			}
 			else
 			{
-				throw new WebException("Sessão não carregada! Logar novamente.");
+				throw new WebException("Sessï¿½o nï¿½o carregada! Logar novamente.");
 			}
 		}
 		catch (final WebException e)
@@ -159,7 +159,7 @@ public class ChangePasswordController extends AbstractController implements Seri
 
 			if ((getId() == null) || getId().equals(new Integer(0)))
 			{
-				throw new WebException("Informe id do usuário logado!");
+				throw new WebException("Informe id do usuï¿½rio logado!");
 			}
 
 			if ((getEmail1() != null) && (!getEmail1().equals("")))
@@ -183,7 +183,7 @@ public class ChangePasswordController extends AbstractController implements Seri
 			}
 
 			if ((!getRole().equals("ADMINISTRATOR")) && (!getRole().equals("BUSINESS")) && (!getRole().equals("CUSTOMER")) &&
-			    (!getRole().equals("COURIER")))
+				(!getRole().equals("COURIER")))
 			{
 				throw new WebException("Informe perfil correto!");
 			}

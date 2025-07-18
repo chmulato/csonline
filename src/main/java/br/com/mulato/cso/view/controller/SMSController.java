@@ -5,10 +5,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.application.Application;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
+import jakarta.faces.application.Application;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.AjaxBehaviorEvent;
 
 import org.apache.log4j.Logger;
 
@@ -43,7 +43,7 @@ public class SMSController extends AbstractController implements Serializable {
 	private void loadSession ()
 	{
 		String profile;
-		LOGGER.info("Carregando controle da página de mensagens ...");
+		LOGGER.info("Carregando controle da pï¿½gina de mensagens ...");
 		try
 		{
 
@@ -52,14 +52,14 @@ public class SMSController extends AbstractController implements Serializable {
 			final LoginController loginController = app.evaluateExpressionGet(context, "#{loginMB}", LoginController.class);
 			if (loginController.isLogged())
 			{
-				LOGGER.info("Sessão carregada! ... Login: " + loginController.getUsername());
+				LOGGER.info("Sessï¿½o carregada! ... Login: " + loginController.getUsername());
 				if ((loginController.getUserIdLogged() == null) || (loginController.getUserIdLogged() <= 0))
 				{
-					throw new WebException("Id do usuário não encontrado.");
+					throw new WebException("Id do usuï¿½rio nï¿½o encontrado.");
 				}
 				if ((loginController.getId() == null) || (loginController.getId() <= 0))
 				{
-					throw new WebException("Id do entregador não encontrado.");
+					throw new WebException("Id do entregador nï¿½o encontrado.");
 				}
 				profile = loginController.getProfile();
 				if (profile.equals("BUSINESS"))
@@ -75,7 +75,7 @@ public class SMSController extends AbstractController implements Serializable {
 				}
 				else
 				{
-					throw new WebException("Perfil do usuário não encontrado.");
+					throw new WebException("Perfil do usuï¿½rio nï¿½o encontrado.");
 				}
 
 				if ((results != null) && (results.size() > 0))
@@ -89,7 +89,7 @@ public class SMSController extends AbstractController implements Serializable {
 			}
 			else
 			{
-				throw new WebException("Sessão não carregada! Logar novamente.");
+				throw new WebException("Sessï¿½o nï¿½o carregada! Logar novamente.");
 			}
 		}
 		catch (final WebException e)
@@ -112,7 +112,7 @@ public class SMSController extends AbstractController implements Serializable {
 
 	public void cancelEvent (final AjaxBehaviorEvent event)
 	{
-		final FacesMessage msg = new FacesMessage("Atualização cancelada!");
+		final FacesMessage msg = new FacesMessage("Atualizaï¿½ï¿½o cancelada!");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
@@ -162,7 +162,7 @@ public class SMSController extends AbstractController implements Serializable {
 			catch (final Exception e)
 			{
 				path = "messages";
-				FacesMessages.mensErro("Falha na inserção no banco de dados!");
+				FacesMessages.mensErro("Falha na inserï¿½ï¿½o no banco de dados!");
 			}
 		}
 		return goToBackPage(path);
@@ -180,7 +180,7 @@ public class SMSController extends AbstractController implements Serializable {
 		if ((courier != null) && (courier.getId() != null))
 		{
 			final List<DeliveryVO> listDeliveries = FactoryService.getInstancia().getDeliveryService().listAllDeliveryCourierNotCompleted(
-			    courier.getId());
+				courier.getId());
 			if ((listDeliveries != null) && (listDeliveries.size() > 0))
 			{
 				for (final DeliveryVO delivery : listDeliveries)

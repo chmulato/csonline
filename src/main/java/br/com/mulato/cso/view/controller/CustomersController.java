@@ -3,8 +3,8 @@ package br.com.mulato.cso.view.controller;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.faces.application.Application;
-import javax.faces.context.FacesContext;
+import jakarta.faces.application.Application;
+import jakarta.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 
@@ -45,7 +45,7 @@ public class CustomersController extends AbstractController implements Serializa
 			}
 			else
 			{
-				throw new WebException("Sessão não carregada! Logar novamente.");
+				throw new WebException("Sessï¿½o nï¿½o carregada! Logar novamente.");
 			}
 
 		}
@@ -61,7 +61,7 @@ public class CustomersController extends AbstractController implements Serializa
 
 		String profile;
 
-		LOGGER.info("Carregando controle da página de clientes do negócio ...");
+		LOGGER.info("Carregando controle da pï¿½gina de clientes do negï¿½cio ...");
 
 		try
 		{
@@ -73,7 +73,7 @@ public class CustomersController extends AbstractController implements Serializa
 			if (loginController.isLogged())
 			{
 
-				LOGGER.info("Sessão carregada! ... Login: " + loginController.getUsername());
+				LOGGER.info("Sessï¿½o carregada! ... Login: " + loginController.getUsername());
 
 				profile = loginController.getProfile();
 
@@ -99,7 +99,7 @@ public class CustomersController extends AbstractController implements Serializa
 				else
 				{
 
-					throw new WebException("Perfil do usuário não encontrado.");
+					throw new WebException("Perfil do usuï¿½rio nï¿½o encontrado.");
 
 				}
 
@@ -107,7 +107,7 @@ public class CustomersController extends AbstractController implements Serializa
 			else
 			{
 
-				throw new WebException("Sessão não carregada! Logar novamente.");
+				throw new WebException("Sessï¿½o nï¿½o carregada! Logar novamente.");
 
 			}
 

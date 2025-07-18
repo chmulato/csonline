@@ -1,19 +1,19 @@
 package br.com.mulato.cso.utils;
 
 import java.util.Properties;
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.activation.FileDataSource;
-import javax.mail.BodyPart;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
+import jakarta.activation.DataHandler;
+import jakarta.activation.DataSource;
+import jakarta.activation.FileDataSource;
+import jakarta.mail.BodyPart;
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.Multipart;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMultipart;
 import org.apache.log4j.Logger;
 import br.com.mulato.cso.exception.WebException;
 
@@ -34,7 +34,7 @@ public class SendEmail
 	}
 
 	public SendEmail (final String[] recipient, final String subject, final String message, final String pathFileAttached, final String filename)
-	    throws WebException
+		throws WebException
 	{
 		if (InitProperties.getEmail_active())
 		{
@@ -43,7 +43,7 @@ public class SendEmail
 	}
 
 	private void sendEmail (final String[] recipient, final String subject, final String message, final boolean attachment,
-	    final String pathFileAttached, final String filename) throws WebException
+		final String pathFileAttached, final String filename) throws WebException
 	{
 
 		String msg;
@@ -117,99 +117,99 @@ public class SendEmail
 		try
 		{
 
-            final Properties properties = new Properties();
+			final Properties properties = new Properties();
 
-            //define protocolo de envio
-            properties.put("mail.transport.protocol", String.valueOf(protocolo));
-            //server SMTP
-            properties.put("mail.smtp.host", server);
-            //para ativar autenticacao insira "true"
-            properties.put("mail.smtp.auth", authentication);
-            //conta que esta enviando o email
-            properties.put("mail.smtp.user", username);
+			//define protocolo de envio
+			properties.put("mail.transport.protocol", String.valueOf(protocolo));
+			//server SMTP
+			properties.put("mail.smtp.host", server);
+			//para ativar autenticacao insira "true"
+			properties.put("mail.smtp.auth", authentication);
+			//conta que esta enviando o email
+			properties.put("mail.smtp.user", username);
 
-            if (debug)
-            {
-                properties.put("mail.debug", "true");
-            }
+			if (debug)
+			{
+				properties.put("mail.debug", "true");
+			}
 
-            //porta
-            properties.put("mail.smtp.port", port);
-            //mesma porta para o socket
-            properties.put("mail.smtp.socketFactory.port", port);
+			//porta
+			properties.put("mail.smtp.port", port);
+			//mesma porta para o socket
+			properties.put("mail.smtp.socketFactory.port", port);
 
-        	// SSL on, the port default is 465
-            if (ssl)
-            {
-            	properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-                properties.put("mail.smtp.socketFactory.fallback", "false");
-            }
+			// SSL on, the port default is 465
+			if (ssl)
+			{
+				properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+				properties.put("mail.smtp.socketFactory.fallback", "false");
+			}
 
-        	// TLS on, the port default is 587
-            if (tls)
-            {
-            	properties.put("mail.smtp.starttls.enable", "true");
-            }
-           
-            properties.put("mail.smtp.quitwait", "false");
+			// TLS on, the port default is 587
+			if (tls)
+			{
+				properties.put("mail.smtp.starttls.enable", "true");
+			}
+		   
+			properties.put("mail.smtp.quitwait", "false");
 
-            //Cria um autenticador que sera usado a seguir
-            final AuthenticationEmail auth = new AuthenticationEmail (username, password);
+			//Cria um autenticador que sera usado a seguir
+			final AuthenticationEmail auth = new AuthenticationEmail (username, password);
 
-            //Session - objeto que ira realizar a conexão com o servidor
-            /*Como há necessidade de autenticação é criada uma autenticação que
-             * é responsável por solicitar e retornar o usuário e senha para
-             * autenticação */
-            final Session session = Session.getDefaultInstance(properties, auth);
+			//Session - objeto que ira realizar a conexão com o servidor
+			/*Como há necessidade de autenticação é criada uma autenticação que
+			 * é responsável por solicitar e retornar o usuário e senha para
+			 * autenticação */
+			final Session session = Session.getDefaultInstance(properties, auth);
 
-            //Habilita o LOG das ações executadas durante o envio do email
-            session.setDebug(true);
-            //Objeto que contém a mensagem
-            MimeMessage mimeMessage = new MimeMessage(session);
+			//Habilita o LOG das ações executadas durante o envio do email
+			session.setDebug(true);
+			//Objeto que contém a mensagem
+			MimeMessage mimeMessage = new MimeMessage(session);
 
-            //Setando os destinatários
-            InternetAddress[] addressTo = new InternetAddress[recipient.length];
-            for (int i = 0; i < recipient.length; i++) {
-                addressTo[i] = new InternetAddress(recipient[i]);
-            }
+			//Setando os destinatários
+			InternetAddress[] addressTo = new InternetAddress[recipient.length];
+			for (int i = 0; i < recipient.length; i++) {
+				addressTo[i] = new InternetAddress(recipient[i]);
+			}
 
-            mimeMessage.setRecipients(Message.RecipientType.TO, addressTo);             	
-            //Setando a origem do email
-            mimeMessage.setFrom(new InternetAddress(username));
-            //Setando o assunto
-            mimeMessage.setSubject(subject);
-            // Create the message part 
-            BodyPart messageBodyPart = new MimeBodyPart();
-            // Fill the message
-            messageBodyPart.setText(message);
-            // Create a multipar message
-            Multipart multipart = new MimeMultipart();
-            // Set text message part
-            multipart.addBodyPart(messageBodyPart);
-            // Part two is attachment
-            if (attachment) {
-                messageBodyPart = new MimeBodyPart();
-                DataSource source = new FileDataSource(pathFileAttached + filename);
-                messageBodyPart.setDataHandler(new DataHandler(source));
-                messageBodyPart.setFileName(filename);
-                multipart.addBodyPart(messageBodyPart);
-            }
-            // Send the complete message parts
-            mimeMessage.setContent(multipart);
-            //Objeto encarregado de enviar os dados para o email
-            Transport tr;
-            //define smtp para transporte
-            tr = session.getTransport(protocolo); 
-            /*
-             *  1 - define o servidor smtp
-             *  2 - seu nome de usuario
-             *  3 - sua senha
-             */
-            tr.connect(server, username, password);
-            mimeMessage.saveChanges(); // não esqueçaa isso
-            //envio da mensagem
-            tr.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
-            tr.close();
+			mimeMessage.setRecipients(Message.RecipientType.TO, addressTo);             	
+			//Setando a origem do email
+			mimeMessage.setFrom(new InternetAddress(username));
+			//Setando o assunto
+			mimeMessage.setSubject(subject);
+			// Create the message part 
+			BodyPart messageBodyPart = new MimeBodyPart();
+			// Fill the message
+			messageBodyPart.setText(message);
+			// Create a multipar message
+			Multipart multipart = new MimeMultipart();
+			// Set text message part
+			multipart.addBodyPart(messageBodyPart);
+			// Part two is attachment
+			if (attachment) {
+				messageBodyPart = new MimeBodyPart();
+				DataSource source = new FileDataSource(pathFileAttached + filename);
+				messageBodyPart.setDataHandler(new DataHandler(source));
+				messageBodyPart.setFileName(filename);
+				multipart.addBodyPart(messageBodyPart);
+			}
+			// Send the complete message parts
+			mimeMessage.setContent(multipart);
+			//Objeto encarregado de enviar os dados para o email
+			Transport tr;
+			//define smtp para transporte
+			tr = session.getTransport(protocolo); 
+			/*
+			 *  1 - define o servidor smtp
+			 *  2 - seu nome de usuario
+			 *  3 - sua senha
+			 */
+			tr.connect(server, username, password);
+			mimeMessage.saveChanges(); // não esqueçaa isso
+			//envio da mensagem
+			tr.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
+			tr.close();
 		}
 		catch (MessagingException e)
 		{

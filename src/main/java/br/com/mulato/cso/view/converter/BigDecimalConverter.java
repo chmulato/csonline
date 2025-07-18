@@ -3,9 +3,9 @@ package br.com.mulato.cso.view.converter;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Locale;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.convert.Converter;
 
 public class BigDecimalConverter implements Converter<Object> {
 

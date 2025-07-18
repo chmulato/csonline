@@ -3,8 +3,8 @@ package br.com.mulato.cso.view.controller;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import javax.faces.application.Application;
-import javax.faces.context.FacesContext;
+import jakarta.faces.application.Application;
+import jakarta.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 
@@ -64,7 +64,7 @@ public class CourierController extends AbstractController implements Serializabl
 	{
 		String profile;
 		boolean isLogged = false;
-		LOGGER.info("Carregando controle da página de negócio ...");
+		LOGGER.info("Carregando controle da pï¿½gina de negï¿½cio ...");
 		try
 		{
 
@@ -74,11 +74,11 @@ public class CourierController extends AbstractController implements Serializabl
 			isLogged = loginController.isLogged();
 			if (isLogged)
 			{
-				LOGGER.info("Sessão carregada! ... Login: " + loginController.getUsername());
+				LOGGER.info("Sessï¿½o carregada! ... Login: " + loginController.getUsername());
 				profile = loginController.getProfile();
 				if ((loginController.getUserIdLogged() == null) || (loginController.getUserIdLogged() <= 0))
 				{
-					throw new WebException("Id do usuário logado não encontrado.");
+					throw new WebException("Id do usuï¿½rio logado nï¿½o encontrado.");
 				}
 				switch (profile)
 				{
@@ -155,12 +155,12 @@ public class CourierController extends AbstractController implements Serializabl
 					}
 					break;
 				default:
-					throw new WebException("Perfil do usuário não encontrado.");
+					throw new WebException("Perfil do usuï¿½rio nï¿½o encontrado.");
 				}
 			}
 			else
 			{
-				throw new WebException("Sessão não carregada! Logar novamente.");
+				throw new WebException("Sessï¿½o nï¿½o carregada! Logar novamente.");
 			}
 		}
 		catch (final WebException e)
@@ -283,12 +283,12 @@ public class CourierController extends AbstractController implements Serializabl
 
 			if (getAddress() == null)
 			{
-				throw new WebException("Informe endereço!");
+				throw new WebException("Informe endereï¿½o!");
 			}
 
 			if (getAddress().equals(""))
 			{
-				throw new WebException("Informe endereço!");
+				throw new WebException("Informe endereï¿½o!");
 			}
 
 			if (getMobile() == null)
@@ -303,14 +303,14 @@ public class CourierController extends AbstractController implements Serializabl
 
 			if (getBusinessId() == null)
 			{
-				throw new WebException("Informe id negócio!");
+				throw new WebException("Informe id negï¿½cio!");
 			}
 
 			idBusiness = Integer.parseInt(getBusinessId().toString());
 
 			if (idBusiness <= 0)
 			{
-				throw new WebException("Informe id negócio!");
+				throw new WebException("Informe id negï¿½cio!");
 			}
 
 			if (getFactor_courier() == null)
@@ -360,7 +360,7 @@ public class CourierController extends AbstractController implements Serializabl
 			FactoryService.getInstancia().getCourierService().save(courierVO, isUpdate_password());
 			if (isUpdate_password())
 			{
-				FacesMessages.mensInfo("Entregador salvo com alteração de senha!");
+				FacesMessages.mensInfo("Entregador salvo com alteraï¿½ï¿½o de senha!");
 			}
 			else
 			{
@@ -370,7 +370,7 @@ public class CourierController extends AbstractController implements Serializabl
 				}
 				else
 				{
-					FacesMessages.mensInfo("Entregador salvo sem alteração de senha!");
+					FacesMessages.mensInfo("Entregador salvo sem alteraï¿½ï¿½o de senha!");
 				}
 			}
 		}
@@ -384,7 +384,7 @@ public class CourierController extends AbstractController implements Serializabl
 		{
 			path = "courier";
 			LOGGER.error(e.getMessage());
-			FacesMessages.mensErro("Falha na inserção no banco de dados!");
+			FacesMessages.mensErro("Falha na inserï¿½ï¿½o no banco de dados!");
 		}
 		return goToBackPage(path);
 	}

@@ -2,7 +2,7 @@ package br.com.mulato.cso.ws;
 
 import java.io.IOException;
 import java.util.StringTokenizer;
-import javax.xml.bind.DatatypeConverter;
+import jakarta.xml.bind.DatatypeConverter;
 import org.apache.log4j.Logger;
 import br.com.mulato.cso.dry.FactoryService;
 import br.com.mulato.cso.model.LoginVO;
@@ -17,7 +17,7 @@ public class AuthenticationService
 
 		if (null == authCredentials)
 		{
-			LOGGER.error("Modelo de autenticação inválido! Objeto authCredentials=" + authCredentials);
+			LOGGER.error("Modelo de autenticaï¿½ï¿½o invï¿½lido! Objeto authCredentials=" + authCredentials);
 			return false;
 		}
 
@@ -51,16 +51,16 @@ public class AuthenticationService
 						authenticationStatus = authenticate;
 						if (authenticationStatus)
 						{
-							LOGGER.info("Autenticação do usuário com sucesso!");
+							LOGGER.info("Autenticaï¿½ï¿½o do usuï¿½rio com sucesso!");
 						}
 						else
 						{
-							LOGGER.error("Autenticação do usuário não válida!");
+							LOGGER.error("Autenticaï¿½ï¿½o do usuï¿½rio nï¿½o vï¿½lida!");
 						}
 					}
 					else
 					{
-						LOGGER.error("Objeto de autenticação nulo!");
+						LOGGER.error("Objeto de autenticaï¿½ï¿½o nulo!");
 					}
 				}
 				catch (final Exception e)
@@ -70,12 +70,12 @@ public class AuthenticationService
 			}
 			else
 			{
-				LOGGER.error("Usuário ou senha vazio!");
+				LOGGER.error("Usuï¿½rio ou senha vazio!");
 			}
 		}
 		else
 		{
-			LOGGER.error("Usuário ou senha nulo!");
+			LOGGER.error("Usuï¿½rio ou senha nulo!");
 		}
 		return authenticationStatus;
 	}

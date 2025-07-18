@@ -1,11 +1,11 @@
 package br.com.mulato.cso.view.listener;
 
 import java.util.Date;
-import javax.faces.application.Application;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
+import jakarta.faces.application.Application;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.servlet.http.HttpSessionEvent;
+import jakarta.servlet.http.HttpSessionListener;
 import org.apache.log4j.Logger;
 import br.com.mulato.cso.utils.ToolUtils;
 import br.com.mulato.cso.view.controller.ContadorController;
@@ -24,8 +24,8 @@ public class SessionListener implements HttpSessionListener {
 	{
 		if ((event != null) && (event.getSession() != null) && (event.getSession().getId() != null))
 		{
-			LOGGER.info("Sessão corrente criada - Número: " + event.getSession().getId() + " - Dia/Hora: " +
-			    ToolUtils.converteDateToString(new Date(), "dd/MM/yyyy hh:mm:ss"));
+			LOGGER.info("Sessï¿½o corrente criada - Nï¿½mero: " + event.getSession().getId() + " - Dia/Hora: " +
+				ToolUtils.converteDateToString(new Date(), "dd/MM/yyyy hh:mm:ss"));
 		}
 	}
 
@@ -51,15 +51,15 @@ public class SessionListener implements HttpSessionListener {
 					if (externalContext != null)
 					{
 						externalContext.redirect(externalContext.getRequestContextPath() + "/redirect.html");
-						LOGGER.info("Página redirecionada para tela de descanso!");
+						LOGGER.info("Pï¿½gina redirecionada para tela de descanso!");
 					}
-					LOGGER.info("Sessão corrente destruí­da!");
+					LOGGER.info("Sessï¿½o corrente destruï¿½ï¿½da!");
 				}
 			}
 		}
 		catch (final Exception e)
 		{
-			LOGGER.error("Erro ao finalizar sessão! " + e.getMessage(), e);
+			LOGGER.error("Erro ao finalizar sessï¿½o! " + e.getMessage(), e);
 		}
 	}
 }

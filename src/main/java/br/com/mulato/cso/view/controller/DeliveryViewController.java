@@ -7,8 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.application.Application;
-import javax.faces.context.FacesContext;
+import jakarta.faces.application.Application;
+import jakarta.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 
@@ -74,7 +74,7 @@ public class DeliveryViewController extends AbstractController implements Serial
 
 		boolean isLogged = false;
 
-		LOGGER.info("Carregando controle da página de entregas do negócio ...");
+		LOGGER.info("Carregando controle da pï¿½gina de entregas do negï¿½cio ...");
 
 		try
 		{
@@ -88,22 +88,22 @@ public class DeliveryViewController extends AbstractController implements Serial
 			if (isLogged)
 			{
 
-				LOGGER.info("Sessão carregada! ... Login: " + loginController.getUsername());
+				LOGGER.info("Sessï¿½o carregada! ... Login: " + loginController.getUsername());
 
 				profile = loginController.getProfile();
 
 				if ((loginController.getUserIdLogged() == null) || (loginController.getUserIdLogged().intValue() <= 0))
 				{
 
-					throw new WebException("Id do usuário logado não encontrado.");
+					throw new WebException("Id do usuï¿½rio logado nï¿½o encontrado.");
 
 				}
 
 				if ((loginController.getBusinessVO() == null) || (loginController.getBusinessVO().getId() == null) ||
-				    (loginController.getBusinessVO().getId().intValue() <= 0))
+					(loginController.getBusinessVO().getId().intValue() <= 0))
 				{
 
-					throw new WebException("Negócio da sessão não encontrado.");
+					throw new WebException("Negï¿½cio da sessï¿½o nï¿½o encontrado.");
 
 				}
 				else
@@ -131,21 +131,21 @@ public class DeliveryViewController extends AbstractController implements Serial
 							setId(delivery.getId());
 
 							if ((delivery.getBusiness() != null) && (delivery.getBusiness().getId() != null) &&
-							    (delivery.getBusiness().getName() != null))
+								(delivery.getBusiness().getName() != null))
 							{
 								setIdBusiness(delivery.getBusiness().getId());
 								setBusiness_name(delivery.getBusiness().getName());
 							}
 
 							if ((delivery.getCustomer() != null) && (delivery.getCustomer().getId() != null) &&
-							    (delivery.getCustomer().getName() != null))
+								(delivery.getCustomer().getName() != null))
 							{
 								setIdCustomer(delivery.getCustomer().getId());
 								setCustomer_name(delivery.getCustomer().getName());
 							}
 
 							if ((delivery.getCourier() != null) && (delivery.getCourier().getId() != null) &&
-							    (delivery.getCourier().getName() != null))
+								(delivery.getCourier().getName() != null))
 							{
 								setIdCourier(delivery.getCourier().getId());
 								setCourier_name(delivery.getCourier().getName());
@@ -172,7 +172,7 @@ public class DeliveryViewController extends AbstractController implements Serial
 				else
 				{
 
-					throw new WebException("Perfil do usuário não encontrado.");
+					throw new WebException("Perfil do usuï¿½rio nï¿½o encontrado.");
 
 				}
 
@@ -180,7 +180,7 @@ public class DeliveryViewController extends AbstractController implements Serial
 			else
 			{
 
-				throw new WebException("Sessão não carregada! Logar novamente.");
+				throw new WebException("Sessï¿½o nï¿½o carregada! Logar novamente.");
 
 			}
 
@@ -198,7 +198,7 @@ public class DeliveryViewController extends AbstractController implements Serial
 	}
 
 	/**
-	 * Buscar todos os entregadores do negócio
+	 * Buscar todos os entregadores do negï¿½cio
 	 * 
 	 * @return
 	 * @throws WebException
@@ -227,7 +227,7 @@ public class DeliveryViewController extends AbstractController implements Serial
 	}
 
 	/**
-	 * Buscar todos os clientes do negócio
+	 * Buscar todos os clientes do negï¿½cio
 	 * 
 	 * @return
 	 * @throws WebException

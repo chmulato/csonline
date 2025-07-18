@@ -2,8 +2,8 @@ package br.com.mulato.cso.view.controller;
 
 import java.io.Serializable;
 
-import javax.faces.application.Application;
-import javax.faces.context.FacesContext;
+import jakarta.faces.application.Application;
+import jakarta.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 
@@ -39,7 +39,7 @@ public class UserController extends AbstractController implements Serializable {
 
 	private void loadSessao ()
 	{
-		String msg = "Carregando controle da página de usuário ...";
+		String msg = "Carregando controle da pï¿½gina de usuï¿½rio ...";
 		String profile;
 		boolean isLogged;
 		LOGGER.info(msg);
@@ -51,11 +51,11 @@ public class UserController extends AbstractController implements Serializable {
 			isLogged = loginController.isLogged();
 			if (isLogged)
 			{
-				LOGGER.info("Sessão carregada! ... Login: " + loginController.getUsername());
+				LOGGER.info("Sessï¿½o carregada! ... Login: " + loginController.getUsername());
 				profile = loginController.getProfile();
 				if ((loginController.getUserIdLogged() == null) || (loginController.getUserIdLogged() <= 0))
 				{
-					msg = "Id do usuário logado não encontrado.";
+					msg = "Id do usuï¿½rio logado nï¿½o encontrado.";
 					LOGGER.error(msg);
 					throw new WebException(msg);
 				}
@@ -77,14 +77,14 @@ public class UserController extends AbstractController implements Serializable {
 				}
 				else
 				{
-					msg = "Perfil do usuário não encontrado.";
+					msg = "Perfil do usuï¿½rio nï¿½o encontrado.";
 					LOGGER.error(msg);
 					throw new WebException(msg);
 				}
 			}
 			else
 			{
-				msg = "Sessão não carregada! Logar novamente.";
+				msg = "Sessï¿½o nï¿½o carregada! Logar novamente.";
 				LOGGER.error(msg);
 				throw new WebException(msg);
 			}

@@ -7,15 +7,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Properties;
-import javax.mail.BodyPart;
-import javax.mail.Flags;
-import javax.mail.Folder;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.Session;
-import javax.mail.Store;
-import javax.mail.internet.MimeMessage;
+import jakarta.mail.BodyPart;
+import jakarta.mail.Flags;
+import jakarta.mail.Folder;
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.Multipart;
+import jakarta.mail.Session;
+import jakarta.mail.Store;
+import jakarta.mail.internet.MimeMessage;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import br.com.mulato.cso.dry.FactoryDAO;
@@ -92,7 +92,7 @@ public class ReadEmails
 							if ((subject.contains(mobile)) && (date.equals(message.getSentDate())))
 							{
 								LOGGER.info("Deletar email: subject = " + message.getSubject() + " | date= " +
-								    ToolUtils.converteDateToString(message.getSentDate(), "dd/MM/yyyy HH:mm:ss"));
+									ToolUtils.converteDateToString(message.getSentDate(), "dd/MM/yyyy HH:mm:ss"));
 								delete = true;
 								break;
 							}
@@ -122,7 +122,7 @@ public class ReadEmails
 						{
 							if (subject.contains(mobile))
 							{
-								LOGGER.info("Número de celular válido= " + mobile);
+								LOGGER.info("Nï¿½mero de celular vï¿½lido= " + mobile);
 								mobileNumber = mobile;
 								break;
 							}
@@ -168,7 +168,7 @@ public class ReadEmails
 
 		if ((server == null) || (server.equals("")))
 		{
-			msg = "Informe endereí§o IMAP do servidor!";
+			msg = "Informe endereï¿½ï¿½o IMAP do servidor!";
 			LOGGER.error(msg);
 			throw new WebException(msg);
 		}
@@ -182,14 +182,14 @@ public class ReadEmails
 
 		if ((username == null) || (username.equals("")))
 		{
-			msg = "Informe a conta do usuário do servidor IMAP!";
+			msg = "Informe a conta do usuï¿½rio do servidor IMAP!";
 			LOGGER.error(msg);
 			throw new WebException(msg);
 		}
 
 		if ((password == null) || (password.equals("")))
 		{
-			msg = "Informe a senha do usuário do servidor IMAP!";
+			msg = "Informe a senha do usuï¿½rio do servidor IMAP!";
 			LOGGER.error(msg);
 			throw new WebException(msg);
 		}
@@ -230,23 +230,23 @@ public class ReadEmails
 
 			if (!deleteMessages)
 			{
-				LOGGER.info("--------------Iní­cio de Processamento de Leitura de Emails-----------------");
+				LOGGER.info("--------------Inï¿½ï¿½cio de Processamento de Leitura de Emails-----------------");
 			}
 			else
 			{
-				LOGGER.info("--------------Iní­cio de Processamento de Deletar de Emails-----------------");
+				LOGGER.info("--------------Inï¿½ï¿½cio de Processamento de Deletar de Emails-----------------");
 			}
 
-			// Session - objeto que ira realizar a conexão com o servidor
+			// Session - objeto que ira realizar a conexï¿½o com o servidor
 			/*
-			 * Como há necessidade de autenticação é criada uma autenticação que
-			 * é responsável por solicitar e retornar o usuário e senha para
-			 * autenticação
+			 * Como hï¿½ necessidade de autenticaï¿½ï¿½o ï¿½ criada uma autenticaï¿½ï¿½o que
+			 * ï¿½ responsï¿½vel por solicitar e retornar o usuï¿½rio e senha para
+			 * autenticaï¿½ï¿½o
 			 */
 			final Session session = Session.getDefaultInstance(properties, auth);
-			LOGGER.info("Abrindo sessão para acessar emails ...");
+			LOGGER.info("Abrindo sessï¿½o para acessar emails ...");
 			final Store store = session.getStore(protocolo);
-			LOGGER.info("Conexão estabelecida com o servidor imap: " + server);
+			LOGGER.info("Conexï¿½o estabelecida com o servidor imap: " + server);
 			store.connect(server, username, password);
 			LOGGER.info(store);
 			final Folder inbox = store.getFolder(folder);
@@ -265,17 +265,17 @@ public class ReadEmails
 			store.close();
 			if (!deleteMessages)
 			{
-				LOGGER.info("--------------Finalização do Processo de Leitura de Emails-----------------");
+				LOGGER.info("--------------Finalizaï¿½ï¿½o do Processo de Leitura de Emails-----------------");
 			}
 			else
 			{
-				LOGGER.info("--------------Finalização do Processo de Deletar de Emails-----------------");
+				LOGGER.info("--------------Finalizaï¿½ï¿½o do Processo de Deletar de Emails-----------------");
 			}
 		}
 		catch (final MessagingException e)
 		{
-			LOGGER.error("Não foi possí­vel acesar as mensagens! " + e.getMessage());
-			throw new WebException("Não foi possí­vel acessar as mensagens!");
+			LOGGER.error("Nï¿½o foi possï¿½ï¿½vel acesar as mensagens! " + e.getMessage());
+			throw new WebException("Nï¿½o foi possï¿½ï¿½vel acessar as mensagens!");
 		}
 	}
 
@@ -365,7 +365,7 @@ public class ReadEmails
 						}
 						else
 						{
-							LOGGER.info("Celular do entregador inválido!");
+							LOGGER.info("Celular do entregador invï¿½lido!");
 						}
 						LOGGER.info("Mensagens carregadas corretamente!");
 					}
@@ -376,11 +376,11 @@ public class ReadEmails
 		}
 		catch (final MessagingException e)
 		{
-			LOGGER.error("Não foi possí­vel ler as mensagens! " + e.getMessage());
+			LOGGER.error("Nï¿½o foi possï¿½ï¿½vel ler as mensagens! " + e.getMessage());
 		}
 		catch (DAOException | IOException e)
 		{
-			LOGGER.error("Não foi possí­vel ler as mensagens! " + e.getMessage());
+			LOGGER.error("Nï¿½o foi possï¿½ï¿½vel ler as mensagens! " + e.getMessage());
 		}
 
 		if (listAllEmails != null)
@@ -405,14 +405,14 @@ public class ReadEmails
 			final Message msg[] = inbox.getMessages();
 			if ((msg != null) && (msg.length > 0))
 			{
-				LOGGER.info("Total de emails para verificar se será deletadas: " + msg.length);
+				LOGGER.info("Total de emails para verificar se serï¿½ deletadas: " + msg.length);
 				int count = 0;
 				for (final Message message : msg)
 				{
 					LOGGER.info("Mensagem existente para deletar: " + (count + 1));
 					LOGGER.info("e ..., contanto.");
 					final boolean delete = isThisMessageToDelete(message);
-					LOGGER.info("Deletar mensagem selecionada? " + (delete ? "- Sim" : " - Não"));
+					LOGGER.info("Deletar mensagem selecionada? " + (delete ? "- Sim" : " - Nï¿½o"));
 					if (delete)
 					{
 						message.setFlag(Flags.Flag.DELETED, true);
@@ -425,7 +425,7 @@ public class ReadEmails
 		}
 		catch (final MessagingException e)
 		{
-			LOGGER.error("Não foi possí­vel deletar todas as mensagens! " + e.getMessage());
+			LOGGER.error("Nï¿½o foi possï¿½ï¿½vel deletar todas as mensagens! " + e.getMessage());
 		}
 	}
 }

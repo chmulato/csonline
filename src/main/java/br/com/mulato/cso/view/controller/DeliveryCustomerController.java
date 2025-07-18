@@ -7,8 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.application.Application;
-import javax.faces.context.FacesContext;
+import jakarta.faces.application.Application;
+import jakarta.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 
@@ -80,7 +80,7 @@ public class DeliveryCustomerController extends AbstractController implements Se
 
 		boolean isLogged = false;
 
-		LOGGER.info("Carregando controle da página de entregas do cliente ...");
+		LOGGER.info("Carregando controle da pï¿½gina de entregas do cliente ...");
 
 		try
 		{
@@ -94,22 +94,22 @@ public class DeliveryCustomerController extends AbstractController implements Se
 			if (isLogged)
 			{
 
-				LOGGER.info("Sessão carregada! ... Login: " + loginController.getUsername());
+				LOGGER.info("Sessï¿½o carregada! ... Login: " + loginController.getUsername());
 
 				profile = loginController.getProfile();
 
 				if ((loginController.getUserIdLogged() == null) || (loginController.getUserIdLogged().intValue() <= 0))
 				{
 
-					throw new WebException("Id do usuário logado não encontrado.");
+					throw new WebException("Id do usuï¿½rio logado nï¿½o encontrado.");
 
 				}
 
 				if ((loginController.getBusinessVO() == null) || (loginController.getBusinessVO().getId() == null) ||
-				    (loginController.getBusinessVO().getId().intValue() <= 0))
+					(loginController.getBusinessVO().getId().intValue() <= 0))
 				{
 
-					throw new WebException("Negócio da sessão não encontrado.");
+					throw new WebException("Negï¿½cio da sessï¿½o nï¿½o encontrado.");
 
 				}
 				else
@@ -136,21 +136,21 @@ public class DeliveryCustomerController extends AbstractController implements Se
 							setId(delivery.getId());
 
 							if ((delivery.getBusiness() != null) && (delivery.getBusiness().getId() != null) &&
-							    (delivery.getBusiness().getName() != null))
+								(delivery.getBusiness().getName() != null))
 							{
 								setIdBusiness(delivery.getBusiness().getId());
 								setBusiness_name(delivery.getBusiness().getName());
 							}
 
 							if ((delivery.getCustomer() != null) && (delivery.getCustomer().getId() != null) &&
-							    (delivery.getCustomer().getName() != null))
+								(delivery.getCustomer().getName() != null))
 							{
 								setIdCustomer(delivery.getCustomer().getId());
 								setCustomer_name(delivery.getCustomer().getName());
 							}
 
 							if ((delivery.getCourier() != null) && (delivery.getCourier().getId() != null) &&
-							    (delivery.getCourier().getName() != null))
+								(delivery.getCourier().getName() != null))
 							{
 								setIdCourier(delivery.getCourier().getId());
 								setCourier_name(delivery.getCourier().getName());
@@ -201,7 +201,7 @@ public class DeliveryCustomerController extends AbstractController implements Se
 						if ((customer == null) || (customer.getId() == null) || (customer.getName() == null))
 						{
 
-							throw new WebException("Dados do cliente logado não encontrado.");
+							throw new WebException("Dados do cliente logado nï¿½o encontrado.");
 
 						}
 
@@ -219,7 +219,7 @@ public class DeliveryCustomerController extends AbstractController implements Se
 				else
 				{
 
-					throw new WebException("Perfil do usuário não encontrado.");
+					throw new WebException("Perfil do usuï¿½rio nï¿½o encontrado.");
 
 				}
 
@@ -227,7 +227,7 @@ public class DeliveryCustomerController extends AbstractController implements Se
 			else
 			{
 
-				throw new WebException("Sessão não carregada! Logar novamente.");
+				throw new WebException("Sessï¿½o nï¿½o carregada! Logar novamente.");
 
 			}
 
@@ -264,7 +264,7 @@ public class DeliveryCustomerController extends AbstractController implements Se
 
 			if ((getIdBusiness() == null) || getIdBusiness().equals(new Integer(0)))
 			{
-				throw new WebException("Informe id negócio!");
+				throw new WebException("Informe id negï¿½cio!");
 			}
 
 			if ((getIdCustomer() == null) || getIdCustomer().equals(new Integer(0)))
@@ -274,22 +274,22 @@ public class DeliveryCustomerController extends AbstractController implements Se
 
 			if (getStart() == null)
 			{
-				throw new WebException("Informe endereço de inÃ­cio da corrida!");
+				throw new WebException("Informe endereï¿½o de inÃ­cio da corrida!");
 			}
 
 			if (getStart().equals(""))
 			{
-				throw new WebException("Informe endereço de inÃ­cio da corrida!");
+				throw new WebException("Informe endereï¿½o de inÃ­cio da corrida!");
 			}
 
 			if (getDestination() == null)
 			{
-				throw new WebException("Informe endereço de destino!");
+				throw new WebException("Informe endereï¿½o de destino!");
 			}
 
 			if (getDestination().equals(""))
 			{
-				throw new WebException("Informe endereço de destino!");
+				throw new WebException("Informe endereï¿½o de destino!");
 			}
 
 			if (getContact() == null)
@@ -304,22 +304,22 @@ public class DeliveryCustomerController extends AbstractController implements Se
 
 			if (getDescription() == null)
 			{
-				throw new WebException("Informe descrição!");
+				throw new WebException("Informe descriï¿½ï¿½o!");
 			}
 
 			if (getDescription().equals(""))
 			{
-				throw new WebException("Informe descrição!");
+				throw new WebException("Informe descriï¿½ï¿½o!");
 			}
 
 			if (getKm() == null)
 			{
-				throw new WebException("Informe distância em quilômetros!");
+				throw new WebException("Informe distï¿½ncia em quilï¿½metros!");
 			}
 
 			if (getKm().equals(new BigDecimal(0)))
 			{
-				throw new WebException("Informe distância em quilômetros!");
+				throw new WebException("Informe distï¿½ncia em quilï¿½metros!");
 			}
 
 			if (getCost() == null)
@@ -386,7 +386,7 @@ public class DeliveryCustomerController extends AbstractController implements Se
 		}
 		catch (final Exception e)
 		{
-			FacesMessages.mensErro("Falha na inserção no banco de dados!");
+			FacesMessages.mensErro("Falha na inserï¿½ï¿½o no banco de dados!");
 		}
 
 		return goToBackPage(path);
@@ -400,7 +400,7 @@ public class DeliveryCustomerController extends AbstractController implements Se
 	}
 
 	/**
-	 * Buscar todos os entregadores do negócio
+	 * Buscar todos os entregadores do negï¿½cio
 	 * 
 	 * @return
 	 * @throws WebException
@@ -429,7 +429,7 @@ public class DeliveryCustomerController extends AbstractController implements Se
 	}
 
 	/**
-	 * Buscar todos os clientes do negócio
+	 * Buscar todos os clientes do negï¿½cio
 	 * 
 	 * @return
 	 * @throws WebException

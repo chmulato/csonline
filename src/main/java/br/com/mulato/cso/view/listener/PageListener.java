@@ -1,13 +1,13 @@
 package br.com.mulato.cso.view.listener;
 
 import java.io.IOException;
-import javax.faces.application.Application;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.faces.event.PhaseEvent;
-import javax.faces.event.PhaseId;
-import javax.faces.event.PhaseListener;
-import javax.servlet.http.HttpSession;
+import jakarta.faces.application.Application;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.PhaseEvent;
+import jakarta.faces.event.PhaseId;
+import jakarta.faces.event.PhaseListener;
+import jakarta.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import br.com.mulato.cso.view.controller.LoginController;
 
@@ -22,7 +22,7 @@ public class PageListener implements PhaseListener {
 	{
 	}
 
-	// executa antes de qualquer renderizar ao usuário
+	// executa antes de qualquer renderizar ao usuï¿½rio
 	@Override
 	public void beforePhase (final PhaseEvent event)
 	{
@@ -43,7 +43,7 @@ public class PageListener implements PhaseListener {
 		LOGGER.info("Navigation: " + page + " page.");
 		LOGGER.info("Timeout: " + timeout);
 
-		// recupera os dados que estao na sessão LoginController
+		// recupera os dados que estao na sessï¿½o LoginController
 		final LoginController loginController = application.evaluateExpressionGet(facesContext, "#{loginMB}", LoginController.class);
 
 		if (loginController != null)
@@ -83,7 +83,7 @@ public class PageListener implements PhaseListener {
 						|| page.equals("/pricetables.xhtml")
 						|| page.equals("/messages.xhtml");
 
-				// verifica as páginas que não possuem acesso externo
+				// verifica as pï¿½ginas que nï¿½o possuem acesso externo
 				if (validaPaginas)
 				{
 					if (!loginController.isLogged())
@@ -98,7 +98,7 @@ public class PageListener implements PhaseListener {
 						}
 					}
 				}
-				// se abrir encerra todas sessões
+				// se abrir encerra todas sessï¿½es
 				if (page.equals("/logout.xhtml"))
 				{
 					loginController.logout();

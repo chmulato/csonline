@@ -3,8 +3,8 @@ package br.com.mulato.cso.view.controller;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.faces.application.Application;
-import javax.faces.context.FacesContext;
+import jakarta.faces.application.Application;
+import jakarta.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 
@@ -44,7 +44,7 @@ public class PricesController extends AbstractController implements Serializable
 			}
 			else
 			{
-				throw new WebException("Sessão não carregada! Logar novamente.");
+				throw new WebException("Sessï¿½o nï¿½o carregada! Logar novamente.");
 			}
 
 		}
@@ -60,7 +60,7 @@ public class PricesController extends AbstractController implements Serializable
 
 		String profile;
 
-		LOGGER.info("Carregando controle da página de entregas em aberto ...");
+		LOGGER.info("Carregando controle da pï¿½gina de entregas em aberto ...");
 
 		try
 		{
@@ -72,12 +72,12 @@ public class PricesController extends AbstractController implements Serializable
 			if (loginController.isLogged())
 			{
 
-				LOGGER.info("Sessão carregada! ... Login: " + loginController.getUsername());
+				LOGGER.info("Sessï¿½o carregada! ... Login: " + loginController.getUsername());
 
 				if ((loginController.getUserIdLogged() == null) || (loginController.getUserIdLogged().intValue() <= 0))
 				{
 
-					throw new WebException("Id do usuário não encontrado.");
+					throw new WebException("Id do usuï¿½rio nï¿½o encontrado.");
 
 				}
 
@@ -96,7 +96,7 @@ public class PricesController extends AbstractController implements Serializable
 				else
 				{
 
-					throw new WebException("Perfil do usuário não encontrado.");
+					throw new WebException("Perfil do usuï¿½rio nï¿½o encontrado.");
 
 				}
 
@@ -113,7 +113,7 @@ public class PricesController extends AbstractController implements Serializable
 			else
 			{
 
-				throw new WebException("Sessão não carregada! Logar novamente.");
+				throw new WebException("Sessï¿½o nï¿½o carregada! Logar novamente.");
 
 			}
 
@@ -222,7 +222,7 @@ public class PricesController extends AbstractController implements Serializable
 			}
 			else
 			{
-				throw new WebException("Parâmetro vazio! Informe id da preço.");
+				throw new WebException("Parï¿½metro vazio! Informe id da preï¿½o.");
 			}
 
 		}

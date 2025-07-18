@@ -1,10 +1,10 @@
 package br.com.mulato.cso.view.converter;
 
 import java.text.ParseException;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.convert.ConverterException;
 import javax.swing.text.MaskFormatter;
 import org.apache.log4j.Logger;
 
@@ -50,8 +50,8 @@ public class CpfCnpjConverter implements Converter<Object> {
 		}
 		if (value instanceof String) {
 			String result = ((String) value).trim();
-			result = result.replaceAll("[^0-9]", "");// retira tudo que não e
-														// número
+			result = result.replaceAll("[^0-9]", "");// retira tudo que nï¿½o e
+														// nï¿½mero
 			MaskFormatter a;
 			try {
 				if (result.length() > 9) {
@@ -69,7 +69,7 @@ public class CpfCnpjConverter implements Converter<Object> {
 				return a.valueToString(result);
 			} catch (final ParseException e1) {
 				LOGGER.error(e1.getMessage());
-				throw new ConverterException("CPF/CNPJ inválido.");
+				throw new ConverterException("CPF/CNPJ invï¿½lido.");
 			}
 		}
 		return "";

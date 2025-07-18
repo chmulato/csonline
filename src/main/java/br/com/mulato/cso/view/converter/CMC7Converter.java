@@ -1,10 +1,10 @@
 package br.com.mulato.cso.view.converter;
 
 import java.text.ParseException;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.convert.ConverterException;
 import javax.swing.text.MaskFormatter;
 import org.apache.log4j.Logger;
 
@@ -64,7 +64,7 @@ public class CMC7Converter implements Converter<Object> {
 				return a.valueToString(result);
 			} catch (final ParseException e1) {
 				LOGGER.error(e1.getMessage());
-				throw new ConverterException("Erro de conversão.");
+				throw new ConverterException("Erro de conversï¿½o.");
 			}
 		}
 		return "";

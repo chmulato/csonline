@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.faces.application.Application;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
-import javax.servlet.ServletContext;
+import jakarta.faces.application.Application;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.ActionEvent;
+import jakarta.faces.event.ValueChangeEvent;
+import jakarta.servlet.ServletContext;
 
 import org.apache.log4j.Logger;
 
@@ -80,22 +80,22 @@ public class LoginController extends AbstractController implements Serializable 
 
 			if (username == null)
 			{
-				throw new WebException("Informe login do usuário!");
+				throw new WebException("Informe login do usuï¿½rio!");
 			}
 
 			if (password == null)
 			{
-				throw new WebException("Informe senha do usuário!");
+				throw new WebException("Informe senha do usuï¿½rio!");
 			}
 
 			if (username.equals(""))
 			{
-				throw new WebException("Informe login do usuário!");
+				throw new WebException("Informe login do usuï¿½rio!");
 			}
 
 			if (password.equals(""))
 			{
-				throw new WebException("Informe senha do usuário!");
+				throw new WebException("Informe senha do usuï¿½rio!");
 			}
 
 			username = username.trim();
@@ -132,22 +132,22 @@ public class LoginController extends AbstractController implements Serializable 
 
 			if (user == null)
 			{
-				throw new WebException("Usuário não encontrado!");
+				throw new WebException("Usuï¿½rio nï¿½o encontrado!");
 			}
 
 			if (user.getId() == null)
 			{
-				throw new WebException("Usuário não encontrado!");
+				throw new WebException("Usuï¿½rio nï¿½o encontrado!");
 			}
 
 			if (user.getId().intValue() <= 0)
 			{
-				throw new WebException("Usuário não encontrado!");
+				throw new WebException("Usuï¿½rio nï¿½o encontrado!");
 			}
 
 			if ((user.getRole() == null) || (user.getRole().equals("")))
 			{
-				throw new WebException("Perfil não encontrado!");
+				throw new WebException("Perfil nï¿½o encontrado!");
 			}
 
 			profile = user.getRole().toUpperCase().trim();
@@ -179,7 +179,7 @@ public class LoginController extends AbstractController implements Serializable 
 				else
 				{
 
-					throw new WebException("Negócio não encontrado!");
+					throw new WebException("Negï¿½cio nï¿½o encontrado!");
 
 				}
 
@@ -205,7 +205,7 @@ public class LoginController extends AbstractController implements Serializable 
 				else
 				{
 
-					throw new WebException("Negócio do cliente não encontrado!");
+					throw new WebException("Negï¿½cio do cliente nï¿½o encontrado!");
 
 				}
 
@@ -233,7 +233,7 @@ public class LoginController extends AbstractController implements Serializable 
 				else
 				{
 
-					throw new WebException("Negócio do entregador não encontrado!");
+					throw new WebException("Negï¿½cio do entregador nï¿½o encontrado!");
 
 				}
 
@@ -241,7 +241,7 @@ public class LoginController extends AbstractController implements Serializable 
 
 			}
 
-			LOGGER.info("Usuário encontrado: " + user);
+			LOGGER.info("Usuï¿½rio encontrado: " + user);
 
 			final FacesContext facesContext = FacesContext.getCurrentInstance();
 			final ServletContext servletContext = (ServletContext)facesContext.getExternalContext().getContext();

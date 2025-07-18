@@ -6,8 +6,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.application.Application;
-import javax.faces.context.FacesContext;
+import jakarta.faces.application.Application;
+import jakarta.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 
@@ -72,7 +72,7 @@ public class CustomerController extends AbstractController implements Serializab
 
 		boolean isLogged = false;
 
-		LOGGER.info("Carregando controle da página de cliente ...");
+		LOGGER.info("Carregando controle da pï¿½gina de cliente ...");
 
 		try
 		{
@@ -86,14 +86,14 @@ public class CustomerController extends AbstractController implements Serializab
 			if (isLogged)
 			{
 
-				LOGGER.info("Sessão carregada! ... Login: " + loginController.getUsername());
+				LOGGER.info("Sessï¿½o carregada! ... Login: " + loginController.getUsername());
 
 				profile = loginController.getProfile();
 
 				if ((loginController.getUserIdLogged() == null) || (loginController.getUserIdLogged().intValue() <= 0))
 				{
 
-					throw new WebException("Id do usuário logado não encontrado.");
+					throw new WebException("Id do usuï¿½rio logado nï¿½o encontrado.");
 
 				}
 
@@ -239,7 +239,7 @@ public class CustomerController extends AbstractController implements Serializab
 				else
 				{
 
-					throw new WebException("Perfil do usuário não encontrado.");
+					throw new WebException("Perfil do usuï¿½rio nï¿½o encontrado.");
 
 				}
 
@@ -247,7 +247,7 @@ public class CustomerController extends AbstractController implements Serializab
 			else
 			{
 
-				throw new WebException("Sessão não carregada! Logar novamente.");
+				throw new WebException("Sessï¿½o nï¿½o carregada! Logar novamente.");
 
 			}
 
@@ -345,34 +345,34 @@ public class CustomerController extends AbstractController implements Serializab
 
 			if (getAddress() == null)
 			{
-				throw new WebException("Informe endereço!");
+				throw new WebException("Informe endereï¿½o!");
 			}
 
 			if (getAddress().equals(""))
 			{
-				throw new WebException("Informe endereço!");
+				throw new WebException("Informe endereï¿½o!");
 			}
 
 			if (getMobile() == null)
 			{
-				throw new WebException("Informe número de celular!");
+				throw new WebException("Informe nï¿½mero de celular!");
 			}
 
 			if (getMobile().equals(""))
 			{
-				throw new WebException("Informe número de celular!");
+				throw new WebException("Informe nï¿½mero de celular!");
 			}
 
 			if (getBusinessId() == null)
 			{
-				throw new WebException("Informe id negócio!");
+				throw new WebException("Informe id negï¿½cio!");
 			}
 
 			idBusiness = Integer.parseInt(getBusinessId().toString());
 
 			if (idBusiness <= 0)
 			{
-				throw new WebException("Informe id negócio!");
+				throw new WebException("Informe id negï¿½cio!");
 			}
 
 			if (getFactor_customer() == null)
@@ -439,7 +439,7 @@ public class CustomerController extends AbstractController implements Serializab
 		}
 		catch (final Exception e)
 		{
-			FacesMessages.mensErro("Falha na inserção no banco de dados!");
+			FacesMessages.mensErro("Falha na inserï¿½ï¿½o no banco de dados!");
 		}
 
 		return goToBackPage("customers");

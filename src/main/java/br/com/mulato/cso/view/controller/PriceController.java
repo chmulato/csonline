@@ -6,8 +6,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.application.Application;
-import javax.faces.context.FacesContext;
+import jakarta.faces.application.Application;
+import jakarta.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 
@@ -54,7 +54,7 @@ public class PriceController extends AbstractController implements Serializable 
 
 		boolean isLogged = false;
 
-		LOGGER.info("Carregando controle da página de entregas do negócio ...");
+		LOGGER.info("Carregando controle da pï¿½gina de entregas do negï¿½cio ...");
 
 		try
 		{
@@ -68,22 +68,22 @@ public class PriceController extends AbstractController implements Serializable 
 			if (isLogged)
 			{
 
-				LOGGER.info("Sessío carregada! ... Login: " + loginController.getUsername());
+				LOGGER.info("Sessï¿½o carregada! ... Login: " + loginController.getUsername());
 
 				profile = loginController.getProfile();
 
 				if ((loginController.getUserIdLogged() == null) || (loginController.getUserIdLogged().intValue() <= 0))
 				{
 
-					throw new WebException("Id do usuário logado não encontrado.");
+					throw new WebException("Id do usuï¿½rio logado nï¿½o encontrado.");
 
 				}
 
 				if ((loginController.getBusinessVO() == null) || (loginController.getBusinessVO().getId() == null) ||
-				    (loginController.getBusinessVO().getId().intValue() <= 0))
+					(loginController.getBusinessVO().getId().intValue() <= 0))
 				{
 
-					throw new WebException("Negócio da sessão não encontrado.");
+					throw new WebException("Negï¿½cio da sessï¿½o nï¿½o encontrado.");
 
 				}
 				else
@@ -166,7 +166,7 @@ public class PriceController extends AbstractController implements Serializable 
 				else
 				{
 
-					throw new WebException("Perfil do usuário não encontrado.");
+					throw new WebException("Perfil do usuï¿½rio nï¿½o encontrado.");
 
 				}
 
@@ -174,7 +174,7 @@ public class PriceController extends AbstractController implements Serializable 
 			else
 			{
 
-				throw new WebException("Sessão não carregada! Logar novamente.");
+				throw new WebException("Sessï¿½o nï¿½o carregada! Logar novamente.");
 
 			}
 
@@ -204,17 +204,17 @@ public class PriceController extends AbstractController implements Serializable 
 
 			if ((getIdBusiness() == null) || getIdBusiness().equals(new Integer(0)))
 			{
-				throw new WebException("Informe id negócio!");
+				throw new WebException("Informe id negï¿½cio!");
 			}
 
 			if (getLocal() == null)
 			{
-				throw new WebException("Informe endereço de destino!");
+				throw new WebException("Informe endereï¿½o de destino!");
 			}
 
 			if (getLocal().equals(""))
 			{
-				throw new WebException("Informe endereço de destino!");
+				throw new WebException("Informe endereï¿½o de destino!");
 			}
 
 			if ((getIdTable() == null) || getIdTable().equals(new Integer(0)))
@@ -224,7 +224,7 @@ public class PriceController extends AbstractController implements Serializable 
 
 			if ((getIdVehicle() == null) || getIdVehicle().equals(new Integer(0)))
 			{
-				throw new WebException("Informe veí­culo!");
+				throw new WebException("Informe veï¿½ï¿½culo!");
 			}
 
 			if (getPrice() == null)
@@ -292,7 +292,7 @@ public class PriceController extends AbstractController implements Serializable 
 		}
 		catch (final Exception e)
 		{
-			FacesMessages.mensErro("Falha na inserção no banco de dados!");
+			FacesMessages.mensErro("Falha na inserï¿½ï¿½o no banco de dados!");
 		}
 
 		return goToBackPage(path);
@@ -326,7 +326,7 @@ public class PriceController extends AbstractController implements Serializable 
 	}
 
 	/**
-	 * Buscar todos os veí­culos
+	 * Buscar todos os veï¿½ï¿½culos
 	 * 
 	 * @return
 	 * @throws WebException
