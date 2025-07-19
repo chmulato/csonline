@@ -16,16 +16,24 @@ Acesse via navegador: [https://www.caracore.com.br/csonline](https://www.caracor
 
 ## Requisitos
 
+
 - Java SDK 11
-- Jakarta EE 10 (compatível com Tomcat)
+- Jakarta EE 10 (compatível com Tomcat 10.1.x ou superior)
 - PostgreSQL 15
+- Tomcat 10.1.x (ou superior) configurado para Jakarta EE
+- Jars obrigatórios no WAR (WEB-INF/lib):
+  - primefaces-13.0.4-jakarta.jar (baixe manualmente se necessário)
+  - jakarta.faces-4.0.1.jar (Mojarra)
+  - weld-servlet-shaded-4.0.3.Final.jar (CDI Weld)
+  - Demais dependências do projeto (jsoup, log4j, postgresql, etc.)
 
 ## Instalação
 
 1. Clone o repositório.
 2. Configure o banco de dados PostgreSQL 15 conforme o padrão do projeto (consulte os scripts em `doc/dump`).
 3. Faça o build do projeto e gere o arquivo WAR.
-4. Faça o deploy do WAR em um servidor Jakarta EE 10 (ou Tomcat compatível).
+4. Certifique-se que os jars obrigatórios estão presentes em WEB-INF/lib do WAR.
+5. Faça o deploy do WAR em um Tomcat 10.1.x (ou superior) configurado para Jakarta EE.
 
 ## Perfil de Administrador
 

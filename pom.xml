@@ -24,11 +24,27 @@
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
 			<version>13.0.4-jakarta</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.faces</groupId>
+					<artifactId>javax.faces-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>javax.servlet</groupId>
+					<artifactId>javax.servlet-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish</groupId>
 			<artifactId>jakarta.faces</artifactId>
 			<version>4.0.1</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.faces</groupId>
+					<artifactId>javax.faces-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.weld.servlet</groupId>
