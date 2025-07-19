@@ -1,6 +1,12 @@
 /err/err.txt
 /build/
 /target/
+/server/
+!server/apache-tomcat-10.1.43/conf/context-h2.xml
+!server/apache-tomcat-10.1.43/conf/context-postgres.xml
+!server/apache-tomcat-10.1.43/conf/server.xml
+!server/apache-tomcat-10.1.43/conf/web.xml
+!server/apache-tomcat-10.1.43/conf/tomcat-users.xml
 .settings/
 .project
 .classpath
