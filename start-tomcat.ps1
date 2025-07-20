@@ -16,43 +16,58 @@ Remove-Item "$TomcatHome\webapps\csonline" -Recurse -Force -ErrorAction Silently
 Remove-Item "$TomcatHome\work" -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item "$TomcatHome\temp" -Recurse -Force -ErrorAction SilentlyContinue
 
+# Pasta para logs de diagnóstico
+$DiagLogDir = "c:\dev\csonline\diagnostico-logs"
+if (!(Test-Path $DiagLogDir)) {
+    New-Item -ItemType Directory -Path $DiagLogDir | Out-Null
+}
+
 # 3. Validar dependências e conflitos
 Write-Host "Validando dependências do projeto..."
-mvn dependency:tree | Out-File "diagnostico-deps.txt"
-Write-Host "Árvore de dependências salva em diagnostico-deps.txt"
+mvn dependency:tree | Out-File "$DiagLogDir\diagnostico-deps.txt"
+Write-Host "Árvore de dependências salva em $DiagLogDir\diagnostico-deps.txt"
 
 # 4. Compilar e gerar WAR
-mvn clean package
+$mvnLogFile = "$DiagLogDir\maven-build.log"
+mvn clean package | Tee-Object -FilePath $mvnLogFile
 
 # 5. Copiar WAR para Tomcat
 Copy-Item "target\csonline.war" "$TomcatHome\webapps\csonline.war" -Force
 
- # 6. Iniciar Tomcat
- Start-Process -FilePath "$TomcatHome\bin\startup.bat"
- Write-Host "Tomcat 10 iniciado. Acesse http://localhost:8080/csonline"
- Start-Sleep -Seconds 5
- $logFile = "$TomcatHome\logs\catalina.$((Get-Date).ToString('yyyy-MM-dd')).log"
- if (Test-Path $logFile) {
-     Write-Host "--- Primeiras linhas do catalina.log ---"
-     Get-Content $logFile -TotalCount 100
-     Write-Host "--- Fim do trecho ---"
+# 6. Iniciar Tomcat
+Start-Process -FilePath "$TomcatHome\bin\startup.bat"
+Write-Host "Tomcat 10 iniciado. Acesse http://localhost:8080/csonline"
+Start-Sleep -Seconds 5
+$logFile = "$TomcatHome\logs\catalina.$((Get-Date).ToString('yyyy-MM-dd')).log"
+if (Test-Path $logFile) {
+    Write-Host "--- Primeiras linhas do catalina.log ---"
+    Get-Content $logFile -TotalCount 100
     $weldLines = Select-String -Path $logFile -Pattern "WELD|weld|CDI" | Select-Object -ExpandProperty Line
     if ($weldLines) {
         Write-Host "--- Linhas relacionadas ao Weld/CDI ---"
         $weldLines | ForEach-Object { Write-Host $_ }
         Write-Host "--- Fim Weld/CDI ---"
-    } else {
-        Write-Host "Nenhuma linha Weld/CDI encontrada no catalina.log."
     }
- } else {
-     Write-Host "Log catalina não encontrado: $logFile"
- }
+    # Copiar catalina.log para pasta de diagnóstico
+    Copy-Item $logFile "$DiagLogDir\catalina.log" -Force
+    # Copiar outros logs relevantes do Tomcat
+    Get-ChildItem "$TomcatHome\logs\*.log" | ForEach-Object {
+        Copy-Item $_.FullName "$DiagLogDir\$($_.Name)" -Force
+    }
+}
+else {
+    Write-Host "Log catalina não encontrado: $logFile"
+}
 
 # 7. Checklist de diagnóstico
 Write-Host "Checklist rápido:"
 Write-Host "- web.xml e faces-config.xml mínimos?"
 Write-Host "- Weld (CDI) inicializa? (verifique logs)"
-Write-Host "- META-INF/services correto nos jars Mojarra?"
+Write-Host "- META-INF/services correto nos jars MyFaces?"
+Write-Host "- Página hello.xhtml mínima?"
+Write-Host "- Log MyFaces detalhado ativado?"
+Write-Host "- ResourceHandler instanciado? (verifique logs)"
+Write-Host "- Teste com Mojarra se persistir erro."
 Write-Host "- Página hello.xhtml mínima?"
 Write-Host "- Log Mojarra detalhado ativado?"
 Write-Host "- ResourceHandler instanciado? (verifique logs)"

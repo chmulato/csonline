@@ -1,0 +1,66 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------------< br.com.mulato:csonline >-----------------------
+[INFO] Building csonline 2.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ war ]---------------------------------
+[WARNING] The POM for org.primefaces:primefaces:jar:13.0.4-jakarta is missing, no dependency information available
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ csonline ---
+[INFO] Deleting C:\dev\csonline\target
+[INFO] 
+[INFO] --- resources:2.6:copy-resources (copy-resources) @ csonline ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 27 resources
+[INFO] 
+[INFO] --- jacoco:0.8.11:prepare-agent (default) @ csonline ---
+[INFO] argLine set to -javaagent:C:\\Users\\devel\\.m2\\repository\\org\\jacoco\\org.jacoco.agent\\0.8.11\\org.jacoco.agent-0.8.11-runtime.jar=destfile=C:\\dev\\csonline\\target\\jacoco.exec
+[INFO] 
+[INFO] --- resources:2.6:resources (default-resources) @ csonline ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 27 resources
+[INFO] 
+[INFO] --- compiler:3.1:compile (default-compile) @ csonline ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 101 source files to C:\dev\csonline\target\classes
+[WARNING] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java: Some input files use or override a deprecated API that is marked for removal.
+[WARNING] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java: Recompile with -Xlint:removal for details.
+[INFO] 
+[INFO] --- resources:2.6:testResources (default-testResources) @ csonline ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 0 resource
+[INFO] 
+[INFO] --- compiler:3.1:testCompile (default-testCompile) @ csonline ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 1 source file to C:\dev\csonline\target\test-classes
+[INFO] 
+[INFO] --- surefire:3.2.5:test (default-test) @ csonline ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running br.com.mulato.cso.service.BusinessServiceTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.140 s -- in br.com.mulato.cso.service.BusinessServiceTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jacoco:0.8.11:report (report) @ csonline ---
+[INFO] Loading execution data file C:\dev\csonline\target\jacoco.exec
+[INFO] Analyzed bundle 'csonline' with 84 classes
+[INFO] 
+[INFO] --- war:3.4.0:war (default-war) @ csonline ---
+[INFO] Packaging webapp
+[INFO] Assembling webapp [csonline] in [C:\dev\csonline\target\csonline]
+[INFO] Processing war project
+[INFO] Copying webapp resources [C:\dev\csonline\src\main\webapp]
+[INFO] Building war: C:\dev\csonline\target\csonline.war
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  10.057 s
+[INFO] Finished at: 2025-07-20T15:12:00-03:00
+[INFO] ------------------------------------------------------------------------

@@ -32,9 +32,14 @@
 			<version>13.0.4-jakarta</version>
 		</dependency>
 		<dependency>
-			<groupId>org.glassfish</groupId>
-			<artifactId>jakarta.faces</artifactId>
-			<version>4.0.1</version>
+			<groupId>org.apache.myfaces.core</groupId>
+			<artifactId>myfaces-api</artifactId>
+			<version>4.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.myfaces.core</groupId>
+			<artifactId>myfaces-impl</artifactId>
+			<version>4.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.weld.servlet</groupId>

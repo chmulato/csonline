@@ -4,7 +4,7 @@ Aplicação Web para controle de entregas.
 
 ## Descrição
 
-CSOnline Delivery é uma aplicação desenvolvida em Java (SDK 11) utilizando Jakarta EE 10 e PrimeFaces para gerenciamento de entregas. O sistema roda em Jakarta EE 10 (Tomcat compatível) e utiliza PostgreSQL 15 como banco de dados relacional.
+CSOnline Delivery é uma aplicação desenvolvida em Java (SDK 11) utilizando Jakarta EE 10, MyFaces e PrimeFaces para gerenciamento de entregas. O sistema roda em Jakarta EE 10 (Tomcat compatível) e utiliza PostgreSQL 15 como banco de dados relacional.
 
 Acesse via navegador: [https://www.caracore.com.br/csonline](https://www.caracore.com.br/csonline)
 
@@ -23,7 +23,8 @@ Acesse via navegador: [https://www.caracore.com.br/csonline](https://www.caracor
 - Tomcat 10.1.x (ou superior) configurado para Jakarta EE
 - Jars obrigatórios no WAR (WEB-INF/lib):
   - primefaces-13.0.4-jakarta.jar (baixe manualmente se necessário)
-  - jakarta.faces-4.0.1.jar (Mojarra)
+  - myfaces-api-4.0.0.jar (MyFaces)
+  - myfaces-impl-4.0.0.jar (MyFaces)
   - weld-servlet-shaded-4.0.3.Final.jar (CDI Weld)
   - Demais dependências do projeto (jsoup, log4j, postgresql, etc.)
 
