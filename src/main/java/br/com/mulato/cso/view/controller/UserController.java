@@ -14,8 +14,13 @@ import br.com.mulato.cso.dry.AbstractController;
 import br.com.mulato.cso.dry.FactoryService;
 import br.com.mulato.cso.exception.WebException;
 import br.com.mulato.cso.model.UserVO;
+
+import jakarta.inject.Named;
+import jakarta.enterprise.context.RequestScoped;
 import br.com.mulato.cso.view.beans.FacesMessages;
 
+@Named("userMB")
+@RequestScoped
 public class UserController extends AbstractController implements Serializable {
 
 	private static final long serialVersionUID = 1L;

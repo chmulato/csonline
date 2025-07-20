@@ -4,10 +4,14 @@ import java.io.Serializable;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import jakarta.inject.Named;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import br.com.mulato.cso.dry.AbstractController;
 import br.com.mulato.cso.exception.WebException;
 
+@Named("contadorMB")
+@ApplicationScoped
 public class ContadorController extends AbstractController implements Serializable {
 
 	private static final long serialVersionUID = 1L;

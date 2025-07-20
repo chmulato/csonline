@@ -14,8 +14,13 @@ import br.com.mulato.cso.dry.AbstractController;
 import br.com.mulato.cso.dry.FactoryService;
 import br.com.mulato.cso.exception.WebException;
 import br.com.mulato.cso.model.PriceVO;
+
+import jakarta.inject.Named;
+import jakarta.enterprise.context.RequestScoped;
 import br.com.mulato.cso.view.beans.FacesMessages;
 
+@Named("pricesMB")
+@RequestScoped
 public class PricesController extends AbstractController implements Serializable {
 
 	private static final long serialVersionUID = 1L;

@@ -15,8 +15,13 @@ import br.com.mulato.cso.dry.FactoryService;
 import br.com.mulato.cso.exception.WebException;
 import br.com.mulato.cso.model.BusinessVO;
 import br.com.mulato.cso.model.CourierVO;
+
+import jakarta.inject.Named;
+import jakarta.enterprise.context.RequestScoped;
 import br.com.mulato.cso.view.beans.FacesMessages;
 
+@Named("couriersMB")
+@RequestScoped
 public class CouriersController extends AbstractController implements Serializable {
 
 	private static final long serialVersionUID = 1L;

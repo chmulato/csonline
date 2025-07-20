@@ -22,8 +22,13 @@ import br.com.mulato.cso.model.PriceVO;
 import br.com.mulato.cso.utils.InitProperties;
 import br.com.mulato.cso.utils.vo.TableVO;
 import br.com.mulato.cso.utils.vo.VehicleVO;
+
+import jakarta.inject.Named;
+import jakarta.enterprise.context.RequestScoped;
 import br.com.mulato.cso.view.beans.FacesMessages;
 
+@Named("priceMB")
+@RequestScoped
 public class PriceController extends AbstractController implements Serializable {
 
 	private static final long serialVersionUID = 1L;

@@ -11,11 +11,16 @@ import org.apache.logging.log4j.Logger;
 
 import br.com.mulato.cso.dry.AbstractController;
 import br.com.mulato.cso.dry.FactoryService;
+
 import br.com.mulato.cso.exception.WebException;
 import br.com.mulato.cso.model.BusinessVO;
 import br.com.mulato.cso.model.LoginVO;
 import br.com.mulato.cso.view.beans.FacesMessages;
+import jakarta.inject.Named;
+import jakarta.enterprise.context.RequestScoped;
 
+@Named("businessMB")
+@RequestScoped
 public class BusinessController extends AbstractController implements Serializable {
 
 	private static final long serialVersionUID = 1L;

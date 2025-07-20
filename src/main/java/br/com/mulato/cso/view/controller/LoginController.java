@@ -20,8 +20,13 @@ import br.com.mulato.cso.model.BusinessVO;
 import br.com.mulato.cso.model.LoginVO;
 import br.com.mulato.cso.model.UserVO;
 import br.com.mulato.cso.view.beans.FacesMessages;
+
+import jakarta.inject.Named;
+import jakarta.enterprise.context.SessionScoped;
 import br.com.mulato.cso.view.beans.ThemeBean;
 
+@Named("loginMB")
+@SessionScoped
 public class LoginController extends AbstractController implements Serializable {
 
 	private static final long serialVersionUID = 1L;

@@ -1,3 +1,4 @@
+
 package br.com.mulato.cso.view.controller;
 
 import java.io.Serializable;
@@ -20,8 +21,13 @@ import br.com.mulato.cso.model.CustomerVO;
 import br.com.mulato.cso.model.LoginVO;
 import br.com.mulato.cso.utils.InitProperties;
 import br.com.mulato.cso.utils.vo.TableVO;
+
+import jakarta.inject.Named;
+import jakarta.enterprise.context.RequestScoped;
 import br.com.mulato.cso.view.beans.FacesMessages;
 
+@Named("customerMB")
+@RequestScoped
 public class CustomerController extends AbstractController implements Serializable {
 
 	private static final long serialVersionUID = 1L;

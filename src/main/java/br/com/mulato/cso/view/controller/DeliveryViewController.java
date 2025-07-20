@@ -22,8 +22,13 @@ import br.com.mulato.cso.model.BusinessVO;
 import br.com.mulato.cso.model.CourierVO;
 import br.com.mulato.cso.model.CustomerVO;
 import br.com.mulato.cso.model.DeliveryVO;
+
+import jakarta.inject.Named;
+import jakarta.enterprise.context.RequestScoped;
 import br.com.mulato.cso.view.beans.FacesMessages;
 
+@Named("deliveryViewMB")
+@RequestScoped
 public class DeliveryViewController extends AbstractController implements Serializable {
 
 	private static final long serialVersionUID = 1L;

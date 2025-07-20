@@ -7,6 +7,8 @@ import java.util.List;
 import jakarta.el.ELException;
 import jakarta.faces.application.Application;
 import jakarta.faces.context.FacesContext;
+import jakarta.inject.Named;
+import jakarta.enterprise.context.RequestScoped;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,6 +19,8 @@ import br.com.mulato.cso.exception.WebException;
 import br.com.mulato.cso.model.BusinessVO;
 import br.com.mulato.cso.view.beans.FacesMessages;
 
+@Named("businessesMB")
+@RequestScoped
 public class BusinessesController extends AbstractController implements Serializable {
 
 	private static final long serialVersionUID = 1L;
