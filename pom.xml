@@ -21,30 +21,20 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>jakarta.platform</groupId>
+			<artifactId>jakarta.jakartaee-api</artifactId>
+			<version>10.0.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
 			<version>13.0.4-jakarta</version>
-			<exclusions>
-				<exclusion>
-					<groupId>javax.faces</groupId>
-					<artifactId>javax.faces-api</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>javax.servlet</groupId>
-					<artifactId>javax.servlet-api</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish</groupId>
 			<artifactId>jakarta.faces</artifactId>
 			<version>4.0.1</version>
-			<exclusions>
-				<exclusion>
-					<groupId>javax.faces</groupId>
-					<artifactId>javax.faces-api</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.weld.servlet</groupId>
@@ -55,16 +45,6 @@
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
 			<version>1.17.2</version>
-		</dependency>
-		<dependency>
-			<groupId>jakarta.el</groupId>
-			<artifactId>jakarta.el-api</artifactId>
-			<version>5.0.1</version>
-		</dependency>
-		<dependency>
-			<groupId>jakarta.inject</groupId>
-			<artifactId>jakarta.inject-api</artifactId>
-			<version>2.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
@@ -92,12 +72,6 @@
 			<artifactId>mockito-core</artifactId>
 			<version>5.2.0</version>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>jakarta.platform</groupId>
-			<artifactId>jakarta.jakartaee-api</artifactId>
-			<version>10.0.0</version>
-			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 	<build>

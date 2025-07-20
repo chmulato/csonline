@@ -48,17 +48,21 @@
 		<param-name>timezone</param-name>
 		<param-value>GMT-3</param-value>
 	</context-param>
-	   <resource-ref>
-			   <description>MySQL Datasource</description>
-			   <res-ref-name>jdbc/db_cso</res-ref-name>
-			   <res-type>jakarta.sql.DataSource</res-type>
-			   <res-auth>Container</res-auth>
-	   </resource-ref>
+	<context-param>
+		<param-name>com.sun.faces.loggingLevel</param-name>
+		<param-value>FINE</param-value>
+	</context-param>
+   <resource-ref>
+		   <description>H2 Datasource (memória)</description>
+		   <res-ref-name>jdbc/db_cso</res-ref-name>
+		   <res-type>jakarta.sql.DataSource</res-type>
+		   <res-auth>Container</res-auth>
+   </resource-ref>
+   <listener>
+	   <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
+   </listener>
 	<listener>
-		<listener-class>br.com.mulato.cso.view.listener.SessionListener</listener-class>
-	</listener>
-	<listener>
-		<listener-class>br.com.mulato.cso.view.listener.BackgroundListener</listener-class>
+		<listener-class>br.com.mulato.cso.view.listener.TestListener</listener-class>
 	</listener>
 	   <servlet>
 			   <servlet-name>FacesServlet</servlet-name>
