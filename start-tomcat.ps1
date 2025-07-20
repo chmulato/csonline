@@ -1,4 +1,3 @@
-
 # Script para iniciar o Tomcat 10 e subir a aplicação local
 # Defina o diretório do Tomcat 10
 $TomcatHome = "C:\dev\csonline\server\apache-tomcat-10.1.43"
@@ -11,6 +10,13 @@ $env:CATALINA_HOME = $TomcatHome
 Copy-Item "$TomcatHome\conf\context-h2.xml" "$TomcatHome\conf\context.xml" -Force
 # Para PostgreSQL, troque para:
 # Copy-Item "$TomcatHome\conf\context-postgres.xml" "$TomcatHome\conf\context.xml" -Force
+
+# Apague os logs antigos do Tomcat
+Remove-Item "$TomcatHome\logs\*" -Force -ErrorAction SilentlyContinue
+
+# Apague o WAR antigo e a pasta da aplicação
+Remove-Item "$TomcatHome\webapps\csonline.war" -Force -ErrorAction SilentlyContinue
+Remove-Item "$TomcatHome\webapps\csonline" -Recurse -Force -ErrorAction SilentlyContinue
 
 # Gere o WAR da aplicação
 mvn clean package
