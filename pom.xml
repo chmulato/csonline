@@ -27,11 +27,6 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.primefaces</groupId>
-			<artifactId>primefaces</artifactId>
-			<version>13.0.4-jakarta</version>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.myfaces.core</groupId>
 			<artifactId>myfaces-api</artifactId>
 			<version>4.0.0</version>
@@ -77,6 +72,22 @@
 			<artifactId>mockito-core</artifactId>
 			<version>5.2.0</version>
 			<scope>test</scope>
+		</dependency>
+		<!-- Dependências adicionais recomendadas para JSF/MyFaces/Jakarta EE -->
+		<dependency>
+			<groupId>org.glassfish.expressly</groupId>
+			<artifactId>expressly</artifactId>
+			<version>5.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.validation</groupId>
+			<artifactId>jakarta.validation-api</artifactId>
+			<version>3.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jaxb</groupId>
+			<artifactId>jaxb-runtime</artifactId>
+			<version>4.0.4</version>
 		</dependency>
 	</dependencies>
 	<build>
