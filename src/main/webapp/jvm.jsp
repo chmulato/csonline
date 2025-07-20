@@ -5,9 +5,13 @@
 <%@ page import="java.util.*"%>
 
 <%--
-    Document   : JVM Memory Viewer
-    Created on : 06/12/2016, 10:28:23
-    Author     : Christian Vladimir Uhdre Mulato
+    Página: JVM Memory Viewer
+    Finalidade: Monitorar em tempo real o uso de memória da JVM (Heap, Non-Heap e Pools),
+    permitindo visualizar os valores atuais, máximos e percentuais de uso, além de executar
+    manualmente o Garbage Collector via interface web. Útil para diagnóstico, tuning e análise
+    de desempenho do ambiente Java em produção ou desenvolvimento.
+    Autor: Christian Vladimir Uhdre Mulato
+    Última atualização: 20/07/2025
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -15,7 +19,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>SaqueNET - JVM Memory View</title>
+<title>CSONLINE - JVM Memory View</title>
 </head>
 <body
 	style="font-family: verdana; font-size: 10px; margin: 10px; padding: 10px;">
@@ -162,7 +166,7 @@
 	</div>
 	<br />
 	<div style="text-align: right;">Christian Vladimir Uhdre Mulato
-		(chmulato@hotmail.com) ® 2016 - all rights reserved</div>
+        (chmulato@hotmail.com) ® 2025 - all rights reserved</div>
 
 </body>
 </html>

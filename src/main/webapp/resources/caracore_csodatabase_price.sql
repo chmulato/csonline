@@ -1,0 +1,2 @@
+-- Dump de exemplo para price
+-- Adicione aqui o conteúdo do dump original

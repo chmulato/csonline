@@ -1,0 +1,2 @@
+-- Dump de exemplo para delivery
+-- Adicione aqui o conteúdo do dump original
