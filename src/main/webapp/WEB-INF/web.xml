@@ -82,7 +82,7 @@
 		<url-pattern>/auth/*</url-pattern>
 	</filter-mapping>
 	<welcome-file-list>
-		<welcome-file>/login.xhtml</welcome-file>
+		<welcome-file>login.xhtml</welcome-file>
 	</welcome-file-list>
 
 	<!-- Corrige o Content-Type do CSS para incluir charset UTF-8 -->
