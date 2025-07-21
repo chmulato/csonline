@@ -36,6 +36,53 @@ Acesse via navegador: [https://www.caracore.com.br/csonline](https://www.caracor
 4. Certifique-se que os jars obrigatórios estão presentes em WEB-INF/lib do WAR.
 5. Faça o deploy do WAR em um Tomcat 10.1.x (ou superior) configurado para Jakarta EE.
 
+## Configuração de JNDI (DataSource) no Tomcat
+
+O CSOnline utiliza um DataSource configurado via JNDI para acesso ao banco de dados. O recomendado é configurar o DataSource diretamente no servidor Tomcat, centralizando a gestão de conexões e facilitando a administração.
+
+### Exemplo de configuração no Tomcat (`conf/context.xml`):
+
+```xml
+<Resource
+    name="jdbc/db_cso"
+    auth="Container"
+    type="javax.sql.DataSource"
+    driverClassName="org.h2.Driver"
+    url="jdbc:h2:~/csonline;MODE=PostgreSQL;DATABASE_TO_UPPER=false;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=FALSE"
+    username="sa"
+    password=""
+    maxTotal="20"
+    maxIdle="10"
+    maxWaitMillis="10000"
+    initialSize="5"
+    logAbandoned="true"
+    removeAbandonedOnBorrow="true"
+    removeAbandonedTimeout="1800"
+/>
+```
+
+> **Importante:**
+> - O nome do recurso (`jdbc/db_cso`) deve ser igual ao referenciado no `web.xml` da aplicação.
+> - O driver JDBC correspondente (ex: `h2*.jar` ou `postgresql*.jar`) deve estar em `lib` do Tomcat.
+> - Não é necessário (nem recomendado) definir o mesmo DataSource no arquivo `META-INF/context.xml` do WAR quando já está configurado no servidor.
+
+### Diferença entre configuração no servidor e na aplicação
+
+- **Configuração no servidor (recomendado):**
+  - O DataSource é definido no Tomcat (`conf/context.xml` ou `conf/[engine]/[host]/[app].xml`).
+  - Todas as aplicações podem compartilhar a mesma configuração.
+  - Facilita a administração, troca de banco e credenciais sem rebuild do WAR.
+  - Evita conflitos e duplicidade de recursos.
+
+- **Configuração na aplicação:**
+  - O DataSource é definido em `src/main/webapp/META-INF/context.xml` e empacotado no WAR.
+  - Útil apenas para testes/desenvolvimento local, ou quando não se tem acesso ao Tomcat.
+  - Pode sobrescrever a configuração do servidor, causando confusão.
+  - Não recomendado para produção.
+
+**Resumo:**
+> Para produção, configure o JNDI/DataSource no Tomcat e mantenha apenas a referência no `web.xml` da aplicação. Remova ou comente o bloco `<Resource>` do `META-INF/context.xml` do projeto para evitar conflitos.
+
 ## Perfil de Administrador
 
 - Usuário: `chmulato`

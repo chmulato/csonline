@@ -1,11 +1,11 @@
 # Script diagnóstico para JSF/Jakarta EE 10 no Tomcat 10
 # Limpa, compila, deploya e executa validações básicas
 
+
 $TomcatHome = "C:\dev\csonline\server\apache-tomcat-10.1.43"
 $env:CATALINA_HOME = $TomcatHome
 
 # 1. Copiar config desejada
-Copy-Item "$TomcatHome\conf\context-h2.xml" "$TomcatHome\conf\context.xml" -Force
 # Para PostgreSQL, troque para:
 # Copy-Item "$TomcatHome\conf\context-postgres.xml" "$TomcatHome\conf\context.xml" -Force
 
