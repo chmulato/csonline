@@ -2,12 +2,12 @@
 <Context path="/csonline">
 	<!-- Production Configuration JNDI -->
 	<Resource auth="Container" name="jdbc/db_cso"
-		driverClassName="com.mysql.jdbc.Driver" initialSize="10"
-		logAbandoned="true" maxActive="100" maxIdle="30" maxWait="10000"
-		removeAbandoned="true" removeAbandonedTimeout="1800"
+		driverClassName="org.h2.Driver" initialSize="5"
+		logAbandoned="true" maxTotal="20" maxIdle="10" maxWaitMillis="10000"
+		removeAbandonedOnBorrow="true" removeAbandonedTimeout="1800"
 		type="javax.sql.DataSource"
-		url="jdbc:mysql://127.0.0.1:3306/caracore_csodatabase"
-		username="root" password="admin" />
+		url="jdbc:h2:~/csonline;DB_CLOSE_ON_EXIT=FALSE;AUTO_SERVER=TRUE"
+		username="sa" password="" />
 </Context>
 <!-- Lembrando que, como é o Tomcat, que efetua a conexão com o banco de 
 	dados, é necessário colocar no diretório common\lib do TomCat, o jar com 

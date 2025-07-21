@@ -9,12 +9,26 @@ Copy-Item "$TomcatHome\conf\context-h2.xml" "$TomcatHome\conf\context.xml" -Forc
 # Para PostgreSQL, troque para:
 # Copy-Item "$TomcatHome\conf\context-postgres.xml" "$TomcatHome\conf\context.xml" -Force
 
-# 2. Limpar logs, WAR e pasta da aplicação
+# 2. Limpar Tomcat completamente (logs, work, temp, webapps exceto ROOT, conf antigo)
+Write-Host "Limpando Tomcat completamente..."
+Stop-Process -Name "java" -ErrorAction SilentlyContinue
+Start-Sleep -Seconds 2
 Remove-Item "$TomcatHome\logs\*" -Force -ErrorAction SilentlyContinue
-Remove-Item "$TomcatHome\webapps\csonline.war" -Force -ErrorAction SilentlyContinue
-Remove-Item "$TomcatHome\webapps\csonline" -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item "$TomcatHome\work" -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item "$TomcatHome\temp" -Recurse -Force -ErrorAction SilentlyContinue
+# Remove todas as aplicações do webapps, exceto ROOT e remove WAR antigo explicitamente
+Get-ChildItem "$TomcatHome\webapps" | Where-Object { $_.Name -ne "ROOT" } | ForEach-Object {
+    Remove-Item $_.FullName -Recurse -Force -ErrorAction SilentlyContinue
+}
+# Remove WAR antigo explicitamente
+if (Test-Path "$TomcatHome\webapps\csonline.war") {
+    Remove-Item "$TomcatHome\webapps\csonline.war" -Force -ErrorAction SilentlyContinue
+}
+# Remove context.xml antigo
+if (Test-Path "$TomcatHome\conf\context.xml") {
+    Remove-Item "$TomcatHome\conf\context.xml" -Force -ErrorAction SilentlyContinue
+}
+Write-Host "Tomcat limpo."
 
 # Pasta para logs de diagnóstico
 $DiagLogDir = "c:\dev\csonline\diagnostico-logs"
@@ -27,12 +41,22 @@ Write-Host "Validando dependências do projeto..."
 mvn dependency:tree | Out-File "$DiagLogDir\diagnostico-deps.txt"
 Write-Host "Árvore de dependências salva em $DiagLogDir\diagnostico-deps.txt"
 
+
 # 4. Compilar e gerar WAR
 $mvnLogFile = "$DiagLogDir\maven-build.log"
-mvn clean package | Tee-Object -FilePath $mvnLogFile
+$mvnResult = mvn clean package | Tee-Object -FilePath $mvnLogFile
 
-# 5. Copiar WAR para Tomcat
-Copy-Item "target\csonline.war" "$TomcatHome\webapps\csonline.war" -Force
+# 5. Checar se WAR foi gerado
+$warPath = "target\csonline.war"
+if (!(Test-Path $warPath)) {
+    Write-Host "ATENÇÃO: O arquivo $warPath não foi gerado. Tentando rodar 'mvn clean package' novamente..."
+    $mvnResult2 = mvn clean package | Tee-Object -FilePath $mvnLogFile -Append
+    if (!(Test-Path $warPath)) {
+        Write-Host "ERRO: O arquivo $warPath ainda não foi gerado. Verifique o log do Maven em $mvnLogFile."
+        exit 1
+    }
+}
+Copy-Item $warPath "$TomcatHome\webapps\csonline.war" -Force
 
 # 6. Iniciar Tomcat
 Start-Process -FilePath "$TomcatHome\bin\startup.bat"

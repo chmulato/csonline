@@ -21,7 +21,6 @@
 		<!-- Versões das Dependências -->
 		<jakartaee.api.version>10.0.0</jakartaee.api.version>
 		<myfaces.version>4.0.2</myfaces.version>
-		<primefaces.version>13.0.7</primefaces.version>
 		<weld.version>5.1.2.Final</weld.version>
 		<log4j.version>2.23.1</log4j.version>
 		<junit.version>5.10.2</junit.version>
@@ -36,17 +35,11 @@
 			<scope>provided</scope>
 		</dependency>
 		<!-- A dependência myfaces-api é redundante, pois a API padrão (jakarta.faces-api)
-		     já está incluída no jakarta.jakartaee-api. Manter apenas a implementação. -->
+			 já está incluída no jakarta.jakartaee-api. Manter apenas a implementação. -->
 		<dependency>
 			<groupId>org.apache.myfaces.core</groupId>
 			<artifactId>myfaces-impl</artifactId>
 			<version>${myfaces.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.primefaces</groupId>
-			<artifactId>primefaces</artifactId>
-			<version>${primefaces.version}</version>
-			<classifier>jakarta</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.weld.servlet</groupId>
@@ -73,6 +66,13 @@
 			<artifactId>postgresql</artifactId>
 			<version>42.7.3</version>
 		</dependency>
+		<!-- H2 Database para ambiente de desenvolvimento/teste -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>2.2.224</version>
+			<scope>runtime</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
@@ -89,7 +89,7 @@
 		<dependency>
 			<groupId>org.glassfish.expressly</groupId>
 			<artifactId>expressly</artifactId>
-			<version>5.0.0</version>
+			<version>6.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>jakarta.validation</groupId>
