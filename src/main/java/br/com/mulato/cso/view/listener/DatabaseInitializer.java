@@ -9,9 +9,7 @@ import org.apache.logging.log4j.Logger;
 
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
-import jakarta.servlet.annotation.WebListener;
-
-@WebListener
+// Removido @WebListener pois não é necessário sem JNDI ou inicialização automática
 public class DatabaseInitializer implements ServletContextListener {
     private static final Logger logger = LogManager.getLogger(DatabaseInitializer.class);
     @Override

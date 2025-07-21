@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context path="/csonline">
-	<!-- Configuração local para H2. Este bloco será usado apenas se o Tomcat não fornecer o JNDI global. -->
+	<!--
+		Bloco JNDI <Resource ...> comentado pois não será utilizado.
+		Motivo: a aplicação conecta diretamente ao banco H2 via JDBC no código Java (DatabaseInitializer),
+		sem uso de DataSource/JNDI do Tomcat. Isso simplifica o deploy e evita dependência do servidor.
+		Caso queira usar JNDI futuramente, basta descomentar e configurar conforme necessário.
+	-->
+	<!--
 	<Resource 
 		auth="Container"
 		name="jdbc/db_cso"
@@ -13,9 +19,10 @@
 		removeAbandonedOnBorrow="true"
 		removeAbandonedTimeout="1800"
 		type="javax.sql.DataSource"
-		url="jdbc:h2:~/csonline;MODE=PostgreSQL;DATABASE_TO_UPPER=false;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=FALSE"
+		url="jdbc:h2:~/csonline;MODE=PostgreSQL;DATABASE_TO_UPPER=false"
 		username="sa"
 		password="" />
+	-->
 </Context>
 <!-- Lembrando que, como é o Tomcat, que efetua a conexão com o banco de 
 	dados, é necessário colocar no diretório common\lib do TomCat, o jar com 
