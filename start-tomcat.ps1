@@ -24,10 +24,6 @@ Get-ChildItem "$TomcatHome\webapps" | Where-Object { $_.Name -ne "ROOT" } | ForE
 if (Test-Path "$TomcatHome\webapps\csonline.war") {
     Remove-Item "$TomcatHome\webapps\csonline.war" -Force -ErrorAction SilentlyContinue
 }
-# Remove context.xml antigo
-if (Test-Path "$TomcatHome\conf\context.xml") {
-    Remove-Item "$TomcatHome\conf\context.xml" -Force -ErrorAction SilentlyContinue
-}
 Write-Host "Tomcat limpo."
 
 
