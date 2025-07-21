@@ -13,7 +13,7 @@ Copy-Item "$TomcatHome\conf\context-h2.xml" "$TomcatHome\conf\context.xml" -Forc
 Write-Host "Limpando Tomcat completamente..."
 Stop-Process -Name "java" -ErrorAction SilentlyContinue
 Start-Sleep -Seconds 2
-Remove-Item "$TomcatHome\logs\*" -Force -ErrorAction SilentlyContinue
+# Remove-Item "$TomcatHome\logs\*" -Force -ErrorAction SilentlyContinue
 Remove-Item "$TomcatHome\work" -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item "$TomcatHome\temp" -Recurse -Force -ErrorAction SilentlyContinue
 # Remove todas as aplicações do webapps, exceto ROOT e remove WAR antigo explicitamente
