@@ -2,7 +2,7 @@
 # Limpa, compila, deploya e executa validações básicas
 
 
-$TomcatHome = "C:\dev\csonline\server\apache-tomcat-10.1.43"
+$TomcatHome = "C:\dev\workspace\csonline\server\apache-tomcat-10.1.43"
 $env:CATALINA_HOME = $TomcatHome
 
 # 1. Copiar config desejada
