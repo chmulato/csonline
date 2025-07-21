@@ -1,7 +1,6 @@
 package br.com.mulato.cso.exception;
 
-public class DAOException
-    extends WebException
+public class DAOException  extends WebException
 {
 
 	private static final long serialVersionUID = 1L;

@@ -34,6 +34,12 @@
 			<version>${jakartaee.api.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
+			<version>6.0.0</version>
+			<scope>provided</scope>
+		</dependency>
 		<!-- A dependência myfaces-api é redundante, pois a API padrão (jakarta.faces-api)
 			 já está incluída no jakarta.jakartaee-api. Manter apenas a implementação. -->
 		<dependency>
