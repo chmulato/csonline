@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context path="/CSOnline">
 	<!-- Production Configuration JNDI -->
-	<Resource name="jdbc/db_cso" auth="Container" type="javax.sql.DataSource" driverClassName="org.h2.Driver" initialSize="5" maxTotal="20" maxIdle="10" maxWaitMillis="10000" username="sa" password="" url="jdbc:h2:~/csonline;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=FALSE" removeAbandonedOnBorrow="true" removeAbandonedTimeout="1800" logAbandoned="true" />
+	<Resource name="jdbc/db_cso" auth="Container" type="javax.sql.DataSource" driverClassName="org.h2.Driver" initialSize="5" maxTotal="20" maxIdle="10" maxWaitMillis="10000" username="sa" password="" url="jdbc:h2:~/csonline;MODE=PostgreSQL;DATABASE_TO_UPPER=false;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=FALSE;INIT=RUNSCRIPT FROM 'c:/dev/csonline/doc/data-h2.sql'" removeAbandonedOnBorrow="true" removeAbandonedTimeout="1800" logAbandoned="true" />
 </Context>
 <!--
 			Lembrando que, como é o Tomcat, que efetua a conexão com o banco de

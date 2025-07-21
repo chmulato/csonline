@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context path="/csonline">
 	<!-- Production Configuration JNDI -->
-	<Resource auth="Container" name="jdbc/db_cso" driverClassName="org.h2.Driver" initialSize="5" logAbandoned="true" maxTotal="20" maxIdle="10" maxWaitMillis="10000" removeAbandonedOnBorrow="true" removeAbandonedTimeout="1800" type="javax.sql.DataSource" url="jdbc:h2:~/csonline;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=FALSE" username="sa" password="" />
+	<Resource auth="Container" name="jdbc/db_cso" driverClassName="org.h2.Driver" initialSize="5" logAbandoned="true" maxTotal="20" maxIdle="10" maxWaitMillis="10000" removeAbandonedOnBorrow="true" removeAbandonedTimeout="1800" type="javax.sql.DataSource" url="jdbc:h2:~/csonline;MODE=PostgreSQL;DATABASE_TO_UPPER=false;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=FALSE;INIT=RUNSCRIPT FROM 'c:/dev/csonline/doc/data-h2.sql'" username="sa" password="" />
 </Context>
 <!-- Lembrando que, como é o Tomcat, que efetua a conexão com o banco de 
 	dados, é necessário colocar no diretório common\lib do TomCat, o jar com 
