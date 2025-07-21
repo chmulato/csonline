@@ -17,29 +17,41 @@
 		<maven.compiler.source>11</maven.compiler.source>
 		<maven.compiler.target>11</maven.compiler.target>
 		<failOnMissingWebXml>false</failOnMissingWebXml>
+
+		<!-- Versões das Dependências -->
+		<jakartaee.api.version>10.0.0</jakartaee.api.version>
+		<myfaces.version>4.0.2</myfaces.version>
+		<primefaces.version>13.0.7</primefaces.version>
+		<weld.version>5.1.2.Final</weld.version>
+		<log4j.version>2.23.1</log4j.version>
+		<junit.version>5.10.2</junit.version>
+		<mockito.version>5.12.0</mockito.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>jakarta.platform</groupId>
 			<artifactId>jakarta.jakartaee-api</artifactId>
-			<version>10.0.0</version>
+			<version>${jakartaee.api.version}</version>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.myfaces.core</groupId>
-			<artifactId>myfaces-api</artifactId>
-			<version>4.0.0</version>
-		</dependency>
+		<!-- A dependência myfaces-api é redundante, pois a API padrão (jakarta.faces-api)
+		     já está incluída no jakarta.jakartaee-api. Manter apenas a implementação. -->
 		<dependency>
 			<groupId>org.apache.myfaces.core</groupId>
 			<artifactId>myfaces-impl</artifactId>
-			<version>4.0.0</version>
+			<version>${myfaces.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.primefaces</groupId>
+			<artifactId>primefaces</artifactId>
+			<version>${primefaces.version}</version>
+			<classifier>jakarta</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.weld.servlet</groupId>
 			<artifactId>weld-servlet-shaded</artifactId>
-			<version>4.0.3.Final</version>
+			<version>${weld.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jsoup</groupId>
@@ -49,12 +61,12 @@
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-api</artifactId>
-			<version>2.20.0</version>
+			<version>${log4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
-			<version>2.20.0</version>
+			<version>${log4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
@@ -64,13 +76,13 @@
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
-			<version>5.10.2</version>
+			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
-			<version>5.2.0</version>
+			<version>${mockito.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<!-- Dependências adicionais recomendadas para JSF/MyFaces/Jakarta EE -->
@@ -139,16 +151,11 @@
 		<plugin>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-compiler-plugin</artifactId>
-			<version>3.1</version>
-			<configuration>
-				<source>11</source>
-				<target>11</target>
-				<encoding>UTF-8</encoding>
-			</configuration>
+			<version>3.13.0</version>
 		</plugin>
 		<plugin>
 			<artifactId>maven-resources-plugin</artifactId>
-			<version>2.6</version>
+			<version>3.3.1</version>
 			<executions>
 				<execution>
 					<id>copy-resources</id>

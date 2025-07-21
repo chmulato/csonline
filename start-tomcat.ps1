@@ -58,13 +58,3 @@ if (Test-Path $logFile) {
 else {
     Write-Host "Log catalina não encontrado: $logFile"
 }
-
-# 7. Checklist de diagnóstico
-Write-Host "Checklist rápido:"
-Write-Host "- web.xml e faces-config.xml mínimos?"
-Write-Host "- Weld (CDI) inicializa? (verifique logs)"
-Write-Host "- META-INF/services correto nos jars MyFaces?"
-Write-Host "- Página hello.xhtml mínima?"
-Write-Host "- Log MyFaces detalhado ativado?"
-Write-Host "- ResourceHandler instanciado? (verifique logs)"
-Write-Host "- Teste com Mojarra se persistir erro."
