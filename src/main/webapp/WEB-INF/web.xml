@@ -39,10 +39,6 @@
 		<param-name>timezone</param-name>
 		<param-value>GMT-3</param-value>
 	</context-param>
-	<context-param>
-		<param-name>com.sun.faces.loggingLevel</param-name>
-		<param-value>FINE</param-value>
-	</context-param>
    <resource-ref>
 		   <description>H2 Datasource (memória)</description>
 		   <res-ref-name>jdbc/db_cso</res-ref-name>
