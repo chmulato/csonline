@@ -20,15 +20,6 @@
 		<param-value>Development</param-value>
 	</context-param>
 	<context-param>
-		<param-name>primefaces.THEME</param-name>
-		<param-value>#{themeMB.theme}</param-value>
-	</context-param>
-	<context-param>
-		<description>Theme Default</description>
-		<param-name>themeDefault</param-name>
-		<param-value>aristo</param-value>
-	</context-param>
-	<context-param>
 		<description>Tempo de sessão (segundos)</description>
 		<param-name>timeout</param-name>
 		<param-value>600</param-value>
