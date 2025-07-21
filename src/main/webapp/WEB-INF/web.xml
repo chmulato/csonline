@@ -62,7 +62,8 @@
 	   <servlet-name>Faces Servlet</servlet-name>
 	   <url-pattern>*.faces</url-pattern>
    </servlet-mapping>
-	<servlet>
+   <!--
+   <servlet>
 		<servlet-name>H2Console</servlet-name>
 		<servlet-class>org.h2.server.web.WebServlet</servlet-class>
 		<load-on-startup>2</load-on-startup>
@@ -71,6 +72,7 @@
 		<servlet-name>H2Console</servlet-name>
 		<url-pattern>/h2/*</url-pattern>
 	</servlet-mapping>   
+	-->
 	<filter>
 		<filter-name>AuthenticationFilter</filter-name>
 		<filter-class>br.com.mulato.cso.ws.AuthenticationFilter</filter-class>
