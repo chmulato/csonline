@@ -21,36 +21,55 @@ public class SessionListener implements HttpSessionListener {
 	// get the creating session...
 	@Override
 	public void sessionCreated(final HttpSessionEvent event) {
-		if ((event != null) && (event.getSession() != null) && (event.getSession().getId() != null)) {
-			LOGGER.info("Sess�o corrente criada - N�mero: " + event.getSession().getId() + " - Dia/Hora: " +
-					ToolUtils.converteDateToString(new Date(), "dd/MM/yyyy hh:mm:ss"));
+		LOGGER.debug("Início do sessionCreated. Evento: {}", event);
+		if (event == null) {
+			LOGGER.warn("HttpSessionEvent nulo em sessionCreated.");
+			return;
 		}
+		if (event.getSession() == null) {
+			LOGGER.warn("HttpSession nulo em sessionCreated.");
+			return;
+		}
+		if (event.getSession().getId() == null) {
+			LOGGER.warn("ID da sessão nulo em sessionCreated.");
+			return;
+		}
+		String dataHora = ToolUtils.converteDateToString(new Date(), "dd/MM/yyyy hh:mm:ss");
+		LOGGER.info("Sessão criada - Número: {} - Dia/Hora: {}", event.getSession().getId(), dataHora);
 	}
 
 	// get the destroying session...
 	@Override
 	public void sessionDestroyed(final HttpSessionEvent event) {
+		LOGGER.debug("Início do sessionDestroyed. Evento: {}", event);
 		try {
-			if (FacesContext.getCurrentInstance() != null) {
-				final FacesContext facesContext = FacesContext.getCurrentInstance();
-
-				if (facesContext.getApplication() != null) {
-					final Application app = facesContext.getApplication();
-					final ContadorController contadorController = app.evaluateExpressionGet(facesContext, "#{contaMB}",
-							ContadorController.class);
-					if (contadorController != null) {
-						contadorController.menosUm(2);
-					}
-					final ExternalContext externalContext = facesContext.getExternalContext();
-					if (externalContext != null) {
-						externalContext.redirect(externalContext.getRequestContextPath() + "/redirect.html");
-						LOGGER.info("P�gina redirecionada para tela de descanso!");
-					}
-					LOGGER.info("Sess�o corrente destru��da!");
-				}
+			FacesContext facesContext = FacesContext.getCurrentInstance();
+			if (facesContext == null) {
+				LOGGER.warn("FacesContext nulo em sessionDestroyed.");
+				return;
 			}
+			Application app = facesContext.getApplication();
+			if (app == null) {
+				LOGGER.warn("Application nulo em sessionDestroyed.");
+				return;
+			}
+			ContadorController contadorController = app.evaluateExpressionGet(facesContext, "#{contaMB}", ContadorController.class);
+			if (contadorController != null) {
+				contadorController.menosUm(2);
+				LOGGER.info("ContadorController decrementado em sessionDestroyed.");
+			} else {
+				LOGGER.warn("ContadorController não encontrado em sessionDestroyed.");
+			}
+			ExternalContext externalContext = facesContext.getExternalContext();
+			if (externalContext != null) {
+				externalContext.redirect(externalContext.getRequestContextPath() + "/redirect.html");
+				LOGGER.info("Página redirecionada para tela de descanso!");
+			} else {
+				LOGGER.warn("ExternalContext nulo em sessionDestroyed.");
+			}
+			LOGGER.info("Sessão destruída!");
 		} catch (final Exception e) {
-			LOGGER.error("Erro ao finalizar sess�o! " + e.getMessage(), e);
+			LOGGER.error("Erro ao finalizar sessão! {}", e.getMessage(), e);
 		}
 	}
 }

@@ -27,7 +27,7 @@ public class PageListener implements PhaseListener {
 	// executa antes de qualquer renderizar ao usu�rio
 	@Override
 	public void beforePhase(final PhaseEvent event) {
-
+		LOGGER.debug("Início do beforePhase. Phase: {}", event.getPhaseId());
 		final FacesContext facesContext = FacesContext.getCurrentInstance();
 		final Application application = facesContext.getApplication();
 		final String page = facesContext.getViewRoot().getViewId();
@@ -41,20 +41,21 @@ public class PageListener implements PhaseListener {
 		final boolean postback = !externalContext.getRequestParameterMap().isEmpty();
 		timeout = postback && newSession;
 
-		LOGGER.info("Navigation: " + page + " page.");
-		LOGGER.info("Timeout: " + timeout);
+		LOGGER.info("Navegação: {}", page);
+		LOGGER.info("Timeout detectado? {} (postback={}, newSession={})", timeout, postback, newSession);
 
-		// recupera os dados que estao na sess�o LoginController
-		final LoginController loginController = application.evaluateExpressionGet(facesContext, "#{loginMB}",
-				LoginController.class);
+		// recupera os dados que estao na sessão LoginController
+		final LoginController loginController = application.evaluateExpressionGet(facesContext, "#{loginMB}", LoginController.class);
 
 		if (loginController != null) {
 			if (timeout) {
+				LOGGER.warn("Timeout de sessão detectado. Realizando logout e redirecionando para login.");
 				loginController.logout();
 				try {
 					externalContext.redirect(externalContext.getRequestContextPath() + "/login.faces");
+					LOGGER.info("Redirecionamento para login.faces realizado após timeout.");
 				} catch (final IOException ex) {
-					LOGGER.error(ex.getMessage());
+					LOGGER.error("Erro ao redirecionar após timeout: {}", ex.getMessage(), ex);
 				}
 			} else {
 				validaPaginas = page.equals("/logout.xhtml")
@@ -78,21 +79,25 @@ public class PageListener implements PhaseListener {
 						|| page.equals("/pricetables.xhtml")
 						|| page.equals("/messages.xhtml");
 
-				// verifica as p�ginas que n�o possuem acesso externo
 				if (validaPaginas) {
+					LOGGER.debug("Página protegida detectada: {}. Verificando autenticação...", page);
 					if (!loginController.isLogged()) {
+						LOGGER.warn("Usuário não autenticado tentando acessar página protegida: {}. Redirecionando para login.", page);
 						try {
 							externalContext.redirect(externalContext.getRequestContextPath() + "/login.faces");
+							LOGGER.info("Redirecionamento para login.faces realizado por falta de autenticação.");
 						} catch (final IOException ex) {
-							LOGGER.error(ex.getMessage());
+							LOGGER.error("Erro ao redirecionar para login.faces: {}", ex.getMessage(), ex);
 						}
 					}
 				}
-				// se abrir encerra todas sess�es
 				if (page.equals("/logout.xhtml")) {
+					LOGGER.info("Logout solicitado. Encerrando sessão do usuário.");
 					loginController.logout();
 				}
 			}
+		} else {
+			LOGGER.warn("LoginController não encontrado no contexto da sessão.");
 		}
 	}
 

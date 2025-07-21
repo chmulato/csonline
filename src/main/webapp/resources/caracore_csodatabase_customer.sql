@@ -1,2 +1,0 @@
--- Dump de exemplo para customer
--- Adicione aqui o conteúdo do dump original

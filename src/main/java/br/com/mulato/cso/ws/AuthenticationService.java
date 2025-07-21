@@ -14,49 +14,62 @@ public class AuthenticationService {
 	private static final Logger LOGGER = LogManager.getLogger(AuthenticationService.class);
 
 	public boolean authenticate(final String authCredentials) {
-
-		if (null == authCredentials) {
-			LOGGER.error("Modelo de autentica��o inv�lido! Objeto authCredentials=" + authCredentials);
+		LOGGER.debug("Iniciando autenticação. Header recebido: {}", authCredentials);
+		if (authCredentials == null) {
+			LOGGER.error("Modelo de autenticação inválido! Objeto authCredentials=null");
 			return false;
 		}
 
-		// header value format will be "Basic encodedstring" for Basic
-		// authentication. Example "Basic YWRtaW46YWRtaW4="
-		final String encodedUserPassword = authCredentials.replaceFirst("Basic" + " ", "");
+		// header value format will be "Basic encodedstring" for Basic authentication. Example "Basic YWRtaW46YWRtaW4="
+		final String encodedUserPassword = authCredentials.replaceFirst("Basic ", "");
 		String usernameAndPassword = null;
 		try {
 			final byte[] decodedBytes = DatatypeConverter.parseBase64Binary(encodedUserPassword);
 			usernameAndPassword = new String(decodedBytes, "UTF-8");
+			LOGGER.debug("Credenciais decodificadas: {}", usernameAndPassword);
 		} catch (final IOException e) {
-			LOGGER.error("Error: " + e.getMessage());
+			LOGGER.error("Erro ao decodificar credenciais base64: {}", e.getMessage(), e);
+			return false;
+		} catch (final Exception e) {
+			LOGGER.error("Erro inesperado ao decodificar credenciais: {}", e.getMessage(), e);
+			return false;
 		}
+
+		if (usernameAndPassword == null || !usernameAndPassword.contains(":")) {
+			LOGGER.error("Formato de credenciais inválido: {}", usernameAndPassword);
+			return false;
+		}
+
 		final StringTokenizer tokenizer = new StringTokenizer(usernameAndPassword, ":");
-		final String username = tokenizer.nextToken();
-		final String password = tokenizer.nextToken();
+		final String username = tokenizer.hasMoreTokens() ? tokenizer.nextToken() : null;
+		final String password = tokenizer.hasMoreTokens() ? tokenizer.nextToken() : null;
 		boolean authenticationStatus = false;
-		if ((username != null) && (password != null)) {
-			if ((!username.equals("")) && (!password.equals(""))) {
-				final LoginVO login = new LoginVO(username, password);
-				try {
-					final Boolean authenticate = FactoryService.getInstancia().getLoginService().authenticate(login);
-					if (authenticate != null) {
-						authenticationStatus = authenticate;
-						if (authenticationStatus) {
-							LOGGER.info("Autentica��o do usu�rio com sucesso!");
-						} else {
-							LOGGER.error("Autentica��o do usu�rio n�o v�lida!");
-						}
-					} else {
-						LOGGER.error("Objeto de autentica��o nulo!");
-					}
-				} catch (final Exception e) {
-					LOGGER.error("Error: " + e.getMessage());
+
+		if (username == null || password == null) {
+			LOGGER.error("Usuário ou senha nulo! username={}, password={}", username, password);
+			return false;
+		}
+		if (username.isEmpty() || password.isEmpty()) {
+			LOGGER.error("Usuário ou senha vazio! username={}, password={}", username, password);
+			return false;
+		}
+
+		LOGGER.info("Tentando autenticar usuário: {}", username);
+		final LoginVO login = new LoginVO(username, password);
+		try {
+			final Boolean authenticate = FactoryService.getInstancia().getLoginService().authenticate(login);
+			if (authenticate != null) {
+				authenticationStatus = authenticate;
+				if (authenticationStatus) {
+					LOGGER.info("Autenticação do usuário '{}' com sucesso!", username);
+				} else {
+					LOGGER.warn("Autenticação do usuário '{}' não válida!", username);
 				}
 			} else {
-				LOGGER.error("Usu�rio ou senha vazio!");
+				LOGGER.error("Objeto de autenticação nulo para usuário: {}", username);
 			}
-		} else {
-			LOGGER.error("Usu�rio ou senha nulo!");
+		} catch (final Exception e) {
+			LOGGER.error("Erro ao autenticar usuário '{}': {}", username, e.getMessage(), e);
 		}
 		return authenticationStatus;
 	}

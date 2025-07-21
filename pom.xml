@@ -67,18 +67,19 @@
 			<artifactId>log4j-core</artifactId>
 			<version>${log4j.version}</version>
 		</dependency>
+		<!--
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>42.7.3</version>
 		</dependency>
-		<!-- H2 Database para ambiente de desenvolvimento/teste -->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<version>2.2.224</version>
+			<version>2.3.232</version>
 			<scope>runtime</scope>
 		</dependency>
+		-->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
@@ -111,30 +112,32 @@
 	<build>
 		<finalName>csonline</finalName>
 		<plugins>
-<plugin>
-	<groupId>org.flywaydb</groupId>
-	<artifactId>flyway-maven-plugin</artifactId>
-	<version>10.14.0</version>
-	<dependencies>
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>42.7.3</version>
-		</dependency>
-	</dependencies>
-	<configuration>
-		<driver>org.postgresql.Driver</driver>
-		<url>jdbc:postgresql://localhost:5432/caracore_csodatabase</url>
-		<user>admin</user>
-		<password>admin</password>
-		<schemas>
-			<schema>caracore_csodatabase</schema>
-		</schemas>
-		<locations>
-			<location>filesystem:src/main/resources/db/migration</location>
-		</locations>
-	</configuration>
-</plugin>
+		<!--
+		<plugin>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-maven-plugin</artifactId>
+			<version>10.14.0</version>
+			<dependencies>
+				<dependency>
+					<groupId>org.postgresql</groupId>
+					<artifactId>postgresql</artifactId>
+					<version>42.7.3</version>
+				</dependency>
+			</dependencies>
+			<configuration>
+				<driver>org.postgresql.Driver</driver>
+				<url>jdbc:postgresql://localhost:5432/caracore_csodatabase</url>
+				<user>admin</user>
+				<password>admin</password>
+				<schemas>
+					<schema>caracore_csodatabase</schema>
+				</schemas>
+				<locations>
+					<location>filesystem:src/main/resources/db/migration</location>
+				</locations>
+			</configuration>
+		</plugin>
+		-->
 		<plugin>
 			<groupId>org.jacoco</groupId>
 			<artifactId>jacoco-maven-plugin</artifactId>
