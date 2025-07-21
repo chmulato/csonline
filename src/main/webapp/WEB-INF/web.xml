@@ -59,7 +59,6 @@
    <servlet-mapping>
 	   <servlet-name>Faces Servlet</servlet-name>
 	   <url-pattern>*.xhtml</url-pattern>
-	   <url-pattern>*.faces</url-pattern>
    </servlet-mapping>
 	<filter>
 		<filter-name>AuthenticationFilter</filter-name>
@@ -70,6 +69,12 @@
 		<url-pattern>/auth/*</url-pattern>
 	</filter-mapping>
 	<welcome-file-list>
-		<welcome-file>/index.jsp</welcome-file>
+		<welcome-file>login.xhtml</welcome-file>
 	</welcome-file-list>
+
+	<!-- Corrige o Content-Type do CSS para incluir charset UTF-8 -->
+	<mime-mapping>
+		<extension>css</extension>
+		<mime-type>text/css; charset=UTF-8</mime-type>
+	</mime-mapping>
 </web-app>

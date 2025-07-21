@@ -69,175 +69,134 @@ public class LoginController extends AbstractController implements Serializable 
 	}
 
 	public String login() {
-
 		String path = "login";
-
 		LoginVO login = null;
 		logged = false;
 		timeSystem = null;
 		userIdLogged = null;
 
+		LOGGER.info("[LOGIN] Iniciando login para usuário: {}", username);
 		try {
-
 			if (username == null) {
-				throw new WebException("Informe login do usu�rio!");
+				FacesMessages.mensErro("Informe login do usuário!");
+				LOGGER.warn("[LOGIN] Usuário não informado");
+				return null;
 			}
-
 			if (password == null) {
-				throw new WebException("Informe senha do usu�rio!");
+				FacesMessages.mensErro("Informe senha do usuário!");
+				LOGGER.warn("[LOGIN] Senha não informada");
+				return null;
 			}
-
 			if (username.equals("")) {
-				throw new WebException("Informe login do usu�rio!");
+				FacesMessages.mensErro("Informe login do usuário!");
+				LOGGER.warn("[LOGIN] Usuário em branco");
+				return null;
 			}
-
 			if (password.equals("")) {
-				throw new WebException("Informe senha do usu�rio!");
+				FacesMessages.mensErro("Informe senha do usuário!");
+				LOGGER.warn("[LOGIN] Senha em branco");
+				return null;
 			}
-
 			username = username.trim();
 			password = password.trim();
-
 			login = new LoginVO();
-
 			login.setLogin(username);
 			login.setPassword(password);
-
+			LOGGER.info("[LOGIN] Autenticando usuário: {}", username);
 			final Boolean authenticate = FactoryService.getInstancia().getLoginService().authenticate(login);
-
 			if ((authenticate != null) && (authenticate.booleanValue() == false)) {
 				master = true;
+				LOGGER.warn("[LOGIN] Autenticação falhou para usuário: {}", username);
 			}
-
 			final FacesContext context = FacesContext.getCurrentInstance();
 			final Application app = context.getApplication();
-			final ContadorController contadorController = app.evaluateExpressionGet(context, "#{contadorMB}",
-					ContadorController.class);
-
+			final ContadorController contadorController = app.evaluateExpressionGet(context, "#{contadorMB}", ContadorController.class);
 			if (contadorController != null) {
 				contadorController.maisUm(4);
 			}
-
 			logged = true;
-
 			// Cleaning the password
 			password = null;
 			login.setPassword(password);
-
 			final UserVO user = FactoryService.getInstancia().getAdminService().findByLogin(login);
-
 			if (user == null) {
-				throw new WebException("Usu�rio n�o encontrado!");
+				FacesMessages.mensErro("Usuário não encontrado!");
+				LOGGER.error("[LOGIN] Usuário não encontrado: {}", username);
+				return null;
 			}
-
-			if (user.getId() == null) {
-				throw new WebException("Usu�rio n�o encontrado!");
+			if (user.getId() == null || user.getId().intValue() <= 0) {
+				FacesMessages.mensErro("Usuário não encontrado!");
+				LOGGER.error("[LOGIN] ID do usuário inválido: {}", username);
+				return null;
 			}
-
-			if (user.getId().intValue() <= 0) {
-				throw new WebException("Usu�rio n�o encontrado!");
-			}
-
 			if ((user.getRole() == null) || (user.getRole().equals(""))) {
-				throw new WebException("Perfil n�o encontrado!");
+				FacesMessages.mensErro("Perfil não encontrado!");
+				LOGGER.error("[LOGIN] Perfil não encontrado para usuário: {}", username);
+				return null;
 			}
-
 			profile = user.getRole().toUpperCase().trim();
-
 			if (profile.equals("ADMINISTRATOR")) {
-
 				userIdLogged = user.getId();
-
 				path = "users";
-
 				profile = "ADMINISTRATOR";
-
 			} else if (profile.equals("BUSINESS")) {
-
 				userIdLogged = user.getId();
-
 				final BusinessVO vo = FactoryService.getInstancia().getBusinessService().find(user.getId());
-
 				if (vo != null) {
-
 					businessVO = vo;
 					id = user.getId();
-
 				} else {
-
-					throw new WebException("Neg�cio n�o encontrado!");
-
+					FacesMessages.mensErro("Negócio não encontrado!");
+					LOGGER.error("[LOGIN] Negócio não encontrado para usuário: {}", username);
+					return null;
 				}
-
 				path = "resume";
-
 				profile = "BUSINESS";
-
 			} else if (profile.equals("CUSTOMER")) {
-
 				userIdLogged = user.getId();
-
-				final BusinessVO vo = FactoryService.getInstancia().getBusinessService()
-						.findBusinessByCustomerId(user.getId());
-
+				final BusinessVO vo = FactoryService.getInstancia().getBusinessService().findBusinessByCustomerId(user.getId());
 				if (vo != null) {
-
 					businessVO = vo;
 					id = user.getId();
-
 				} else {
-
-					throw new WebException("Neg�cio do cliente n�o encontrado!");
-
+					FacesMessages.mensErro("Negócio do cliente não encontrado!");
+					LOGGER.error("[LOGIN] Negócio do cliente não encontrado para usuário: {}", username);
+					return null;
 				}
-
 				path = "resume";
-
 				profile = "CUSTOMER";
-
 			} else if (profile.equals("COURIER")) {
-
 				userIdLogged = user.getId();
-
 				path = "resume";
-
-				final BusinessVO vo = FactoryService.getInstancia().getBusinessService()
-						.findBusinessByCourierId(user.getId());
-
+				final BusinessVO vo = FactoryService.getInstancia().getBusinessService().findBusinessByCourierId(user.getId());
 				if (vo != null) {
-
 					businessVO = vo;
 					id = user.getId();
-
 				} else {
-
-					throw new WebException("Neg�cio do entregador n�o encontrado!");
-
+					FacesMessages.mensErro("Negócio do entregador não encontrado!");
+					LOGGER.error("[LOGIN] Negócio do entregador não encontrado para usuário: {}", username);
+					return null;
 				}
-
 				profile = "COURIER";
-
 			}
-
-			LOGGER.info("Usu�rio encontrado: " + user);
-
+			LOGGER.info("[LOGIN] Usuário autenticado: {}", user);
 			final FacesContext facesContext = FacesContext.getCurrentInstance();
 			final ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
-
 			final String timeout = servletContext.getInitParameter("timeout");
-
-			// setando o tempo de inatividade do sistema em 15 minuto
-			getRequest().getSession().setMaxInactiveInterval(new Integer(timeout).intValue());
-
+			// setando o tempo de inatividade do sistema em 15 minutos
+			getRequest().getSession().setMaxInactiveInterval(Integer.parseInt(timeout));
 			numberSession = getRequest().getSession().getId();
-
 			final SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 			timeSystem = fmt.format(new Date());
-
 		} catch (final WebException e) {
 			FacesMessages.mensErro(e.getMessage());
+			LOGGER.error("[LOGIN] Exceção de WebException: {}", e.getMessage(), e);
+			return null;
+		} catch (final Exception e) {
+			FacesMessages.mensErro("Erro inesperado no login!");
+			LOGGER.error("[LOGIN] Erro inesperado: {}", e.getMessage(), e);
+			return null;
 		}
-
 		return goToBackPage(path);
 	}
 
