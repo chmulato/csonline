@@ -58,9 +58,22 @@
 	   <servlet-class>jakarta.faces.webapp.FacesServlet</servlet-class>
 	   <load-on-startup>1</load-on-startup>
    </servlet>
+   
+   <!-- Servlet para servir recursos estáticos (CSS, JS, imagens) -->
+   <servlet>
+	   <servlet-name>ResourceServlet</servlet-name>
+	   <servlet-class>jakarta.faces.webapp.FacesServlet</servlet-class>
+   </servlet>
+   
    <servlet-mapping>
 	   <servlet-name>Faces Servlet</servlet-name>
 	   <url-pattern>*.xhtml</url-pattern>
+   </servlet-mapping>
+   
+   <!-- Mapping para recursos estáticos do JSF -->
+   <servlet-mapping>
+	   <servlet-name>ResourceServlet</servlet-name>
+	   <url-pattern>/jakarta.faces.resource/*</url-pattern>
    </servlet-mapping>
    <!--
    <servlet>
