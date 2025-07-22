@@ -47,11 +47,12 @@
 			<artifactId>myfaces-impl</artifactId>
 			<version>${myfaces.version}</version>
 		</dependency>
-		<!-- PrimeFaces 13.x para Jakarta EE 10 -->
+		<!-- PrimeFaces 14.x para Jakarta EE 10 -->
 		<dependency>
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
-			<version>13.0.7</version>
+			<version>14.0.0</version>
+			<classifier>jakarta</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.primefaces.themes</groupId>
