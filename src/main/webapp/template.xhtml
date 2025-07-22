@@ -14,8 +14,6 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<link rel="shortcut icon" type="image/x-icon" href="#{resource['images:favicon.ico']}" />
 		<h:outputStylesheet library="css" name="styles.css" />
-		<!-- jQuery carregado diretamente para garantir disponibilidade -->
-		<script type="text/javascript" src="#{resource['jquery:jquery-3.6.0.min.js']}"></script>
 		<title>#{rotulo.aplicacao}</title>
 	</h:head>
 
@@ -64,11 +62,11 @@
 		
 		</p:layout>
 		
-		<!-- Scripts jQuery carregados após a página -->
-		<script type="text/javascript" src="#{resource['jquery:jquery.maskedinput-1.2.2.min.js']}"></script>
-		<script type="text/javascript" src="#{resource['jquery:jquery.maskMoney.js']}"></script>
-		<script type="text/javascript" src="#{resource['jquery:functions.js']}"></script>
-		<script type="text/javascript" src="#{resource['jquery:common.js']}"></script>
+		<!-- Scripts customizados carregados após PrimeFaces -->
+		<h:outputScript library="jquery" name="jquery.maskedinput-1.2.2.min.js" target="body" />
+		<h:outputScript library="jquery" name="jquery.maskMoney.js" target="body" />
+		<h:outputScript library="jquery" name="functions.js" target="body" />
+		<h:outputScript library="jquery" name="common.js" target="body" />
 
 	</body>
 </f:view>

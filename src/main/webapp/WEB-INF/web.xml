@@ -23,7 +23,7 @@
 	<!-- Configuração de exclusões de recursos JSF -->
 	<context-param>
 		<param-name>jakarta.faces.RESOURCE_EXCLUDES</param-name>
-		<param-value>.class .jsp .jspx .properties .xhtml .groovy .woff .woff2 .ttf .eot .css .js .gif .png .jpg .jpeg .ico</param-value>
+		<param-value>.class .jsp .jspx .properties .xhtml .groovy .css .js .gif .png .jpg .jpeg .ico .woff .woff2 .ttf .eot .svg</param-value>
 	</context-param>
 	
 	<!-- Configurações do PrimeFaces -->
@@ -42,6 +42,14 @@
 	<context-param>
 		<param-name>jakarta.faces.FACELETS_BUFFER_SIZE</param-name>
 		<param-value>65536</param-value>
+	</context-param>
+	<context-param>
+		<param-name>primefaces.CLIENT_SIDE_VALIDATION</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	<context-param>
+		<param-name>jakarta.faces.FACELETS_REFRESH_PERIOD</param-name>
+		<param-value>-1</param-value>
 	</context-param>
 	
 	<context-param>
@@ -84,10 +92,14 @@
 	   <load-on-startup>1</load-on-startup>
    </servlet>
    
-   <!-- Servlet padrão para recursos estáticos -->
+   <!-- Servlet para recursos estáticos -->
    <servlet>
 	   <servlet-name>default</servlet-name>
 	   <servlet-class>org.eclipse.jetty.servlet.DefaultServlet</servlet-class>
+	   <init-param>
+		   <param-name>dirAllowed</param-name>
+		   <param-value>true</param-value>
+	   </init-param>
 	   <load-on-startup>2</load-on-startup>
    </servlet>
    
@@ -96,13 +108,13 @@
 	   <url-pattern>*.xhtml</url-pattern>
    </servlet-mapping>
    
-   <!-- Configuração para recursos JSF (CSS, JS, fontes) via PrimeFaces -->
+   <!-- Mapeamento específico para recursos JSF do PrimeFaces -->
    <servlet-mapping>
 	   <servlet-name>Faces Servlet</servlet-name>
 	   <url-pattern>/jakarta.faces.resource/*</url-pattern>
    </servlet-mapping>
    
-   <!-- Mapeamento para recursos estáticos locais -->
+   <!-- Mapeamentos para recursos estáticos -->
    <servlet-mapping>
 	   <servlet-name>default</servlet-name>
 	   <url-pattern>/resources/*</url-pattern>
