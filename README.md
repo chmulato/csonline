@@ -4,7 +4,24 @@ Aplicação Web para controle de entregas.
 
 ## Descrição
 
-CSOnline Delivery é uma aplicação desenvolvida em Java (SDK 17) utilizando Jakarta EE 10, MyFaces 4.0.x e PrimeFaces 14.0.0-jakarta para gerenciamento de entregas. O sistema roda em Tomcat 10.1.23 embedded (Jakarta EE 10 compatível) e utiliza PostgreSQL 15 como banco de dados relacional.
+CSOnline Deliv### Logs do Jetty Embedded
+
+Os logs são exibidos diretamente no terminal onde você executou `mvn jetty:run`. Os logs incluem:
+
+- **Inicialização do H2**: `Banco H2 inicializado com sucesso.`
+- **MyFaces/JSF**: `MyFaces Core has started`
+- **PrimeFaces**: `Running on PrimeFaces 14.0.0`
+- **CDI/Weld**: `Weld initialization`
+- **Log4j 2**: Logs estruturados com timestamp e níveis
+
+**Logs da aplicação:**
+
+```text
+logs/
+├── csonline.log          ← Log principal da aplicação
+├── csonline.2025-07-22.1.gz  ← Logs arquivados (rotação diária)
+└── archived/             ← Logs antigos (máx. 10 arquivos)
+```ão desenvolvida em Java (SDK 17) utilizando Jakarta EE 10, MyFaces 4.0.x e PrimeFaces 14.0.0-jakarta para gerenciamento de entregas. O sistema roda em Tomcat 10.1.23 embedded (Jakarta EE 10 compatível) e utiliza PostgreSQL 15 como banco de dados relacional.
 
 Acesse via navegador: [https://www.caracore.com.br/csonline](https://www.caracore.com.br/csonline)
 
@@ -18,28 +35,30 @@ Acesse via navegador: [https://www.caracore.com.br/csonline](https://www.caracor
 
 - **Jakarta EE 10**: Plataforma empresarial Java com namespaces `jakarta.*`
 - **PrimeFaces 14.0.0-jakarta**: Biblioteca de componentes JSF para Jakarta EE
-- **MyFaces 4.0.x**: Implementação JSF para Jakarta EE
-- **Weld 5.1.x**: Implementação CDI (Contexts and Dependency Injection)
-- **Tomcat 10.1.23**: Servidor de aplicação compatível com Jakarta EE 10
-- **Maven Cargo Plugin**: Para execução do Tomcat embedded durante desenvolvimento
+- **MyFaces 4.0.x**: Implementação JSF para Jakarta EE (Apache MyFaces)
+- **Weld 5.1.2.Final**: Implementação CDI (Contexts and Dependency Injection)
+- **Jetty 11.0.17**: Servidor de aplicação para desenvolvimento (Maven Plugin)
+- **Tomcat 10.1.23**: Servidor de aplicação para produção compatível com Jakarta EE 10
+- **Log4j 2.23.1**: Sistema de logging estruturado com rotação de arquivos
 - **PostgreSQL 15**: Banco de dados relacional para produção
-- **H2 Database**: Banco de dados em memória para desenvolvimento e testes
+- **H2 Database 2.3.232**: Banco de dados em memória para desenvolvimento e testes
 
 ## Requisitos
 
-- Java SDK 17
+- Java SDK 17+
 - Jakarta EE 10
 - Maven 3.9.x ou superior
-- PostgreSQL 15 (para produção) ou H2 (para desenvolvimento)
+- PostgreSQL 15 (para produção) ou H2 2.3.232 (para desenvolvimento)
 - Dependências principais (gerenciadas pelo Maven):
   - PrimeFaces 14.0.0-jakarta (Jakarta EE compatível)
-  - MyFaces 4.0.x (implementação Jakarta EE)
-  - Weld 5.1.x (CDI para Jakarta EE)
-  - Tomcat 10.1.23 embedded (via Maven Cargo Plugin)
+  - Apache MyFaces 4.0.x (implementação Jakarta EE)
+  - Weld 5.1.2.Final (CDI para Jakarta EE)
+  - Jetty 11.0.17 (desenvolvimento via Maven Plugin)
+  - Log4j 2.23.1 (logging estruturado)
 
 ## Instalação e Execução
 
-### Desenvolvimento (Tomcat Embedded)
+### Desenvolvimento (Jetty Embedded)
 
 1. Clone o repositório:
 
@@ -48,10 +67,10 @@ Acesse via navegador: [https://www.caracore.com.br/csonline](https://www.caracor
    cd csonline
    ```
 
-2. Compile, empacote e execute com Tomcat embedded:
+2. Compile, empacote e execute com Jetty embedded:
 
    ```bash
-   mvn clean package cargo:run -DskipTests
+   mvn clean package jetty:run -DskipTests
    ```
 
    **Ou execute em etapas separadas:**
@@ -61,14 +80,15 @@ Acesse via navegador: [https://www.caracore.com.br/csonline](https://www.caracor
    mvn clean package -DskipTests
    
    # Depois inicie o servidor
-   mvn cargo:run
+   mvn jetty:run
    ```
 
-3. **Aguarde a mensagem de inicialização:**
+3. **Aguarde a inicialização completa:**
 
    ```text
-   [INFO] Tomcat 10.x Embedded started on port [8080]
-   [INFO] Press Ctrl-C to stop the container...
+   [INFO] MyFaces Core has started, it took [3921] ms.
+   [INFO] Running on PrimeFaces 14.0.0
+   [INFO] Banco H2 inicializado com sucesso.
    ```
 
 4. **Acesse a aplicação:**
@@ -76,7 +96,23 @@ Acesse via navegador: [https://www.caracore.com.br/csonline](https://www.caracor
    - Usuário: `chmulato`
    - Senha: `admin`
 
-### Logs do Tomcat Embedded
+### Base de Dados H2 (Desenvolvimento)
+
+A aplicação utiliza H2 Database em modo PostgreSQL para desenvolvimento:
+
+- **URL de conexão**: `jdbc:h2:~/csonline;MODE=PostgreSQL;DATABASE_TO_UPPER=false`
+- **Localização**: `~/csonline.mv.db` (diretório home do usuário)
+- **Inicialização automática**: Script SQL executado via `DatabaseInitializer`
+- **Dados de teste incluídos**: Usuários, clientes, entregadores e preços
+
+**Usuários disponíveis para teste:**
+
+- **Admin**: `chmulato` / `admin`
+- **Business**: `pmulato` / `admin`, `joao` / `admin`
+- **Customer**: `mariosa` / `admin`, `santasa` / `admin`
+- **Courier**: `mane` / `admin`
+
+### Logs do Jetty Embedded
 
 Os logs são exibidos diretamente no terminal onde você executou `mvn cargo:run`. Para logs mais detalhados:
 
@@ -98,17 +134,18 @@ target/cargo/
 
 ```bash
 # No Windows (PowerShell)
-Get-Content target/cargo/configurations/tomcat10x/logs/catalina.out -Wait
+Get-Content logs/csonline.log -Wait
 
-# Ou monitore via terminal onde está executando mvn cargo:run
+# Ou monitore via terminal onde está executando mvn jetty:run
 ```
 
 **Configuração de log level:**
 
-O nível de log pode ser ajustado no `pom.xml`:
+Edite `src/main/resources/log4j2.xml` para ajustar níveis:
 
 ```xml
-<cargo.logging>medium</cargo.logging>  <!-- low, medium, high -->
+<Logger name="br.com.mulato" level="DEBUG" additivity="false">
+<!-- Para mais detalhes: level="TRACE" -->
 ```
 
 ### Configuração do Log4j 2
@@ -140,13 +177,19 @@ Edite `src/main/resources/log4j2.xml` e altere os levels conforme necessário:
 
 ### Solução de Problemas
 
-Se encontrar problemas de cache ou mudanças não aparecerem:
+Se encontrar problemas com a aplicação:
 
 ```bash
-# Limpe o cache do Cargo e rebuild
+# Limpe e reinicie completamente
 taskkill /F /IM java.exe
-mvn clean package cargo:run -DskipTests
+mvn clean package jetty:run -DskipTests
 ```
+
+**Problemas comuns:**
+
+1. **Porta 8080 ocupada**: Verificar se outra aplicação está usando a porta
+2. **H2 Database lock**: Fechar conexões existentes antes de reiniciar
+3. **Dependências**: Executar `mvn clean` para limpar cache Maven
 
 ### Verificação da Instalação
 
@@ -167,9 +210,10 @@ target/
 **Logs de Sucesso Esperados:**
 
 ```text
-INFO: MyFaces Core has started
+INFO: Banco H2 inicializado com sucesso.
+INFO: MyFaces Core has started, it took [3921] ms.
 INFO: Running on PrimeFaces 14.0.0
-INFO: Tomcat 10.x Embedded started on port [8080]
+INFO: Weld initialization completed successfully
 ```
 
 ### Produção (Deploy WAR)
@@ -186,15 +230,31 @@ INFO: Tomcat 10.x Embedded started on port [8080]
 
 ## Migração para Jakarta EE
 
-Este projeto foi migrado do Java EE (namespace `javax.*`) para Jakarta EE 10 (namespace `jakarta.*`). As principais mudanças incluem:
+Este projeto foi **completamente migrado** do Java EE (namespace `javax.*`) para Jakarta EE 10 (namespace `jakarta.*`). As principais mudanças incluem:
 
-- Atualização do PrimeFaces 13.0.7 para 14.0.0-jakarta
-- Migração do MyFaces para versão 4.0.x (Jakarta EE)
-- Atualização do Weld para versão 5.1.x
-- Configuração do Tomcat 10.1.23 embedded para desenvolvimento
-- Atualização de todas as dependências para compatibilidade com Jakarta EE 10
-- Configuração do Tomcat 10.1.23 embedded para desenvolvimento
-- Atualização de todas as dependências para compatibilidade com Jakarta EE 10
+### Mudanças Críticas Realizadas
+
+- **PrimeFaces**: Atualizado de 13.0.7 para **14.0.0-jakarta** (versão Jakarta EE compatível)
+- **MyFaces**: Migrado para versão 4.0.x (Jakarta EE) - Apache MyFaces
+- **Weld**: Atualizado para versão 5.1.2.Final (CDI Jakarta EE)
+- **H2 Database**: Configurado script de inicialização corrigindo palavra reservada `user` → `users`
+- **Log4j**: Atualizado para 2.23.1 com configuração Jakarta EE compatível
+- **Servidor**: Migrado de Tomcat Cargo para Jetty Maven Plugin (desenvolvimento)
+- **Namespaces**: Todas as dependências e configurações atualizadas para `jakarta.*`
+
+### Descobertas Importantes da Migração
+
+1. **PrimeFaces 13.x não é Jakarta EE**: Era necessário usar versão 14.0.0 específica
+2. **H2 Database**: Palavra `user` é reservada, substituída por `users`
+3. **Log4j**: Necessária migração completa da configuração v1.x para v2.x
+4. **Cargo Plugin**: Problemas de cache resolvidos com migração para Jetty
+
+### Arquivos Principais Criados/Atualizados
+
+- `src/main/resources/log4j2.xml` - Configuração completa Log4j 2
+- `src/main/resources/data-h2.sql` - Script inicialização H2 compatível
+- `src/main/java/.../DatabaseInitializer.java` - Listener inicialização banco
+- `pom.xml` - Dependências Jakarta EE 10 completas
 
 O CSOnline **não utiliza JNDI/DataSource do Tomcat**. A conexão com o banco é feita diretamente via JDBC no código Java, utilizando o driver do banco (H2 ou PostgreSQL) e a URL de conexão configurada no projeto.
 
