@@ -1,3 +1,7 @@
+# Docker Compose para PostgreSQL (opcional para produção)
+# Para desenvolvimento, o projeto usa H2 Database (inicialização automática)
+# Para usar PostgreSQL, configure config.properties com as credenciais abaixo
+
 version: "3.8"
 services:
   db:
