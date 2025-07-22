@@ -4,24 +4,7 @@ Aplicação Web para controle de entregas.
 
 ## Descrição
 
-CSOnline Deliv### Logs do Jetty Embedded
-
-Os logs são exibidos diretamente no terminal onde você executou `mvn jetty:run`. Os logs incluem:
-
-- **Inicialização do H2**: `Banco H2 inicializado com sucesso.`
-- **MyFaces/JSF**: `MyFaces Core has started`
-- **PrimeFaces**: `Running on PrimeFaces 14.0.0`
-- **CDI/Weld**: `Weld initialization`
-- **Log4j 2**: Logs estruturados com timestamp e níveis
-
-**Logs da aplicação:**
-
-```text
-logs/
-├── csonline.log          ← Log principal da aplicação
-├── csonline.2025-07-22.1.gz  ← Logs arquivados (rotação diária)
-└── archived/             ← Logs antigos (máx. 10 arquivos)
-```ão desenvolvida em Java (SDK 17) utilizando Jakarta EE 10, Apache MyFaces 4.0.x e PrimeFaces 14.0.0-jakarta para gerenciamento de entregas. O sistema roda em Jetty 11.0.17 embedded (desenvolvimento) ou Tomcat 10.1.x (produção) compatível com Jakarta EE 10, e utiliza H2 Database 2.3.232 (desenvolvimento) ou PostgreSQL 15 (produção) como banco de dados relacional.
+CSOnline Delivery é uma aplicação desenvolvida em Java (SDK 17) utilizando Jakarta EE 10, Apache MyFaces 4.0.x e PrimeFaces 14.0.0-jakarta para gerenciamento de entregas. O sistema roda em Jetty 11.0.17 embedded (desenvolvimento) ou Tomcat 10.1.x (produção) compatível com Jakarta EE 10, e utiliza H2 Database 2.3.232 (desenvolvimento) ou PostgreSQL 15 (produção) como banco de dados relacional.
 
 Acesse via navegador: [https://www.caracore.com.br/csonline](https://www.caracore.com.br/csonline)
 
@@ -119,7 +102,16 @@ A aplicação utiliza H2 Database em modo PostgreSQL para desenvolvimento:
 
 Os logs são exibidos diretamente no terminal onde você executou `mvn cargo:run`. Para logs mais detalhados:
 
-**Localização dos logs:**
+**Logs da aplicação:**
+
+```text
+logs/
+├── csonline.log          ← Log principal da aplicação
+├── csonline.2025-07-22.1.gz  ← Logs arquivados (rotação diária)
+└── archived/             ← Logs antigos (máx. 10 arquivos)
+```
+
+**Localização dos logs do servidor:**
 
 ```text
 target/cargo/
@@ -186,6 +178,7 @@ Edite `src/main/resources/log4j2.xml` e altere os levels conforme necessário:
 ```
 
 **Manualmente:**
+
 - Pressione `Ctrl+C` no terminal onde está executando
 - Ou force o encerramento: `taskkill /F /IM java.exe` (Windows)
 
@@ -210,6 +203,10 @@ mvn clean package jetty:run -DskipTests
 3. **Dependências**: Executar `mvn clean` para limpar cache Maven
 4. **Recursos JSF não carregam**: Verificar configuração `jakarta.faces.RESOURCE_EXCLUDES` no web.xml
 5. **Temas PrimeFaces**: Verificar se `nova-light` está disponível nos recursos
+6. **Seletor de temas não funciona**: O sistema possui dois gerenciadores de temas:
+   - ThemeBean (#{themeMB}) - Usado no login.xhtml
+   - ThemeSwitcherBean (#{themeSwitcherBean}) - Usado no theme.xhtml
+   - Verificar parâmetro `themeDefault` no web.xml e propriedade `client.theme_application` no config.properties
 
 ### Verificação da Instalação
 
@@ -265,6 +262,21 @@ Este projeto foi **completamente migrado** do Java EE (namespace `javax.*`) para
 - **Recursos JSF**: Configuração `jakarta.faces.RESOURCE_EXCLUDES` otimizada para servir CSS, JS e imagens
 - **Scripts de gerenciamento**: Criados scripts PowerShell para iniciar/parar servidor
 
+### Sistema de Temas
+
+O CSOnline utiliza temas PrimeFaces para personalizar a aparência da aplicação:
+
+- **Configuração global**: Parâmetro `primefaces.THEME=nova-light` no web.xml
+- **Gerenciamento**: Dois sistemas de controle de tema implementados:
+  - **ThemeBean (#{themeMB})**: Usado na tela de login
+  - **ThemeSwitcherBean (#{themeSwitcherBean})**: Usado na página theme.xhtml
+- **Temas disponíveis**: O sistema oferece 32 temas, incluindo:
+  - ui-lightness, nova-light, aristo, vader, cupertino, home, etc.
+- **Tema padrão**: Configurado via parâmetro `themeDefault` no web.xml
+- **Tema do usuário**: Pode ser selecionado na tela de login ou na página de temas
+
+A implementação atual está sendo unificada para usar apenas o ThemeSwitcherBean como gerenciador único de temas.
+
 ### Descobertas Importantes da Migração
 
 1. **PrimeFaces 13.x não é Jakarta EE**: Era necessário usar versão 14.0.0 específica
@@ -272,14 +284,18 @@ Este projeto foi **completamente migrado** do Java EE (namespace `javax.*`) para
 3. **Log4j**: Necessária migração completa da configuração v1.x para v2.x
 4. **Jetty Plugin**: Resolveu problemas de cache do Cargo Plugin
 5. **Recursos JSF**: Configuração específica para servir corretamente CSS, JS e imagens do PrimeFaces
+6. **Sistema de Temas**: Identificada duplicidade de gerenciadores (ThemeBean e ThemeSwitcherBean)
 
 ### Arquivos Principais Criados/Atualizados
 
 - `src/main/resources/log4j2.xml` - Configuração completa Log4j 2
 - `src/main/resources/data-h2.sql` - Script inicialização H2 compatível
 - `src/main/java/.../DatabaseInitializer.java` - Listener inicialização banco
-- `src/main/webapp/WEB-INF/web.xml` - Configuração Jakarta EE com recursos JSF
-- `pom.xml` - Dependências Jakarta EE 10 completas
+- `src/main/webapp/WEB-INF/web.xml` - Configuração Jakarta EE com recursos JSF e temas
+- `src/main/java/br/com/mulato/cso/view/beans/ThemeBean.java` - Gerenciador de temas (login)
+- `src/main/java/br/com/mulato/cso/view/bean/ThemeSwitcherBean.java` - Gerenciador de temas (theme.xhtml)
+- `pom.xml` - Dependências Jakarta EE 10 e temas PrimeFaces
+- `MIGRACAO.md` - Documentação detalhada do processo de migração e problemas identificados
 - `start-csonline.ps1` - Script PowerShell para iniciar servidor
 - `stop-csonline.ps1` - Script PowerShell para parar servidor
 
