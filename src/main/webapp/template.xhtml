@@ -12,12 +12,12 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<link type="images/x-icon" rel="SHORTCUT ICON" href="#{facesContext.externalContext.requestContextPath}/resources/images/favicon.ico" />
-		<link type="text/css" rel="stylesheet" href="resources/css/styles.css" />
-		<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/jquery/jquery.maskedinput-1.2.2.min.js" />
-		<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/jquery/jquery.maskMoney.js" />
-		<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/jquery/functions.js" />
-		<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/jquery/common.js" />
+		<h:outputStylesheet library="images" name="favicon.ico" target="head" />
+		<h:outputStylesheet library="css" name="styles.css" />
+		<h:outputScript library="jquery" name="jquery.maskedinput-1.2.2.min.js" />
+		<h:outputScript library="jquery" name="jquery.maskMoney.js" />
+		<h:outputScript library="jquery" name="functions.js" />
+		<h:outputScript library="jquery" name="common.js" />
 		<title>#{rotulo.aplicacao}</title>
 	</h:head>
 
@@ -27,7 +27,7 @@
 		
 		<p:dialog id="dialog_id" widgetVar="statusDialog" header="#{rotulo.status}" draggable="true" closable="false" modal="true" resizable="false">
 			<h:panelGrid id="grid_id" columns="1">
-				<p:graphicImage value="resources/images/ajaxloadingbar.gif" style="vertical-align: middle;" />
+				<p:graphicImage library="images" name="ajaxloadingbar.gif" style="vertical-align: middle;" />
 				<h:outputLabel value="#{rotulo.carregando}" style="font-size: 12px; text-align: center;" />
 			</h:panelGrid>
 		</p:dialog>
@@ -39,7 +39,7 @@
 				<table width="100%">
 					<tr>
 						<td style="width: 320px;">
-							<h:graphicImage value="resources/images/logo.gif" /></td>
+							<h:graphicImage library="images" name="logo.gif" /></td>
 						<td>
 							<p:panel style="width:40%;">
 								<h:panelGrid id="grid_profile_id" columns="1">

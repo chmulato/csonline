@@ -9,9 +9,9 @@
 	<h:head>
 		<meta http-equiv="X-UA-Compatible" content="IE=8" />
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<link type="images/x-icon" rel="SHORTCUT ICON" href="#{facesContext.externalContext.requestContextPath}/resources/images/favicon.ico" />
-		<link type="text/css" rel="stylesheet" href="resources/css/styles.css" />
-		<script src="#{facesContext.externalContext.requestContextPath}/resources/jquery/jquery-3.6.0.min.js"></script>
+		<h:outputStylesheet library="images" name="favicon.ico" target="head" />
+		<h:outputStylesheet library="css" name="styles.css" />
+		<h:outputScript library="jquery" name="jquery-3.6.0.min.js" />
 		<title>#{rotulo.aplicacao}</title>
 	</h:head>
 
@@ -19,7 +19,7 @@
 		<h:form id="form">
 			<h:panelGrid columns="1"
 				style="margin-left: 35%; margin-right: 40%; margin-top: 10%">
-				<p:graphicImage value="resources/images/logo.gif" style="margin-left: 15%;" />
+				<p:graphicImage library="images" name="logo.gif" style="margin-left: 15%;" />
 				<p:panel id="panelHeader"
 					header="#{rotulo.aplicacao} - #{rotulo.titulo_area}">
 					<h:panelGrid columns="1">
