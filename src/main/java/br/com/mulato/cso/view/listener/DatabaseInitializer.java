@@ -17,7 +17,7 @@ public class DatabaseInitializer implements ServletContextListener {
         String jdbcUrl = "jdbc:h2:~/csonline;MODE=PostgreSQL;DATABASE_TO_UPPER=false";
         String username = "sa";
         String password = "";
-        String resourcePath = "/resources/data-h2.sql";
+        String resourcePath = "/data-h2.sql";
         logger.debug("Iniciando DatabaseInitializer.contextInitialized()");
         logger.info("Tentando conectar ao banco H2: {}", jdbcUrl);
         try (Connection conn = DriverManager.getConnection(jdbcUrl, username, password)) {

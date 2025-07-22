@@ -6,11 +6,6 @@
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
         </Console>
         
-        <!-- File Appender -->
-        <File name="FileAppender" fileName="logs/csonline.log">
-            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
-        </File>
-        
         <!-- Rolling File Appender -->
         <RollingFile name="RollingFileAppender" fileName="logs/csonline.log" 
                      filePattern="logs/csonline-%d{yyyy-MM-dd}-%i.log.gz">
@@ -27,35 +22,35 @@
         <!-- Jakarta EE / JSF Loggers -->
         <Logger name="jakarta.faces" level="INFO" additivity="false">
             <AppenderRef ref="Console"/>
-            <AppenderRef ref="FileAppender"/>
+            <AppenderRef ref="RollingFileAppender"/>
         </Logger>
         
         <Logger name="org.apache.myfaces" level="INFO" additivity="false">
             <AppenderRef ref="Console"/>
-            <AppenderRef ref="FileAppender"/>
+            <AppenderRef ref="RollingFileAppender"/>
         </Logger>
         
         <Logger name="org.primefaces" level="INFO" additivity="false">
             <AppenderRef ref="Console"/>
-            <AppenderRef ref="FileAppender"/>
+            <AppenderRef ref="RollingFileAppender"/>
         </Logger>
         
         <!-- Weld CDI Logger -->
         <Logger name="org.jboss.weld" level="INFO" additivity="false">
             <AppenderRef ref="Console"/>
-            <AppenderRef ref="FileAppender"/>
+            <AppenderRef ref="RollingFileAppender"/>
         </Logger>
         
         <!-- Application Logger -->
         <Logger name="br.com.mulato" level="DEBUG" additivity="false">
             <AppenderRef ref="Console"/>
-            <AppenderRef ref="FileAppender"/>
+            <AppenderRef ref="RollingFileAppender"/>
         </Logger>
         
         <!-- Root Logger -->
         <Root level="INFO">
             <AppenderRef ref="Console"/>
-            <AppenderRef ref="FileAppender"/>
+            <AppenderRef ref="RollingFileAppender"/>
         </Root>
     </Loggers>
 </Configuration>

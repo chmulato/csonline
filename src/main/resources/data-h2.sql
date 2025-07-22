@@ -1,0 +1,144 @@
+-- Script de inicialização do banco H2 para CSOnline
+-- Adaptado do MySQL para H2 Database com modo PostgreSQL
+
+-- Remover tabelas se existirem (ordem inversa devido às foreign keys)
+DROP TABLE IF EXISTS sms;
+DROP TABLE IF EXISTS price;
+DROP TABLE IF EXISTS delivery;
+DROP TABLE IF EXISTS team;
+DROP TABLE IF EXISTS customer;
+DROP TABLE IF EXISTS users;
+
+-- Tabela de usuários (base para todos os perfis)
+CREATE TABLE users (
+  ID INT PRIMARY KEY,
+  ROLE VARCHAR(15) NOT NULL,
+  NAME VARCHAR(255) NOT NULL,
+  LOGIN VARCHAR(15) NOT NULL UNIQUE,
+  PASSWORD VARCHAR(15) NOT NULL,
+  EMAIL VARCHAR(30) NOT NULL,
+  EMAIL2 VARCHAR(30),
+  ADDRESS VARCHAR(255),
+  MOBILE VARCHAR(30)
+);
+
+-- Dados iniciais de usuários
+INSERT INTO users (ID, ROLE, NAME, LOGIN, PASSWORD, EMAIL, EMAIL2, ADDRESS, MOBILE) VALUES
+(1, 'ADMINISTRATOR', 'CHRISTIAN MULATO', 'chmulato', 'admin', 'chmulato@hotmail.com', '', 'Rua Ari Manfron, 123 - CIC - Curitiba - PR', '00554199097797'),
+(3, 'BUSINESS', 'PAULO MULATO', 'pmulato', 'admin', 'chmulato@hotmail.com', '', 'RUA ABC PAULISTA', '00554190909090'),
+(4, 'BUSINESS', 'JOAO DA SILVA', 'joao', 'admin', 'joao@hotmail.com', '', 'RUA ABC PAULISTA', '00554190909088'),
+(5, 'CUSTOMER', 'MARIO DA SILVA SA', 'mariosa', 'admin', 'mariosa@hotmail.com', '', 'RUA TATU', '00554180808080'),
+(6, 'CUSTOMER', 'SANTA CLARA SA', 'santasa', 'admin', 'chmulato@hotmail.com', '', 'RUA TATU, 3030', '00554180808787'),
+(7, 'COURIER', 'MANE GARRINCHA', 'mane', 'admin', 'chmulato@hotmail.com', '', 'RUA ABC, 123 CIC', '00554180808081');
+
+-- Tabela de relacionamento cliente-negócio
+CREATE TABLE customer (
+  ID INT PRIMARY KEY,
+  IDBUSINESS INT NOT NULL,
+  IDCUSTOMER INT NOT NULL,
+  FACTOR_CUSTOMER DECIMAL(13,2) NOT NULL,
+  FOREIGN KEY (IDBUSINESS) REFERENCES users(ID),
+  FOREIGN KEY (IDCUSTOMER) REFERENCES users(ID)
+);
+
+-- Dados iniciais de clientes
+INSERT INTO customer (ID, IDBUSINESS, IDCUSTOMER, FACTOR_CUSTOMER) VALUES
+(1, 4, 5, 1.00),
+(2, 3, 6, 1.00);
+
+-- Tabela de relacionamento courier-negócio (equipe)
+CREATE TABLE team (
+  ID INT PRIMARY KEY,
+  IDBUSINESS INT NOT NULL,
+  IDCOURIER INT NOT NULL,
+  FACTOR_COURIER DECIMAL(13,2) NOT NULL,
+  FOREIGN KEY (IDBUSINESS) REFERENCES users(ID),
+  FOREIGN KEY (IDCOURIER) REFERENCES users(ID)
+);
+
+-- Dados iniciais de equipe
+INSERT INTO team (ID, IDBUSINESS, IDCOURIER, FACTOR_COURIER) VALUES
+(1, 3, 7, 1.20);
+
+-- Tabela de entregas
+CREATE TABLE delivery (
+  ID INT PRIMARY KEY,
+  IDBUSINESS INT NOT NULL,
+  IDCUSTOMER INT NOT NULL,
+  IDCOURIER INT,
+  DATETIME TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  START VARCHAR(255) NOT NULL,
+  DESTINATION VARCHAR(255) NOT NULL,
+  CONTACT VARCHAR(255),
+  DESCRIPTION VARCHAR(255),
+  WEIGHT DECIMAL(13,3),
+  VOLUME DECIMAL(13,4),
+  KM DECIMAL(13,3) NOT NULL,
+  ADDITIONAL_COST DECIMAL(13,2) NOT NULL DEFAULT 0.00,
+  COST DECIMAL(13,2) NOT NULL DEFAULT 0.00,
+  COMPLETED BOOLEAN NOT NULL DEFAULT FALSE,
+  RECEIVED BOOLEAN NOT NULL DEFAULT FALSE,
+  FOREIGN KEY (IDBUSINESS) REFERENCES users(ID),
+  FOREIGN KEY (IDCUSTOMER) REFERENCES users(ID),
+  FOREIGN KEY (IDCOURIER) REFERENCES users(ID)
+);
+
+-- Dados iniciais de entregas
+INSERT INTO delivery (ID, IDBUSINESS, IDCUSTOMER, IDCOURIER, DATETIME, START, DESTINATION, CONTACT, DESCRIPTION, WEIGHT, VOLUME, KM, ADDITIONAL_COST, COST, COMPLETED, RECEIVED) VALUES
+(1, 3, 6, NULL, '2013-11-22 22:12:05', 'RUA ABC', 'RUA DEF', 'SR. PEDRO', 'PACOTAO', 1.500, 0.0500, 21.000, 0.00, 20.00, FALSE, FALSE);
+
+-- Tabela de SMS
+CREATE TABLE sms (
+  ID INT PRIMARY KEY,
+  IDDELIVERY INT NOT NULL,
+  PIECE SMALLINT NOT NULL DEFAULT 1,
+  TYPE CHAR(1) NOT NULL DEFAULT 'S',
+  MOBILE_TO VARCHAR(30),
+  MOBILE_FROM VARCHAR(30),
+  MESSAGE VARCHAR(256),
+  DATETIME TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (IDDELIVERY) REFERENCES delivery(ID)
+);
+
+-- Dados iniciais de SMS
+INSERT INTO sms (ID, IDDELIVERY, PIECE, TYPE, MESSAGE) VALUES
+(1, 1, 1, 'S', 'RUA PEDRO DA SILVA'),
+(2, 1, 2, 'S', 'BAIRRO BACACHERI');
+
+-- Tabela de preços
+CREATE TABLE price (
+  ID INT PRIMARY KEY,
+  IDBUSINESS INT NOT NULL,
+  IDCUSTOMER INT,
+  TABLE_NAME CHAR(1) NOT NULL,
+  VEHICLE CHAR(1) NOT NULL,
+  LOCAL VARCHAR(255),
+  PRICE DECIMAL(13,2) NOT NULL,
+  FOREIGN KEY (IDBUSINESS) REFERENCES users(ID),
+  FOREIGN KEY (IDCUSTOMER) REFERENCES users(ID)
+);
+
+-- Dados iniciais de preços
+INSERT INTO price (ID, IDBUSINESS, IDCUSTOMER, TABLE_NAME, VEHICLE, LOCAL, PRICE) VALUES
+(1, 3, 6, 'A', 'A', 'BIGORRILHO', 10.00),
+(2, 3, 6, 'A', 'A', 'VILA HAUER', 15.00);
+
+-- Sequências para auto-incremento (H2 não usa AUTO_INCREMENT como MySQL)
+CREATE SEQUENCE IF NOT EXISTS users_seq START WITH 8;
+CREATE SEQUENCE IF NOT EXISTS customer_seq START WITH 3;
+CREATE SEQUENCE IF NOT EXISTS team_seq START WITH 2;
+CREATE SEQUENCE IF NOT EXISTS delivery_seq START WITH 2;
+CREATE SEQUENCE IF NOT EXISTS sms_seq START WITH 3;
+CREATE SEQUENCE IF NOT EXISTS price_seq START WITH 3;
+
+-- Comentários informativos
+COMMENT ON TABLE users IS 'Tabela base para todos os usuários do sistema (Admin, Business, Customer, Courier)';
+COMMENT ON TABLE customer IS 'Relacionamento entre negócios e clientes';
+COMMENT ON TABLE team IS 'Relacionamento entre negócios e couriers (entregadores)';
+COMMENT ON TABLE delivery IS 'Registro de entregas do sistema';
+COMMENT ON TABLE sms IS 'Histórico de SMS enviados/recebidos';
+COMMENT ON TABLE price IS 'Tabela de preços por região e tipo de veículo';
+
+-- Log de inicialização
+INSERT INTO sms (ID, IDDELIVERY, PIECE, TYPE, MESSAGE) VALUES 
+(3, 1, 3, 'S', 'Banco H2 inicializado com sucesso - CSOnline ' || CURRENT_TIMESTAMP);
