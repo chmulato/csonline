@@ -23,7 +23,7 @@
 	<!-- Configuração de exclusões de recursos JSF -->
 	<context-param>
 		<param-name>jakarta.faces.RESOURCE_EXCLUDES</param-name>
-		<param-value>.class .jsp .jspx .properties .xhtml .groovy .woff .woff2 .ttf .eot</param-value>
+		<param-value>.class .jsp .jspx .properties .xhtml .groovy .woff .woff2 .ttf .eot .css .js .gif .png .jpg .jpeg .ico</param-value>
 	</context-param>
 	
 	<!-- Configurações do PrimeFaces -->
@@ -34,6 +34,14 @@
 	<context-param>
 		<param-name>primefaces.FONT_AWESOME</param-name>
 		<param-value>true</param-value>
+	</context-param>
+	<context-param>
+		<param-name>primefaces.MOVE_SCRIPTS_TO_BOTTOM</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	<context-param>
+		<param-name>jakarta.faces.FACELETS_BUFFER_SIZE</param-name>
+		<param-value>65536</param-value>
 	</context-param>
 	
 	<context-param>
@@ -76,15 +84,43 @@
 	   <load-on-startup>1</load-on-startup>
    </servlet>
    
+   <!-- Servlet padrão para recursos estáticos -->
+   <servlet>
+	   <servlet-name>default</servlet-name>
+	   <servlet-class>org.eclipse.jetty.servlet.DefaultServlet</servlet-class>
+	   <load-on-startup>2</load-on-startup>
+   </servlet>
+   
    <servlet-mapping>
 	   <servlet-name>Faces Servlet</servlet-name>
 	   <url-pattern>*.xhtml</url-pattern>
    </servlet-mapping>
    
-   <!-- Configuração para recursos JSF (CSS, JS, fontes) -->
+   <!-- Configuração para recursos JSF (CSS, JS, fontes) via PrimeFaces -->
    <servlet-mapping>
 	   <servlet-name>Faces Servlet</servlet-name>
 	   <url-pattern>/jakarta.faces.resource/*</url-pattern>
+   </servlet-mapping>
+   
+   <!-- Mapeamento para recursos estáticos locais -->
+   <servlet-mapping>
+	   <servlet-name>default</servlet-name>
+	   <url-pattern>/resources/*</url-pattern>
+   </servlet-mapping>
+   
+   <servlet-mapping>
+	   <servlet-name>default</servlet-name>
+	   <url-pattern>/css/*</url-pattern>
+   </servlet-mapping>
+   
+   <servlet-mapping>
+	   <servlet-name>default</servlet-name>
+	   <url-pattern>/images/*</url-pattern>
+   </servlet-mapping>
+   
+   <servlet-mapping>
+	   <servlet-name>default</servlet-name>
+	   <url-pattern>/jquery/*</url-pattern>
    </servlet-mapping>
    <!--
    <servlet>
