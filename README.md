@@ -4,7 +4,7 @@ Aplicação Web para controle de entregas.
 
 ## Descrição
 
-CSOnline Delivery é uma aplicação desenvolvida em Java (SDK 11) utilizando Jakarta EE 10, MyFaces e PrimeFaces para gerenciamento de entregas. O sistema roda em Jakarta EE 10 (Tomcat compatível) e utiliza PostgreSQL 15 como banco de dados relacional.
+CSOnline Delivery é uma aplicação desenvolvida em Java (SDK 17) utilizando Jakarta EE 10, MyFaces 4.0.x e PrimeFaces 14.0.0-jakarta para gerenciamento de entregas. O sistema roda em Tomcat 10.1.23 embedded (Jakarta EE 10 compatível) e utiliza PostgreSQL 15 como banco de dados relacional.
 
 Acesse via navegador: [https://www.caracore.com.br/csonline](https://www.caracore.com.br/csonline)
 
@@ -14,30 +14,72 @@ Acesse via navegador: [https://www.caracore.com.br/csonline](https://www.caracor
 - Perfil de administrador
 - Interface web responsiva
 
+## Tecnologias Utilizadas
+
+- **Jakarta EE 10**: Plataforma empresarial Java com namespaces `jakarta.*`
+- **PrimeFaces 14.0.0-jakarta**: Biblioteca de componentes JSF para Jakarta EE
+- **MyFaces 4.0.x**: Implementação JSF para Jakarta EE
+- **Weld 5.1.x**: Implementação CDI (Contexts and Dependency Injection)
+- **Tomcat 10.1.23**: Servidor de aplicação compatível com Jakarta EE 10
+- **Maven Cargo Plugin**: Para execução do Tomcat embedded durante desenvolvimento
+- **PostgreSQL 15**: Banco de dados relacional para produção
+- **H2 Database**: Banco de dados em memória para desenvolvimento e testes
+
 ## Requisitos
 
+- Java SDK 17
+- Jakarta EE 10
+- Maven 3.9.x ou superior
+- PostgreSQL 15 (para produção) ou H2 (para desenvolvimento)
+- Dependências principais (gerenciadas pelo Maven):
+  - PrimeFaces 14.0.0-jakarta (Jakarta EE compatível)
+  - MyFaces 4.0.x (implementação Jakarta EE)
+  - Weld 5.1.x (CDI para Jakarta EE)
+  - Tomcat 10.1.23 embedded (via Maven Cargo Plugin)
 
-- Java SDK 11
-- Jakarta EE 10 (compatível com Tomcat 10.1.x ou superior)
-- PostgreSQL 15
-- Tomcat 10.1.x (ou superior) configurado para Jakarta EE
-- Jars obrigatórios no WAR (WEB-INF/lib):
-  - primefaces-13.0.4-jakarta.jar (baixe manualmente se necessário)
-  - myfaces-api-4.0.0.jar (MyFaces)
-  - myfaces-impl-4.0.0.jar (MyFaces)
-  - weld-servlet-shaded-4.0.3.Final.jar (CDI Weld)
-  - Demais dependências do projeto (jsoup, log4j, postgresql, etc.)
+## Instalação e Execução
 
-## Instalação
+### Desenvolvimento (Tomcat Embedded)
 
-1. Clone o repositório.
-2. Configure o banco de dados PostgreSQL 15 conforme o padrão do projeto (consulte os scripts em `doc/dump`).
-3. Faça o build do projeto e gere o arquivo WAR.
-4. Certifique-se que os jars obrigatórios estão presentes em WEB-INF/lib do WAR.
-5. Faça o deploy do WAR em um Tomcat 10.1.x (ou superior) configurado para Jakarta EE.
+1. Clone o repositório:
 
+   ```bash
+   git clone <repository-url>
+   cd csonline
+   ```
 
-## Conexão com o Banco de Dados
+2. Compile e execute com Tomcat embedded:
+
+   ```bash
+   mvn clean compile
+   mvn cargo:run
+   ```
+
+3. Acesse a aplicação em: <http://localhost:8080/csonline>
+
+### Produção (Deploy WAR)
+
+1. Gere o arquivo WAR:
+
+   ```bash
+   mvn clean package -DskipTests
+   ```
+
+2. Configure o banco de dados PostgreSQL 15 conforme os scripts em `doc/dump/`.
+
+3. Faça o deploy do WAR (`target/csonline.war`) em um Tomcat 10.1.x ou superior configurado para Jakarta EE.
+
+## Migração para Jakarta EE
+
+Este projeto foi migrado do Java EE (namespace `javax.*`) para Jakarta EE 10 (namespace `jakarta.*`). As principais mudanças incluem:
+
+- Atualização do PrimeFaces 13.0.7 para 14.0.0-jakarta
+- Migração do MyFaces para versão 4.0.x (Jakarta EE)
+- Atualização do Weld para versão 5.1.x
+- Configuração do Tomcat 10.1.23 embedded para desenvolvimento
+- Atualização de todas as dependências para compatibilidade com Jakarta EE 10
+- Configuração do Tomcat 10.1.23 embedded para desenvolvimento
+- Atualização de todas as dependências para compatibilidade com Jakarta EE 10
 
 O CSOnline **não utiliza JNDI/DataSource do Tomcat**. A conexão com o banco é feita diretamente via JDBC no código Java, utilizando o driver do banco (H2 ou PostgreSQL) e a URL de conexão configurada no projeto.
 
