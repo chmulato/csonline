@@ -2,6 +2,7 @@ package br.com.mulato.cso.view.beans;
 
 import java.io.Serializable;
 import java.util.Locale;
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Named;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.component.UIViewRoot;
@@ -18,9 +19,20 @@ public class I18nBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	// Internazionalização p/ o português
-	private String locale = "pt_BR";
+	private String locale;
+	
+	@PostConstruct
+	public void init() {
+		if (locale == null) {
+			locale = "pt_BR";
+		}
+		System.out.println("I18nBean inicializado com locale: " + locale);
+	}
 
 	public String getLocale() {
+		if (locale == null) {
+			return "pt_BR";
+		}
 		return locale;
 	}
 
