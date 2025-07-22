@@ -27,42 +27,28 @@
 	</context-param>
 	
 	<!-- Configurações críticas para recursos JSF -->
-	<context-param>
-		<param-name>jakarta.faces.DISABLE_FACESSERVLET_TO_XHTML</param-name>
-		<param-value>true</param-value>
-	</context-param>
 	
-	<!-- Configuração de exclusões de recursos JSF -->
+	<!-- Configuração correta de exclusões de recursos JSF -->
 	<context-param>
 		<param-name>jakarta.faces.RESOURCE_EXCLUDES</param-name>
-		<param-value>
-			.class .jsp .jspx .properties .xhtml .groovy 
-			.css .js .gif .png .jpg .jpeg .ico .woff .woff2 .ttf .eot .svg 
-			.map .json .xml .txt .pdf .doc .docx .zip .rar
-		</param-value>
-	</context-param>
-	
-	<!-- Desabilitar resource handler automático do JSF -->
-	<context-param>
-		<param-name>jakarta.faces.AUTOMATIC_EXTENSIONLESS_MAPPING</param-name>
-		<param-value>false</param-value>
+		<param-value>.class .jsp .jspx .properties .groovy</param-value>
 	</context-param>
 	
 	<!-- Forçar JSF a não processar recursos estáticos -->
 	<context-param>
 		<param-name>org.apache.myfaces.STRICT_JSF_2_ALLOW_SLASH_LIBRARY_NAME</param-name>
-		<param-value>false</param-value>
+		<param-value>true</param-value>
+	</context-param>
+	
+	<!-- Configuração de estado de sessão no servidor -->
+	<context-param>
+		<param-name>jakarta.faces.STATE_SAVING_METHOD</param-name>
+		<param-value>server</param-value>
 	</context-param>
 	
 	<!-- Desativar proteção CSRF para desenvolvimento -->
 	<context-param>
 		<param-name>jakarta.faces.ENABLE_WEBSOCKET_ENDPOINT</param-name>
-		<param-value>false</param-value>
-	</context-param>
-	
-	<!-- Permitir o processamento de formulários POST -->
-	<context-param>
-		<param-name>jakarta.faces.ALWAYS_PERFORM_VALIDATION_WHEN_REQUIRED_IS_TRUE</param-name>
 		<param-value>false</param-value>
 	</context-param>
 	
@@ -140,13 +126,17 @@
 	   <load-on-startup>1</load-on-startup>
    </servlet>
    
-   <!-- Servlet para recursos estáticos -->
+   <!-- Servlet para recursos estáticos (DefaultServlet do Jetty) -->
    <servlet>
 	   <servlet-name>default</servlet-name>
 	   <servlet-class>org.eclipse.jetty.servlet.DefaultServlet</servlet-class>
 	   <init-param>
 		   <param-name>dirAllowed</param-name>
-		   <param-value>true</param-value>
+		   <param-value>false</param-value>
+	   </init-param>
+	   <init-param>
+		   <param-name>welcomeServlets</param-name>
+		   <param-value>false</param-value>
 	   </init-param>
 	   <load-on-startup>2</load-on-startup>
    </servlet>
@@ -163,70 +153,10 @@
 	   <url-pattern>/jakarta.faces.resource/*</url-pattern>
    </servlet-mapping>
    
-	<!-- Excluir extensão .xhtml dos recursos do PrimeFaces -->
-   <context-param>
-       <param-name>jakarta.faces.RESOURCE_EXCLUDES</param-name>
-       <param-value>.class .jsp .jspx .properties .groovy</param-value>
-   </context-param>
-   
-   <!-- Configurações de controle de sessão para recursos estáticos -->
-   <context-param>
-       <param-name>jakarta.faces.STATE_SAVING_METHOD</param-name>
-       <param-value>server</param-value>
-   </context-param>   <!-- Mapear todos os recursos estáticos para o DefaultServlet -->
+	<!-- Excluir todos os recursos estáticos do mapeamento default servlet -->   <!-- Mapear recursos estáticos para DefaultServlet -->
    <servlet-mapping>
 	   <servlet-name>default</servlet-name>
-	   <url-pattern>*.css</url-pattern>
-   </servlet-mapping>
-   
-   <servlet-mapping>
-	   <servlet-name>default</servlet-name>
-	   <url-pattern>*.js</url-pattern>
-   </servlet-mapping>
-   
-   <servlet-mapping>
-	   <servlet-name>default</servlet-name>
-	   <url-pattern>*.gif</url-pattern>
-   </servlet-mapping>
-   
-   <servlet-mapping>
-	   <servlet-name>default</servlet-name>
-	   <url-pattern>*.jpg</url-pattern>
-   </servlet-mapping>
-   
-   <servlet-mapping>
-	   <servlet-name>default</servlet-name>
-	   <url-pattern>*.png</url-pattern>
-   </servlet-mapping>
-   
-   <servlet-mapping>
-	   <servlet-name>default</servlet-name>
-	   <url-pattern>*.ico</url-pattern>
-   </servlet-mapping>
-   
-   <servlet-mapping>
-	   <servlet-name>default</servlet-name>
-	   <url-pattern>*.woff</url-pattern>
-   </servlet-mapping>
-   
-   <servlet-mapping>
-	   <servlet-name>default</servlet-name>
-	   <url-pattern>*.woff2</url-pattern>
-   </servlet-mapping>
-   
-   <servlet-mapping>
-	   <servlet-name>default</servlet-name>
-	   <url-pattern>*.ttf</url-pattern>
-   </servlet-mapping>
-   
-   <servlet-mapping>
-	   <servlet-name>default</servlet-name>
-	   <url-pattern>*.eot</url-pattern>
-   </servlet-mapping>
-   
-   <servlet-mapping>
-	   <servlet-name>default</servlet-name>
-	   <url-pattern>*.svg</url-pattern>
+	   <url-pattern>/resources/*</url-pattern>
    </servlet-mapping>
    <!--
    <servlet>
@@ -239,20 +169,6 @@
 		<url-pattern>/h2/*</url-pattern>
 	</servlet-mapping>   
 	-->
-	<!-- Filtro para processamento correto de recursos estáticos -->
-	<filter>
-		<filter-name>ResourceFilter</filter-name>
-		<filter-class>br.com.mulato.cso.view.listener.ResourceFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>ResourceFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-		<dispatcher>REQUEST</dispatcher>
-		<dispatcher>FORWARD</dispatcher>
-		<dispatcher>INCLUDE</dispatcher>
-		<dispatcher>ERROR</dispatcher>
-	</filter-mapping>
-	
 	<filter>
 		<filter-name>AuthenticationFilter</filter-name>
 		<filter-class>br.com.mulato.cso.ws.AuthenticationFilter</filter-class>
@@ -317,13 +233,4 @@
 		<mime-type>image/svg+xml</mime-type>
 	</mime-mapping>
 	
-	<!-- Força todos os recursos a serem tratados corretamente -->
-	<security-constraint>
-		<display-name>Prevent access to XHTML files</display-name>
-		<web-resource-collection>
-			<web-resource-name>XHTML Files</web-resource-name>
-			<url-pattern>*.xhtml</url-pattern>
-		</web-resource-collection>
-		<auth-constraint />
-	</security-constraint>
 </web-app>
