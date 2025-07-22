@@ -1,7 +1,7 @@
 <html xmlns="https://www.w3.org/1999/xhtml"
-	xmlns:h="https://jakarta.ee/jsf/html"
-	xmlns:f="https://jakarta.ee/jsf/core"
-	xmlns:ui="https://jakarta.ee/jsf/facelets"
+	xmlns:h="jakarta.faces.html"
+	xmlns:f="jakarta.faces.core"
+	xmlns:ui="jakarta.faces.facelets"
 	xmlns:p="http://primefaces.org/ui">
 
 <f:view contentType="text/html" locale="#{i18nMB.locale}">
@@ -12,12 +12,10 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<h:outputStylesheet library="images" name="favicon.ico" target="head" />
+		<link rel="shortcut icon" type="image/x-icon" href="#{resource['images:favicon.ico']}" />
 		<h:outputStylesheet library="css" name="styles.css" />
-		<h:outputScript library="jquery" name="jquery.maskedinput-1.2.2.min.js" />
-		<h:outputScript library="jquery" name="jquery.maskMoney.js" />
-		<h:outputScript library="jquery" name="functions.js" />
-		<h:outputScript library="jquery" name="common.js" />
+		<!-- jQuery carregado diretamente para garantir disponibilidade -->
+		<script type="text/javascript" src="#{resource['jquery:jquery-3.6.0.min.js']}"></script>
 		<title>#{rotulo.aplicacao}</title>
 	</h:head>
 
@@ -65,6 +63,12 @@
 			</p:layoutUnit>
 		
 		</p:layout>
+		
+		<!-- Scripts jQuery carregados após a página -->
+		<script type="text/javascript" src="#{resource['jquery:jquery.maskedinput-1.2.2.min.js']}"></script>
+		<script type="text/javascript" src="#{resource['jquery:jquery.maskMoney.js']}"></script>
+		<script type="text/javascript" src="#{resource['jquery:functions.js']}"></script>
+		<script type="text/javascript" src="#{resource['jquery:common.js']}"></script>
 
 	</body>
 </f:view>

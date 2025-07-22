@@ -19,6 +19,17 @@
 		<param-name>jakarta.faces.PROJECT_STAGE</param-name>
 		<param-value>Development</param-value>
 	</context-param>
+	
+	<!-- Configurações do PrimeFaces -->
+	<context-param>
+		<param-name>primefaces.THEME</param-name>
+		<param-value>nova-light</param-value>
+	</context-param>
+	<context-param>
+		<param-name>primefaces.FONT_AWESOME</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	
 	<context-param>
 		<description>Tempo de sessão (segundos)</description>
 		<param-name>timeout</param-name>
@@ -59,21 +70,9 @@
 	   <load-on-startup>1</load-on-startup>
    </servlet>
    
-   <!-- Servlet para servir recursos estáticos (CSS, JS, imagens) -->
-   <servlet>
-	   <servlet-name>ResourceServlet</servlet-name>
-	   <servlet-class>jakarta.faces.webapp.FacesServlet</servlet-class>
-   </servlet>
-   
    <servlet-mapping>
 	   <servlet-name>Faces Servlet</servlet-name>
 	   <url-pattern>*.xhtml</url-pattern>
-   </servlet-mapping>
-   
-   <!-- Mapping para recursos estáticos do JSF -->
-   <servlet-mapping>
-	   <servlet-name>ResourceServlet</servlet-name>
-	   <url-pattern>/jakarta.faces.resource/*</url-pattern>
    </servlet-mapping>
    <!--
    <servlet>
