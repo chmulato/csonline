@@ -4,12 +4,17 @@
 	xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-facesconfig_4_0.xsd"
 	version="4.0">
 	
-	<!-- CONFIGURAÇÃO DE RECURSOS -->
+	<!-- APPLICATION -->
 	<application>
+		<resource-handler>org.primefaces.application.resource.PrimeResourceHandler</resource-handler>
 		<resource-bundle>
 			<base-name>Rotulos</base-name>
 			<var>rotulo</var>
 		</resource-bundle>
+		<locale-config>
+			<default-locale>pt_BR</default-locale>
+			<supported-locale>pt_BR</supported-locale>
+		</locale-config>
 	</application>
 	
 	<!-- NAVIGATION RULES -->

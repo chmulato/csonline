@@ -20,6 +20,12 @@
 		<param-value>Development</param-value>
 	</context-param>
 	
+	<!-- Configuração de tema padrão -->
+	<context-param>
+		<param-name>themeDefault</param-name>
+		<param-value>ui-lightness</param-value>
+	</context-param>
+	
 	<!-- Configurações críticas para recursos JSF -->
 	<context-param>
 		<param-name>jakarta.faces.DISABLE_FACESSERVLET_TO_XHTML</param-name>
@@ -71,6 +77,14 @@
 	</context-param>
 	<context-param>
 		<param-name>primefaces.MOVE_SCRIPTS_TO_BOTTOM</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	<context-param>
+		<param-name>primefaces.CSP</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	<context-param>
+		<param-name>primefaces.TRANSFORM_METADATA</param-name>
 		<param-value>true</param-value>
 	</context-param>
 	<context-param>
@@ -149,7 +163,17 @@
 	   <url-pattern>/jakarta.faces.resource/*</url-pattern>
    </servlet-mapping>
    
-   <!-- Mapear todos os recursos estáticos para o DefaultServlet -->
+	<!-- Excluir extensão .xhtml dos recursos do PrimeFaces -->
+   <context-param>
+       <param-name>jakarta.faces.RESOURCE_EXCLUDES</param-name>
+       <param-value>.class .jsp .jspx .properties .groovy</param-value>
+   </context-param>
+   
+   <!-- Configurações de controle de sessão para recursos estáticos -->
+   <context-param>
+       <param-name>jakarta.faces.STATE_SAVING_METHOD</param-name>
+       <param-value>server</param-value>
+   </context-param>   <!-- Mapear todos os recursos estáticos para o DefaultServlet -->
    <servlet-mapping>
 	   <servlet-name>default</servlet-name>
 	   <url-pattern>*.css</url-pattern>
