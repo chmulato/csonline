@@ -198,32 +198,19 @@
 				</execution>
 			</executions>
 		</plugin>
-		<!-- Cargo Plugin para Tomcat 10 Embarcado -->
+		<!-- Plugin Jetty para desenvolvimento -->
 		<plugin>
-			<groupId>org.codehaus.cargo</groupId>
-			<artifactId>cargo-maven3-plugin</artifactId>
-			<version>1.10.13</version>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-maven-plugin</artifactId>
+			<version>11.0.17</version>
 			<configuration>
-				<container>
-					<containerId>tomcat10x</containerId>
-					<type>embedded</type>
-				</container>
-				<configuration>
-					<properties>
-						<cargo.servlet.port>8080</cargo.servlet.port>
-						<cargo.logging>medium</cargo.logging>
-					</properties>
-				</configuration>
-				<deployables>
-					<deployable>
-						<groupId>${project.groupId}</groupId>
-						<artifactId>${project.artifactId}</artifactId>
-						<type>war</type>
-						<properties>
-							<context>/csonline</context>
-						</properties>
-					</deployable>
-				</deployables>
+				<httpConnector>
+					<port>8080</port>
+				</httpConnector>
+				<webApp>
+					<contextPath>/csonline</contextPath>
+				</webApp>
+				<scan>10</scan>
 			</configuration>
 		</plugin>
 		</plugins>
