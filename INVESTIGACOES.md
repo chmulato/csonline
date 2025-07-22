@@ -11,39 +11,102 @@ Guia completo para migração de projetos JSF antigos (Java EE/JSF 2.x) para Jak
 - **Build Tool**: Maven 3.x
 - **Java**: 17+
 
-## ⚠️ PROBLEMAS CRÍTICOS IDENTIFICADOS E SOLUÇÕES
+## **DESCOBERTAS CRÍTICAS DA MIGRAÇÃO**
 
-### 🔴 1. Expression Language (EL) Breaking Changes
+### **1. PrimeFaces Jakarta EE - Descoberta Fundamental**
+A descoberta mais importante foi que **PrimeFaces 13.0.7 padrão NÃO é compatível com Jakarta EE**, mesmo sendo uma versão recente. O PrimeFaces ainda utiliza namespace `javax.*` internamente.
+
+**Solução comprovada:**
+- Usar `PrimeFaces 14.0.0` com `<classifier>jakarta</classifier>`
+- Verificar MANIFEST.MF para confirmar `jakarta.servlet.*` em vez de `javax.servlet.*`
+
+### **2. UploadedFileCleanerListener - Erro Enganoso** 
+O erro `ClassNotFoundException: org.primefaces.webapp.UploadedFileCleanerListener` era na verdade causado pela versão incorreta do PrimeFaces, não pela ausência da classe.
+
+**Lição aprendida:**
+- Sempre verificar o MANIFEST.MF dos JARs para confirmar namespace correto
+- Erro de ClassNotFoundException pode indicar incompatibilidade de versão
+
+### **3. Tomcat Embedded - Solução de Desenvolvimento**
+Usar Tomcat embedded via Maven Cargo Plugin elimina problemas de configuração de servidor e garante ambiente Jakarta EE limpo.
+
+**Configuração essencial:**
+```xml
+<plugin>
+    <groupId>org.codehaus.cargo</groupId>
+    <artifactId>cargo-maven3-plugin</artifactId>
+    <version>1.10.13</version>
+    <configuration>
+        <container>
+            <containerId>tomcat10x</containerId>
+            <type>embedded</type>
+        </container>
+    </configuration>
+</plugin>
+```
+
+## PROBLEMAS CRÍTICOS IDENTIFICADOS E SOLUÇÕES
+
+### **CRÍTICO: Expression Language (EL) Breaking Changes**
 
 #### Problema: Palavras Reservadas
 ```xml
-<!-- ❌ FALHA - 'class' é palavra reservada no Jakarta EE 10 -->
+<!-- FALHA - 'class' é palavra reservada no Jakarta EE 10 -->
 <h:outputText styleClass="#{bootstrap.class}" />
 
-<!-- ✅ SOLUÇÃO - Use sintaxe de array -->
+<!-- SOLUÇÃO - Use sintaxe de array -->
 <h:outputText styleClass="#{bootstrap['class']}" />
 ```
 
 #### Problema: Propriedades CDI Wrapper
 ```xml
-<!-- ❌ FALHA - Weld wrapper não expõe esta propriedade -->
+<!-- FALHA - Weld wrapper não expõe esta propriedade -->
 #{facesContext.application.version}
 
-<!-- ✅ SOLUÇÃO - Use valores estáticos ou alternativas -->
+<!-- SOLUÇÃO - Use valores estáticos ou alternativas -->
 #{facesContext.viewRoot.viewId}
 ```
 
-**⚙️ Ação Requerida**: Revisar todas as EL expressions em `.xhtml` procurando por:
+**AÇÃO OBRIGATÓRIA**: Revisar todas as EL expressions em `.xhtml` procurando por:
 - `#{bean.class}` → `#{bean['class']}`
 - `#{facesContext.application.version}` → Remover ou substituir por constante
 - Qualquer propriedade que use palavras reservadas Java
 
-### 🔴 2. Cache do Maven Cargo Plugin
+### **CRÍTICO: PrimeFaces - Versão Jakarta EE**
+
+**DESCOBERTA ESSENCIAL**: PrimeFaces 13.0.7 padrão ainda usa namespace `javax.*` em vez de `jakarta.*`
+
+#### Problema: Versão Incorreta do PrimeFaces
+```xml
+<!-- INCORRETO - Usa javax.* internamente -->
+<dependency>
+    <groupId>org.primefaces</groupId>
+    <artifactId>primefaces</artifactId>
+    <version>13.0.7</version>
+</dependency>
+```
+
+#### Solução: Versão Jakarta EE Específica
+```xml
+<!-- CORRETO - Versão Jakarta EE -->
+<dependency>
+    <groupId>org.primefaces</groupId>
+    <artifactId>primefaces</artifactId>
+    <version>14.0.0</version>
+    <classifier>jakarta</classifier>
+</dependency>
+```
+
+**VERIFICAÇÃO OBRIGATÓRIA**: 
+- Confirmar que o JAR contém `jakarta.servlet.*` no MANIFEST.MF
+- Verificar se `UploadedFileCleanerListener` existe na versão Jakarta
+
+### **CRÍTICO: Cache do Maven Cargo Plugin**
 
 #### Problema: Mudanças não refletidas
 O Cargo mantém cache persistente que impede que mudanças em arquivos `.xhtml` sejam refletidas.
 
-#### ⚙️ Solução Obrigatória:
+#### **SOLUÇÃO OBRIGATÓRIA**:
 ```powershell
 # 1. Parar servidor
 Get-Process | Where-Object {$_.ProcessName -like "*java*"} | Stop-Process -Force
@@ -58,7 +121,7 @@ mvn clean package
 mvn cargo:run
 ```
 
-### 🔴 3. Configuração Maven Crítica
+### **CRÍTICO: Configuração Maven Crítica**
 
 #### pom.xml - Dependencies Essenciais:
 ```xml
@@ -122,7 +185,7 @@ mvn cargo:run
 </plugin>
 ```
 
-### 🔴 4. Configuração web.xml Obrigatória
+### **CRÍTICO: Configuração web.xml Obrigatória**
 
 #### src/main/webapp/WEB-INF/web.xml:
 ```xml
@@ -183,7 +246,7 @@ mvn cargo:run
 </beans>
 ```
 
-## 📋 ROTEIRO DE MIGRAÇÃO PASSO A PASSO
+## ROTEIRO DE MIGRAÇÃO PASSO A PASSO
 
 ### Etapa 1: Análise do Projeto Existente
 ```bash
@@ -212,13 +275,13 @@ grep -r "@javax\." src/main/java/
 
 ### Etapa 3: Refatoração de Código Java
 ```java
-// ❌ ANTIGAS - Substituir
+// ANTIGAS - Substituir
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
-// ✅ NOVAS - Jakarta EE 10
+// NOVAS - Jakarta EE 10
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import jakarta.inject.Inject;
@@ -255,7 +318,7 @@ mvn test
 mvn cargo:run
 ```
 
-## 🚨 TROUBLESHOOTING - Problemas Comuns
+## **TROUBLESHOOTING - Problemas Comuns**
 
 ### Erro: HTTP 500 - EL Expression
 **Sintoma**: Página retorna erro 500 com `Property [xxx] not found`
@@ -283,7 +346,7 @@ mvn cargo:run
 2. Verificar se Weld listener está no `web.xml`
 3. Usar `@Named` ao invés de `@ManagedBean`
 
-## ✅ CHECKLIST DE VALIDAÇÃO FINAL
+## **CHECKLIST DE VALIDAÇÃO FINAL**
 
 ### Pré-Deploy:
 - [ ] Todas imports javax.* substituídas por jakarta.*
@@ -308,7 +371,7 @@ INFO: HV000001: Hibernate Validator 8.0.0.Final
 INFO: Tomcat 10.x Embedded started on port [8080]
 ```
 
-## 📚 RESUMO EXECUTIVO
+## **RESUMO EXECUTIVO**
 
 ### Principais Mudanças Necessárias:
 1. **Dependencies**: javax.* → jakarta.*
@@ -328,13 +391,21 @@ INFO: Tomcat 10.x Embedded started on port [8080]
 3. Weld CDI wrapper não expõe todas propriedades JSF
 
 ### Benefícios da Migração:
-- ✅ Compatibilidade com Java 17+
-- ✅ Suporte a longo prazo
-- ✅ Performance melhorada
-- ✅ Recursos modernos do Jakarta EE 10
+- Compatibilidade com Java 17+
+- Suporte a longo prazo
+- Performance melhorada
+- Recursos modernos do Jakarta EE 10
 
 ---
+
+**LIÇÕES ESSENCIAIS DA MIGRAÇÃO:**
+
+1. **PrimeFaces 13.x não é Jakarta EE** - Requer versão 14.0.0-jakarta
+2. **Erro de ClassNotFoundException** - Geralmente indica versão incorreta, não classe ausente  
+3. **Tomcat Embedded** - Elimina problemas de configuração de servidor
+4. **Cache do Cargo** - Sempre limpar antes de testar mudanças
+
 **Documento validado com projeto real funcionando em**: 22 de julho de 2025  
-**URLs de teste funcionais**: 
-- `http://localhost:8080/jsf-jakarta-ee10/teste.faces`
-- `http://localhost:8080/jsf-jakarta-ee10/index.faces`
+**URLs de teste funcionais**:
+
+- `http://localhost:8080/csonline/`
