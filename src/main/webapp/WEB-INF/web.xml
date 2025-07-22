@@ -20,10 +20,44 @@
 		<param-value>Development</param-value>
 	</context-param>
 	
+	<!-- Configurações críticas para recursos JSF -->
+	<context-param>
+		<param-name>jakarta.faces.DISABLE_FACESSERVLET_TO_XHTML</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	
 	<!-- Configuração de exclusões de recursos JSF -->
 	<context-param>
 		<param-name>jakarta.faces.RESOURCE_EXCLUDES</param-name>
-		<param-value>.class .jsp .jspx .properties .xhtml .groovy .css .js .gif .png .jpg .jpeg .ico .woff .woff2 .ttf .eot .svg</param-value>
+		<param-value>
+			.class .jsp .jspx .properties .xhtml .groovy 
+			.css .js .gif .png .jpg .jpeg .ico .woff .woff2 .ttf .eot .svg 
+			.map .json .xml .txt .pdf .doc .docx .zip .rar
+		</param-value>
+	</context-param>
+	
+	<!-- Desabilitar resource handler automático do JSF -->
+	<context-param>
+		<param-name>jakarta.faces.AUTOMATIC_EXTENSIONLESS_MAPPING</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	
+	<!-- Forçar JSF a não processar recursos estáticos -->
+	<context-param>
+		<param-name>org.apache.myfaces.STRICT_JSF_2_ALLOW_SLASH_LIBRARY_NAME</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	
+	<!-- Desativar proteção CSRF para desenvolvimento -->
+	<context-param>
+		<param-name>jakarta.faces.ENABLE_WEBSOCKET_ENDPOINT</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	
+	<!-- Permitir o processamento de formulários POST -->
+	<context-param>
+		<param-name>jakarta.faces.ALWAYS_PERFORM_VALIDATION_WHEN_REQUIRED_IS_TRUE</param-name>
+		<param-value>false</param-value>
 	</context-param>
 	
 	<!-- Configurações do PrimeFaces -->
@@ -103,6 +137,7 @@
 	   <load-on-startup>2</load-on-startup>
    </servlet>
    
+   <!-- Reduzir ao mínimo possível os mapeamentos do FacesServlet -->
    <servlet-mapping>
 	   <servlet-name>Faces Servlet</servlet-name>
 	   <url-pattern>*.xhtml</url-pattern>
@@ -114,25 +149,60 @@
 	   <url-pattern>/jakarta.faces.resource/*</url-pattern>
    </servlet-mapping>
    
-   <!-- Mapeamentos para recursos estáticos -->
+   <!-- Mapear todos os recursos estáticos para o DefaultServlet -->
    <servlet-mapping>
 	   <servlet-name>default</servlet-name>
-	   <url-pattern>/resources/*</url-pattern>
+	   <url-pattern>*.css</url-pattern>
    </servlet-mapping>
    
    <servlet-mapping>
 	   <servlet-name>default</servlet-name>
-	   <url-pattern>/css/*</url-pattern>
+	   <url-pattern>*.js</url-pattern>
    </servlet-mapping>
    
    <servlet-mapping>
 	   <servlet-name>default</servlet-name>
-	   <url-pattern>/images/*</url-pattern>
+	   <url-pattern>*.gif</url-pattern>
    </servlet-mapping>
    
    <servlet-mapping>
 	   <servlet-name>default</servlet-name>
-	   <url-pattern>/jquery/*</url-pattern>
+	   <url-pattern>*.jpg</url-pattern>
+   </servlet-mapping>
+   
+   <servlet-mapping>
+	   <servlet-name>default</servlet-name>
+	   <url-pattern>*.png</url-pattern>
+   </servlet-mapping>
+   
+   <servlet-mapping>
+	   <servlet-name>default</servlet-name>
+	   <url-pattern>*.ico</url-pattern>
+   </servlet-mapping>
+   
+   <servlet-mapping>
+	   <servlet-name>default</servlet-name>
+	   <url-pattern>*.woff</url-pattern>
+   </servlet-mapping>
+   
+   <servlet-mapping>
+	   <servlet-name>default</servlet-name>
+	   <url-pattern>*.woff2</url-pattern>
+   </servlet-mapping>
+   
+   <servlet-mapping>
+	   <servlet-name>default</servlet-name>
+	   <url-pattern>*.ttf</url-pattern>
+   </servlet-mapping>
+   
+   <servlet-mapping>
+	   <servlet-name>default</servlet-name>
+	   <url-pattern>*.eot</url-pattern>
+   </servlet-mapping>
+   
+   <servlet-mapping>
+	   <servlet-name>default</servlet-name>
+	   <url-pattern>*.svg</url-pattern>
    </servlet-mapping>
    <!--
    <servlet>
@@ -145,6 +215,20 @@
 		<url-pattern>/h2/*</url-pattern>
 	</servlet-mapping>   
 	-->
+	<!-- Filtro para processamento correto de recursos estáticos -->
+	<filter>
+		<filter-name>ResourceFilter</filter-name>
+		<filter-class>br.com.mulato.cso.view.listener.ResourceFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>ResourceFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+		<dispatcher>ERROR</dispatcher>
+	</filter-mapping>
+	
 	<filter>
 		<filter-name>AuthenticationFilter</filter-name>
 		<filter-class>br.com.mulato.cso.ws.AuthenticationFilter</filter-class>
@@ -162,4 +246,60 @@
 		<extension>css</extension>
 		<mime-type>text/css; charset=UTF-8</mime-type>
 	</mime-mapping>
+	
+	<!-- MIME Types para garantir que recursos estáticos sejam tratados corretamente -->
+	<mime-mapping>
+		<extension>js</extension>
+		<mime-type>application/javascript</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>png</extension>
+		<mime-type>image/png</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>jpg</extension>
+		<mime-type>image/jpeg</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>jpeg</extension>
+		<mime-type>image/jpeg</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>gif</extension>
+		<mime-type>image/gif</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>ico</extension>
+		<mime-type>image/x-icon</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>woff</extension>
+		<mime-type>application/font-woff</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>woff2</extension>
+		<mime-type>application/font-woff2</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>ttf</extension>
+		<mime-type>application/font-sfnt</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>eot</extension>
+		<mime-type>application/vnd.ms-fontobject</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>svg</extension>
+		<mime-type>image/svg+xml</mime-type>
+	</mime-mapping>
+	
+	<!-- Força todos os recursos a serem tratados corretamente -->
+	<security-constraint>
+		<display-name>Prevent access to XHTML files</display-name>
+		<web-resource-collection>
+			<web-resource-name>XHTML Files</web-resource-name>
+			<url-pattern>*.xhtml</url-pattern>
+		</web-resource-collection>
+		<auth-constraint />
+	</security-constraint>
 </web-app>
