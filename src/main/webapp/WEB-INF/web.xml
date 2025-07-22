@@ -20,6 +20,12 @@
 		<param-value>Development</param-value>
 	</context-param>
 	
+	<!-- Configuração de exclusões de recursos JSF -->
+	<context-param>
+		<param-name>jakarta.faces.RESOURCE_EXCLUDES</param-name>
+		<param-value>.class .jsp .jspx .properties .xhtml .groovy .woff .woff2 .ttf .eot</param-value>
+	</context-param>
+	
 	<!-- Configurações do PrimeFaces -->
 	<context-param>
 		<param-name>primefaces.THEME</param-name>
@@ -73,6 +79,12 @@
    <servlet-mapping>
 	   <servlet-name>Faces Servlet</servlet-name>
 	   <url-pattern>*.xhtml</url-pattern>
+   </servlet-mapping>
+   
+   <!-- Configuração para recursos JSF (CSS, JS, fontes) -->
+   <servlet-mapping>
+	   <servlet-name>Faces Servlet</servlet-name>
+	   <url-pattern>/jakarta.faces.resource/*</url-pattern>
    </servlet-mapping>
    <!--
    <servlet>
