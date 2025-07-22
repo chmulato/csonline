@@ -48,14 +48,129 @@ Acesse via navegador: [https://www.caracore.com.br/csonline](https://www.caracor
    cd csonline
    ```
 
-2. Compile e execute com Tomcat embedded:
+2. Compile, empacote e execute com Tomcat embedded:
 
    ```bash
-   mvn clean compile
+   mvn clean package cargo:run -DskipTests
+   ```
+
+   **Ou execute em etapas separadas:**
+
+   ```bash
+   # Primeiro compile e gere o WAR
+   mvn clean package -DskipTests
+   
+   # Depois inicie o servidor
    mvn cargo:run
    ```
 
-3. Acesse a aplicação em: <http://localhost:8080/csonline>
+3. **Aguarde a mensagem de inicialização:**
+
+   ```text
+   [INFO] Tomcat 10.x Embedded started on port [8080]
+   [INFO] Press Ctrl-C to stop the container...
+   ```
+
+4. **Acesse a aplicação:**
+   - URL: <http://localhost:8080/csonline>
+   - Usuário: `chmulato`
+   - Senha: `admin`
+
+### Logs do Tomcat Embedded
+
+Os logs são exibidos diretamente no terminal onde você executou `mvn cargo:run`. Para logs mais detalhados:
+
+**Localização dos logs:**
+
+```text
+target/cargo/
+├── configurations/
+│   └── tomcat10x/
+│       ├── logs/           ← Logs do Tomcat
+│       │   ├── catalina.out
+│       │   ├── localhost.log
+│       │   └── manager.log
+│       └── webapps/        ← Aplicações deployadas
+│           └── csonline/
+```
+
+**Visualizar logs em tempo real:**
+
+```bash
+# No Windows (PowerShell)
+Get-Content target/cargo/configurations/tomcat10x/logs/catalina.out -Wait
+
+# Ou monitore via terminal onde está executando mvn cargo:run
+```
+
+**Configuração de log level:**
+
+O nível de log pode ser ajustado no `pom.xml`:
+
+```xml
+<cargo.logging>medium</cargo.logging>  <!-- low, medium, high -->
+```
+
+### Configuração do Log4j 2
+
+A aplicação utiliza **Log4j 2.23.1** para logging. A configuração está em `src/main/resources/log4j2.xml`:
+
+- **Logs da aplicação**: `logs/csonline.log`
+- **Console output**: Logs também aparecem no terminal
+- **Log rotation**: Arquivos rotacionados diariamente (máx. 100MB cada)
+- **Levels configurados**:
+  - `br.com.mulato.*`: DEBUG (código da aplicação)
+  - `jakarta.faces`, `org.apache.myfaces`, `org.primefaces`: INFO
+  - `org.jboss.weld`: INFO (CDI)
+  - Root logger: INFO
+
+**Ajustar níveis de log:**
+
+Edite `src/main/resources/log4j2.xml` e altere os levels conforme necessário:
+
+```xml
+<Logger name="br.com.mulato" level="DEBUG" additivity="false">
+<!-- Para mais detalhes, use: level="TRACE" -->
+```
+
+### Parar a Aplicação
+
+- Pressione `Ctrl+C` no terminal onde está executando
+- Ou force o encerramento: `taskkill /F /IM java.exe` (Windows)
+
+### Solução de Problemas
+
+Se encontrar problemas de cache ou mudanças não aparecerem:
+
+```bash
+# Limpe o cache do Cargo e rebuild
+taskkill /F /IM java.exe
+mvn clean package cargo:run -DskipTests
+```
+
+### Verificação da Instalação
+
+Após executar `mvn clean package`, verifique se os arquivos foram criados:
+
+```text
+target/
+├── csonline.war          ← Arquivo WAR principal
+├── csonline/             ← Aplicação expandida
+│   ├── WEB-INF/
+│   │   ├── lib/          ← Dependências (PrimeFaces, MyFaces, etc.)
+│   │   ├── classes/      ← Classes compiladas
+│   │   └── web.xml       ← Configuração web
+│   └── resources/        ← Recursos estáticos
+└── classes/              ← Classes compiladas do projeto
+```
+
+**Logs de Sucesso Esperados:**
+
+```text
+INFO: MyFaces Core has started
+INFO: Running on PrimeFaces 14.0.0
+INFO: Tomcat 10.x Embedded started on port [8080]
+```
 
 ### Produção (Deploy WAR)
 
