@@ -26,25 +26,25 @@ public class AbstractController {
 
 	private static final Logger LOGGER = LogManager.getLogger(AbstractController.class);
 
-	public final String TYPE_HTML = "text/html";
+	public static final String TYPE_HTML = "text/html";
 
-	public final String TYPE_PDF = "application/pdf";
+	public static final String TYPE_PDF = "application/pdf";
 
-	public final String TYPE_TXT = "application/txt";
+	public static final String TYPE_TXT = "application/txt";
 
-	public final String TYPE_DOC = "application/vnd.ms-word";
+	public static final String TYPE_DOC = "application/vnd.ms-word";
 
-	public final String TYPE_RTF = "application/rtf";
+	public static final String TYPE_RTF = "application/rtf";
 
-	public final String LOGOMARCA_JPG = "logomarca.jpg";
+	public static final String LOGOMARCA_JPG = "logomarca.jpg";
 
-	public final String SUBJECT_MESSAGE_EMAIL = "Documentos para importa��o no sistema CSO";
+	public static final String SUBJECT_MESSAGE_EMAIL = "Documentos para importa��o no sistema CSO";
 
-	public final String FILE_TYPE_TXT = ".txt";
+	public static final String FILE_TYPE_TXT = ".txt";
 
-	public final String FILE_TYPE_RTF = ".rtf";
+	public static final String FILE_TYPE_RTF = ".rtf";
 
-	public final String FILE_TYPE_PDF = ".pdf";
+	public static final String FILE_TYPE_PDF = ".pdf";
 
 	public AbstractController() {
 		super();
