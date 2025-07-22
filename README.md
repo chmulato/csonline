@@ -21,7 +21,7 @@ logs/
 ├── csonline.log          ← Log principal da aplicação
 ├── csonline.2025-07-22.1.gz  ← Logs arquivados (rotação diária)
 └── archived/             ← Logs antigos (máx. 10 arquivos)
-```ão desenvolvida em Java (SDK 17) utilizando Jakarta EE 10, MyFaces 4.0.x e PrimeFaces 14.0.0-jakarta para gerenciamento de entregas. O sistema roda em Tomcat 10.1.23 embedded (Jakarta EE 10 compatível) e utiliza PostgreSQL 15 como banco de dados relacional.
+```ão desenvolvida em Java (SDK 17) utilizando Jakarta EE 10, Apache MyFaces 4.0.x e PrimeFaces 14.0.0-jakarta para gerenciamento de entregas. O sistema roda em Jetty 11.0.17 embedded (desenvolvimento) ou Tomcat 10.1.x (produção) compatível com Jakarta EE 10, e utiliza H2 Database 2.3.232 (desenvolvimento) ou PostgreSQL 15 (produção) como banco de dados relacional.
 
 Acesse via navegador: [https://www.caracore.com.br/csonline](https://www.caracore.com.br/csonline)
 
@@ -35,26 +35,28 @@ Acesse via navegador: [https://www.caracore.com.br/csonline](https://www.caracor
 
 - **Jakarta EE 10**: Plataforma empresarial Java com namespaces `jakarta.*`
 - **PrimeFaces 14.0.0-jakarta**: Biblioteca de componentes JSF para Jakarta EE
-- **MyFaces 4.0.x**: Implementação JSF para Jakarta EE (Apache MyFaces)
+- **Apache MyFaces 4.0.2**: Implementação JSF para Jakarta EE (Apache MyFaces)
 - **Weld 5.1.2.Final**: Implementação CDI (Contexts and Dependency Injection)
 - **Jetty 11.0.17**: Servidor de aplicação para desenvolvimento (Maven Plugin)
-- **Tomcat 10.1.23**: Servidor de aplicação para produção compatível com Jakarta EE 10
 - **Log4j 2.23.1**: Sistema de logging estruturado com rotação de arquivos
+- **H2 Database 2.3.232**: Banco de dados em memória para desenvolvimento (modo PostgreSQL)
 - **PostgreSQL 15**: Banco de dados relacional para produção
-- **H2 Database 2.3.232**: Banco de dados em memória para desenvolvimento e testes
+- **jQuery 3.6.0**: Biblioteca JavaScript para interações client-side
 
 ## Requisitos
 
 - Java SDK 17+
 - Jakarta EE 10
 - Maven 3.9.x ou superior
-- PostgreSQL 15 (para produção) ou H2 2.3.232 (para desenvolvimento)
+- H2 2.3.232 (para desenvolvimento) ou PostgreSQL 15 (para produção)
 - Dependências principais (gerenciadas pelo Maven):
   - PrimeFaces 14.0.0-jakarta (Jakarta EE compatível)
-  - Apache MyFaces 4.0.x (implementação Jakarta EE)
+  - Apache MyFaces 4.0.2 (implementação Jakarta EE)
   - Weld 5.1.2.Final (CDI para Jakarta EE)
   - Jetty 11.0.17 (desenvolvimento via Maven Plugin)
   - Log4j 2.23.1 (logging estruturado)
+  - H2 Database 2.3.232 (desenvolvimento com modo PostgreSQL)
+  - jQuery 3.6.0 (client-side scripting)
 
 ## Instalação e Execução
 
@@ -89,6 +91,7 @@ Acesse via navegador: [https://www.caracore.com.br/csonline](https://www.caracor
    [INFO] MyFaces Core has started, it took [3921] ms.
    [INFO] Running on PrimeFaces 14.0.0
    [INFO] Banco H2 inicializado com sucesso.
+   [INFO] Weld initialization completed successfully
    ```
 
 4. **Acesse a aplicação:**
@@ -172,6 +175,17 @@ Edite `src/main/resources/log4j2.xml` e altere os levels conforme necessário:
 
 ### Parar a Aplicação
 
+**Scripts de gerenciamento disponíveis:**
+
+```powershell
+# Parar o servidor (Windows PowerShell)
+.\stop-csonline.ps1
+
+# Iniciar o servidor (Windows PowerShell)  
+.\start-csonline.ps1
+```
+
+**Manualmente:**
 - Pressione `Ctrl+C` no terminal onde está executando
 - Ou force o encerramento: `taskkill /F /IM java.exe` (Windows)
 
@@ -179,8 +193,12 @@ Edite `src/main/resources/log4j2.xml` e altere os levels conforme necessário:
 
 Se encontrar problemas com a aplicação:
 
-```bash
-# Limpe e reinicie completamente
+```powershell
+# Usando scripts PowerShell (Windows)
+.\stop-csonline.ps1
+.\start-csonline.ps1
+
+# Ou limpe e reinicie completamente
 taskkill /F /IM java.exe
 mvn clean package jetty:run -DskipTests
 ```
@@ -190,6 +208,8 @@ mvn clean package jetty:run -DskipTests
 1. **Porta 8080 ocupada**: Verificar se outra aplicação está usando a porta
 2. **H2 Database lock**: Fechar conexões existentes antes de reiniciar
 3. **Dependências**: Executar `mvn clean` para limpar cache Maven
+4. **Recursos JSF não carregam**: Verificar configuração `jakarta.faces.RESOURCE_EXCLUDES` no web.xml
+5. **Temas PrimeFaces**: Verificar se `nova-light` está disponível nos recursos
 
 ### Verificação da Instalação
 
@@ -214,6 +234,7 @@ INFO: Banco H2 inicializado com sucesso.
 INFO: MyFaces Core has started, it took [3921] ms.
 INFO: Running on PrimeFaces 14.0.0
 INFO: Weld initialization completed successfully
+INFO: Started Server@... HTTP/1.1, (http/1.1)}{0.0.0.0:8080}
 ```
 
 ### Produção (Deploy WAR)
@@ -235,26 +256,32 @@ Este projeto foi **completamente migrado** do Java EE (namespace `javax.*`) para
 ### Mudanças Críticas Realizadas
 
 - **PrimeFaces**: Atualizado de 13.0.7 para **14.0.0-jakarta** (versão Jakarta EE compatível)
-- **MyFaces**: Migrado para versão 4.0.x (Jakarta EE) - Apache MyFaces
+- **MyFaces**: Migrado para versão 4.0.2 (Jakarta EE) - Apache MyFaces
 - **Weld**: Atualizado para versão 5.1.2.Final (CDI Jakarta EE)
 - **H2 Database**: Configurado script de inicialização corrigindo palavra reservada `user` → `users`
 - **Log4j**: Atualizado para 2.23.1 com configuração Jakarta EE compatível
 - **Servidor**: Migrado de Tomcat Cargo para Jetty Maven Plugin (desenvolvimento)
 - **Namespaces**: Todas as dependências e configurações atualizadas para `jakarta.*`
+- **Recursos JSF**: Configuração `jakarta.faces.RESOURCE_EXCLUDES` otimizada para servir CSS, JS e imagens
+- **Scripts de gerenciamento**: Criados scripts PowerShell para iniciar/parar servidor
 
 ### Descobertas Importantes da Migração
 
 1. **PrimeFaces 13.x não é Jakarta EE**: Era necessário usar versão 14.0.0 específica
 2. **H2 Database**: Palavra `user` é reservada, substituída por `users`
 3. **Log4j**: Necessária migração completa da configuração v1.x para v2.x
-4. **Cargo Plugin**: Problemas de cache resolvidos com migração para Jetty
+4. **Jetty Plugin**: Resolveu problemas de cache do Cargo Plugin
+5. **Recursos JSF**: Configuração específica para servir corretamente CSS, JS e imagens do PrimeFaces
 
 ### Arquivos Principais Criados/Atualizados
 
 - `src/main/resources/log4j2.xml` - Configuração completa Log4j 2
 - `src/main/resources/data-h2.sql` - Script inicialização H2 compatível
 - `src/main/java/.../DatabaseInitializer.java` - Listener inicialização banco
+- `src/main/webapp/WEB-INF/web.xml` - Configuração Jakarta EE com recursos JSF
 - `pom.xml` - Dependências Jakarta EE 10 completas
+- `start-csonline.ps1` - Script PowerShell para iniciar servidor
+- `stop-csonline.ps1` - Script PowerShell para parar servidor
 
 O CSOnline **não utiliza JNDI/DataSource do Tomcat**. A conexão com o banco é feita diretamente via JDBC no código Java, utilizando o driver do banco (H2 ou PostgreSQL) e a URL de conexão configurada no projeto.
 
