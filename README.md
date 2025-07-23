@@ -26,7 +26,6 @@ Acesse via navegador: [https://www.caracore.com.br/csonline](https://www.caracor
 - **Log4j 2.23.1**: Sistema de logging estruturado com rotação de arquivos
 - **H2 Database 2.3.232**: Banco de dados em memória para desenvolvimento (modo PostgreSQL)
 - **PostgreSQL 15**: Banco de dados relacional para produção
-- **jQuery 3.6.0**: Biblioteca JavaScript para interações client-side
 
 ## Requisitos
 
@@ -41,7 +40,6 @@ Acesse via navegador: [https://www.caracore.com.br/csonline](https://www.caracor
   - Jetty 11.0.17 (desenvolvimento via Maven Plugin)
   - Log4j 2.23.1 (logging estruturado)
   - H2 Database 2.3.232 (desenvolvimento com modo PostgreSQL)
-  - jQuery 3.6.0 (client-side scripting)
 
 ## Instalação e Execução
 
@@ -262,9 +260,9 @@ Este projeto foi **completamente migrado** do Java EE (namespace `javax.*`) para
 - **Log4j**: Atualizado para 2.23.1 com configuração Jakarta EE compatível
 - **Servidor**: Migrado de Tomcat Cargo para Jetty Maven Plugin (desenvolvimento)
 - **Namespaces**: Todas as dependências e configurações atualizadas para `jakarta.*`
-- **Recursos JSF**: Configuração `jakarta.faces.RESOURCE_EXCLUDES` otimizada para servir CSS, JS e imagens
+- **Recursos JSF**: Configuração simplificada focada apenas no Mojarra + PrimeFaces
 - **Scripts de gerenciamento**: Criados scripts PowerShell para iniciar/parar servidor
-- **Recursos customizados**: Removidos todos os CSS e jQuery personalizados para usar apenas recursos do PrimeFaces
+- **Configuração limpa**: Removidos todos os recursos customizados (CSS, JavaScript) e configurações específicas do MyFaces
 
 ### Sistema de Temas
 
@@ -287,7 +285,7 @@ A implementação atual está sendo unificada para usar apenas o ThemeSwitcherBe
 2. **H2 Database**: Palavra `user` é reservada, substituída por `users`
 3. **Log4j**: Necessária migração completa da configuração v1.x para v2.x
 4. **Jetty Plugin**: Resolveu problemas de cache do Cargo Plugin
-5. **Recursos JSF**: Configuração específica para servir corretamente CSS, JS e imagens do PrimeFaces
+5. **Recursos JSF**: Configuração simplificada usando apenas configurações essenciais do Mojarra + PrimeFaces
 6. **Sistema de Temas**: Identificada duplicidade de gerenciadores (ThemeBean e ThemeSwitcherBean)
 
 ### Arquivos Principais Criados/Atualizados
