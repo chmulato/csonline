@@ -79,8 +79,7 @@ class LoginServiceImplTest {
             FactoryDAO factoryDAOMock = mock(FactoryDAO.class);
             factoryDAOStatic.when(FactoryDAO::getInstancia).thenReturn(factoryDAOMock);
             when(factoryDAOMock.getLoginDAO()).thenReturn(loginDAOMock);
-            when(loginDAOMock.authenticate(login)).thenThrow(new DAOException("erro"));
-
+            doThrow(new DAOException("erro")).when(loginDAOMock).passwordChange(login);
             assertThrows(WebException.class, () -> loginService.authenticate(login));
         }
     }
@@ -250,3 +249,4 @@ class LoginServiceImplTest {
         }
     }
 }
+
