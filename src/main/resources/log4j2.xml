@@ -25,11 +25,6 @@
             <AppenderRef ref="RollingFileAppender"/>
         </Logger>
         
-        <Logger name="org.apache.myfaces" level="INFO" additivity="false">
-            <AppenderRef ref="Console"/>
-            <AppenderRef ref="RollingFileAppender"/>
-        </Logger>
-        
         <Logger name="org.primefaces" level="INFO" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="RollingFileAppender"/>

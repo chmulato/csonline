@@ -40,12 +40,6 @@
 		<param-value>.class .jsp .jspx .properties .groovy</param-value>
 	</context-param>
 	
-	<!-- Forçar JSF a não processar recursos estáticos -->
-	<context-param>
-		<param-name>org.apache.myfaces.STRICT_JSF_2_ALLOW_SLASH_LIBRARY_NAME</param-name>
-		<param-value>true</param-value>
-	</context-param>
-	
 	<!-- Configuração de estado de sessão no servidor -->
 	<context-param>
 		<param-name>jakarta.faces.STATE_SAVING_METHOD</param-name>

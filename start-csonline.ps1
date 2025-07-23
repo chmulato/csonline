@@ -65,7 +65,6 @@ Write-Host ""
 Write-Host "Tecnologias carregadas:" -ForegroundColor Cyan
 Write-Host "  ✅ Jakarta EE 10" -ForegroundColor Green
 Write-Host "  ✅ PrimeFaces 14.0.0-jakarta" -ForegroundColor Green
-Write-Host "  ✅ MyFaces 4.0.x" -ForegroundColor Green
 Write-Host "  ✅ Weld 5.1.2.Final" -ForegroundColor Green
 Write-Host "  ✅ H2 Database 2.3.232" -ForegroundColor Green
 Write-Host "  ✅ Log4j 2.23.1" -ForegroundColor Green
