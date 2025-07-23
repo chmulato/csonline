@@ -7,7 +7,6 @@ import java.util.Date;
 import jakarta.faces.application.Application;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.ActionEvent;
-import jakarta.faces.event.ValueChangeEvent;
 import jakarta.servlet.ServletContext;
 
 import org.apache.logging.log4j.LogManager;
@@ -23,7 +22,7 @@ import br.com.mulato.cso.view.beans.FacesMessages;
 
 import jakarta.inject.Named;
 import jakarta.enterprise.context.SessionScoped;
-import br.com.mulato.cso.view.beans.ThemeBean;
+
 
 @Named("loginMB")
 @SessionScoped
@@ -206,22 +205,6 @@ public class LoginController extends AbstractController implements Serializable 
 		return goToBackPage("login");
 	}
 
-	public String changeTheme(final ValueChangeEvent event) {
-		final String theme = (String) event.getNewValue();
-		if (theme != null) {
-			final FacesContext context = FacesContext.getCurrentInstance();
-			final Application app = context.getApplication();
-			final ThemeBean themeBean = app.evaluateExpressionGet(context, "#{themeMB}", ThemeBean.class);
-			if (themeBean != null) {
-				themeBean.setTheme(theme);
-				return goToPage("theme");
-			} else {
-				return goToPage("login");
-			}
-		} else {
-			return goToPage("login");
-		}
-	}
 
 	public boolean getMenuChange() {
 		boolean cond = false;

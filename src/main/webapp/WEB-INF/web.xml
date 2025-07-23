@@ -46,12 +46,6 @@
 		<param-value>true</param-value>
 	</context-param>
 	
-	<!-- Impedir que MyFaces adicione sufixo .xhtml aos recursos -->
-	<context-param>
-		<param-name>org.apache.myfaces.RESOURCE_SUFFIX</param-name>
-		<param-value></param-value>
-	</context-param>
-	
 	<!-- Configuração de estado de sessão no servidor -->
 	<context-param>
 		<param-name>jakarta.faces.STATE_SAVING_METHOD</param-name>
@@ -67,7 +61,7 @@
 	<!-- Configurações do PrimeFaces -->
 	<context-param>
 		<param-name>primefaces.THEME</param-name>
-		<param-value>nova-light</param-value>
+		<param-value>#{themeSwitcherBean.theme}</param-value>
 	</context-param>
 	<context-param>
 		<param-name>primefaces.FONT_AWESOME</param-name>
@@ -84,17 +78,6 @@
 	<context-param>
 		<param-name>primefaces.TRANSFORM_METADATA</param-name>
 		<param-value>true</param-value>
-	</context-param>
-	<context-param>
-		<param-name>primefaces.RESOURCE_MAPPINGS</param-name>
-		<param-value>
-			core.js=core.js
-			validation.js=validation.js
-			locale-pt.js=locale-pt.js
-			components.css=components.css
-			theme.css=theme.css
-			primeicons.css=primeicons.css
-		</param-value>
 	</context-param>
 	<context-param>
 		<param-name>jakarta.faces.FACELETS_BUFFER_SIZE</param-name>

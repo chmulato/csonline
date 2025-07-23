@@ -46,14 +46,14 @@
 							<p:messages showDetail="true" />
 							<p:spacer height="20px" />
 
-							<h:outputText value="#{rotulo.theme}:" />
-							<p:selectOneMenu id="theme" label="#{rotulo.theme}"
-								value="#{themeMB.theme}" valueChangeListener="#{loginMB.changeTheme}" onchange="this.form.submit();">
-								<f:selectItems value="#{themeMB.themesList}" />
-							</p:selectOneMenu>
-							<p:spacer height="20px" />
+						<h:outputText value="#{rotulo.theme}:" />
+						<p:selectOneMenu id="theme" label="#{rotulo.theme}"
+							value="#{themeSwitcherBean.theme}" onchange="this.form.submit();">
+							<f:selectItems value="#{themeSwitcherBean.themesAsSelectItems}" />
+						</p:selectOneMenu>
+						<p:spacer height="20px" />
 
-							<p:tooltip for="theme" value="#{rotulo.escolherTheme}" showEffect="fade" hideEffect="fade" />
+						<p:tooltip for="theme" value="#{rotulo.escolherTheme}" showEffect="fade" hideEffect="fade" />
 
 						</h:panelGrid>
 					</h:panelGrid>

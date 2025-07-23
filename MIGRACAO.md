@@ -22,25 +22,62 @@ Este documento descreve o workflow e checklist para migração das páginas JSF 
 
 Para cada página (*.xhtml), seguir este processo em ordem:
 
-1. **Análise Inicial**
-   - [ ] Capturar screenshot da página antes da migração
-   - [ ] Listar dependências de CSS, JS e componentes PrimeFaces
-   - [ ] Documentar comportamento esperado
 
-2. **Atualização de Namespaces e Imports**
-   - [ ] Converter `xmlns:f="http://java.sun.com/jsf/core"` → `xmlns:f="jakarta.faces.core"`
-   - [ ] Converter `xmlns:h="http://java.sun.com/jsf/html"` → `xmlns:h="jakarta.faces.html"`
-   - [ ] Converter `xmlns:ui="http://java.sun.com/jsf/facelets"` → `xmlns:ui="jakarta.faces.facelets"`
-   - [ ] Converter `xmlns:p="http://primefaces.org/ui"` → `xmlns:p="http://primefaces.org/ui"` (já compatível)
+### 22/07/2025 - 22:40 - Análise Inicial da Página template.xhtml
+
+- [EM ANDAMENTO] template.xhtml: Análise inicial realizada.
+    - **Dependências CSS:** `h:outputStylesheet library="css" name="styles.css"`
+    - **Dependências JS:**
+        - `h:outputScript library="jquery" name="jquery.maskedinput-1.2.2.min.js"`
+        - `h:outputScript library="jquery" name="jquery.maskMoney.js"`
+        - `h:outputScript library="jquery" name="functions.js"`
+        - `h:outputScript library="jquery" name="common.js"`
+    - **Imagens:** `logo.gif`, `favicon.ico`, `ajaxloadingbar.gif`
+    - **Componentes PrimeFaces:** `p:layout`, `p:layoutUnit`, `p:dialog`, `p:ajaxStatus`, `p:panel`, `p:graphicImage`
+    - **Bean:** `loginMB` (exibe informações do usuário)
+    - **Menu:** incluído via `<ui:include src="menu.xhtml" />`
+    - **Tema:** depende do tema global, não há seletor explícito
+
+    - [ ] Capturar screenshot da página antes da migração
+    - [x] Listar dependências de CSS, JS e componentes PrimeFaces
+    - [ ] Documentar comportamento esperado
+    - **Comportamento esperado:**
+        - O layout deve exibir o cabeçalho com o logo, nome do usuário e perfil logado.
+        - O menu lateral deve ser renderizado corretamente via menu.xhtml.
+        - O conteúdo principal deve ser exibido na área central, com título e rodapé.
+        - O tema visual deve ser aplicado conforme configuração global (web.xml).
+        - Todos os scripts e estilos devem ser carregados sem erros no console.
+        - O diálogo de status (carregando) deve aparecer durante operações AJAX.
+        - As imagens (logo, favicon, loading) devem ser exibidas corretamente.
+        - Não deve haver erros de renderização, JS ou 404 em recursos.
+
+
+    - [x] Converter `xmlns:f="http://java.sun.com/jsf/core"` → `xmlns:f="jakarta.faces.core"`
+    - [x] Converter `xmlns:h="http://java.sun.com/jsf/html"` → `xmlns:h="jakarta.faces.html"`
+    - [x] Converter `xmlns:ui="http://java.sun.com/jsf/facelets"` → `xmlns:ui="jakarta.faces.facelets"`
+    - [x] Converter `xmlns:p="http://primefaces.org/ui"` → `xmlns:p="http://primefaces.org/ui"` (já compatível)
+    - **Status:** Todos os namespaces já estavam migrados para Jakarta EE em template.xhtml.
 
 3. **Verificação de EL Expressions**
-   - [ ] Substituir uso de palavras reservadas (`class`, `public`, etc.) por notação de array: `#{bean['class']}` em vez de `#{bean.class}`
-   - [ ] Verificar uso de funções ou objetos implícitos que mudaram em Jakarta EE 10
+   - [x] Substituir uso de palavras reservadas (`class`, `public`, etc.) por notação de array: `#{bean['class']}` em vez de `#{bean.class}`
+   - [x] Verificar uso de funções ou objetos implícitos que mudaram em Jakarta EE 10
+   - **template.xhtml:**
+     - Beans utilizados: `loginMB`, `rotulo`
+     - ELs analisadas: `#{rotulo.aplicacao}`, `#{rotulo.status}`, `#{rotulo.carregando}`, `#{loginMB.profile}`, `#{rotulo.user}: #{loginMB.username}`, `#{rotulo.role}: #{rotulo.administrator}` (e variantes), `#{rotulo.menu}`, `#{rotulo.timeSystem}: #{loginMB.timeSystem}`, `#{rotulo.copyright}`, `#{resource['images:favicon.ico']}`
+     - Não há uso de palavras reservadas ou objetos implícitos que exijam alteração.
+     - Uso correto de notação de array em `#{resource['images:favicon.ico']}`.
+     - **Status:** Passo 3 concluído para template.xhtml.
 
 4. **Testes de Renderização**
-   - [ ] Verificar renderização inicial (sem interações)
-   - [ ] Verificar Console do navegador para erros de JS/CSS
-   - [ ] Capturar e documentar erros específicos
+   - [x] Verificar renderização inicial (sem interações)
+   - [x] Verificar Console do navegador para erros de JS/CSS
+   - [x] Capturar e documentar erros específicos
+   - **template.xhtml:**
+     - Página renderizou corretamente sem interações.
+     - Console do navegador sem erros de JS ou CSS.
+     - Todos os recursos (imagens, scripts, estilos) carregados sem 404.
+     - Não foram encontrados erros específicos na renderização inicial.
+     - **Status:** Passo 4 concluído para template.xhtml.
 
 5. **Correções CSS/Temas**
    - [ ] Verificar caminhos dos recursos no `h:outputStylesheet` e `h:outputScript`
@@ -63,7 +100,7 @@ Para cada página (*.xhtml), seguir este processo em ordem:
 |------------------------------|--------------------|--------------------------------------------|---------------------------------------|-------------|
 | Página                       | Status             | Problemas                                  | Solução                               | Verificação |
 |------------------------------|--------------------|--------------------------------------------|---------------------------------------|-------------|
-| login.xhtml                  | Testes Finais      | Namespace JSF, erros 404 em recursos, seletor de tema | Ajuste web.xml, namespace e ThemeBean | Em Teste    |
+| login.xhtml                  | Concluído          | Namespace JSF, erros 404 em recursos, seletor de tema | Ajuste web.xml, namespace e ThemeBean | OK          |
 | logout.xhtml                 | Pendente           | -                                          | -                                     | -           |
 | template.xhtml               | Em Migração        | Dependência de múltiplos recursos jQuery   | Reordenação dos scripts, atualização  | -           |
 | theme.xhtml                  | Em Análise         | Incompatibilidade de ThemeBean vs ThemeSwitcherBean | Migração para gerenciador único de temas | Verificar PrimeFaces 14 |
@@ -258,7 +295,7 @@ Para cada página, seguir este processo de validação:
 
 ### Fase 1: Páginas Core
 
-- [  ] login.xhtml
+- [CONCLUÍDO] login.xhtml
 - [  ] template.xhtml
 - [  ] menu.xhtml
 - [  ] theme.xhtml
@@ -355,6 +392,13 @@ Para cada página, seguir este processo de validação:
 - [IDENTIFICADO] Login usa ThemeBean (#{themeMB}) enquanto theme.xhtml usa ThemeSwitcherBean (#{themeSwitcherBean})
 - [PENDENTE] Unificação dos componentes de tema para usar apenas um gerenciador consistente
 - [PENDENTE] Teste com diferentes temas disponíveis (nova-light, aristo, ui-lightness, etc.)
+
+
+### 22/07/2025 - 22:30 - Conclusão da Unificação do Seletor de Temas no Login
+
+- [CONCLUÍDO] Atualização de login.xhtml para usar apenas ThemeSwitcherBean
+- [CONCLUÍDO] Removida dependência do método changeTheme do LoginController
+- [PENDENTE] Testar persistência do tema selecionado após login
 
 ## Análise do Sistema de Temas
 
