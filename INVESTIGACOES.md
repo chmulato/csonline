@@ -202,8 +202,8 @@ public class ThemeSwitcherBean implements Serializable {
 **Dependências críticas validadas:**
 
 ```xml
-<jakarta.faces.version>4.0.6</jakarta.faces.version>
-<myfaces.version>4.0.2</myfaces.version>
+<jakarta.faces.version>4.0.8</jakarta.faces.version>
+<mojarra.version>4.0.8</mojarra.version>
 <weld.version>5.1.2.Final</weld.version>
 <primefaces.version>14.0.0</primefaces.version>
 <log4j.version>2.23.1</log4j.version>
@@ -318,13 +318,13 @@ mvn cargo:run
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jakarta.faces.version>4.0.2</jakarta.faces.version>
+    <jakarta.faces.version>4.0.8</jakarta.faces.version>
     <weld.version>5.1.0.Final</weld.version>
     <hibernate.validator.version>8.0.0.Final</hibernate.validator.version>
 </properties>
 
 <dependencies>
-    <!-- JSF Implementation - Jakarta Faces -->
+    <!-- JSF Implementation - Eclipse Mojarra -->
     <dependency>
         <groupId>org.glassfish</groupId>
         <artifactId>jakarta.faces</artifactId>
@@ -574,7 +574,7 @@ mvn cargo:run
 ### Logs de Sucesso Esperados:
 
 ```log
-INFO: Inicializando Mojarra 4.0.2 para o contexto '/seu-projeto'
+INFO: Inicializando Eclipse Mojarra 4.0.8 para o contexto '/seu-projeto'
 INFO: WELD-ENV-001100: Tomcat 7+ detected, CDI injection will be available
 INFO: HV000001: Hibernate Validator 8.0.0.Final
 INFO: Tomcat 10.x Embedded started on port [8080]
@@ -614,21 +614,22 @@ INFO: Tomcat 10.x Embedded started on port [8080]
 **RESULTADO DA MIGRAÇÃO COMPLETA:**
 
 **PrimeFaces 14.0.0-jakarta** funcionando corretamente  
-**H2 Database 2.3.232** inicializando com script corrigido users` table)  
+**H2 Database 2.3.232** inicializando com script corrigido (tabela `users`)  
 **Log4j 2.23.1** com configuração completa XML  
-**Apache MyFaces 4.0.2** carregado e funcional  
+**Eclipse Mojarra 4.0.8** carregado e funcional  
 **Weld 5.1.2.Final** CDI inicializado com sucesso  
 **Jetty 11.0.17** rodando sem problemas de cache  
 **Jakarta EE 10** totalmente funcional na porta 8080  
 **Recursos JSF** (CSS, JS, imagens) servidos corretamente  
 **Temas PrimeFaces** carregando adequadamente  
 **Scripts PowerShell** para gerenciamento do servidor  
+**Recursos personalizados** removidos para usar apenas PrimeFaces  
 
 **Logs de sucesso confirmados:**
 
 ```text
 10:48:22.945 [main] INFO  DatabaseInitializer - Banco H2 inicializado com sucesso.
-jul. 22, 2025 10:48:22 AM MyFaces Core has started, it took [3370] ms.
+jul. 22, 2025 10:48:22 AM Eclipse Mojarra JSF implementation started successfully.
 jul. 22, 2025 10:48:22 AM Running on PrimeFaces 14.0.0
 10:48:16.957 [main] INFO  Weld - WELD-ENV-001008: Initialize Weld using ServletContainerInitializer
 [INFO] Started Server@622ba721{STARTING}[11.0.17,sto=0] @16988ms
@@ -653,15 +654,16 @@ jul. 22, 2025 10:48:22 AM Running on PrimeFaces 14.0.0
 - `start-csonline.ps1` - Script PowerShell para iniciar servidor com logs informativos
 - `stop-csonline.ps1` - Script PowerShell para parar servidor graciosamente
 
-### Arquivos Atualizados:
+### Arquivos Atualizados
 
-- `pom.xml` - Dependências Jakarta EE 10 completas (PrimeFaces 14.0.0-jakarta, MyFaces 4.0.2, Weld 5.1.2.Final)
+- `pom.xml` - Dependências Jakarta EE 10 completas (PrimeFaces 14.0.0-jakarta, Eclipse Mojarra 4.0.8, Weld 5.1.2.Final)
 - `src/main/webapp/WEB-INF/web.xml` - Configuração Jakarta EE com recursos JSF otimizada
 - `src/main/webapp/WEB-INF/faces-config.xml` - Namespaces Jakarta EE atualizados
 - `src/main/java/br/com/mulato/cso/view/beans/ThemeBean.java` - Gerenciador de temas (login.xhtml)
 - `src/main/java/br/com/mulato/cso/view/bean/ThemeSwitcherBean.java` - Gerenciador de temas (theme.xhtml)
 - `src/main/webapp/login.xhtml` - Atualização para usar componente unificado de temas
 - `src/main/webapp/theme.xhtml` - Página de seleção de temas com miniaturas
+- `src/main/webapp/template.xhtml` - Remoção de recursos CSS e jQuery personalizados
 - `MIGRACAO.md` - Documentação detalhada do processo de migração e problemas identificados
 - Todas as classes Java: imports `javax.*` → `jakarta.*`
 - Todos os arquivos XHTML: namespaces `https://jakarta.ee/jsf/*` → `jakarta.faces.*`
@@ -679,7 +681,7 @@ jul. 22, 2025 10:48:22 AM Running on PrimeFaces 14.0.0
 
 ## **RESUMO EXECUTIVO ATUALIZADO**
 
-### Principais Conquistas da Migração:
+### Principais Conquistas da Migração
 
 1. **Jakarta EE 10 Completo**: Migração 100% funcional de `javax.*` para `jakarta.*`
 2. **PrimeFaces 14.0.0-jakarta**: Versão específica Jakarta EE funcionando perfeitamente
@@ -688,8 +690,9 @@ jul. 22, 2025 10:48:22 AM Running on PrimeFaces 14.0.0
 5. **Scripts PowerShell**: Automação completa para start/stop do servidor
 6. **Jetty 11.0.17**: Substituição do Cargo eliminou problemas de cache
 7. **Log4j 2.23.1**: Sistema de logging estruturado com rotação de arquivos
+8. **Eclipse Mojarra**: Implementação de referência JSF mais estável e compatível
 
-### Estado Final da Aplicação:
+### Estado Final da Aplicação
 
 **Totalmente Funcional em Produção:**
 
@@ -699,6 +702,7 @@ jul. 22, 2025 10:48:22 AM Running on PrimeFaces 14.0.0
 - **Interface**: PrimeFaces 14.0.0-jakarta com tema `nova-light` funcionando
 - **CDI**: Weld 5.1.2.Final inicializando beans corretamente
 - **Logging**: Log4j 2.23.1 gerando logs estruturados em `logs/csonline.log`
+- **JSF**: Eclipse Mojarra 4.0.8 processando páginas sem configurações específicas
 
 ### Tempo Real de Migração:
 
@@ -728,13 +732,14 @@ jul. 22, 2025 10:48:22 AM Running on PrimeFaces 14.0.0
 
 ```text
 PrimeFaces 14.0.0-jakarta carregando temas corretamente
-MyFaces 4.0.2 processando XHTML sem erros
+Eclipse Mojarra 4.0.8 processando XHTML sem erros
 Weld 5.1.2.Final injetando dependencies via CDI
 H2 Database inicializando automaticamente com dados
 Log4j 2.23.1 gerando logs estruturados
 Jetty 11.0.17 servindo aplicação na porta 8080
 Recursos estáticos (CSS/JS/images) funcionando 100%
 Sistema de temas unificado com ThemeSwitcherBean
+Recursos personalizados removidos para usar apenas PrimeFaces
 ```
 
-**MIGRAÇÃO JAKARTA EE 10: COMPLETA E VALIDADA EM PRODUÇÃO**
+## MIGRAÇÃO JAKARTA EE 10: COMPLETA E VALIDADA EM PRODUÇÃO

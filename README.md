@@ -100,7 +100,7 @@ A aplicação utiliza H2 Database em modo PostgreSQL para desenvolvimento:
 
 ### Logs do Jetty Embedded
 
-Os logs são exibidos diretamente no terminal onde você executou `mvn cargo:run`. Para logs mais detalhados:
+Os logs são exibidos diretamente no terminal onde você executou `mvn jetty:run`. Para logs mais detalhados:
 
 **Logs da aplicação:**
 
@@ -114,16 +114,17 @@ logs/
 **Localização dos logs do servidor:**
 
 ```text
-target/cargo/
-├── configurations/
-│   └── tomcat10x/
-│       ├── logs/           ← Logs do Tomcat
-│       │   ├── catalina.out
-│       │   ├── localhost.log
-│       │   └── manager.log
-│       └── webapps/        ← Aplicações deployadas
-│           └── csonline/
+target/
+├── jetty-temp/           ← Arquivos temporários do Jetty
+├── classes/              ← Classes compiladas
+└── csonline/             ← Aplicação expandida (WAR)
+    ├── WEB-INF/
+    └── resources/
 ```
+
+**Logs do Jetty:**
+
+Os logs do Jetty são exibidos diretamente no terminal onde você executou `mvn jetty:run`. Não há arquivos de log separados do servidor para desenvolvimento, apenas os logs da aplicação em `logs/csonline.log`.
 
 **Visualizar logs em tempo real:**
 
@@ -217,7 +218,7 @@ target/
 ├── csonline.war          ← Arquivo WAR principal
 ├── csonline/             ← Aplicação expandida
 │   ├── WEB-INF/
-│   │   ├── lib/          ← Dependências (PrimeFaces, MyFaces, etc.)
+│   │   ├── lib/          ← Dependências (PrimeFaces, Mojarra, etc.)
 │   │   ├── classes/      ← Classes compiladas
 │   │   └── web.xml       ← Configuração web
 │   └── resources/        ← Recursos estáticos
