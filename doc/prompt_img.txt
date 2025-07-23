@@ -1,0 +1,50 @@
+Create a professional software application mockup image in 1920x1080 resolution representing "CSOnline Delivery" - a web-based delivery management system. 
+
+**Visual Style:**
+- Modern, clean business interface design
+- Professional color scheme with blue/navy primary colors and white/gray backgrounds
+- High-quality, realistic web application interface
+- Corporate/enterprise software aesthetic
+
+**Main Interface Elements:**
+- Web browser showing the application at localhost:8080/csonline
+- Login screen with "CSOnline Delivery" branding and logo
+- Dashboard showing delivery management features:
+  - Delivery tracking cards/widgets
+  - Customer management section
+  - Courier assignment interface
+  - Administrator control panel
+  - Delivery status indicators (completed, in progress, pending)
+
+**Technology Stack Indicators (subtle watermarks/badges in corner):**
+- Java 17 logo
+- Jakarta EE 10 badge
+- PrimeFaces component library styling
+- Eclipse Mojarra JSF framework
+- H2 Database icon
+- Maven build tool
+- Jetty server indicator
+
+**Business Context:**
+- Delivery truck icons and shipping elements
+- Package/box graphics
+- Map interface showing delivery routes
+- User profile sections (Admin, Business, Customer, Courier)
+- Brazilian Portuguese interface elements (subtle)
+
+**Technical Details:**
+- Modern web browser frame (Chrome/Edge style)
+- Responsive design layout
+- Professional typography
+- Clean form inputs and buttons
+- Data tables with delivery information
+- Navigation menu with business sections
+
+**Atmosphere:**
+- Professional business software
+- Efficient logistics management
+- Modern enterprise application
+- Clean, organized interface design
+- High productivity workflow visualization
+
+Resolution: 1920x1080, high quality, photorealistic web application interface, no people visible, focus on the software interface and technology stack.
