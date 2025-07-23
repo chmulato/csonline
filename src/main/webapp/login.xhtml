@@ -48,8 +48,10 @@
 
 						<h:outputText value="#{rotulo.theme}:" />
 						<p:selectOneMenu id="theme" label="#{rotulo.theme}"
-							value="#{themeSwitcherBean.theme}" onchange="this.form.submit();">
+							value="#{themeSwitcherBean.theme}">
 							<f:selectItems value="#{themeSwitcherBean.themesAsSelectItems}" />
+							<p:ajax event="change" process="@this" update="@none" 
+								listener="#{themeSwitcherBean.onThemeChange}" />
 						</p:selectOneMenu>
 						<p:spacer height="20px" />
 

@@ -169,4 +169,25 @@ public class ThemeSwitcherBean implements Serializable {
             .findFirst()
             .orElse(theme);
     }
+    
+    /**
+     * Ajax listener for theme change events
+     * This method is called when the theme selection changes via p:ajax
+     */
+    public void onThemeChange() {
+        LOGGER.info("Ajax theme change event triggered - current theme: {}", theme);
+        
+        // Force a page refresh to apply the new theme
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        if (facesContext != null) {
+            try {
+                String currentPage = facesContext.getViewRoot().getViewId();
+                LOGGER.info("Redirecting to current page to apply new theme: {}", currentPage);
+                
+                facesContext.getExternalContext().redirect(currentPage);
+            } catch (Exception e) {
+                LOGGER.warn("Could not redirect after theme change: {}", e.getMessage());
+            }
+        }
+    }
 }

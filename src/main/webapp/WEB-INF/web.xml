@@ -89,7 +89,23 @@
 	</context-param>
 	<context-param>
 		<param-name>jakarta.faces.FACELETS_REFRESH_PERIOD</param-name>
-		<param-value>-1</param-value>
+		<param-value>0</param-value>
+	</context-param>
+	
+	<!-- Configurações críticas para state saving -->
+	<context-param>
+		<param-name>jakarta.faces.SERIALIZE_SERVER_STATE</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>jakarta.faces.NUMBER_OF_VIEWS_IN_SESSION</param-name>
+		<param-value>20</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>jakarta.faces.NUMBER_OF_LOGICAL_VIEWS_IN_SESSION</param-name>
+		<param-value>20</param-value>
 	</context-param>
 	
 	<context-param>
@@ -186,6 +202,15 @@
 	<welcome-file-list>
 		<welcome-file>login.xhtml</welcome-file>
 	</welcome-file-list>
+
+	<!-- Configuração de timeout de sessão -->
+	<session-config>
+		<session-timeout>30</session-timeout> <!-- 30 minutos -->
+		<cookie-config>
+			<http-only>true</http-only>
+			<secure>false</secure> <!-- Para desenvolvimento -->
+		</cookie-config>
+	</session-config>
 
 	<!-- Corrige o Content-Type do CSS para incluir charset UTF-8 -->
 	<mime-mapping>
