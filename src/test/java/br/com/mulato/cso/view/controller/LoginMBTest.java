@@ -3,6 +3,8 @@ package br.com.mulato.cso.view.controller;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.util.Iterator;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
@@ -15,6 +17,7 @@ import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.ActionEvent;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -39,16 +42,34 @@ class LoginMBTest {
     @Mock
     private ActionEvent actionEvent;
 
+    @Mock
+    private ServletContext servletContext;
+
+    @Mock
+    private Iterator<FacesMessage> messageIterator;
+
     private LoginController loginMB;
 
     @BeforeEach
     void setUp() {
         loginMB = new LoginController();
         
-        // Configurar mocks básicos do JSF
-        when(facesContext.getExternalContext()).thenReturn(externalContext);
-        when(externalContext.getRequest()).thenReturn(request);
-        when(externalContext.getSession(false)).thenReturn(session);
+        // Configurar mocks básicos do JSF usando lenient() para evitar UnnecessaryStubbing
+        lenient().when(facesContext.getExternalContext()).thenReturn(externalContext);
+        lenient().when(externalContext.getRequest()).thenReturn(request);
+        lenient().when(externalContext.getSession(false)).thenReturn(session);
+        lenient().when(externalContext.getContext()).thenReturn(servletContext);
+        
+        // Mock do Iterator de mensagens para evitar NullPointerException
+        lenient().when(facesContext.getMessages()).thenReturn(messageIterator);
+        lenient().when(messageIterator.hasNext()).thenReturn(false);
+        
+        // Mock do ServletContext para timeout
+        lenient().when(servletContext.getInitParameter("timeout")).thenReturn("900"); // 15 minutos
+        
+        // Mock da sessão
+        lenient().when(request.getSession()).thenReturn(session);
+        lenient().when(session.getId()).thenReturn("test-session-id");
     }
 
     @Test

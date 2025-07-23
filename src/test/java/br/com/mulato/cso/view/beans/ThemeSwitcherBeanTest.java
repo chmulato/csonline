@@ -41,9 +41,9 @@ class ThemeSwitcherBeanTest {
     void setUp() {
         themeSwitcherBean = new ThemeSwitcherBean();
         
-        // Setup básico do mock do FacesContext
-        when(facesContext.getExternalContext()).thenReturn(externalContext);
-        when(externalContext.getContext()).thenReturn(servletContext);
+        // Setup básico do mock do FacesContext usando lenient() para evitar UnnecessaryStubbing
+        lenient().when(facesContext.getExternalContext()).thenReturn(externalContext);
+        lenient().when(externalContext.getContext()).thenReturn(servletContext);
     }
 
     @Test

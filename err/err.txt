@@ -1,0 +1,332 @@
+PS C:\dev\csonline> mvn clean test
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------------< br.com.mulato:csonline >-----------------------
+[INFO] Building csonline 2.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ war ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ csonline ---
+[INFO] Deleting C:\dev\csonline\target
+[INFO] 
+[INFO] --- resources:3.3.1:copy-resources (copy-resources) @ csonline ---
+[INFO] Copying 23 resources from src\main\resources to target\csonline\resources
+[INFO] The encoding used to copy filtered properties files have not been set. This means that the same encoding will be used to copy filtered properties files as when copying other filtered resources. This might not be what you want! Run your build with --debug to see which files might be affected. Read more at https://maven.apache.org/plugins/maven-resources-plugin/examples/filtering-properties-files.html
+[INFO]
+[INFO] --- jacoco:0.8.11:prepare-agent (default) @ csonline ---   
+[INFO] argLine set to "-javaagent:C:\\Users\\Christian Mulato\\.m2\\repository\\org\\jacoco\\org.jacoco.agent\\0.8.11\\org.jacoco.agent-0.8.11-runtime.jar=destfile=C:\\dev\\csonline\\target\\jacoco.exec"
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ csonline ---
+[INFO] Copying 23 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ csonline ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 103 source files with javac [debug target 17] to target\classes
+[WARNING] /C:/dev/csonline/src/main/java/br/com/mulato/cso/dao/impl/DeliveryDAOImpl.java:[237,38] Integer(int) in java.lang.Integer has been deprecated and marked for removal
+[WARNING] /C:/dev/csonline/src/main/java/br/com/mulato/cso/utils/ToolUtils.java:[302,58] Character(char) in java.lang.Character has been deprecated and marked for removal
+[WARNING] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/ChangePasswordController.java:[143,65] Integer(int) in java.lang.Integer has been deprecated and marked for removal        
+[WARNING] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/ContadorController.java:[41,25] Integer(int) in java.lang.Integer has been deprecated and marked for removal
+[WARNING] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/ContadorController.java:[46,25] Integer(int) in java.lang.Integer has been deprecated and marked for removal
+[WARNING] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/CustomerController.java:[250,65] Integer(int) in java.lang.Integer has been deprecated and marked for removal
+[WARNING] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/DeliveryController.java:[262,65] Integer(int) in java.lang.Integer has been deprecated and marked for removal
+[WARNING] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/DeliveryController.java:[266,81] Integer(int) in java.lang.Integer has been deprecated and marked for removal
+[WARNING] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/DeliveryController.java:[270,81] Integer(int) in java.lang.Integer has been deprecated and marked for removal
+[WARNING] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/DeliveryController.java:[274,79] Integer(int) in java.lang.Integer has been deprecated and marked for removal
+[WARNING] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/DeliveryCourierController.java:[194,81] Integer(int) in java.lang.Integer has been deprecated and marked for removal       
+[WARNING] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/DeliveryCourierController.java:[198,81] Integer(int) in java.lang.Integer has been deprecated and marked for removal       
+[WARNING] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/DeliveryCourierController.java:[202,79] Integer(int) in java.lang.Integer has been deprecated and marked for removal       
+[WARNING] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/DeliveryCustomerController.java:[238,65] Integer(int) in java.lang.Integer has been deprecated and marked for removal      
+[WARNING] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/DeliveryCustomerController.java:[242,81] Integer(int) in java.lang.Integer has been deprecated and marked for removal      
+[WARNING] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/DeliveryCustomerController.java:[246,81] Integer(int) in java.lang.Integer has been deprecated and marked for removal      
+[WARNING] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/PriceController.java:[186,65] Integer(int) in java.lang.Integer has been deprecated and marked for removal
+[WARNING] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/PriceController.java:[190,81] Integer(int) in java.lang.Integer has been deprecated and marked for removal
+[WARNING] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/PriceController.java:[202,75] Integer(int) in java.lang.Integer has been deprecated and marked for removal
+[WARNING] /C:/dev/csonline/src/main/java/br/com/mulato/cso/view/controller/PriceController.java:[206,79] Integer(int) in java.lang.Integer has been deprecated and marked for removal
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @
+ csonline ---
+[INFO] skip non existing resourceDirectory C:\dev\csonline\src\test\resources
+[INFO]
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ csonline ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 15 source files with javac [debug target 17] to target\test-classes
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR :
+[INFO] -------------------------------------------------------------
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/controller/ChangePasswordControllerTest.java:[9,44] package org.springframework.test.web.servlet does not exist
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/controller/ChangePasswordControllerTest.java:[10,50] package org.springframework.test.web.servlet.setup does not exist
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/controller/ChangePasswordControllerTest.java:[11,32] package org.springframework.http does not exist
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/controller/ChangePasswordControllerTest.java:[17,59] package org.springframework.test.web.servlet.request does not exist
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/controller/ChangePasswordControllerTest.java:[17,1] static import only from classes and interfaces
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/controller/ChangePasswordControllerTest.java:[18,59] package org.springframework.test.web.servlet.request does not exist
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/controller/ChangePasswordControllerTest.java:[18,1] static import only from classes and interfaces
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/controller/ChangePasswordControllerTest.java:[19,58] package org.springframework.test.web.servlet.result does not exist
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/controller/ChangePasswordControllerTest.java:[24,13] cannot find symbol
+  symbol:   class MockMvc
+  location: class br.com.mulato.cso.view.controller.ChangePasswordControllerTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/controller/ChangePasswordControllerTest.java:[27,13] cannot find symbol
+  symbol:   class UserService
+  location: class br.com.mulato.cso.view.controller.ChangePasswordControllerTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/controller/ChangePasswordControllerTest.java:[30,13] cannot find symbol
+  symbol:   class PasswordEncoder
+  location: class br.com.mulato.cso.view.controller.ChangePasswordControllerTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ChangePasswordPageSimpleTest.java:[17,13] cannot find symbol     
+  symbol:   class PasswordService
+  location: class br.com.mulato.cso.view.page.ChangePasswordPageSimpleTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ChangePasswordPageSimpleTest.java:[20,13] cannot find symbol     
+  symbol:   class UserSession
+  location: class br.com.mulato.cso.view.page.ChangePasswordPageSimpleTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ChangePasswordPageSimpleTest.java:[23,13] cannot find symbol     
+  symbol:   class MessageService
+  location: class br.com.mulato.cso.view.page.ChangePasswordPageSimpleTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ChangePasswordPageSimpleTest.java:[25,13] cannot find symbol     
+  symbol:   class ChangePasswordPage
+  location: class br.com.mulato.cso.view.page.ChangePasswordPageSimpleTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ChangePasswordPageTest.java:[3,33] cannot find symbol
+  symbol:   class PasswordService
+  location: package br.com.mulato.cso.service
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ChangePasswordPageTest.java:[4,33] cannot find symbol
+  symbol:   class UserService
+  location: package br.com.mulato.cso.service
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ChangePasswordPageTest.java:[5,31] cannot find symbol
+  symbol:   class User
+  location: package br.com.mulato.cso.model
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ChangePasswordPageTest.java:[6,35] cannot find symbol
+  symbol:   class InvalidPasswordException
+  location: package br.com.mulato.cso.exception
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ChangePasswordPageTest.java:[7,35] cannot find symbol
+  symbol:   class UserNotFoundException
+  location: package br.com.mulato.cso.exception
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ChangePasswordPageTest.java:[17,31] package javax.faces.application does not exist
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ChangePasswordPageTest.java:[18,27] package javax.faces.context does not exist
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ChangePasswordPageTest.java:[29,13] cannot find symbol
+  symbol:   class PasswordService
+  location: class br.com.mulato.cso.view.page.ChangePasswordPageTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ChangePasswordPageTest.java:[32,13] cannot find symbol
+  symbol:   class UserService
+  location: class br.com.mulato.cso.view.page.ChangePasswordPageTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ChangePasswordPageTest.java:[35,13] cannot find symbol
+  symbol:   class FacesContext
+  location: class br.com.mulato.cso.view.page.ChangePasswordPageTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ChangePasswordPageTest.java:[38,13] cannot find symbol
+  symbol:   class ChangePasswordPage
+  location: class br.com.mulato.cso.view.page.ChangePasswordPageTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ChangePasswordPageTest.java:[40,13] cannot find symbol
+  symbol:   class User
+  location: class br.com.mulato.cso.view.page.ChangePasswordPageTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ErrorPageTest.java:[3,33] cannot find symbol
+  symbol:   class LogService
+  location: package br.com.mulato.cso.service
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ErrorPageTest.java:[4,33] cannot find symbol
+  symbol:   class ErrorService
+  location: package br.com.mulato.cso.service
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ErrorPageTest.java:[5,31] cannot find symbol
+  symbol:   class ErrorInfo
+  location: package br.com.mulato.cso.model
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ErrorPageTest.java:[15,26] package javax.servlet.http does not exist
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ErrorPageTest.java:[16,27] package javax.faces.context does not exist
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ErrorPageTest.java:[17,27] package javax.faces.context does not exist
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ErrorPageTest.java:[28,13] cannot find symbol
+  symbol:   class LogService
+  location: class br.com.mulato.cso.view.page.ErrorPageTest       
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ErrorPageTest.java:[31,13] cannot find symbol
+  symbol:   class ErrorService
+  location: class br.com.mulato.cso.view.page.ErrorPageTest       
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ErrorPageTest.java:[34,13] cannot find symbol
+  symbol:   class FacesContext
+  location: class br.com.mulato.cso.view.page.ErrorPageTest       
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ErrorPageTest.java:[37,13] cannot find symbol
+  symbol:   class ExternalContext
+  location: class br.com.mulato.cso.view.page.ErrorPageTest       
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ErrorPageTest.java:[40,13] cannot find symbol
+  symbol:   class HttpServletRequest
+  location: class br.com.mulato.cso.view.page.ErrorPageTest       
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ErrorPageTest.java:[43,13] cannot find symbol
+  symbol:   class ErrorPage
+  location: class br.com.mulato.cso.view.page.ErrorPageTest       
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ErrorPageTest.java:[45,13] cannot find symbol
+  symbol:   class ErrorInfo
+  location: class br.com.mulato.cso.view.page.ErrorPageTest       
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/MenuPageTest.java:[3,33] cannot find symbol
+  symbol:   class MenuService
+  location: package br.com.mulato.cso.service
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/MenuPageTest.java:[4,33] cannot find symbol
+  symbol:   class UserService
+  location: package br.com.mulato.cso.service
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/MenuPageTest.java:[5,33] cannot find symbol
+  symbol:   class PermissionService
+  location: package br.com.mulato.cso.service
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/MenuPageTest.java:[6,31] cannot find symbol
+  symbol:   class User
+  location: package br.com.mulato.cso.model
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/MenuPageTest.java:[7,31] cannot find symbol
+  symbol:   class MenuItem
+  location: package br.com.mulato.cso.model
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/MenuPageTest.java:[8,31] cannot find symbol
+  symbol:   class Role
+  location: package br.com.mulato.cso.model
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/MenuPageTest.java:[30,13] cannot find symbol
+  symbol:   class MenuService
+  location: class br.com.mulato.cso.view.page.MenuPageTest        
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/MenuPageTest.java:[33,13] cannot find symbol
+  symbol:   class UserService
+  location: class br.com.mulato.cso.view.page.MenuPageTest        
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/MenuPageTest.java:[36,13] cannot find symbol
+  symbol:   class PermissionService
+  location: class br.com.mulato.cso.view.page.MenuPageTest        
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/MenuPageTest.java:[39,13] cannot find symbol
+  symbol:   class MenuPage
+  location: class br.com.mulato.cso.view.page.MenuPageTest        
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/MenuPageTest.java:[41,13] cannot find symbol
+  symbol:   class User
+  location: class br.com.mulato.cso.view.page.MenuPageTest        
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/MenuPageTest.java:[42,18] cannot find symbol
+  symbol:   class MenuItem
+  location: class br.com.mulato.cso.view.page.MenuPageTest        
+[INFO] 52 errors
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  7.251 s
+[INFO] Finished at: 2025-07-23T19:32:33-03:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.13.0:testCompile (default-testCompile) on project csonline: Compilation failure: Compilation failure:
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/controller/ChangePasswordControllerTest.java:[9,44] package org.springframework.test.web.servlet does not exist
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/controller/ChangePasswordControllerTest.java:[10,50] package org.springframework.test.web.servlet.setup does not exist
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/controller/ChangePasswordControllerTest.java:[11,32] package org.springframework.http does not exist
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/controller/ChangePasswordControllerTest.java:[17,59] package org.springframework.test.web.servlet.request does not exist
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/controller/ChangePasswordControllerTest.java:[17,1] static import only from classes and interfaces
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/controller/ChangePasswordControllerTest.java:[18,59] package org.springframework.test.web.servlet.request does not exist
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/controller/ChangePasswordControllerTest.java:[18,1] static import only from classes and interfaces
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/controller/ChangePasswordControllerTest.java:[19,58] package org.springframework.test.web.servlet.result does not exist
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/controller/ChangePasswordControllerTest.java:[24,13] cannot find symbol
+[ERROR]   symbol:   class MockMvc
+[ERROR]   location: class br.com.mulato.cso.view.controller.ChangePasswordControllerTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/controller/ChangePasswordControllerTest.java:[27,13] cannot find symbol
+[ERROR]   symbol:   class UserService
+[ERROR]   location: class br.com.mulato.cso.view.controller.ChangePasswordControllerTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/controller/ChangePasswordControllerTest.java:[30,13] cannot find symbol
+[ERROR]   symbol:   class PasswordEncoder
+[ERROR]   location: class br.com.mulato.cso.view.controller.ChangePasswordControllerTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ChangePasswordPageSimpleTest.java:[17,13] cannot find symbol     
+[ERROR]   symbol:   class PasswordService
+[ERROR]   location: class br.com.mulato.cso.view.page.ChangePasswordPageSimpleTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ChangePasswordPageSimpleTest.java:[20,13] cannot find symbol     
+[ERROR]   symbol:   class UserSession
+[ERROR]   location: class br.com.mulato.cso.view.page.ChangePasswordPageSimpleTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ChangePasswordPageSimpleTest.java:[23,13] cannot find symbol     
+[ERROR]   symbol:   class MessageService
+[ERROR]   location: class br.com.mulato.cso.view.page.ChangePasswordPageSimpleTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ChangePasswordPageSimpleTest.java:[25,13] cannot find symbol     
+[ERROR]   symbol:   class ChangePasswordPage
+[ERROR]   location: class br.com.mulato.cso.view.page.ChangePasswordPageSimpleTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ChangePasswordPageTest.java:[3,33] cannot find symbol
+[ERROR]   symbol:   class PasswordService
+[ERROR]   location: package br.com.mulato.cso.service
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ChangePasswordPageTest.java:[4,33] cannot find symbol
+[ERROR]   symbol:   class UserService
+[ERROR]   location: package br.com.mulato.cso.service
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ChangePasswordPageTest.java:[5,31] cannot find symbol
+[ERROR]   symbol:   class User
+[ERROR]   location: package br.com.mulato.cso.model
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ChangePasswordPageTest.java:[6,35] cannot find symbol
+[ERROR]   symbol:   class InvalidPasswordException
+[ERROR]   location: package br.com.mulato.cso.exception
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ChangePasswordPageTest.java:[7,35] cannot find symbol
+[ERROR]   symbol:   class UserNotFoundException
+[ERROR]   location: package br.com.mulato.cso.exception
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ChangePasswordPageTest.java:[17,31] package javax.faces.application does not exist
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ChangePasswordPageTest.java:[18,27] package javax.faces.context does not exist
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ChangePasswordPageTest.java:[29,13] cannot find symbol
+[ERROR]   symbol:   class PasswordService
+[ERROR]   location: class br.com.mulato.cso.view.page.ChangePasswordPageTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ChangePasswordPageTest.java:[32,13] cannot find symbol
+[ERROR]   symbol:   class UserService
+[ERROR]   location: class br.com.mulato.cso.view.page.ChangePasswordPageTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ChangePasswordPageTest.java:[35,13] cannot find symbol
+[ERROR]   symbol:   class FacesContext
+[ERROR]   location: class br.com.mulato.cso.view.page.ChangePasswordPageTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ChangePasswordPageTest.java:[38,13] cannot find symbol
+[ERROR]   symbol:   class ChangePasswordPage
+[ERROR]   location: class br.com.mulato.cso.view.page.ChangePasswordPageTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ChangePasswordPageTest.java:[40,13] cannot find symbol
+[ERROR]   symbol:   class User
+[ERROR]   location: class br.com.mulato.cso.view.page.ChangePasswordPageTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ErrorPageTest.java:[3,33] cannot find symbol
+[ERROR]   symbol:   class LogService
+[ERROR]   location: package br.com.mulato.cso.service
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ErrorPageTest.java:[4,33] cannot find symbol
+[ERROR]   symbol:   class ErrorService
+[ERROR]   location: package br.com.mulato.cso.service
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ErrorPageTest.java:[5,31] cannot find symbol
+[ERROR]   symbol:   class ErrorInfo
+[ERROR]   location: package br.com.mulato.cso.model
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ErrorPageTest.java:[15,26] package javax.servlet.http does not exist
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ErrorPageTest.java:[16,27] package javax.faces.context does not exist
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ErrorPageTest.java:[17,27] package javax.faces.context does not exist
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ErrorPageTest.java:[28,13] cannot find symbol
+[ERROR]   symbol:   class LogService
+[ERROR]   location: class br.com.mulato.cso.view.page.ErrorPageTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ErrorPageTest.java:[31,13] cannot find symbol
+[ERROR]   symbol:   class ErrorService
+[ERROR]   location: class br.com.mulato.cso.view.page.ErrorPageTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ErrorPageTest.java:[34,13] cannot find symbol
+[ERROR]   symbol:   class FacesContext
+[ERROR]   location: class br.com.mulato.cso.view.page.ErrorPageTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ErrorPageTest.java:[37,13] cannot find symbol
+[ERROR]   symbol:   class ExternalContext
+[ERROR]   location: class br.com.mulato.cso.view.page.ErrorPageTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ErrorPageTest.java:[40,13] cannot find symbol
+[ERROR]   symbol:   class HttpServletRequest
+[ERROR]   location: class br.com.mulato.cso.view.page.ErrorPageTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ErrorPageTest.java:[43,13] cannot find symbol
+[ERROR]   symbol:   class ErrorPage
+[ERROR]   location: class br.com.mulato.cso.view.page.ErrorPageTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/ErrorPageTest.java:[45,13] cannot find symbol
+[ERROR]   symbol:   class ErrorInfo
+[ERROR]   location: class br.com.mulato.cso.view.page.ErrorPageTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/MenuPageTest.java:[3,33] cannot find symbol
+[ERROR]   symbol:   class MenuService
+[ERROR]   location: package br.com.mulato.cso.service
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/MenuPageTest.java:[4,33] cannot find symbol
+[ERROR]   symbol:   class UserService
+[ERROR]   location: package br.com.mulato.cso.service
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/MenuPageTest.java:[5,33] cannot find symbol
+[ERROR]   symbol:   class PermissionService
+[ERROR]   location: package br.com.mulato.cso.service
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/MenuPageTest.java:[6,31] cannot find symbol
+[ERROR]   symbol:   class User
+[ERROR]   location: package br.com.mulato.cso.model
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/MenuPageTest.java:[7,31] cannot find symbol
+[ERROR]   symbol:   class MenuItem
+[ERROR]   location: package br.com.mulato.cso.model
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/MenuPageTest.java:[8,31] cannot find symbol
+[ERROR]   symbol:   class Role
+[ERROR]   location: package br.com.mulato.cso.model
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/MenuPageTest.java:[30,13] cannot find symbol
+[ERROR]   symbol:   class MenuService
+[ERROR]   location: class br.com.mulato.cso.view.page.MenuPageTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/MenuPageTest.java:[33,13] cannot find symbol
+[ERROR]   symbol:   class UserService
+[ERROR]   location: class br.com.mulato.cso.view.page.MenuPageTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/MenuPageTest.java:[36,13] cannot find symbol
+[ERROR]   symbol:   class PermissionService
+[ERROR]   location: class br.com.mulato.cso.view.page.MenuPageTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/MenuPageTest.java:[39,13] cannot find symbol
+[ERROR]   symbol:   class MenuPage
+[ERROR]   location: class br.com.mulato.cso.view.page.MenuPageTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/MenuPageTest.java:[41,13] cannot find symbol
+[ERROR]   symbol:   class User
+[ERROR]   location: class br.com.mulato.cso.view.page.MenuPageTest
+[ERROR] /C:/dev/csonline/src/test/java/br/com/mulato/cso/view/page/MenuPageTest.java:[42,18] cannot find symbol
+[ERROR]   symbol:   class MenuItem
+[ERROR]   location: class br.com.mulato.cso.view.page.MenuPageTest
+[ERROR] -> [Help 1]
+[ERROR]
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR]
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+PS C:\dev\csonline> 
