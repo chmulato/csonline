@@ -128,10 +128,44 @@ class LoginMBTest {
 
     @Test
     @DisplayName("Deve executar login com credenciais válidas")
-    void deveExecutarLoginComCredenciaisValidas() {
-        try (MockedStatic<FacesContext> mockedFacesContext = mockStatic(FacesContext.class)) {
+    void deveExecutarLoginComCredenciaisValidas() throws br.com.mulato.cso.exception.WebException {
+        try (MockedStatic<FacesContext> mockedFacesContext = mockStatic(FacesContext.class);
+             MockedStatic<br.com.mulato.cso.dry.FactoryService> mockedFactory = mockStatic(br.com.mulato.cso.dry.FactoryService.class)) {
+            
             // Given
             mockedFacesContext.when(FacesContext::getCurrentInstance).thenReturn(facesContext);
+            
+            // Mock Application e ContadorController para evitar NullPointerException
+            jakarta.faces.application.Application application = mock(jakarta.faces.application.Application.class);
+            lenient().when(facesContext.getApplication()).thenReturn(application);
+            
+            // Mock do ContadorController (pode retornar null, pois o código trata isso)
+            lenient().when(application.evaluateExpressionGet(any(FacesContext.class), anyString(), any(Class.class))).thenReturn(null);
+            
+            // Mock FactoryService e seus serviços
+            br.com.mulato.cso.dry.FactoryService factoryService = mock(br.com.mulato.cso.dry.FactoryService.class);
+            br.com.mulato.cso.service.LoginService loginService = mock(br.com.mulato.cso.service.LoginService.class);
+            br.com.mulato.cso.service.AdminService adminService = mock(br.com.mulato.cso.service.AdminService.class);
+            br.com.mulato.cso.service.BusinessService businessService = mock(br.com.mulato.cso.service.BusinessService.class);
+            
+            mockedFactory.when(br.com.mulato.cso.dry.FactoryService::getInstancia).thenReturn(factoryService);
+            doReturn(loginService).when(factoryService).getLoginService();
+            doReturn(adminService).when(factoryService).getAdminService();
+            lenient().doReturn(businessService).when(factoryService).getBusinessService();
+            
+            // Mock do processo de autenticação - deve retornar true
+            lenient().doReturn(true).when(loginService).authenticate(any(br.com.mulato.cso.model.LoginVO.class));
+            
+            // Mock do usuário admin
+            br.com.mulato.cso.model.UserVO user = mock(br.com.mulato.cso.model.UserVO.class);
+            lenient().when(user.getId()).thenReturn(1);
+            lenient().when(user.getRole()).thenReturn("ADMINISTRATOR");
+            doReturn(user).when(adminService).findByLogin(any(br.com.mulato.cso.model.LoginVO.class));
+            
+            // Mock do BusinessVO (para usuário admin não é necessário, mas podemos mockear para cobrir outros casos)
+            br.com.mulato.cso.model.BusinessVO business = mock(br.com.mulato.cso.model.BusinessVO.class);
+            lenient().doReturn(business).when(businessService).find(any(Integer.class));
+            
             loginMB.setUsername("admin");
             loginMB.setPassword("123");
             
@@ -140,7 +174,7 @@ class LoginMBTest {
             
             // Then
             assertNotNull(resultado);
-            // Verificar se houve redirecionamento ou mensagem apropriada
+            assertEquals("users", resultado); // Para usuário ADMIN, deve redirecionar para "users"
         }
     }
 
