@@ -4,7 +4,7 @@ Aplicação Web para controle de entregas.
 
 ## Descrição
 
-CSOnline Delivery é uma aplicação desenvolvida em Java (SDK 17) utilizando Jakarta EE 10, Apache MyFaces 4.0.x e PrimeFaces 14.0.0-jakarta para gerenciamento de entregas. O sistema roda em Jetty 11.0.17 embedded (desenvolvimento) ou Tomcat 10.1.x (produção) compatível com Jakarta EE 10, e utiliza H2 Database 2.3.232 (desenvolvimento) ou PostgreSQL 15 (produção) como banco de dados relacional.
+CSOnline Delivery é uma aplicação desenvolvida em Java (SDK 17) utilizando Jakarta EE 10, Eclipse Mojarra 4.0.8 e PrimeFaces 14.0.0-jakarta para gerenciamento de entregas. O sistema roda em Jetty 11.0.17 embedded (desenvolvimento) ou Tomcat 10.1.x (produção) compatível com Jakarta EE 10, e utiliza H2 Database 2.3.232 (desenvolvimento) ou PostgreSQL 15 (produção) como banco de dados relacional.
 
 Acesse via navegador: [https://www.caracore.com.br/csonline](https://www.caracore.com.br/csonline)
 
@@ -18,7 +18,7 @@ Acesse via navegador: [https://www.caracore.com.br/csonline](https://www.caracor
 
 - **Jakarta EE 10**: Plataforma empresarial Java com namespaces `jakarta.*`
 - **PrimeFaces 14.0.0-jakarta**: Biblioteca de componentes JSF para Jakarta EE
-- **Apache MyFaces 4.0.2**: Implementação JSF para Jakarta EE (Apache MyFaces)
+- **Eclipse Mojarra 4.0.8**: Implementação de referência JSF para Jakarta EE
 - **Weld 5.1.2.Final**: Implementação CDI (Contexts and Dependency Injection)
 - **Jetty 11.0.17**: Servidor de aplicação para desenvolvimento (Maven Plugin)
 - **Log4j 2.23.1**: Sistema de logging estruturado com rotação de arquivos
@@ -34,7 +34,7 @@ Acesse via navegador: [https://www.caracore.com.br/csonline](https://www.caracor
 - H2 2.3.232 (para desenvolvimento) ou PostgreSQL 15 (para produção)
 - Dependências principais (gerenciadas pelo Maven):
   - PrimeFaces 14.0.0-jakarta (Jakarta EE compatível)
-  - Apache MyFaces 4.0.2 (implementação Jakarta EE)
+  - Eclipse Mojarra 4.0.8 (implementação de referência JSF)
   - Weld 5.1.2.Final (CDI para Jakarta EE)
   - Jetty 11.0.17 (desenvolvimento via Maven Plugin)
   - Log4j 2.23.1 (logging estruturado)
@@ -71,7 +71,7 @@ Acesse via navegador: [https://www.caracore.com.br/csonline](https://www.caracor
 3. **Aguarde a inicialização completa:**
 
    ```text
-   [INFO] MyFaces Core has started, it took [3921] ms.
+   [INFO] Eclipse Mojarra JSF implementation started successfully.
    [INFO] Running on PrimeFaces 14.0.0
    [INFO] Banco H2 inicializado com sucesso.
    [INFO] Weld initialization completed successfully
@@ -152,7 +152,7 @@ A aplicação utiliza **Log4j 2.23.1** para logging. A configuração está em `
 - **Log rotation**: Arquivos rotacionados diariamente (máx. 100MB cada)
 - **Levels configurados**:
   - `br.com.mulato.*`: DEBUG (código da aplicação)
-  - `jakarta.faces`, `org.apache.myfaces`, `org.primefaces`: INFO
+  - `jakarta.faces`, `org.primefaces`: INFO
   - `org.jboss.weld`: INFO (CDI)
   - Root logger: INFO
 
@@ -228,7 +228,7 @@ target/
 
 ```text
 INFO: Banco H2 inicializado com sucesso.
-INFO: MyFaces Core has started, it took [3921] ms.
+INFO: Eclipse Mojarra JSF implementation started successfully.
 INFO: Running on PrimeFaces 14.0.0
 INFO: Weld initialization completed successfully
 INFO: Started Server@... HTTP/1.1, (http/1.1)}{0.0.0.0:8080}
@@ -253,7 +253,7 @@ Este projeto foi **completamente migrado** do Java EE (namespace `javax.*`) para
 ### Mudanças Críticas Realizadas
 
 - **PrimeFaces**: Atualizado de 13.0.7 para **14.0.0-jakarta** (versão Jakarta EE compatível)
-- **MyFaces**: Migrado para versão 4.0.2 (Jakarta EE) - Apache MyFaces
+- **JSF Implementation**: Migrado do Apache MyFaces 4.0.2 para **Eclipse Mojarra 4.0.8** (implementação de referência)
 - **Weld**: Atualizado para versão 5.1.2.Final (CDI Jakarta EE)
 - **H2 Database**: Configurado script de inicialização corrigindo palavra reservada `user` → `users`
 - **Log4j**: Atualizado para 2.23.1 com configuração Jakarta EE compatível
@@ -261,6 +261,7 @@ Este projeto foi **completamente migrado** do Java EE (namespace `javax.*`) para
 - **Namespaces**: Todas as dependências e configurações atualizadas para `jakarta.*`
 - **Recursos JSF**: Configuração `jakarta.faces.RESOURCE_EXCLUDES` otimizada para servir CSS, JS e imagens
 - **Scripts de gerenciamento**: Criados scripts PowerShell para iniciar/parar servidor
+- **Recursos customizados**: Removidos todos os CSS e jQuery personalizados para usar apenas recursos do PrimeFaces
 
 ### Sistema de Temas
 

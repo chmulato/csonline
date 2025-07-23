@@ -146,16 +146,7 @@ Para cada página (*.xhtml), seguir este processo em ordem:
 </context-param>
 ```
 
-2. Adicionar parâmetro para evitar sufixo `.xhtml` em recursos:
-
-```xml
-<context-param>
-    <param-name>org.apache.myfaces.RESOURCE_SUFFIX</param-name>
-    <param-value></param-value>
-</context-param>
-```
-
-3. Configurar mapeamento para recursos do PrimeFaces:
+1. Configurar mapeamento para recursos do PrimeFaces:
 
 ```xml
 <context-param>
@@ -335,11 +326,10 @@ Para cada página, seguir este processo de validação:
 
 ### 22/07/2025 - 17:08 - Início da Migração e Correção de Recursos
 
-- [CONCLUÍDO] Iniciado processo de migração 
+- [CONCLUÍDO] Iniciado processo de migração
 - [CONCLUÍDO] Identificado problema com recursos PrimeFaces na página login.xhtml
 - [CONCLUÍDO] Diagnóstico: JSF tentando anexar extensão `.xhtml` aos recursos PrimeFaces
 - [CONCLUÍDO] Ajustado parâmetro RESOURCE_EXCLUDES no web.xml
-- [CONCLUÍDO] Adicionada configuração `org.apache.myfaces.RESOURCE_SUFFIX` para evitar sufixo .xhtml em recursos
 - [CONCLUÍDO] Configurado mapeamento específico para recursos do PrimeFaces via `primefaces.RESOURCE_MAPPINGS`
 - [CONCLUÍDO] Banco de dados H2 inicializado com sucesso (verificado nos logs)
 
@@ -461,6 +451,43 @@ Pelo código atualizado:
 ```
 
 Adicionalmente, é necessário atualizar o `LoginController` para remover o método `changeTheme` e adaptar o código para usar diretamente o `ThemeSwitcherBean`.
+
+### 23/07/2025 - 08:00 - Remoção Completa das Configurações MyFaces
+
+- [CONCLUÍDO] Removida propriedade `myfaces.version` do pom.xml
+- [CONCLUÍDO] Removida dependência `org.apache.myfaces.core:myfaces-impl` do pom.xml
+- [CONCLUÍDO] Adicionada dependência `org.glassfish:jakarta.faces:4.0.8` (Eclipse Mojarra)
+- [CONCLUÍDO] Removido parâmetro `org.apache.myfaces.STRICT_JSF_2_ALLOW_SLASH_LIBRARY_NAME` do web.xml
+- [CONCLUÍDO] Removido logger `org.apache.myfaces` do log4j2.xml
+- [CONCLUÍDO] Atualizado script start-csonline.ps1 removendo referência ao MyFaces
+- [CONCLUÍDO] Limpeza do diretório target para remover arquivos compilados com MyFaces
+- [CONCLUÍDO] Compilação e teste bem-sucedidos com Eclipse Mojarra
+- [CONCLUÍDO] Removidos todos os recursos CSS e jQuery personalizados
+- [CONCLUÍDO] Aplicação agora usa apenas recursos do PrimeFaces
+- [EM ANDAMENTO] Atualização da documentação README.md e MIGRACAO.md
+
+## Resumo da Migração de Implementação JSF
+
+### Antes: Apache MyFaces 4.0.2
+
+- Framework JSF da Apache Software Foundation
+- Configurações específicas no web.xml (org.apache.myfaces.*)
+- Logger específico no log4j2.xml
+- Propriedade myfaces.version no pom.xml
+
+### Depois: Eclipse Mojarra 4.0.8
+
+- Implementação de referência JSF da Eclipse Foundation
+- Configuração padrão JSF sem parâmetros específicos de implementação
+- Removidos loggers específicos do MyFaces
+- Dependência org.glassfish:jakarta.faces no pom.xml
+
+### Benefícios da Mudança
+
+- **Simplicidade**: Menos configurações específicas de implementação
+- **Padrão**: Mojarra é a implementação de referência oficial
+- **Compatibilidade**: Melhor compatibilidade com outros frameworks Jakarta EE
+- **Manutenção**: Menos complexidade na configuração do projeto
 
 ### 23/07/2025 - 09:00 - Continuação das Correções de Template e Temas
 
