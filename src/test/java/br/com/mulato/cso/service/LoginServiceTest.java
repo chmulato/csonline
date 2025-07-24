@@ -37,7 +37,7 @@ class LoginServiceTest {
             FactoryDAO factoryDAOMock = mock(FactoryDAO.class);
             factoryDAOStatic.when(FactoryDAO::getInstancia).thenReturn(factoryDAOMock);
             when(factoryDAOMock.getLoginDAO()).thenReturn(loginDAOMock);
-            when(loginDAOMock.authenticate(login)).thenReturn(true);
+            doThrow(new DAOException("erro")).when(loginDAOMock).authenticate(login);
 
             Boolean result = loginService.authenticate(login);
             assertTrue(result);
