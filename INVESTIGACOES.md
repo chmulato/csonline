@@ -1,205 +1,104 @@
+
 # Guia Prático: Migração JSF para Jakarta EE 10
 
 ## Objetivo
-Guia completo para migração de projetos JSF antigos (Java EE/JSF 2.x) para Jakarta EE 10 com JSF 4.0, incluindo soluções para problemas comuns e estratégias testadas.
 
-## Resumo do Ambiente de Destino
+Guia objetivo para migrar projetos JSF antigos (Java EE/JSF 2.x) para Jakarta EE 10 (JSF 4.0), com soluções diretas para problemas reais.
+
+## Ambiente de Destino
+
 - **Jakarta Faces**: 4.0 (JSF 4.0)
-- **CDI**: 4.0 com Weld 5.1.0.Final
-- **Bean Validation**: 3.0 com Hibernate Validator 8.0.0.Final
+- **CDI**: 4.0 (Weld 5.1.0.Final)
+- **Bean Validation**: 3.0 (Hibernate Validator 8.0.0.Final)
 - **Servlet Container**: Tomcat 10.1.13
 - **Build Tool**: Maven 3.x
-- **Java**: 17+
+- **Java**: 11
 
-## **DESCOBERTAS CRÍTICAS DA MIGRAÇÃO**
+---
 
-### **1. PrimeFaces Jakarta EE - Descoberta Fundamental**
-A descoberta mais importante foi que **PrimeFaces 13.0.7 padrão NÃO é compatível com Jakarta EE**, mesmo sendo uma versão recente. O PrimeFaces ainda utiliza namespace `javax.*` internamente.
+## Descobertas Críticas da Migração
 
-**Solução comprovada:**
+
+### 1. PrimeFaces Jakarta EE
+
+**Problema:** PrimeFaces 13.0.7 padrão NÃO é compatível com Jakarta EE (usa `javax.*`).
+
+**Solução:**
+
 - Usar `PrimeFaces 14.0.0` com `<classifier>jakarta</classifier>`
-- Verificar MANIFEST.MF para confirmar `jakarta.servlet.*` em vez de `javax.servlet.*`
+- Verificar MANIFEST.MF para garantir `jakarta.servlet.*`
 
-### **2. H2 Database - Palavra Reservada `user`**
-**Problema crítico descoberto**: H2 Database rejeita `user` como nome de tabela por ser palavra reservada.
 
-**Erro típico:**
-```sql
-Syntax error in SQL statement "DROP TABLE IF EXISTS [*]user"
-```
+### 2. H2 Database: Palavra Reservada `user`
 
-**Solução obrigatória:**
-- Renomear tabela `user` para `users`
-- Atualizar todas as foreign key references: `REFERENCES user(ID)` → `REFERENCES users(ID)`
-- Atualizar sequências: `user_seq` → `users_seq`
-- Atualizar comentários da tabela
+**Problema:** H2 não aceita `user` como nome de tabela.
 
-### **3. Log4j 2 - Migração Completa Necessária**
-**Descoberta**: Log4j 1.x (`log4j.properties`) é incompatível com Jakarta EE 10. Era necessária migração completa para Log4j 2.
+**Solução:**
 
-**Problemas encontrados:**
-- `log4j.properties` ignorado por Log4j 2.23.1
-- Appender conflicts quando ambos os formatos coexistem
-- Configuração Jakarta EE requer namespaces específicos
+- Renomear tabela para `users`
+- Atualizar todas as referências (FK, sequências, comentários)
 
-**Solução implementada:**
-- Criação de `log4j2.xml` completo
-- Configuração de appenders Console e RollingFile
-- Loggers específicos para Jakarta EE frameworks
 
-### **4. Jetty vs Cargo Plugin - Solução de Cache**
-**Problema**: Maven Cargo Plugin com Tomcat embedded apresentava problemas persistentes de cache e configuração.
+### 3. Log4j 2
 
-**Solução adotada:**
-- Migração para Jetty Maven Plugin 11.0.17
-- Eliminação de problemas de cache de configuração
-- Startup mais rápido e confiável
+**Problema:** Log4j 1.x não funciona com Jakarta EE 10.
 
-### **5. DatabaseInitializer - Resource Path Crítico**
+**Solução:**
 
-**Problema descoberto**: Path incorreto para recursos SQL causava falha na inicialização.
+- Migrar para `log4j2.xml` completo
+- Configurar appenders Console/RollingFile
 
-**Erro comum:**
-```
-Resource not found: /resources/data-h2.sql
-```
 
-**Solução identificada:**
-- Path correto: `/data-h2.sql` (raiz do classpath)
-- Path incorreto: `/resources/data-h2.sql`
-- Arquivo deve estar em `src/main/resources/data-h2.sql`
+### 4. Jetty vs Cargo Plugin
 
-### **6. Recursos JSF - Configuração Crítica para PrimeFaces**
+**Problema:** Cargo Plugin com Tomcat embedded tem problemas de cache.
 
-**Problema descoberto**: JSF estava tentando processar recursos estáticos (CSS, JS, imagens) como páginas XHTML, causando 404 errors.
+**Solução:**
 
-**Sintomas típicos:**
-```text
-GET http://localhost:8080/csonline/jakarta.faces.resource/logo.gif.xhtml?ln=images 404 (Not Found)
-GET http://localhost:8080/csonline/jakarta.faces.resource/core.js.xhtml?ln=primefaces&v=14.0.0 404 (Not Found)
-```
+- Usar Jetty Maven Plugin 11.0.17
 
-**Causa raiz**: 
-- `jakarta.faces.RESOURCE_EXCLUDES` configurado incorretamente
-- JSF tentando processar todos os arquivos como XHTML
-- Extensões de recursos não excluídas do processamento JSF
 
-**Solução implementada:**
-```xml
-<!-- Configuração crítica no web.xml -->
-<context-param>
-    <param-name>jakarta.faces.RESOURCE_EXCLUDES</param-name>
-    <param-value>.class .jsp .jspx .properties .xhtml .groovy .css .js .gif .png .jpg .jpeg .ico .woff .woff2 .ttf .eot .svg</param-value>
-</context-param>
+### 5. DatabaseInitializer: Resource Path
 
-<!-- Configurações PrimeFaces complementares -->
-<context-param>
-    <param-name>primefaces.THEME</param-name>
-    <param-value>nova-light</param-value>
-</context-param>
-<context-param>
-    <param-name>primefaces.MOVE_SCRIPTS_TO_BOTTOM</param-name>
-    <param-value>true</param-value>
-</context-param>
-```
+**Problema:** Caminho incorreto para SQL impede inicialização.
+
+**Solução:**
+
+- Usar `/data-h2.sql` na raiz do classpath
+
+
+### 6. Recursos JSF/PrimeFaces
+
+**Problema:** JSF tenta processar CSS/JS/imagens como XHTML (404).
+
+**Solução:**
+
+- Configurar `jakarta.faces.RESOURCE_EXCLUDES` corretamente no web.xml
 
 **AÇÃO OBRIGATÓRIA**: Configurar corretamente as exclusões de recursos para evitar que JSF processe arquivos estáticos como páginas XHTML.
 
-**AÇÃO OBRIGATÓRIA**: Configurar corretamente as exclusões de recursos para evitar que JSF processe arquivos estáticos como páginas XHTML.
 
-### **7. Sistema de Temas Duplicado - ThemeBean vs ThemeSwitcherBean**
+### 7. Sistema de Temas Duplicado
 
-**Problema descoberto**: Existência de dois sistemas paralelos de gerenciamento de temas causando inconsistência na aplicação.
+**Problema:** Dois beans de tema (ThemeBean e ThemeSwitcherBean) causam inconsistência.
 
-**Sintomas típicos:**
+**Solução:**
 
-```text
-- Tema selecionado no login não persiste em outras páginas
-- Alteração de tema em theme.xhtml não afeta outras páginas
-- Inconsistência visual entre páginas da aplicação
-```
+- Unificar gestão de temas em ThemeSwitcherBean
+- Atualizar login.xhtml para usar ThemeSwitcherBean
 
-**Causa raiz**: 
 
-- `ThemeBean` (#{themeMB}) usado na página login.xhtml
-- `ThemeSwitcherBean` (#{themeSwitcherBean}) usado na página theme.xhtml
-- Ambos lendo configurações de fontes diferentes
+### 8. Scripts PowerShell
 
-**Análise detalhada**:
+**Solução:** Scripts para start/stop do servidor Jetty (Windows).
 
-```java
-// ThemeBean - Utilizado no login.xhtml
-@Named("themeMB")
-@SessionScoped
-public class ThemeBean implements Serializable {
-    // Lê configurações de web.xml E config.properties
-    if (servletContext.getInitParameter("themeDefault") != null) {
-        theme = servletContext.getInitParameter("themeDefault");
-        if (InitProperties.getThemeApplication() != null) {
-            if (!InitProperties.getThemeApplication().equals("")) {
-                theme = InitProperties.getThemeApplication();
-            }
-        }
-    }
-}
+- start-csonline.ps1: inicialização, logs, limpeza automática
+- stop-csonline.ps1: encerramento seguro
 
-// ThemeSwitcherBean - Utilizado em theme.xhtml
-@Named
-@SessionScoped
-public class ThemeSwitcherBean implements Serializable {
-    // Lê configurações apenas de web.xml
-    String themeDefault = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("themeDefault");
-    setTheme(themeDefault);
-}
-```
 
-**Solução implementada**:
+### 9. Compilação Jakarta EE
 
-1. Unificar a gestão de temas em um único componente:
-
-```xml
-<!-- Em login.xhtml -->
-<p:selectOneMenu id="theme" value="#{themeSwitcherBean.theme}" onchange="this.form.submit();">
-    <f:selectItems value="#{themeSwitcherBean.themes}" />
-</p:selectOneMenu>
-```
-
-2. Remover o método changeTheme do LoginController
-
-3. Garantir que a configuração do tema seja lida de uma única fonte
-
-**AÇÃO OBRIGATÓRIA**: Revisar todas as páginas .xhtml e identificar qual gerenciador de temas está sendo usado (themeMB ou themeSwitcherBean) e padronizar para um único componente.
-
-### **8. Scripts de Gerenciamento PowerShell**
-
-**Necessidade identificada**: Gerenciamento fácil do servidor Jetty para desenvolvimento.
-
-**Scripts criados:**
-
-**start-csonline.ps1:**
-
-- Verificação de processos Java existentes
-- Limpeza automática do target/
-- Compilação e empacotamento
-- Inicialização com logs informativos
-- URLs e credenciais exibidas automaticamente
-
-**stop-csonline.ps1:**
-
-- Detecção inteligente de processos Java do CSOnline
-- Encerramento graceful com CloseMainWindow()
-- Fallback para terminação forçada se necessário
-- Confirmação de encerramento
-
-**Benefícios:**
-
-- Workflow de desenvolvimento otimizado
-- Eliminação de processos órfãos
-- Inicialização consistente e confiável
-
-### **8. Compilação Jakarta EE - Versões Específicas**
-
-**Dependências críticas validadas:**
+**Dependências validadas:**
 
 ```xml
 <jakarta.faces.version>4.0.8</jakarta.faces.version>
@@ -210,70 +109,41 @@ public class ThemeSwitcherBean implements Serializable {
 <h2.version>2.3.232</h2.version>
 ```
 
-## PROBLEMAS CRÍTICOS IDENTIFICADOS E SOLUÇÕES
+## Problemas Críticos Identificados e Soluções
 
-### **CRÍTICO: H2 Database Schema Issues**
-
-#### Problema: Palavra Reservada `user`
+### H2 Database: Palavra Reservada
 
 ```sql
--- FALHA - 'user' é palavra reservada no H2
-CREATE TABLE user (ID INT PRIMARY KEY, ...);
-
--- SOLUÇÃO - Usar nome não reservado
-CREATE TABLE users (ID INT PRIMARY KEY, ...);
+-- FALHA
+CREATE TABLE user (...); -- 'user' é reservada
+-- SOLUÇÃO
+CREATE TABLE users (...);
 ```
 
-**AÇÃO OBRIGATÓRIA**: Atualizar todas as referências:
+**Ação obrigatória:** Atualizar todas as referências (FK, sequências, comentários)
 
-- Tabela: `user` → `users`
-- Foreign Keys: `REFERENCES user(ID)` → `REFERENCES users(ID)`
-- Sequências: `user_seq` → `users_seq`
-- Comentários: `COMMENT ON TABLE user` → `COMMENT ON TABLE users`
+### EL Expressions: Palavras Reservadas
 
 ```xml
-<!-- FALHA - 'class' é palavra reservada no Jakarta EE 10 -->
+<!-- FALHA -->
 <h:outputText styleClass="#{bootstrap.class}" />
-
-<!-- SOLUÇÃO - Use sintaxe de array -->
+<!-- SOLUÇÃO -->
 <h:outputText styleClass="#{bootstrap['class']}" />
 ```
 
-#### Problema: Propriedades CDI Wrapper
+**Ação obrigatória:** Corrigir todas as EL expressions problemáticas
+
+
+### PrimeFaces: Versão Correta
 
 ```xml
-<!-- FALHA - Weld wrapper não expõe esta propriedade -->
-#{facesContext.application.version}
-
-<!-- SOLUÇÃO - Use valores estáticos ou alternativas -->
-#{facesContext.viewRoot.viewId}
-```
-
-**AÇÃO OBRIGATÓRIA**: Revisar todas as EL expressions em `.xhtml` procurando por:
-
-- `#{bean.class}` → `#{bean['class']}`
-- `#{facesContext.application.version}` → Remover ou substituir por constante
-- Qualquer propriedade que use palavras reservadas Java
-
-### **CRÍTICO: PrimeFaces - Versão Jakarta EE**
-
-**DESCOBERTA ESSENCIAL**: PrimeFaces 13.0.7 padrão ainda usa namespace `javax.*` em vez de `jakarta.*`
-
-#### Problema: Versão Incorreta do PrimeFaces
-
-```xml
-<!-- INCORRETO - Usa javax.* internamente -->
+<!-- INCORRETO -->
 <dependency>
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces</artifactId>
     <version>13.0.7</version>
 </dependency>
-```
-
-#### Solução: Versão Jakarta EE Específica
-
-```xml
-<!-- CORRETO - Versão Jakarta EE -->
+<!-- CORRETO -->
 <dependency>
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces</artifactId>
@@ -282,36 +152,23 @@ CREATE TABLE users (ID INT PRIMARY KEY, ...);
 </dependency>
 ```
 
-**VERIFICAÇÃO OBRIGATÓRIA**: 
+**Verificação obrigatória:** Confirmar MANIFEST.MF com `jakarta.servlet.*`
 
-- Confirmar que o JAR contém `jakarta.servlet.*` no MANIFEST.MF
-- Verificar se `UploadedFileCleanerListener` existe na versão Jakarta
 
-### **CRÍTICO: Cache do Maven Cargo Plugin**
+### Cache do Cargo Plugin
 
-#### Problema: Mudanças não refletidas
-
-O Cargo mantém cache persistente que impede que mudanças em arquivos `.xhtml` sejam refletidas.
-
-#### **SOLUÇÃO OBRIGATÓRIA**:
+**Problema:** Mudanças em .xhtml não refletem por cache do Cargo.
+**Solução obrigatória:**
 
 ```powershell
-# 1. Parar servidor
 Get-Process | Where-Object {$_.ProcessName -like "*java*"} | Stop-Process -Force
-
-# 2. Limpar cache do Cargo
 Remove-Item -Recurse -Force target/cargo -ErrorAction SilentlyContinue
-
-# 3. Rebuild completo
 mvn clean package
-
-# 4. Reiniciar servidor
 mvn cargo:run
 ```
 
-### **CRÍTICO: Configuração Maven Crítica**
 
-#### pom.xml - Dependencies Essenciais:
+### Maven: Configuração Essencial
 
 ```xml
 <properties>
@@ -322,176 +179,62 @@ mvn cargo:run
     <weld.version>5.1.0.Final</weld.version>
     <hibernate.validator.version>8.0.0.Final</hibernate.validator.version>
 </properties>
-
-<dependencies>
-    <!-- JSF Implementation - Eclipse Mojarra -->
-    <dependency>
-        <groupId>org.glassfish</groupId>
-        <artifactId>jakarta.faces</artifactId>
-        <version>${jakarta.faces.version}</version>
-    </dependency>
-    
-    <!-- CDI Implementation - Weld -->
-    <dependency>
-        <groupId>org.jboss.weld.servlet</groupId>
-        <artifactId>weld-servlet-shaded</artifactId>
-        <version>${weld.version}</version>
-    </dependency>
-    
-    <!-- Bean Validation -->
-    <dependency>
-        <groupId>org.hibernate.validator</groupId>
-        <artifactId>hibernate-validator</artifactId>
-        <version>${hibernate.validator.version}</version>
-    </dependency>
-    
-    <!-- Expression Language API -->
-    <dependency>
-        <groupId>org.glassfish</groupId>
-        <artifactId>jakarta.el</artifactId>
-        <version>5.0.0-M1</version>
-    </dependency>
-</dependencies>
+...existing code...
 ```
 
-#### Cargo Plugin Configuration:
+
+### Cargo Plugin: Configuração
 
 ```xml
 <plugin>
     <groupId>org.codehaus.cargo</groupId>
     <artifactId>cargo-maven3-plugin</artifactId>
     <version>1.10.10</version>
-    <configuration>
-        <container>
-            <containerId>tomcat10x</containerId>
-            <type>embedded</type>
-        </container>
-        <configuration>
-            <properties>
-                <cargo.servlet.port>8080</cargo.servlet.port>
-            </properties>
-        </configuration>
-    </configuration>
+    ...existing code...
 </plugin>
 ```
 
-### **CRÍTICO: Configuração web.xml Obrigatória**
 
-#### src/main/webapp/WEB-INF/web.xml:
+### web.xml e beans.xml: Configuração
 
 ```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee 
-         https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
-         version="6.0">
-
-    <display-name>JSF Jakarta EE 10 Application</display-name>
-    
-    <!-- JSF Servlet Configuration -->
-    <servlet>
-        <servlet-name>Faces Servlet</servlet-name>
-        <servlet-class>jakarta.faces.webapp.FacesServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    
-    <!-- JSF URL Patterns -->
-    <servlet-mapping>
-        <servlet-name>Faces Servlet</servlet-name>
-        <url-pattern>*.faces</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Faces Servlet</servlet-name>
-        <url-pattern>/faces/*</url-pattern>
-    </servlet-mapping>
-    
-    <!-- JSF Configuration -->
-    <context-param>
-        <param-name>jakarta.faces.PROJECT_STAGE</param-name>
-        <param-value>Development</param-value>
-    </context-param>
-    
-    <context-param>
-        <param-name>jakarta.faces.FACELETS_SUFFIX</param-name>
-        <param-value>.xhtml</param-value>
-    </context-param>
-    
-    <!-- CDI Bootstrap -->
-    <listener>
-        <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
-    </listener>
-    
+<!-- web.xml -->
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee" ... version="6.0">
+    ...existing code...
 </web-app>
+<!-- beans.xml -->
+<beans xmlns="https://jakarta.ee/xml/ns/jakartaee" ... version="4.0" bean-discovery-mode="annotated" />
 ```
 
-#### src/main/webapp/WEB-INF/beans.xml:
 
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="https://jakarta.ee/xml/ns/jakartaee"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee 
-       https://jakarta.ee/xml/ns/jakartaee/beans_4_0.xsd"
-       version="4.0"
-       bean-discovery-mode="annotated">
-</beans>
-```
+## Roteiro de Migração Passo a Passo
 
-## ROTEIRO DE MIGRAÇÃO PASSO A PASSO
 
-### Etapa 1: Análise do Projeto Existente
+### 1. Análise do Projeto
 
 ```bash
-# 1. Inventário de dependencies atuais
 grep -r "javax.faces\|javax.servlet\|javax.inject" pom.xml src/
-
-# 2. Listar todas as EL expressions problemáticas
 grep -r "#{.*\.class}" src/main/webapp/
-grep -r "#{facesContext\.application\." src/main/webapp/
-
-# 3. Identificar anotações Java EE antigas
 grep -r "@javax\." src/main/java/
 ```
 
-### Etapa 2: Atualização de Dependencies
 
-```xml
-<!-- REMOVER estas dependencies antigas -->
-<!-- javax.faces:jsf-api -->
-<!-- javax.faces:jsf-impl -->
-<!-- javax.servlet:javax.servlet-api -->
-<!-- javax.inject:javax.inject -->
+### 2. Atualização de Dependencies
 
-<!-- ADICIONAR estas dependencies novas -->
-<!-- Conforme seção anterior -->
-```
+Remover dependências antigas (javax.*) e adicionar novas (jakarta.*).
 
-### Etapa 3: Refatoração de Código Java
 
-```java
-// ANTIGAS - Substituir
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
+### 3. Refatoração de Código Java
 
-// NOVAS - Jakarta EE 10
-import jakarta.faces.view.ViewScoped;
-import jakarta.inject.Named;
-import jakarta.inject.Inject;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.enterprise.context.RequestScoped;
-```
+Substituir imports javax.* por jakarta.*
 
-### Etapa 4: Correção de EL Expressions
 
-#### Script PowerShell para correção automática:
+### 4. Correção de EL Expressions
+
+Script PowerShell para correção automática:
 
 ```powershell
-# Buscar e substituir palavras reservadas
-Get-ChildItem -Path "src/main/webapp" -Filter "*.xhtml" -Recurse | 
-ForEach-Object {
+Get-ChildItem -Path "src/main/webapp" -Filter "*.xhtml" -Recurse | ForEach-Object {
     $content = Get-Content $_.FullName -Raw
     $content = $content -replace '#{([^}]*?)\.class}', '#{$1[''class'']}'
     $content = $content -replace '#{facesContext\.application\.version}', 'Jakarta Faces 4.0'
@@ -499,79 +242,72 @@ ForEach-Object {
 }
 ```
 
-### Etapa 5: Validação e Testes
+
+### 5. Validação e Testes
 
 ```powershell
-# 1. Limpeza completa
 Remove-Item -Recurse -Force target/ -ErrorAction SilentlyContinue
 mvn clean compile
-
-# 2. Verificar erros de compilação
 mvn compile | Select-String "ERROR"
-
-# 3. Executar testes
 mvn test
-
-# 4. Deploy e teste
 mvn cargo:run
 ```
 
-## **TROUBLESHOOTING - Problemas Comuns**
+## Troubleshooting: Problemas Comuns
+
 
 ### Erro: HTTP 500 - EL Expression
 
-**Sintoma**: Página retorna erro 500 com `Property [xxx] not found`
+**Sintoma:** Property [xxx] not found
+**Soluções:**
 
-**Soluções**:
+1. Corrigir uso de palavras reservadas: `#{bean.class}` → `#{bean['class']}`
+2. Remover ELs inexistentes: `#{facesContext.application.version}`
+3. Limpar cache do Cargo
 
-1. Verificar se propriedade usa palavra reservada: `#{bean.class}` → `#{bean['class']}`
-
-2. Verificar se EL expression existe: `#{facesContext.application.version}` → Remover
-
-3. Limpar cache Cargo: `Remove-Item -Recurse -Force target/cargo`
 
 ### Erro: ClassNotFoundException jakarta.faces
 
-**Sintoma**: `java.lang.ClassNotFoundException: jakarta.faces.webapp.FacesServlet`
+**Sintoma:** `java.lang.ClassNotFoundException: jakarta.faces.webapp.FacesServlet`
+**Solução:** Verificar dependências no pom.xml
 
-**Solução**: Verificar dependencies no pom.xml - Jakarta Faces deve estar presente.
 
 ### Erro: Mudanças não aparecem no browser
 
-**Sintoma**: Alterações em .xhtml não são refletidas
+**Sintoma:** Alterações em .xhtml não refletem
+**Solução:** Limpar cache do Cargo antes do redeploy
 
-**Solução**: Cache do Cargo - sempre executar limpeza antes de redeploy.
 
 ### Erro: CDI Injection não funciona
 
-**Sintoma**: `@Inject` retorna null
+**Sintoma:** `@Inject` retorna null
+**Soluções:**
 
-**Soluções**:
+1. Verificar beans.xml em WEB-INF
+2. Verificar Weld listener no web.xml
+3. Usar @Named ao invés de @ManagedBean
 
-1. Verificar `beans.xml` na pasta `WEB-INF`
-2. Verificar se Weld listener está no `web.xml`
-3. Usar `@Named` ao invés de `@ManagedBean`
 
-## **CHECKLIST DE VALIDAÇÃO FINAL**
+## Checklist de Validação Final
 
-### Pré-Deploy:
+### Pré-Deploy
 
-- [ ] Todas imports javax.* substituídas por jakarta.*
-- [ ] EL expressions com palavras reservadas corrigidas
-- [ ] web.xml configurado para Jakarta EE 10
-- [ ] beans.xml presente e válido
-- [ ] Dependencies Maven atualizadas
+- [ ] Imports javax.* substituídas por jakarta.*
+- [ ] EL expressions corrigidas
+- [ ] web.xml atualizado
+- [ ] beans.xml válido
+- [ ] Dependências Maven atualizadas
 - [ ] Cache Cargo limpo
 
-### Pós-Deploy:
+### Pós-Deploy
 
 - [ ] Servidor inicia sem erros
-- [ ] Logs mostram Mojarra e Weld inicializados
-- [ ] Página de teste retorna HTTP 200
-- [ ] CDI injection funcionando
+- [ ] Logs Mojarra/Weld OK
+- [ ] Página retorna HTTP 200
+- [ ] CDI funcionando
 - [ ] Bean Validation ativo
 
-### Logs de Sucesso Esperados:
+### Logs de Sucesso Esperados
 
 ```log
 INFO: Inicializando Eclipse Mojarra 4.0.8 para o contexto '/seu-projeto'
@@ -580,178 +316,143 @@ INFO: HV000001: Hibernate Validator 8.0.0.Final
 INFO: Tomcat 10.x Embedded started on port [8080]
 ```
 
-## **RESUMO EXECUTIVO**
+jul. 22, 2025 10:48:22 AM Eclipse Mojarra JSF implementation started successfully.
+jul. 22, 2025 10:48:22 AM Running on PrimeFaces 14.0.0
 
-### Principais Mudanças Necessárias:
+---
 
-1. **Dependencies**: javax.* → jakarta.*
-2. **Imports Java**: javax.* → jakarta.*  
-3. **EL Expressions**: Palavras reservadas precisam sintaxe especial
-4. **Cache Management**: Cargo requer limpeza manual
-5. **Configuration**: web.xml e beans.xml precisam namespaces atualizados
+## Resumo Executivo
 
-### Tempo Estimado de Migração:
+### Principais Mudanças
 
-- **Projeto Pequeno** (1-10 páginas): 2-4 horas
-- **Projeto Médio** (10-50 páginas): 1-2 dias
-- **Projeto Grande** (50+ páginas): 3-5 dias
+1. Dependencies: javax.* → jakarta.*
+2. Imports Java: javax.* → jakarta.*
+3. EL Expressions: corrigidas
+4. Cache: limpeza manual do Cargo
+5. Configuração: web.xml e beans.xml atualizados
 
-### Riscos Críticos:
+### Tempo Estimado de Migração
+
+- Projeto pequeno (1-10 páginas): 2-4h
+- Projeto médio (10-50 páginas): 1-2 dias
+- Projeto grande (50+ páginas): 3-5 dias
+
+### Riscos Críticos
 
 1. EL expressions com palavras reservadas quebram silenciosamente
 2. Cache do Cargo pode mascarar problemas
 3. Weld CDI wrapper não expõe todas propriedades JSF
 
-### Benefícios da Migração:
 
-- Compatibilidade com Java 17+
+### Benefícios
+
+- Compatibilidade com Java 11
 - Suporte a longo prazo
 - Performance melhorada
 - Recursos modernos do Jakarta EE 10
 
 ---
 
-**RESULTADO DA MIGRAÇÃO COMPLETA:**
+## Resultado da Migração
 
-**PrimeFaces 14.0.0-jakarta** funcionando corretamente  
-**H2 Database 2.3.232** inicializando com script corrigido (tabela `users`)  
-**Log4j 2.23.1** com configuração completa XML  
-**Eclipse Mojarra 4.0.8** carregado e funcional (substituiu MyFaces)  
-**Weld 5.1.2.Final** CDI inicializado com sucesso  
-**Jetty 11.0.17** rodando sem problemas de cache  
-**Jakarta EE 10** totalmente funcional na porta 8080  
-**web.xml simplificado** com configurações apenas essenciais (Mojarra + PrimeFaces)  
-**Recursos customizados removidos** (CSS, jQuery) - uso exclusivo do PrimeFaces  
-**Scripts PowerShell** para gerenciamento automatizado do servidor  
+- PrimeFaces 14.0.0-jakarta funcionando corretamente
+- H2 Database 2.3.232 inicializando com tabela `users`
+- Log4j 2.23.1 com configuração XML
+- Eclipse Mojarra 4.0.8 carregado e funcional
+- Weld 5.1.2.Final CDI inicializado
+- Jetty 11.0.17 rodando sem problemas de cache
+- Jakarta EE 10 funcional na porta 8080
+- web.xml simplificado
+- Recursos customizados removidos (CSS, jQuery)
+- Scripts PowerShell para gerenciamento automatizado
 
-**Logs de sucesso confirmados:**
+### Logs de sucesso confirmados
 
 ```text
-10:48:22.945 [main] INFO  DatabaseInitializer - Banco H2 inicializado com sucesso.
-jul. 22, 2025 10:48:22 AM Eclipse Mojarra JSF implementation started successfully.
-jul. 22, 2025 10:48:22 AM Running on PrimeFaces 14.0.0
-10:48:16.957 [main] INFO  Weld - WELD-ENV-001008: Initialize Weld using ServletContainerInitializer
-[INFO] Started Server@622ba721{STARTING}[11.0.17,sto=0] @16988ms
+INFO  DatabaseInitializer - Banco H2 inicializado com sucesso.
+Eclipse Mojarra JSF implementation started successfully.
+Running on PrimeFaces 14.0.0
+INFO  Weld - WELD-ENV-001008: Initialize Weld using ServletContainerInitializer
+[INFO] Started Server@...{STARTING}[11.0.17,sto=0]
 ```
 
-**URLs funcionais:**
+### URLs funcionais
 
-- `http://localhost:8080/csonline/` ✅
-- `http://localhost:8080/csonline/login.xhtml` ✅
+- http://localhost:8080/csonline/
+- http://localhost:8080/csonline/login.xhtml
 
-**Documento validado com projeto real funcionando em**: 22 de julho de 2025  
-**Migração Jakarta EE 10**: ✅ **COMPLETA E FUNCIONAL**
+### Arquivos criados/atualizados
 
-## **ARQUIVOS CRIADOS/ATUALIZADOS NA MIGRAÇÃO**
+- log4j2.xml
+- data-h2.sql
+- DatabaseInitializer.java
+- beans.xml
+- start-csonline.ps1 / stop-csonline.ps1
+- pom.xml, web.xml, faces-config.xml
+- ThemeBean.java, ThemeSwitcherBean.java
+- login.xhtml, theme.xhtml, template.xhtml
+- MIGRACAO.md
+- Imports Java e namespaces XHTML
 
-### Novos Arquivos Criados:
+### Configurações críticas
 
-- `src/main/resources/log4j2.xml` - Configuração completa Log4j 2.23.1
-- `src/main/resources/data-h2.sql` - Script de inicialização H2 com tabela `users`
-- `src/main/java/.../DatabaseInitializer.java` - Listener para inicialização automática do banco
-- `src/main/webapp/WEB-INF/beans.xml` - Configuração CDI Jakarta EE
-- `start-csonline.ps1` - Script PowerShell para iniciar servidor com logs informativos
-- `stop-csonline.ps1` - Script PowerShell para parar servidor graciosamente
-
-### Arquivos Atualizados
-
-- `pom.xml` - Dependências Jakarta EE 10 completas (PrimeFaces 14.0.0-jakarta, Eclipse Mojarra 4.0.8, Weld 5.1.2.Final)
-- `src/main/webapp/WEB-INF/web.xml` - Configuração Jakarta EE com recursos JSF otimizada
-- `src/main/webapp/WEB-INF/faces-config.xml` - Namespaces Jakarta EE atualizados
-- `src/main/java/br/com/mulato/cso/view/beans/ThemeBean.java` - Gerenciador de temas (login.xhtml)
-- `src/main/java/br/com/mulato/cso/view/bean/ThemeSwitcherBean.java` - Gerenciador de temas (theme.xhtml)
-- `src/main/webapp/login.xhtml` - Atualização para usar componente unificado de temas
-- `src/main/webapp/theme.xhtml` - Página de seleção de temas com miniaturas
-- `src/main/webapp/template.xhtml` - Remoção de recursos CSS e jQuery personalizados
-- `MIGRACAO.md` - Documentação detalhada do processo de migração e problemas identificados
-- Todas as classes Java: imports `javax.*` → `jakarta.*`
-- Todos os arquivos XHTML: namespaces `https://jakarta.ee/jsf/*` → `jakarta.faces.*`
-
-### Configurações Críticas Implementadas:
-
-- **Recursos JSF**: `jakarta.faces.RESOURCE_EXCLUDES` para servir CSS, JS, imagens corretamente
-- **PrimeFaces**: Configuração de tema `nova-light` e scripts no bottom
-- **H2 Database**: Modo PostgreSQL com tabela `users` (palavra `user` é reservada)
-- **Log4j 2**: Logging estruturado com rotação de arquivos e múltiplos appenders
-- **CDI/Weld**: Inicialização automática via ServletContainerInitializer
-- **Jetty**: Plugin Maven para desenvolvimento sem problemas de cache
+- Recursos JSF: jakarta.faces.RESOURCE_EXCLUDES
+- PrimeFaces: tema nova-light
+- H2 Database: tabela users
+- Log4j 2: rotação de arquivos
+- CDI/Weld: inicialização automática
+- Jetty: plugin Maven
 
 ---
 
-## **RESUMO EXECUTIVO ATUALIZADO**
+## Migração Jakarta EE 10: Completa, Otimizada e Validada
 
-### Principais Conquistas da Migração
+### Principais conquistas
 
-1. **Jakarta EE 10 Completo**: Migração 100% funcional de `javax.*` para `jakarta.*`
-2. **PrimeFaces 14.0.0-jakarta**: Versão específica Jakarta EE funcionando perfeitamente
-3. **Recursos JSF Resolvidos**: CSS, JS e imagens servidos corretamente via configuração otimizada
-4. **H2 Database Funcional**: Script de inicialização automática com tabela `users` corrigida
-5. **Scripts PowerShell**: Automação completa para start/stop do servidor
-6. **Jetty 11.0.17**: Substituição do Cargo eliminou problemas de cache
-7. **Log4j 2.23.1**: Sistema de logging estruturado com rotação de arquivos
-8. **Eclipse Mojarra**: Implementação de referência JSF mais estável e compatível
+1. Jakarta EE 10 completo
+2. PrimeFaces 14.0.0-jakarta funcionando
+3. Recursos JSF resolvidos
+4. H2 Database funcional
+5. Scripts PowerShell para start/stop
+6. Jetty 11.0.17 sem cache
+7. Log4j 2.23.1 estruturado
+8. Eclipse Mojarra estável
 
-### Estado Final da Aplicação
+### Estado final
 
-**Totalmente Funcional em Produção:**
+- Servidor: Jetty 11.0.17 (dev) / Tomcat 10.1.x (prod)
+- URLs: http://localhost:8080/csonline/ e /login.xhtml
+- Banco: H2 2.3.232
+- Interface: PrimeFaces 14.0.0-jakarta, tema nova-light
+- CDI: Weld 5.1.2.Final
+- Logging: Log4j 2.23.1
+- JSF: Eclipse Mojarra 4.0.8
 
-- **Servidor**: Jetty 11.0.17 (desenvolvimento) / Tomcat 10.1.x (produção)
-- **URLs**: `http://localhost:8080/csonline/` e `http://localhost:8080/csonline/login.xhtml`
-- **Banco**: H2 2.3.232 com dados de teste pré-carregados
-- **Interface**: PrimeFaces 14.0.0-jakarta com tema `nova-light` funcionando
-- **CDI**: Weld 5.1.2.Final inicializando beans corretamente
-- **Logging**: Log4j 2.23.1 gerando logs estruturados em `logs/csonline.log`
-- **JSF**: Eclipse Mojarra 4.0.8 processando páginas sem configurações específicas
+### Tempo real de migração
 
-### Tempo Real de Migração
+- Total: ~10 horas (projeto médio)
 
-- **Análise e Planning**: 2 horas
-- **Migração Dependencies**: 1 hora
-- **Correção H2 Database**: 1 hora  
-- **Substituição MyFaces por Mojarra**: 2 horas
-- **Simplificação web.xml**: 1 hora
-- **Remoção recursos customizados**: 1 hora
-- **Scripts e Automação**: 1 hora
-- **Testes e Validação**: 1 hora
-- **Total**: **10 horas** (projeto médio com ~30 páginas XHTML)
+### Lições aprendidas
 
-### Lições Aprendidas Críticas
+1. PrimeFaces: usar apenas 14.0.0-jakarta
+2. JSF: Mojarra mais estável
+3. H2: evitar palavra reservada user
+4. Jetty superior ao Cargo
+5. Scripts PowerShell essenciais
+6. web.xml minimal
+7. PrimeFaces supre interface, recursos customizados são redundantes
 
-1. **PrimeFaces**: Usar **exclusivamente** versão `14.0.0-jakarta`, não versões padrão
-
-2. **JSF Implementation**: Eclipse Mojarra é mais estável e simples que MyFaces para Jakarta EE
-
-3. **H2 Database**: Palavra `user` é reservada - sempre usar `users` ou outras alternativas
-
-4. **Cache Management**: Jetty Plugin superior ao Cargo para desenvolvimento Jakarta EE
-
-5. **Scripts PowerShell**: Essenciais para workflow eficiente no Windows
-
-6. **Configuração web.xml**: Menos é mais - configurações essenciais são suficientes
-
-7. **Recursos Customizados**: PrimeFaces 14 fornece tudo necessário, recursos customizados são redundantes
-
-### Resultado Técnico Validado
+### Resultado técnico validado
 
 ```text
 PrimeFaces 14.0.0-jakarta carregando temas corretamente
-Eclipse Mojarra 4.0.8 processando XHTML sem erros (substituiu MyFaces)
-Weld 5.1.2.Final injetando dependencies via CDI
-H2 Database inicializando automaticamente com dados
+Eclipse Mojarra 4.0.8 processando XHTML sem erros
+Weld 5.1.2.Final injetando dependencies
+H2 Database inicializando automaticamente
 Log4j 2.23.1 gerando logs estruturados
-Jetty 11.0.17 servindo aplicação na porta 8080
-web.xml simplificado com configurações essenciais apenas
-Recursos customizados completamente removidos (CSS, jQuery)
-Uso exclusivo de recursos PrimeFaces para interface
-Configuração minimal e otimizada para produção
+Jetty 11.0.17 servindo aplicação
+web.xml simplificado
+Recursos customizados removidos
+Uso exclusivo de PrimeFaces
+Configuração minimal e otimizada
 ```
-
-## MIGRAÇÃO JAKARTA EE 10: COMPLETA, OTIMIZADA E VALIDADA EM PRODUÇÃO
-
-### Principais Atualizações na Versão Final
-
-1. **Remoção Total do MyFaces**: Substituído completamente pelo Eclipse Mojarra 4.0.8
-2. **web.xml Simplificado**: Removidas todas as configurações não essenciais
-3. **Zero Recursos Customizados**: Aplicação usa exclusivamente recursos do PrimeFaces
-4. **Configuração Minimal**: Apenas parâmetros essenciais para JSF + PrimeFaces
-5. **Performance Otimizada**: Sem recursos redundantes ou desnecessários
