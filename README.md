@@ -259,7 +259,7 @@ Este projeto foi **completamente migrado** do Java EE (namespace `javax.*`) para
 - **Weld**: Atualizado para versão 5.1.2.Final (CDI Jakarta EE)
 - **H2 Database**: Configurado script de inicialização corrigindo palavra reservada `user` → `users`
 - **Log4j**: Atualizado para 2.23.1 com configuração Jakarta EE compatível
-- **Servidor**: Migrado de Tomcat Cargo para Jetty Maven Plugin (desenvolvimento)
+- **Servidor**: Ambiente de desenvolvimento e produção padronizado para Tomcat 10.1.x ou superior
 - **Namespaces**: Todas as dependências e configurações atualizadas para `jakarta.*`
 - **Recursos JSF**: Configuração simplificada focada apenas no Mojarra + PrimeFaces
 - **Scripts de gerenciamento**: Criados scripts PowerShell para iniciar/parar servidor
@@ -285,9 +285,8 @@ A implementação atual está sendo unificada para usar apenas o ThemeSwitcherBe
 1. **PrimeFaces 13.x não é Jakarta EE**: Era necessário usar versão 14.0.0 específica
 2. **H2 Database**: Palavra `user` é reservada, substituída por `users`
 3. **Log4j**: Necessária migração completa da configuração v1.x para v2.x
-4. **Jetty Plugin**: Resolveu problemas de cache do Cargo Plugin
-5. **Recursos JSF**: Configuração simplificada usando apenas configurações essenciais do Mojarra + PrimeFaces
-6. **Sistema de Temas**: Identificada duplicidade de gerenciadores (ThemeBean e ThemeSwitcherBean)
+4. **Recursos JSF**: Configuração simplificada usando apenas configurações essenciais do Mojarra + PrimeFaces
+5. **Sistema de Temas**: Identificada duplicidade de gerenciadores (ThemeBean e ThemeSwitcherBean)
 
 ### Arquivos Principais Criados/Atualizados
 
