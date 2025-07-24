@@ -7,7 +7,7 @@
     "maven.executable.path": "mvn"
 }{
     "files.encoding": "utf8",
-    "java.jdt.ls.java.home": "C:\\dev\\tools\\java\\jdk-11.0.24",
+    "java.jdt.ls.java.home": "C:\\dev\\tools\\jdk-11.0.2",
     "editor.formatOnSave": true,
     "java.completion.enabled": true
 }
