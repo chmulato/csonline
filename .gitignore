@@ -1,9 +1,39 @@
-/diagnostico-logs/
-/err/err.txt
+# VS Code
+.vscode/
+*.code-workspace
+
+# Eclipse
+*.pydevproject
+.project
+.metadata/
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+.settings/
+.loadpath
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+# IntelliJ module files
+*.iml
+# User-specific files
+*.sublime-workspace
+*.sublime-project
+
+# Build output
 /build/
 /target/
-.settings/
-.project
-.classpath
-.metadata/
-.settings/org.eclipse.core.runtime.prefs
+*.class
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
