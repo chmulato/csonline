@@ -36,9 +36,10 @@ public class BusinessServiceTest {
     public void testListAllBusinessSuccess() throws WebException {
         List<BusinessVO> mockList = Collections.singletonList(new BusinessVO());
         try (MockedStatic<FactoryDAO> factoryMock = Mockito.mockStatic(FactoryDAO.class)) {
+            var factory = mock(br.com.mulato.cso.dry.FactoryDAO.class);
             var businessDAOMock = mock(br.com.mulato.cso.dao.BusinessDAO.class);
-            factoryMock.when(FactoryDAO::getInstancia).thenReturn(mock(br.com.mulato.cso.dry.FactoryDAO.class));
-            when(FactoryDAO.getInstancia().getBusinessDAO()).thenReturn(businessDAOMock);
+            factoryMock.when(FactoryDAO::getInstancia).thenReturn(factory);
+            when(factory.getBusinessDAO()).thenReturn(businessDAOMock);
             when(businessDAOMock.listAll()).thenReturn(mockList);
             List<BusinessVO> result = businessService.listAllBusiness();
             assertNotNull(result);

@@ -1,10 +1,9 @@
-package br.com.mulato.cso.service.impl;
+package br.com.mulato.cso.service;
 
-import br.com.mulato.cso.dry.FactoryDAO;
-import br.com.mulato.cso.dao.LoginDAO;
-import br.com.mulato.cso.exception.DAOException;
 import br.com.mulato.cso.exception.WebException;
 import br.com.mulato.cso.model.LoginVO;
+import br.com.mulato.cso.service.LoginService;
+import br.com.mulato.cso.service.impl.LoginServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,8 +12,12 @@ import org.mockito.MockedStatic;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class LoginServiceImplTest {
-    private LoginServiceImpl loginService;
+import br.com.mulato.cso.dry.FactoryDAO;
+import br.com.mulato.cso.dao.LoginDAO;
+import br.com.mulato.cso.exception.DAOException;
+
+class LoginServiceTest {
+    private LoginService loginService;
     private LoginDAO loginDAOMock;
 
     @BeforeEach
@@ -134,5 +137,115 @@ class LoginServiceImplTest {
         assertThrows(WebException.class, () -> loginService.changePassword(login, false));
     }
 
-    // Adicione outros testes de validação de senha, repetição, email, etc. conforme necessário
+    @Test
+    @DisplayName("Deve lançar WebException se login.getRepeat() for null na troca de senha")
+    void deveLancarExcecaoSeRepeatNullTrocaSenha() {
+        LoginVO login = new LoginVO();
+        login.setLogin("admin");
+        login.setPassword("123");
+        login.setRepeat(null);
+        login.setNewPassword("novaSenha");
+        login.setNewRepeat("novaSenha");
+        login.setEmail("admin@email.com");
+        assertThrows(WebException.class, () -> loginService.changePassword(login, false));
+    }
+
+    @Test
+    @DisplayName("Deve lançar WebException se senha e repetição não coincidirem na troca de senha")
+    void deveLancarExcecaoSeSenhaRepeticaoDiferenteTrocaSenha() {
+        LoginVO login = new LoginVO();
+        login.setLogin("admin");
+        login.setPassword("123");
+        login.setRepeat("diferente");
+        login.setNewPassword("novaSenha");
+        login.setNewRepeat("novaSenha");
+        login.setEmail("admin@email.com");
+        assertThrows(WebException.class, () -> loginService.changePassword(login, false));
+    }
+
+    @Test
+    @DisplayName("Deve lançar WebException se nova senha for null na troca de senha")
+    void deveLancarExcecaoSeNovaSenhaNullTrocaSenha() {
+        LoginVO login = new LoginVO();
+        login.setLogin("admin");
+        login.setPassword("123");
+        login.setRepeat("123");
+        login.setNewPassword(null);
+        login.setNewRepeat("novaSenha");
+        login.setEmail("admin@email.com");
+        assertThrows(WebException.class, () -> loginService.changePassword(login, false));
+    }
+
+    @Test
+    @DisplayName("Deve lançar WebException se nova repetição for null na troca de senha")
+    void deveLancarExcecaoSeNovaRepeticaoNullTrocaSenha() {
+        LoginVO login = new LoginVO();
+        login.setLogin("admin");
+        login.setPassword("123");
+        login.setRepeat("123");
+        login.setNewPassword("novaSenha");
+        login.setNewRepeat(null);
+        login.setEmail("admin@email.com");
+        assertThrows(WebException.class, () -> loginService.changePassword(login, false));
+    }
+
+    @Test
+    @DisplayName("Deve lançar WebException se nova senha e repetição não coincidirem na troca de senha")
+    void deveLancarExcecaoSeNovaSenhaRepeticaoDiferenteTrocaSenha() {
+        LoginVO login = new LoginVO();
+        login.setLogin("admin");
+        login.setPassword("123");
+        login.setRepeat("123");
+        login.setNewPassword("novaSenha");
+        login.setNewRepeat("diferente");
+        login.setEmail("admin@email.com");
+        assertThrows(WebException.class, () -> loginService.changePassword(login, false));
+    }
+
+    @Test
+    @DisplayName("Deve lançar WebException se email for null na troca de senha")
+    void deveLancarExcecaoSeEmailNullTrocaSenha() {
+        LoginVO login = new LoginVO();
+        login.setLogin("admin");
+        login.setPassword("123");
+        login.setRepeat("123");
+        login.setNewPassword("novaSenha");
+        login.setNewRepeat("novaSenha");
+        login.setEmail(null);
+        assertThrows(WebException.class, () -> loginService.changePassword(login, false));
+    }
+
+    @Test
+    @DisplayName("Deve lançar WebException se email for vazio na troca de senha")
+    void deveLancarExcecaoSeEmailVazioTrocaSenha() {
+        LoginVO login = new LoginVO();
+        login.setLogin("admin");
+        login.setPassword("123");
+        login.setRepeat("123");
+        login.setNewPassword("novaSenha");
+        login.setNewRepeat("novaSenha");
+        login.setEmail("");
+        assertThrows(WebException.class, () -> loginService.changePassword(login, false));
+    }
+
+    @Test
+    @DisplayName("Deve lançar WebException se DAOException for lançada na troca de senha")
+    void deveLancarWebExceptionSeDAOExceptionTrocaSenha() throws Exception {
+        LoginVO login = new LoginVO();
+        login.setLogin("admin");
+        login.setPassword("123");
+        login.setRepeat("123");
+        login.setNewPassword("novaSenha");
+        login.setNewRepeat("novaSenha");
+        login.setEmail("admin@email.com");
+
+        try (MockedStatic<FactoryDAO> factoryDAOStatic = mockStatic(FactoryDAO.class)) {
+            FactoryDAO factoryDAOMock = mock(FactoryDAO.class);
+            factoryDAOStatic.when(FactoryDAO::getInstancia).thenReturn(factoryDAOMock);
+            when(factoryDAOMock.getLoginDAO()).thenReturn(loginDAOMock);
+            doThrow(new DAOException("erro")).when(loginDAOMock).passwordChange(login);
+
+            assertThrows(WebException.class, () -> loginService.changePassword(login, false));
+        }
+    }
 }
