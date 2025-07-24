@@ -135,4 +135,30 @@ class LoginServiceImplTest {
     }
 
     // Adicione outros testes de validação de senha, repetição, email, etc. conforme necessário
+
+    @Test
+    @DisplayName("Deve lançar WebException se nova senha e repetição forem diferentes na troca de senha")
+    void deveLancarExcecaoSeNovaSenhaRepeticaoDiferenteTrocaSenha() {
+        LoginVO login = new LoginVO();
+        login.setLogin("admin");
+        login.setPassword("123");
+        login.setRepeat("123");
+        login.setNewPassword("novaSenha");
+        login.setNewRepeat("diferenteSenha");
+        login.setEmail("admin@email.com");
+        assertThrows(WebException.class, () -> loginService.changePassword(login, false));
+    }
+
+    @Test
+    @DisplayName("Deve lançar WebException se email for inválido na troca de senha")
+    void deveLancarExcecaoSeEmailInvalidoTrocaSenha() {
+        LoginVO login = new LoginVO();
+        login.setLogin("admin");
+        login.setPassword("123");
+        login.setRepeat("123");
+        login.setNewPassword("novaSenha");
+        login.setNewRepeat("novaSenha");
+        login.setEmail("email-invalido"); // email sem @
+        assertThrows(WebException.class, () -> loginService.changePassword(login, false));
+    }
 }
