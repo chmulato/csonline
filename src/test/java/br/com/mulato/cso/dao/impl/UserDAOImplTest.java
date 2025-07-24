@@ -6,8 +6,6 @@ import static org.mockito.Mockito.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,7 +17,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import br.com.mulato.cso.dry.DBConnection;
 import br.com.mulato.cso.exception.DAOException;
-import br.com.mulato.cso.model.LoginVO;
 import br.com.mulato.cso.model.UserVO;
 import br.com.mulato.cso.utils.InitProperties;
 

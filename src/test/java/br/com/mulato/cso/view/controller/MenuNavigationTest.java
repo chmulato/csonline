@@ -1,15 +1,12 @@
 package br.com.mulato.cso.view.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import br.com.mulato.cso.view.controller.LoginController;
 
 /**
  * Testes unitários para as permissões de menu do LoginController

@@ -21,8 +21,6 @@ import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
-import br.com.mulato.cso.view.controller.LoginController;
-
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Testes do LoginMB - Managed Bean de Login")
 class LoginMBTest {

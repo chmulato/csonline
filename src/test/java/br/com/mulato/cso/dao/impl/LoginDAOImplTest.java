@@ -16,7 +16,6 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import br.com.mulato.cso.dao.impl.LoginDAOImpl;
 import br.com.mulato.cso.dry.DBConnection;
 import br.com.mulato.cso.exception.DAOException;
 import br.com.mulato.cso.exception.ParameterException;
