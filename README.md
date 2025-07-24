@@ -250,68 +250,18 @@ INFO: Started Server@... HTTP/1.1, (http/1.1)}{0.0.0.0:8080}
 
 ## Migração para Jakarta EE
 
-Este projeto foi **completamente migrado** do Java EE (namespace `javax.*`) para Jakarta EE 10 (namespace `jakarta.*`). As principais mudanças incluem:
+Este projeto foi migrado do Java EE (`javax.*`) para Jakarta EE 10 (`jakarta.*`). Principais mudanças:
 
-### Mudanças Críticas Realizadas
+- PrimeFaces atualizado para 14.0.0-jakarta
+- JSF agora usa Eclipse Mojarra 4.0.8
+- CDI com Weld 5.1.2.Final
+- Banco H2 ajustado para compatibilidade com Jakarta EE
+- Log4j atualizado para 2.23.1
+- Ambiente de desenvolvimento e produção padronizado para Tomcat 10.1.x ou superior
+- Dependências e configurações atualizadas para `jakarta.*`
+- Scripts PowerShell para iniciar/parar servidor
 
-- **PrimeFaces**: Atualizado de 13.0.7 para **14.0.0-jakarta** (versão Jakarta EE compatível)
-- **JSF Implementation**: Migrado do Apache MyFaces 4.0.2 para **Eclipse Mojarra 4.0.8** (implementação de referência)
-- **Weld**: Atualizado para versão 5.1.2.Final (CDI Jakarta EE)
-- **H2 Database**: Configurado script de inicialização corrigindo palavra reservada `user` → `users`
-- **Log4j**: Atualizado para 2.23.1 com configuração Jakarta EE compatível
-- **Servidor**: Ambiente de desenvolvimento e produção padronizado para Tomcat 10.1.x ou superior
-- **Namespaces**: Todas as dependências e configurações atualizadas para `jakarta.*`
-- **Recursos JSF**: Configuração simplificada focada apenas no Mojarra + PrimeFaces
-- **Scripts de gerenciamento**: Criados scripts PowerShell para iniciar/parar servidor
-- **Configuração limpa**: Removidos todos os recursos customizados (CSS, JavaScript) e configurações específicas do MyFaces
-
-### Sistema de Temas
-
-O CSOnline utiliza temas PrimeFaces para personalizar a aparência da aplicação:
-
-- **Configuração global**: Parâmetro `primefaces.THEME=nova-light` no web.xml
-- **Gerenciamento**: Dois sistemas de controle de tema implementados:
-  - **ThemeBean (#{themeMB})**: Usado na tela de login
-  - **ThemeSwitcherBean (#{themeSwitcherBean})**: Usado na página theme.xhtml
-- **Temas disponíveis**: O sistema oferece 32 temas, incluindo:
-  - ui-lightness, nova-light, aristo, vader, cupertino, home, etc.
-- **Tema padrão**: Configurado via parâmetro `themeDefault` no web.xml
-- **Tema do usuário**: Pode ser selecionado na tela de login ou na página de temas
-
-A implementação atual está sendo unificada para usar apenas o ThemeSwitcherBean como gerenciador único de temas.
-
-### Descobertas Importantes da Migração
-
-1. **PrimeFaces 13.x não é Jakarta EE**: Era necessário usar versão 14.0.0 específica
-2. **H2 Database**: Palavra `user` é reservada, substituída por `users`
-3. **Log4j**: Necessária migração completa da configuração v1.x para v2.x
-4. **Recursos JSF**: Configuração simplificada usando apenas configurações essenciais do Mojarra + PrimeFaces
-5. **Sistema de Temas**: Identificada duplicidade de gerenciadores (ThemeBean e ThemeSwitcherBean)
-
-### Arquivos Principais Criados/Atualizados
-
-- `src/main/resources/log4j2.xml` - Configuração completa Log4j 2
-- `src/main/resources/data-h2.sql` - Script inicialização H2 compatível
-- `src/main/java/.../DatabaseInitializer.java` - Listener inicialização banco
-- `src/main/webapp/WEB-INF/web.xml` - Configuração Jakarta EE com recursos JSF e temas
-- `src/main/java/br/com/mulato/cso/view/beans/ThemeBean.java` - Gerenciador de temas (login)
-- `src/main/java/br/com/mulato/cso/view/bean/ThemeSwitcherBean.java` - Gerenciador de temas (theme.xhtml)
-- `pom.xml` - Dependências Jakarta EE 10 e temas PrimeFaces
-- `MIGRACAO.md` - Documentação detalhada do processo de migração e problemas identificados
-- `start-csonline.ps1` - Script PowerShell para iniciar servidor
-- `stop-csonline.ps1` - Script PowerShell para parar servidor
-
-O CSOnline **não utiliza JNDI/DataSource do Tomcat**. A conexão com o banco é feita diretamente via JDBC no código Java, utilizando o driver do banco (H2 ou PostgreSQL) e a URL de conexão configurada no projeto.
-
-### Como funciona
-
-- O listener `DatabaseInitializer` realiza a conexão e inicialização do banco H2 via JDBC puro.
-- Para PostgreSQL, a conexão também é feita diretamente pelo código Java, sem dependência do Tomcat.
-- Não é necessário configurar `<Resource>` no `context.xml` do Tomcat nem referência JNDI no `web.xml`.
-- Basta garantir que o driver JDBC (`h2*.jar` ou `postgresql*.jar`) está presente em `WEB-INF/lib` do WAR.
-
-**Resumo:**
-> A aplicação é independente do JNDI/DataSource do Tomcat. Toda a gestão de conexão é feita pelo próprio código Java, facilitando o deploy e evitando dependências do servidor.
+A aplicação não utiliza JNDI/DataSource do Tomcat. Toda a conexão com banco é feita via JDBC direto no código Java.
 
 ## Perfil de Administrador
 
