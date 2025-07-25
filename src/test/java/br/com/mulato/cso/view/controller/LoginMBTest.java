@@ -279,9 +279,9 @@ class LoginMBTest {
             mockedFactory.when(br.com.mulato.cso.dry.FactoryService::getInstancia).thenReturn(factoryService);
             when(factoryService.getLoginService()).thenReturn(loginService);
 
-            // Mock para autenticação: retorna false para senha errada, true para senha correta
-            when(loginService.authenticate(argThat(loginVO -> "senhaErrada".equals(loginVO.getPassword())))).thenReturn(false);
-            when(loginService.authenticate(argThat(loginVO -> "123".equals(loginVO.getPassword())))).thenReturn(true);
+            // Mock para autenticação: retorna true apenas para senha correta, false para qualquer outro caso
+            when(loginService.authenticate(argThat(loginVO -> loginVO != null && "123".equals(loginVO.getPassword())))).thenReturn(true);
+            when(loginService.authenticate(any())).thenReturn(false);
 
             // Primeira tentativa: senha errada
             loginMB.setUsername("admin");
