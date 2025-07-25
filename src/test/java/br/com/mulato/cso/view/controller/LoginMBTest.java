@@ -298,6 +298,11 @@ class LoginMBTest {
             // Segunda tentativa: senha correta
             loginMB.setUsername("admin");
             loginMB.setPassword("123");
+            // Re-apply mocks after reset to avoid losing stubs
+            lenient().when(facesContext.getExternalContext()).thenReturn(externalContext);
+            when(factoryService.getLoginService()).thenReturn(loginService);
+            when(loginService.authenticate(argThat(loginVO -> loginVO != null && "123".equals(loginVO.getPassword())))).thenReturn(true);
+            when(loginService.authenticate(argThat(loginVO -> loginVO == null || !"123".equals(loginVO.getPassword())))).thenReturn(false);
             String resultado2 = loginMB.login();
 
             // Then
@@ -343,9 +348,13 @@ class LoginMBTest {
             // Reset do mock para garantir que não há chamadas anteriores
             reset(facesContext);
             lenient().when(facesContext.getExternalContext()).thenReturn(externalContext);
+            // Re-apply all necessary stubs after reset
+            doNothing().when(facesContext).addMessage(any(), any(FacesMessage.class));
+            jakarta.faces.application.Application application = mock(jakarta.faces.application.Application.class);
+            lenient().when(facesContext.getApplication()).thenReturn(application);
+            lenient().when(application.evaluateExpressionGet(any(FacesContext.class), anyString(), any(Class.class))).thenReturn(null);
 
             // Evitar NullPointerException ao acessar métodos do mock
-            doNothing().when(facesContext).addMessage(any(), any(FacesMessage.class));
 
             loginMB.setUsername("admin");
             loginMB.setPassword("123");
