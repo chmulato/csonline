@@ -290,11 +290,7 @@ class LoginMBTest {
 
             // Mock para autenticação: retorna true apenas para senha correta, false para qualquer outro caso
             when(loginService.authenticate(argThat(loginVO -> loginVO != null && "123".equals(loginVO.getPassword())))).thenReturn(true);
-<<<<<<< HEAD
             when(loginService.authenticate(any())).thenReturn(false);
-=======
-            when(loginService.authenticate(argThat(loginVO -> loginVO == null || !"123".equals(loginVO.getPassword())))).thenReturn(false);
->>>>>>> 98eaada (fix: Improve authentication mock to return false for null or incorrect passwords)
 
             // Mock do usuário admin
             br.com.mulato.cso.model.UserVO user = mock(br.com.mulato.cso.model.UserVO.class);
