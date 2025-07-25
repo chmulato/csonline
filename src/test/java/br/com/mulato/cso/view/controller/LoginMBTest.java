@@ -276,8 +276,12 @@ class LoginMBTest {
             // Mock FactoryService e LoginService
             br.com.mulato.cso.dry.FactoryService factoryService = mock(br.com.mulato.cso.dry.FactoryService.class);
             br.com.mulato.cso.service.LoginService loginService = mock(br.com.mulato.cso.service.LoginService.class);
+            br.com.mulato.cso.service.AdminService adminService = mock(br.com.mulato.cso.service.AdminService.class);
+            br.com.mulato.cso.service.BusinessService businessService = mock(br.com.mulato.cso.service.BusinessService.class);
             mockedFactory.when(br.com.mulato.cso.dry.FactoryService::getInstancia).thenReturn(factoryService);
             when(factoryService.getLoginService()).thenReturn(loginService);
+            when(factoryService.getAdminService()).thenReturn(adminService);
+            lenient().when(factoryService.getBusinessService()).thenReturn(businessService);
 
             // Mock para autenticação: retorna true apenas para senha correta, false para qualquer outro caso
             when(loginService.authenticate(argThat(loginVO -> loginVO != null && "123".equals(loginVO.getPassword())))).thenReturn(true);
@@ -286,6 +290,16 @@ class LoginMBTest {
 =======
             when(loginService.authenticate(argThat(loginVO -> loginVO == null || !"123".equals(loginVO.getPassword())))).thenReturn(false);
 >>>>>>> 98eaada (fix: Improve authentication mock to return false for null or incorrect passwords)
+
+            // Mock do usuário admin
+            br.com.mulato.cso.model.UserVO user = mock(br.com.mulato.cso.model.UserVO.class);
+            lenient().when(user.getId()).thenReturn(1);
+            lenient().when(user.getRole()).thenReturn("ADMINISTRATOR");
+            when(adminService.findByLogin(any(br.com.mulato.cso.model.LoginVO.class))).thenReturn(user);
+
+            // Mock do BusinessVO (para usuário admin não é necessário, mas mock para cobrir outros casos)
+            br.com.mulato.cso.model.BusinessVO business = mock(br.com.mulato.cso.model.BusinessVO.class);
+            lenient().when(businessService.find(any(Integer.class))).thenReturn(business);
 
             // Primeira tentativa: senha errada
             loginMB.setUsername("admin");
@@ -301,8 +315,12 @@ class LoginMBTest {
             // Re-apply mocks after reset to avoid losing stubs
             lenient().when(facesContext.getExternalContext()).thenReturn(externalContext);
             when(factoryService.getLoginService()).thenReturn(loginService);
+            when(factoryService.getAdminService()).thenReturn(adminService);
+            lenient().when(factoryService.getBusinessService()).thenReturn(businessService);
             when(loginService.authenticate(argThat(loginVO -> loginVO != null && "123".equals(loginVO.getPassword())))).thenReturn(true);
             when(loginService.authenticate(argThat(loginVO -> loginVO == null || !"123".equals(loginVO.getPassword())))).thenReturn(false);
+            when(adminService.findByLogin(any(br.com.mulato.cso.model.LoginVO.class))).thenReturn(user);
+            lenient().when(businessService.find(any(Integer.class))).thenReturn(business);
             String resultado2 = loginMB.login();
 
             // Then
@@ -338,23 +356,41 @@ class LoginMBTest {
             mockedFacesContext.when(FacesContext::getCurrentInstance).thenReturn(facesContext);
             lenient().when(facesContext.getExternalContext()).thenReturn(externalContext);
 
-            // Mock FactoryService e LoginService
+            // Mock Application e ContadorController para evitar NullPointerException
+            jakarta.faces.application.Application application = mock(jakarta.faces.application.Application.class);
+            lenient().when(facesContext.getApplication()).thenReturn(application);
+            lenient().when(application.evaluateExpressionGet(any(FacesContext.class), anyString(), any(Class.class))).thenReturn(null);
+
+            // Mock FactoryService e seus serviços
             br.com.mulato.cso.dry.FactoryService factoryService = mock(br.com.mulato.cso.dry.FactoryService.class);
             br.com.mulato.cso.service.LoginService loginService = mock(br.com.mulato.cso.service.LoginService.class);
+            br.com.mulato.cso.service.AdminService adminService = mock(br.com.mulato.cso.service.AdminService.class);
+            br.com.mulato.cso.service.BusinessService businessService = mock(br.com.mulato.cso.service.BusinessService.class);
             mockedFactory.when(br.com.mulato.cso.dry.FactoryService::getInstancia).thenReturn(factoryService);
-            when(factoryService.getLoginService()).thenReturn(loginService);
-            when(loginService.authenticate(any(br.com.mulato.cso.model.LoginVO.class))).thenReturn(true);
+            doReturn(loginService).when(factoryService).getLoginService();
+            doReturn(adminService).when(factoryService).getAdminService();
+            lenient().doReturn(businessService).when(factoryService).getBusinessService();
+
+            // Mock do processo de autenticação - deve retornar true
+            lenient().doReturn(true).when(loginService).authenticate(any(br.com.mulato.cso.model.LoginVO.class));
+
+            // Mock do usuário admin
+            br.com.mulato.cso.model.UserVO user = mock(br.com.mulato.cso.model.UserVO.class);
+            lenient().when(user.getId()).thenReturn(1);
+            lenient().when(user.getRole()).thenReturn("ADMINISTRATOR");
+            doReturn(user).when(adminService).findByLogin(any(br.com.mulato.cso.model.LoginVO.class));
+
+            // Mock do BusinessVO (para usuário admin não é necessário, mas podemos mockear para cobrir outros casos)
+            br.com.mulato.cso.model.BusinessVO business = mock(br.com.mulato.cso.model.BusinessVO.class);
+            lenient().doReturn(business).when(businessService).find(any(Integer.class));
 
             // Reset do mock para garantir que não há chamadas anteriores
             reset(facesContext);
             lenient().when(facesContext.getExternalContext()).thenReturn(externalContext);
             // Re-apply all necessary stubs after reset
             doNothing().when(facesContext).addMessage(any(), any(FacesMessage.class));
-            jakarta.faces.application.Application application = mock(jakarta.faces.application.Application.class);
             lenient().when(facesContext.getApplication()).thenReturn(application);
             lenient().when(application.evaluateExpressionGet(any(FacesContext.class), anyString(), any(Class.class))).thenReturn(null);
-
-            // Evitar NullPointerException ao acessar métodos do mock
 
             loginMB.setUsername("admin");
             loginMB.setPassword("123");
@@ -364,7 +400,7 @@ class LoginMBTest {
             assertNotNull(loginResult);
             assertEquals("users", loginResult); // Espera navegação para "users" para admin
             assertEquals("admin", loginMB.getUsername());
-            assertEquals("123", loginMB.getPassword());
+            assertNull(loginMB.getPassword()); // O password é limpo após login
             verify(loginService, atLeastOnce()).authenticate(any(br.com.mulato.cso.model.LoginVO.class));
             verify(facesContext, never()).addMessage(any(), any(FacesMessage.class)); // Não deve adicionar mensagem de erro
         }
