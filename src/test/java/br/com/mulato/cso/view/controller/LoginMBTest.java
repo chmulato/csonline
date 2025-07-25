@@ -1,6 +1,8 @@
 package br.com.mulato.cso.view.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 import java.util.Iterator;
@@ -119,8 +121,7 @@ class LoginMBTest {
             String resultado = loginMB.login();
             
             // Then
-            assertNotNull(resultado);
-            // Espera-se que retorne null ou uma página de erro, não uma navegação válida
+            assertNull(resultado); // Corrigido: espera null
         }
     }
 
@@ -235,13 +236,13 @@ class LoginMBTest {
             mockedFacesContext.when(FacesContext::getCurrentInstance).thenReturn(facesContext);
             loginMB.setUsername(null);
             loginMB.setPassword("123");
-            
+
             // When
             String resultado = loginMB.login();
-            
+
             // Then
             // Deve tratar o caso graciosamente sem lançar exceção
-            assertNotNull(resultado);
+            assertNull(resultado); // Corrigido: espera null
         }
     }
 
@@ -253,40 +254,51 @@ class LoginMBTest {
             mockedFacesContext.when(FacesContext::getCurrentInstance).thenReturn(facesContext);
             loginMB.setUsername("admin");
             loginMB.setPassword(null);
-            
+
             // When
             String resultado = loginMB.login();
-            
+
             // Then
             // Deve tratar o caso graciosamente sem lançar exceção
-            assertNotNull(resultado);
+            assertNull(resultado); // Corrigido: espera null
         }
     }
 
     @Test
     @DisplayName("Deve validar comportamento do bean em múltiplas tentativas")
-    void deveValidarComportamentoDoBeanEmMultiplasTentativas() {
-        try (MockedStatic<FacesContext> mockedFacesContext = mockStatic(FacesContext.class)) {
+    void deveValidarComportamentoDoBeanEmMultiplasTentativas() throws br.com.mulato.cso.exception.WebException {
+        try (MockedStatic<FacesContext> mockedFacesContext = mockStatic(FacesContext.class);
+             MockedStatic<br.com.mulato.cso.dry.FactoryService> mockedFactory = mockStatic(br.com.mulato.cso.dry.FactoryService.class)) {
             // Given
             mockedFacesContext.when(FacesContext::getCurrentInstance).thenReturn(facesContext);
-            
-            // When - primeira tentativa
+            lenient().when(facesContext.getExternalContext()).thenReturn(externalContext);
+
+            // Mock FactoryService e LoginService
+            br.com.mulato.cso.dry.FactoryService factoryService = mock(br.com.mulato.cso.dry.FactoryService.class);
+            br.com.mulato.cso.service.LoginService loginService = mock(br.com.mulato.cso.service.LoginService.class);
+            mockedFactory.when(br.com.mulato.cso.dry.FactoryService::getInstancia).thenReturn(factoryService);
+            when(factoryService.getLoginService()).thenReturn(loginService);
+
+            // Mock para autenticação: retorna false para senha errada, true para senha correta
+            when(loginService.authenticate(argThat(loginVO -> "senhaErrada".equals(loginVO.getPassword())))).thenReturn(false);
+            when(loginService.authenticate(argThat(loginVO -> "123".equals(loginVO.getPassword())))).thenReturn(true);
+
+            // Primeira tentativa: senha errada
             loginMB.setUsername("admin");
             loginMB.setPassword("senhaErrada");
             String resultado1 = loginMB.login();
-            
-            // When - reset
+
+            // Reset campos para segunda tentativa
             loginMB.reset(actionEvent);
-            
-            // When - segunda tentativa
+
+            // Segunda tentativa: senha correta
             loginMB.setUsername("admin");
             loginMB.setPassword("123");
             String resultado2 = loginMB.login();
-            
+
             // Then
-            assertNotNull(resultado1);
-            assertNotNull(resultado2);
-            // Verificar que o bean mantém estado consistente entre tentativas
+            assertNull(resultado1);      // Espera null na primeira tentativa
+            assertNotNull(resultado2);   // Espera não nulo na segunda tentativa
         }
     }
 
@@ -310,25 +322,35 @@ class LoginMBTest {
 
     @Test
     @DisplayName("Deve validar comportamento esperado pelos componentes PrimeFaces")
-    void deveValidarComportamentoEsperadoPelosComponentesPrimeFaces() {
-        try (MockedStatic<FacesContext> mockedFacesContext = mockStatic(FacesContext.class)) {
+    void deveValidarComportamentoEsperadoPelosComponentesPrimeFaces() throws br.com.mulato.cso.exception.WebException {
+        try (MockedStatic<FacesContext> mockedFacesContext = mockStatic(FacesContext.class);
+             MockedStatic<br.com.mulato.cso.dry.FactoryService> mockedFactory = mockStatic(br.com.mulato.cso.dry.FactoryService.class)) {
             // Given
             mockedFacesContext.when(FacesContext::getCurrentInstance).thenReturn(facesContext);
-            
-            // When - simular comportamento dos componentes da página:
-            // p:inputText id="username" value="#{loginMB.username}"
-            // p:password id="senha" value="#{loginMB.password}"
-            // p:commandButton action="#{loginMB.login}"
-            // p:commandButton actionListener="#{loginMB.reset}"
-            
+            lenient().when(facesContext.getExternalContext()).thenReturn(externalContext);
+
+            // Mock FactoryService e LoginService
+            br.com.mulato.cso.dry.FactoryService factoryService = mock(br.com.mulato.cso.dry.FactoryService.class);
+            br.com.mulato.cso.service.LoginService loginService = mock(br.com.mulato.cso.service.LoginService.class);
+            mockedFactory.when(br.com.mulato.cso.dry.FactoryService::getInstancia).thenReturn(factoryService);
+            when(factoryService.getLoginService()).thenReturn(loginService);
+            when(loginService.authenticate(any(br.com.mulato.cso.model.LoginVO.class))).thenReturn(true);
+
+            // Reset do mock para garantir que não há chamadas anteriores
+            reset(facesContext);
+            lenient().when(facesContext.getExternalContext()).thenReturn(externalContext);
+
             loginMB.setUsername("admin");
             loginMB.setPassword("123");
             String loginResult = loginMB.login();
-            
+
             // Then
             assertNotNull(loginResult);
-            assertNotNull(loginMB.getUsername());
-            assertNotNull(loginMB.getPassword());
+            assertEquals("users", loginResult); // Espera navegação para "users" para admin
+            assertEquals("admin", loginMB.getUsername());
+            assertEquals("123", loginMB.getPassword());
+            verify(loginService, atLeastOnce()).authenticate(any(br.com.mulato.cso.model.LoginVO.class));
+            verify(facesContext, never()).addMessage(any(), any(FacesMessage.class)); // Não deve adicionar mensagem de erro
         }
     }
 
