@@ -273,7 +273,12 @@ class LoginMBTest {
             mockedFacesContext.when(FacesContext::getCurrentInstance).thenReturn(facesContext);
             lenient().when(facesContext.getExternalContext()).thenReturn(externalContext);
 
-            // Mock FactoryService e LoginService
+            // Mock Application e ContadorController para evitar NullPointerException
+            jakarta.faces.application.Application application = mock(jakarta.faces.application.Application.class);
+            lenient().when(facesContext.getApplication()).thenReturn(application);
+            lenient().when(application.evaluateExpressionGet(any(FacesContext.class), anyString(), any(Class.class))).thenReturn(null);
+
+            // Mock FactoryService e seus serviços
             br.com.mulato.cso.dry.FactoryService factoryService = mock(br.com.mulato.cso.dry.FactoryService.class);
             br.com.mulato.cso.service.LoginService loginService = mock(br.com.mulato.cso.service.LoginService.class);
             br.com.mulato.cso.service.AdminService adminService = mock(br.com.mulato.cso.service.AdminService.class);
@@ -314,6 +319,8 @@ class LoginMBTest {
             loginMB.setPassword("123");
             // Re-apply mocks after reset to avoid losing stubs
             lenient().when(facesContext.getExternalContext()).thenReturn(externalContext);
+            lenient().when(facesContext.getApplication()).thenReturn(application);
+            lenient().when(application.evaluateExpressionGet(any(FacesContext.class), anyString(), any(Class.class))).thenReturn(null);
             when(factoryService.getLoginService()).thenReturn(loginService);
             when(factoryService.getAdminService()).thenReturn(adminService);
             lenient().when(factoryService.getBusinessService()).thenReturn(businessService);
@@ -367,8 +374,8 @@ class LoginMBTest {
             br.com.mulato.cso.service.AdminService adminService = mock(br.com.mulato.cso.service.AdminService.class);
             br.com.mulato.cso.service.BusinessService businessService = mock(br.com.mulato.cso.service.BusinessService.class);
             mockedFactory.when(br.com.mulato.cso.dry.FactoryService::getInstancia).thenReturn(factoryService);
-            doReturn(loginService).when(factoryService).getLoginService();
-            doReturn(adminService).when(factoryService).getAdminService();
+            lenient().doReturn(loginService).when(factoryService).getLoginService();
+            lenient().doReturn(adminService).when(factoryService).getAdminService();
             lenient().doReturn(businessService).when(factoryService).getBusinessService();
 
             // Mock do processo de autenticação - deve retornar true
@@ -378,7 +385,7 @@ class LoginMBTest {
             br.com.mulato.cso.model.UserVO user = mock(br.com.mulato.cso.model.UserVO.class);
             lenient().when(user.getId()).thenReturn(1);
             lenient().when(user.getRole()).thenReturn("ADMINISTRATOR");
-            doReturn(user).when(adminService).findByLogin(any(br.com.mulato.cso.model.LoginVO.class));
+            lenient().doReturn(user).when(adminService).findByLogin(any(br.com.mulato.cso.model.LoginVO.class));
 
             // Mock do BusinessVO (para usuário admin não é necessário, mas podemos mockear para cobrir outros casos)
             br.com.mulato.cso.model.BusinessVO business = mock(br.com.mulato.cso.model.BusinessVO.class);
