@@ -344,6 +344,9 @@ class LoginMBTest {
             reset(facesContext);
             lenient().when(facesContext.getExternalContext()).thenReturn(externalContext);
 
+            // Evitar NullPointerException ao acessar métodos do mock
+            doNothing().when(facesContext).addMessage(any(), any(FacesMessage.class));
+
             loginMB.setUsername("admin");
             loginMB.setPassword("123");
             String loginResult = loginMB.login();
