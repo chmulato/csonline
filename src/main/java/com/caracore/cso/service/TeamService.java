@@ -24,6 +24,14 @@ public class TeamService {
     }
 
     public void delete(Long id) {
-        teamRepository.delete(id);
+        try {
+            teamRepository.delete(id);
+        } catch (Exception e) {
+            // Verifica se é violação de integridade referencial
+            if (e.getCause() != null && e.getCause().getMessage() != null && e.getCause().getMessage().contains("Referential integrity constraint violation")) {
+                throw new RuntimeException("Não é possível excluir o time pois existem registros vinculados.");
+            }
+            throw e;
+        }
     }
 }

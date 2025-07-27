@@ -69,9 +69,16 @@ public class CustomerController {
         try {
             customerService.delete(id);
             return Response.noContent().build();
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             logger.error("Erro ao deletar customer id: " + id, e);
-            return Response.serverError().entity("Erro ao deletar customer").build();
+            // Se for violação de integridade, retorna 409 e mensagem JSON
+            return Response.status(Response.Status.CONFLICT)
+                .entity("{\"error\": \"" + e.getMessage() + "\"}")
+                .type(MediaType.APPLICATION_JSON)
+                .build();
+        } catch (Exception e) {
+            logger.error("Erro inesperado ao deletar customer id: " + id, e);
+            return Response.serverError().entity("{\"error\": \"Erro ao deletar customer\"}").type(MediaType.APPLICATION_JSON).build();
         }
     }
 }

@@ -53,7 +53,17 @@ public class TeamController {
         if (existing == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        teamService.delete(id);
-        return Response.noContent().build();
+        try {
+            teamService.delete(id);
+            return Response.noContent().build();
+        } catch (RuntimeException e) {
+            // Se for violação de integridade, retorna 409 e mensagem JSON
+            return Response.status(Response.Status.CONFLICT)
+                .entity("{\"error\": \"" + e.getMessage() + "\"}")
+                .type(jakarta.ws.rs.core.MediaType.APPLICATION_JSON)
+                .build();
+        } catch (Exception e) {
+            return Response.serverError().entity("{\"error\": \"Erro ao deletar time\"}").type(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).build();
+        }
     }
 }
