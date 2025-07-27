@@ -1,6 +1,7 @@
 package com.caracore.cso.entity;
 
 import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
 
 @Entity
 @Table(name = "team")
@@ -8,7 +9,7 @@ public class Courier {
     @Id
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "idbusiness", referencedColumnName = "id")
     private User business;
 

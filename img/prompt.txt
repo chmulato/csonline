@@ -1,0 +1,5 @@
+Crie uma imagem no formato 1920x1080 para LinkedIn, convidando desenvolvedores para o desafio de criação do front-end do projeto CSOnline. A imagem deve transmitir inovação e colaboração, com destaque para as ferramentas Cursor e VS Code Copilot. Inclua elementos visuais que remetam a desenvolvimento web, APIs REST, integração com GitHub e colaboração em equipe. Adicione o texto:
+
+"Desafio Front-End CSOnline Colabore usando Cursor ou VS Code Copilot Consuma os endpoints REST da branch service_restfull no GitHub Participe e contribua!"
+
+Utilize cores modernas e profissionais, evitando ícones infantis ou emojis. O visual deve ser atrativo para desenvolvedores e entusiastas de tecnologia.

@@ -1,12 +1,15 @@
+
 package com.caracore.cso.service;
 
 import com.caracore.cso.entity.User;
+import com.caracore.cso.entity.Courier;
+import com.caracore.cso.entity.Customer;
+import com.caracore.cso.entity.Delivery;
 import com.caracore.cso.repository.JPAUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
-
 import java.util.List;
 
 public class UserService {
@@ -48,6 +51,25 @@ public class UserService {
             em.getTransaction().begin();
             User user = em.find(User.class, userId);
             if (user != null) {
+                // Remove explicitamente os filhos para garantir deleção em cascata
+                if (user.getCouriers() != null) {
+                    for (var courier : user.getCouriers()) {
+                        em.remove(courier);
+                    }
+                    user.getCouriers().clear();
+                }
+                if (user.getCustomers() != null) {
+                    for (var customer : user.getCustomers()) {
+                        em.remove(customer);
+                    }
+                    user.getCustomers().clear();
+                }
+                if (user.getDeliveries() != null) {
+                    for (var delivery : user.getDeliveries()) {
+                        em.remove(delivery);
+                    }
+                    user.getDeliveries().clear();
+                }
                 em.remove(user);
             }
             em.getTransaction().commit();
