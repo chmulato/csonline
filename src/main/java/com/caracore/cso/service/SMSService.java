@@ -2,16 +2,26 @@ package com.caracore.cso.service;
 
 import com.caracore.cso.entity.SMS;
 import com.caracore.cso.repository.HibernateUtil;
-
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-
 import java.util.List;
 
 public class SMSService {
+
+    public List<SMS> findAll() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<SMS> query = session.createQuery("FROM SMS ORDER BY datetime ASC", SMS.class);
+            return query.list();
+        }
+    }
+
+    public void save(SMS sms) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            session.persist(sms);
+            session.getTransaction().commit();
+        }
+    }
     public SMS findById(Long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.get(SMS.class, id);

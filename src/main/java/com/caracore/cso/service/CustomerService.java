@@ -1,14 +1,48 @@
 package com.caracore.cso.service;
 
+
 import com.caracore.cso.entity.Customer;
 import com.caracore.cso.entity.User;
 import com.caracore.cso.repository.HibernateUtil;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
 import java.util.List;
 
 public class CustomerService {
+    public List<Customer> findAll() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("FROM Customer", Customer.class).list();
+        }
+    }
+
+    public void save(Customer customer) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            session.saveOrUpdate(customer);
+            session.getTransaction().commit();
+        }
+    }
+
+    public void update(Customer customer) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            session.update(customer);
+            session.getTransaction().commit();
+        }
+    }
+
+    public void delete(Long customerId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            Customer customer = session.get(Customer.class, customerId);
+            if (customer != null) {
+                session.delete(customer);
+            }
+            session.getTransaction().commit();
+        }
+    }
     public Customer findById(Long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.get(Customer.class, id);

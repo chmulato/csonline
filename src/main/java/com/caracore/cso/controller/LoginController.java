@@ -14,7 +14,15 @@ import jakarta.ws.rs.core.Response;
 
 @Path("/login")
 public class LoginController {
-    private final LoginService loginService = new LoginService();
+    private final LoginService loginService;
+
+    public LoginController() {
+        this.loginService = new LoginService();
+    }
+
+    public LoginController(LoginService loginService) {
+        this.loginService = loginService;
+    }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)

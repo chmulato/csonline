@@ -2,14 +2,48 @@
 package com.caracore.cso.service;
 
 
+
 import com.caracore.cso.entity.Courier;
 import com.caracore.cso.repository.HibernateUtil;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
 import java.util.List;
 
 public class CourierService {
+    public List<Courier> findAll() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("FROM Courier", Courier.class).list();
+        }
+    }
+
+    public void save(Courier courier) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            session.saveOrUpdate(courier);
+            session.getTransaction().commit();
+        }
+    }
+
+    public void update(Courier courier) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            session.update(courier);
+            session.getTransaction().commit();
+        }
+    }
+
+    public void delete(Long courierId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            Courier courier = session.get(Courier.class, courierId);
+            if (courier != null) {
+                session.delete(courier);
+            }
+            session.getTransaction().commit();
+        }
+    }
     public Courier findById(Long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.get(Courier.class, id);

@@ -8,6 +8,33 @@ import org.hibernate.query.Query;
 import java.util.List;
 
 public class UserService {
+    public void save(User user) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            session.saveOrUpdate(user);
+            session.getTransaction().commit();
+        }
+    }
+
+    public void update(User user) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            session.update(user);
+            session.getTransaction().commit();
+        }
+    }
+
+    public void delete(Long userId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            User user = session.get(User.class, userId);
+            if (user != null) {
+                session.delete(user);
+            }
+            session.getTransaction().commit();
+        }
+    }
+
     public User findByLoginAndPassword(String login, String password) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<User> query = session.createQuery("FROM User WHERE login = :login AND password = :password", User.class);
@@ -60,3 +87,4 @@ public class UserService {
         return user != null && "ADMIN".equalsIgnoreCase(user.getRole());
     }
 }
+
