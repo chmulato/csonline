@@ -3,6 +3,7 @@
 ## Visão Geral
 O CSOnline é um sistema modular para gestão de entregas, desenvolvido em Java 11, utilizando Jakarta EE 10, Hibernate ORM, H2 Database e JSF. O projeto segue boas práticas de separação de camadas e responsabilidade.
 
+
 ## Camadas do Sistema
 
 - **Entidades (Entity):**
@@ -14,21 +15,29 @@ O CSOnline é um sistema modular para gestão de entregas, desenvolvido em Java 
   - Utilizam SessionFactory para operações CRUD.
 
 - **Serviços (Service):**
-  - Implementam regras de negócio e controle de acesso.
-  - Validam permissões e encapsulam lógica de autorização.
+  - Implementam regras de negócio, controle de acesso e segurança (LoginService).
+  - Validam permissões e encapsulam lógica de autorização centralizada.
+
+- **RESTful (Controller/DTO):**
+  - Exposição dos serviços via endpoints REST usando Jakarta EE 10/JAX-RS.
+  - Controllers para autenticação e acesso aos serviços.
+  - DTOs para transporte seguro de dados entre camadas e APIs.
 
 - **Testes (Test):**
-  - Testes unitários para cada serviço e repositório.
-  - Cobertura de regras de negócio e persistência.
+  - Testes unitários para cada serviço, repositório e controller REST.
+  - Cobertura de regras de negócio, persistência e endpoints REST.
+  - Uso de Jersey como provedor JAX-RS para testes REST.
 
 - **Documentação (doc):**
   - Documentos de regras, arquitetura, dados iniciais e índice.
 
+
 ## Fluxo de Dados
-1. Usuário interage via interface JSF.
-2. JSF aciona serviços, que validam regras e acessam repositórios.
+1. Usuário interage via interface JSF ou via API REST.
+2. JSF ou REST aciona serviços, que validam regras, segurança e acessam repositórios.
 3. Repositórios manipulam entidades e persistem dados no H2 via Hibernate.
-4. Respostas e exceções são tratadas na camada de serviço.
+4. Respostas e exceções são tratadas na camada de serviço ou controller REST.
+
 
 ## Tecnologias
 - Java 11
@@ -39,14 +48,23 @@ O CSOnline é um sistema modular para gestão de entregas, desenvolvido em Java 
 - JUnit 5
 - JaCoCo
 - Jetty Embedded
+- Tomcat Embedded 10.1.x
+- Jersey (JAX-RS provider para testes REST)
+
 
 ## Diagrama Simplificado
 
 ```
 [JSF] → [Service] → [Repository] → [Entity] → [H2 Database]
+[REST Controller] → [Service] → [Repository] → [Entity] → [H2 Database]
 ```
+
 
 ## Observações
 - Todas as operações sensíveis lançam DAOException.
 - Regras de autorização centralizadas na camada de serviço.
+- Segurança implementada via LoginService e controle de acesso por roles.
+- Testes REST utilizam Jersey como provedor JAX-RS.
+- Dados iniciais são carregados via import.sql (um insert por linha).
+- Testes unitários utilizam IDs altos para evitar conflitos com dados iniciais.
 - Documentação e exemplos disponíveis em `doc/INDEX.md`.

@@ -1,10 +1,14 @@
-## Exemplos de Cenários
-- Usuário ADMIN para administração geral.
-- Empresa BUSINESS vinculada a clientes e couriers.
-- Dois clientes e dois couriers para simular múltiplas entregas e interações.
-- Entregas com diferentes status (pendente, concluída) e dados variados.
-- Tabela de preços para diferentes clientes e veículos.
-- SMS simulando troca de mensagens entre courier e customer.
+
+## Exemplos de Cenários Simulados
+- Usuário ADMIN para administração geral do sistema.
+- Empresa BUSINESS vinculada a múltiplos clientes e couriers, simulando ambiente corporativo.
+- Dois clientes e dois couriers para testar entregas, autorizações e interações entre perfis.
+- Entregas com diferentes status (pendente, concluída, recebida) e dados variados para validar regras de negócio.
+- Tabela de preços diferenciada para clientes e tipos de veículos, permitindo testes de cálculo de custo.
+- SMS simulando troca de mensagens entre courier e customer, útil para rastreamento e histórico.
+
+Esses dados permitem validar cenários de autenticação, autorização, rastreamento, cálculo de preços e fluxo completo de entrega.
+
 
 ## Exemplos de Consultas para Testes
 ```sql
@@ -18,14 +22,27 @@ SELECT * FROM sms WHERE iddelivery = 1;
 SELECT * FROM courier WHERE idbusiness = 2;
 ```
 
-## Dicas para Testes
-- Utilize os dados do import.sql para validar regras de negócio e persistência.
-- Teste cenários de atualização, deleção e consulta por diferentes atributos.
-- Simule operações de rastreamento e autorização usando os vínculos entre entidades.
+Essas consultas ajudam a validar o funcionamento das regras de negócio e a integração entre entidades.
+
+# Dicas para Testes
+- Utilize os dados do import.sql para validar regras de negócio, persistência e integração entre camadas.
+- Teste cenários de atualização, deleção e consulta por diferentes atributos e perfis de usuário.
+- Simule operações de rastreamento e autorização usando os vínculos entre entidades (courier, customer, delivery).
+- Para testes automatizados, utilize IDs altos para evitar conflitos com os dados iniciais do import.sql.
+- Expanda o arquivo conforme necessidade, adicionando novos clientes, couriers, entregas ou preços para cenários avançados.
+- Os dados simulam o fluxo completo do sistema, incluindo autenticação, autorização, entrega, rastreamento e histórico de mensagens.
+
 # IMPORT_SQL.md
 
 ## Estrutura do import.sql
-O arquivo `import.sql` contém comandos SQL para popular o banco H2 com dados iniciais das principais entidades do sistema.
+O arquivo `import.sql` contém comandos SQL para popular o banco H2 com dados iniciais das principais entidades do sistema, simulando cenários reais de uso.
+
+### Relação entre entidades:
+- Usuários (app_user) são vinculados a clientes, couriers e empresas.
+- Clientes e couriers pertencem a uma empresa (BUSINESS) e possuem fator/tabela de preço próprios.
+- Entregas relacionam clientes, couriers e empresas, com status e dados variados.
+- Tabela de preços define valores por cliente, veículo e localidade.
+- SMS registra o histórico de mensagens entre courier e customer, vinculado à entrega.
 
 ### Exemplo de conteúdo:
 ```sql
@@ -67,7 +84,10 @@ INSERT INTO sms (id, iddelivery, piece, type, mobileTo, mobileFrom, message, dat
   (4, 3, 1, 'INFO', '11666666666', '11555555555', 'Entrega especial concluída', CURRENT_TIMESTAMP());
 ```
 
+
 ## Observações
-- Os dados podem ser ajustados conforme necessidade do ambiente ou testes.
+- Os dados podem ser ajustados conforme necessidade do ambiente ou testes, incluindo novos clientes, couriers, entregas ou preços.
+- Para evitar conflitos em testes automatizados, utilize IDs altos nos testes unitários.
 - O arquivo deve ser colocado em `src/main/resources/import.sql` para ser carregado automaticamente pelo Hibernate/H2.
-- Consulte as regras de negócio em [REGRAS_DE_NEGOCIO.md](REGRAS_DE_NEGOCIO.md) para entender os vínculos entre entidades.
+- Consulte as regras de negócio em [REGRAS_DE_NEGOCIO.md](REGRAS_DE_NEGOCIO.md) para entender os vínculos entre entidades e restrições de acesso.
+- Os dados simulam cenários completos para validação da camada REST, serviços e regras de negócio.
