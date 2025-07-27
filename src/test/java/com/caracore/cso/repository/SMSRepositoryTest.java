@@ -27,7 +27,7 @@ class SMSRepositoryTest {
     @Test
     void testCRUD() {
         Delivery delivery = new Delivery();
-        delivery.setId(2L);
+        delivery.setId(140L);
         delivery.setStart("X");
         delivery.setDestination("Y");
         delivery.setContact("Contato");
@@ -42,7 +42,7 @@ class SMSRepositoryTest {
         session.save(delivery);
 
         SMS sms = new SMS();
-        sms.setId(1L);
+        sms.setId(141L);
         sms.setDelivery(delivery);
         sms.setPiece(1);
         sms.setType("S");
@@ -53,18 +53,18 @@ class SMSRepositoryTest {
         session.save(sms);
         session.flush();
 
-        SMS found = session.get(SMS.class, 1L);
+        SMS found = session.get(SMS.class, 141L);
         assertNotNull(found);
         assertEquals("Teste", found.getMessage());
 
         found.setMessage("Alterado");
         session.update(found);
         session.flush();
-        SMS updated = session.get(SMS.class, 1L);
+        SMS updated = session.get(SMS.class, 141L);
         assertEquals("Alterado", updated.getMessage());
 
         session.delete(updated);
         session.flush();
-        assertNull(session.get(SMS.class, 1L));
+        assertNull(session.get(SMS.class, 141L));
     }
 }

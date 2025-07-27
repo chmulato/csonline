@@ -28,7 +28,7 @@ class PriceRepositoryTest {
     @Test
     void testCRUD() {
         User business = new User();
-        business.setId(9L);
+        business.setId(130L);
         business.setRole("BUSINESS");
         business.setName("Biz4");
         business.setLogin("biz4");
@@ -36,14 +36,14 @@ class PriceRepositoryTest {
         session.save(business);
 
         Customer customer = new Customer();
-        customer.setId(3L);
+        customer.setId(131L);
         customer.setBusiness(business);
         customer.setFactorCustomer(1.1);
         customer.setPriceTable("D");
         session.save(customer);
 
         Price price = new Price();
-        price.setId(1L);
+        price.setId(132L);
         price.setBusiness(business);
         price.setCustomer(customer);
         price.setTableName("Tabela1");
@@ -53,18 +53,18 @@ class PriceRepositoryTest {
         session.save(price);
         session.flush();
 
-        Price found = session.get(Price.class, 1L);
+        Price found = session.get(Price.class, 132L);
         assertNotNull(found);
         assertEquals("Tabela1", found.getTableName());
 
         found.setTableName("Tabela2");
         session.update(found);
         session.flush();
-        Price updated = session.get(Price.class, 1L);
+        Price updated = session.get(Price.class, 132L);
         assertEquals("Tabela2", updated.getTableName());
 
         session.delete(updated);
         session.flush();
-        assertNull(session.get(Price.class, 1L));
+        assertNull(session.get(Price.class, 132L));
     }
 }
