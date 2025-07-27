@@ -44,23 +44,4 @@ public class CourierControllerTest extends JerseyTest {
         Response response = target("/couriers/1").request().delete();
         assertEquals(204, response.getStatus());
     }
-
-    public void testCreateCourier() {
-        String json = "{\"factorCourier\":1.5}";
-        Response response = target("/couriers").request().post(javax.ws.rs.client.Entity.json(json));
-        assertEquals(201, response.getStatus());
-    }
-
-    @Test
-    public void testUpdateCourier() {
-        String json = "{\"factorCourier\":2.0}";
-        Response response = target("/couriers/1").request().put(javax.ws.rs.client.Entity.json(json));
-        assertEquals(200, response.getStatus());
-    }
-
-    @Test
-    public void testDeleteCourier() {
-        Response response = target("/couriers/1").request().delete();
-        assertEquals(204, response.getStatus());
-    }
 }

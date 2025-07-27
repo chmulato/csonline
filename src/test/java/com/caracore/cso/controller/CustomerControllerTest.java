@@ -8,6 +8,7 @@ import jakarta.ws.rs.core.Response;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CustomerControllerTest extends JerseyTest {
+
     @Override
     protected Application configure() {
         return new ResourceConfig(CustomerController.class);
