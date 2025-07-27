@@ -68,9 +68,15 @@ public class CustomerService {
             }
             em.getTransaction().commit();
         } catch (Exception e) {
-            logger.error("Erro ao deletar customer id: " + customerId, e);
             em.getTransaction().rollback();
-            throw e;
+            String msg = e.getMessage();
+            if (msg != null && msg.contains("integrity constraint violation")) {
+                logger.warn("Não foi possível deletar o customer id: " + customerId + ". Existem vínculos que impedem a exclusão.");
+                throw new RuntimeException("Não foi possível deletar o cliente. Existem vínculos que impedem a exclusão.");
+            } else {
+                logger.error("Erro ao deletar customer id: " + customerId, e);
+                throw e;
+            }
         } finally {
             em.close();
         }
