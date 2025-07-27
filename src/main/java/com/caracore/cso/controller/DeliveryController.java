@@ -6,7 +6,6 @@ import jakarta.ws.rs.core.Response;
 import com.caracore.cso.service.DeliveryService;
 import com.caracore.cso.entity.Delivery;
 import java.util.List;
-import jakarta.inject.Inject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,8 +15,8 @@ import org.apache.logging.log4j.Logger;
 public class DeliveryController {
     private static final Logger logger = LogManager.getLogger(DeliveryController.class);
 
-    @Inject
-    DeliveryService deliveryService;
+    // Troque a injeção por instanciamento direto para funcionar nos testes sem CDI
+    private DeliveryService deliveryService = new DeliveryService();
 
     @GET
     public List<Delivery> getAll() {

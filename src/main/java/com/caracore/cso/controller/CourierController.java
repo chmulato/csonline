@@ -6,7 +6,6 @@ import jakarta.ws.rs.core.Response;
 import com.caracore.cso.service.CourierService;
 import com.caracore.cso.entity.Courier;
 import java.util.List;
-import jakarta.inject.Inject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,8 +15,17 @@ import org.apache.logging.log4j.Logger;
 public class CourierController {
     private static final Logger logger = LogManager.getLogger(CourierController.class);
 
-    @Inject
-    CourierService courierService;
+    // Permite injeção para produção e instancia para teste
+    private CourierService courierService;
+
+    public CourierController() {
+        this.courierService = new CourierService();
+    }
+
+    // Construtor para injeção manual em testes
+    public CourierController(CourierService courierService) {
+        this.courierService = courierService;
+    }
 
     @GET
     public List<Courier> getAll() {
@@ -76,3 +84,4 @@ public class CourierController {
         }
     }
 }
+

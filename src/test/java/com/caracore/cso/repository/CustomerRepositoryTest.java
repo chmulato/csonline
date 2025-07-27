@@ -3,25 +3,29 @@ package com.caracore.cso.repository;
 import com.caracore.cso.entity.Customer;
 import com.caracore.cso.entity.User;
 import org.junit.jupiter.api.*;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Persistence;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class CustomerRepositoryTest {
-    private Session session;
-    private Transaction tx;
+    private EntityManager em;
+    private EntityTransaction tx;
 
     @BeforeEach
     void setUp() {
-        session = HibernateUtil.getSessionFactory().openSession();
-        tx = session.beginTransaction();
+        em = Persistence.createEntityManagerFactory("csonlinePU").createEntityManager();
+        tx = em.getTransaction();
+        tx.begin();
     }
 
     @AfterEach
     void tearDown() {
-        tx.rollback();
-        session.close();
+        if (tx.isActive()) {
+            tx.rollback();
+        }
+        em.close();
     }
 
     @Test
@@ -32,7 +36,7 @@ class CustomerRepositoryTest {
         business.setName("Biz");
         business.setLogin("biz");
         business.setPassword("pass");
-        session.save(business);
+        em.persist(business);
 
         User user = new User();
         user.setId(111L);
@@ -40,7 +44,7 @@ class CustomerRepositoryTest {
         user.setName("Customer");
         user.setLogin("cust");
         user.setPassword("pass");
-        session.save(user);
+        em.persist(user);
 
         Customer customer = new Customer();
         customer.setId(112L);
@@ -48,21 +52,21 @@ class CustomerRepositoryTest {
         customer.setUser(user);
         customer.setFactorCustomer(1.5);
         customer.setPriceTable("A");
-        session.save(customer);
-        session.flush();
+        em.persist(customer);
+        em.flush();
 
-        Customer found = session.get(Customer.class, 112L);
+        Customer found = em.find(Customer.class, 112L);
         assertNotNull(found);
         assertEquals("A", found.getPriceTable());
 
         found.setPriceTable("B");
-        session.update(found);
-        session.flush();
-        Customer updated = session.get(Customer.class, 112L);
+        em.merge(found);
+        em.flush();
+        Customer updated = em.find(Customer.class, 112L);
         assertEquals("B", updated.getPriceTable());
 
-        session.delete(updated);
-        session.flush();
-        assertNull(session.get(Customer.class, 112L));
+        em.remove(updated);
+        em.flush();
+        assertNull(em.find(Customer.class, 112L));
     }
 }

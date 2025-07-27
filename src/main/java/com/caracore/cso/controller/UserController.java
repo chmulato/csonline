@@ -6,9 +6,9 @@ import jakarta.ws.rs.core.Response;
 import com.caracore.cso.service.UserService;
 import com.caracore.cso.entity.User;
 import java.util.List;
-import jakarta.inject.Inject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import jakarta.inject.Inject;
 
 @Path("/users")
 @Produces(MediaType.APPLICATION_JSON)
@@ -17,7 +17,15 @@ public class UserController {
     private static final Logger logger = LogManager.getLogger(UserController.class);
 
     @Inject
-    UserService userService;
+    private UserService userService;
+
+    // Construtor padrão para CDI
+    public UserController() {}
+
+    // Construtor para injeção manual em testes
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GET
     public List<User> getAll() {

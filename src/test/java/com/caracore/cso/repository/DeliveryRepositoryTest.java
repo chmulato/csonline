@@ -5,27 +5,31 @@ import com.caracore.cso.entity.User;
 import com.caracore.cso.entity.Customer;
 import com.caracore.cso.entity.Courier;
 import org.junit.jupiter.api.*;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Persistence;
 
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class DeliveryRepositoryTest {
-    private Session session;
-    private Transaction tx;
+    private EntityManager em;
+    private EntityTransaction tx;
 
     @BeforeEach
     void setUp() {
-        session = HibernateUtil.getSessionFactory().openSession();
-        tx = session.beginTransaction();
+        em = Persistence.createEntityManagerFactory("csonlinePU").createEntityManager();
+        tx = em.getTransaction();
+        tx.begin();
     }
 
     @AfterEach
     void tearDown() {
-        tx.rollback();
-        session.close();
+        if (tx.isActive()) {
+            tx.rollback();
+        }
+        em.close();
     }
 
     @Test
@@ -36,7 +40,7 @@ class DeliveryRepositoryTest {
         business.setName("Biz3");
         business.setLogin("biz3");
         business.setPassword("pass");
-        session.save(business);
+        em.persist(business);
 
         User user = new User();
         user.setId(121L);
@@ -44,7 +48,7 @@ class DeliveryRepositoryTest {
         user.setName("Customer2");
         user.setLogin("cust2");
         user.setPassword("pass");
-        session.save(user);
+        em.persist(user);
 
         Customer customer = new Customer();
         customer.setId(122L);
@@ -52,7 +56,7 @@ class DeliveryRepositoryTest {
         customer.setUser(user);
         customer.setFactorCustomer(1.2);
         customer.setPriceTable("C");
-        session.save(customer);
+        em.persist(customer);
 
         User courierUser = new User();
         courierUser.setId(123L);
@@ -60,14 +64,14 @@ class DeliveryRepositoryTest {
         courierUser.setName("Courier2");
         courierUser.setLogin("cour2");
         courierUser.setPassword("pass");
-        session.save(courierUser);
+        em.persist(courierUser);
 
         Courier courier = new Courier();
         courier.setId(124L);
         courier.setBusiness(business);
         courier.setUser(courierUser);
         courier.setFactorCourier(2.5);
-        session.save(courier);
+        em.persist(courier);
 
         Delivery delivery = new Delivery();
         delivery.setId(125L);
@@ -86,21 +90,21 @@ class DeliveryRepositoryTest {
         delivery.setReceived(true);
         delivery.setCompleted(false);
         delivery.setDatatime(LocalDateTime.now());
-        session.save(delivery);
-        session.flush();
+        em.persist(delivery);
+        em.flush();
 
-        Delivery found = session.get(Delivery.class, 125L);
+        Delivery found = em.find(Delivery.class, 125L);
         assertNotNull(found);
         assertEquals("A", found.getStart());
 
         found.setStart("C");
-        session.update(found);
-        session.flush();
-        Delivery updated = session.get(Delivery.class, 125L);
+        em.merge(found);
+        em.flush();
+        Delivery updated = em.find(Delivery.class, 125L);
         assertEquals("C", updated.getStart());
 
-        session.delete(updated);
-        session.flush();
-        assertNull(session.get(Delivery.class, 125L));
+        em.remove(updated);
+        em.flush();
+        assertNull(em.find(Delivery.class, 125L));
     }
 }

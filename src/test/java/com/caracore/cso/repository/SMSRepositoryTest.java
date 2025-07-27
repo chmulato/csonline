@@ -3,25 +3,29 @@ package com.caracore.cso.repository;
 import com.caracore.cso.entity.SMS;
 import com.caracore.cso.entity.Delivery;
 import org.junit.jupiter.api.*;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Persistence;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class SMSRepositoryTest {
-    private Session session;
-    private Transaction tx;
+    private EntityManager em;
+    private EntityTransaction tx;
 
     @BeforeEach
     void setUp() {
-        session = HibernateUtil.getSessionFactory().openSession();
-        tx = session.beginTransaction();
+        em = Persistence.createEntityManagerFactory("csonlinePU").createEntityManager();
+        tx = em.getTransaction();
+        tx.begin();
     }
 
     @AfterEach
     void tearDown() {
-        tx.rollback();
-        session.close();
+        if (tx.isActive()) {
+            tx.rollback();
+        }
+        em.close();
     }
 
     @Test
@@ -39,7 +43,7 @@ class SMSRepositoryTest {
         delivery.setCost(0.0);
         delivery.setReceived(true);
         delivery.setCompleted(false);
-        session.save(delivery);
+        em.persist(delivery);
 
         SMS sms = new SMS();
         sms.setId(141L);
@@ -50,21 +54,21 @@ class SMSRepositoryTest {
         sms.setMobileFrom("88888888");
         sms.setMessage("Teste");
         sms.setDatetime("2025-07-27T10:00:00");
-        session.save(sms);
-        session.flush();
+        em.persist(sms);
+        em.flush();
 
-        SMS found = session.get(SMS.class, 141L);
+        SMS found = em.find(SMS.class, 141L);
         assertNotNull(found);
         assertEquals("Teste", found.getMessage());
 
         found.setMessage("Alterado");
-        session.update(found);
-        session.flush();
-        SMS updated = session.get(SMS.class, 141L);
+        em.merge(found);
+        em.flush();
+        SMS updated = em.find(SMS.class, 141L);
         assertEquals("Alterado", updated.getMessage());
 
-        session.delete(updated);
-        session.flush();
-        assertNull(session.get(SMS.class, 141L));
+        em.remove(updated);
+        em.flush();
+        assertNull(em.find(SMS.class, 141L));
     }
 }

@@ -2,25 +2,24 @@ package com.caracore.cso.repository;
 
 import com.caracore.cso.entity.User;
 import org.junit.jupiter.api.*;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import com.caracore.cso.repository.JPAUtil;
+import jakarta.persistence.EntityManager;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserRepositoryTest {
-    private Session session;
-    private Transaction tx;
+    private EntityManager em;
 
     @BeforeEach
     void setUp() {
-        session = HibernateUtil.getSessionFactory().openSession();
-        tx = session.beginTransaction();
+        em = JPAUtil.getEntityManager();
+        em.getTransaction().begin();
     }
 
     @AfterEach
     void tearDown() {
-        tx.rollback();
-        session.close();
+        if (em.getTransaction().isActive()) em.getTransaction().rollback();
+        em.close();
     }
 
     @Test
@@ -31,21 +30,21 @@ class UserRepositoryTest {
         user.setName("Test User");
         user.setLogin("test");
         user.setPassword("123");
-        session.save(user);
-        session.flush();
+        em.persist(user);
+        em.flush();
 
-        User found = session.get(User.class, 150L);
+        User found = em.find(User.class, 150L);
         assertNotNull(found);
         assertEquals("Test User", found.getName());
 
         found.setName("Updated");
-        session.update(found);
-        session.flush();
-        User updated = session.get(User.class, 150L);
+        em.merge(found);
+        em.flush();
+        User updated = em.find(User.class, 150L);
         assertEquals("Updated", updated.getName());
 
-        session.delete(updated);
-        session.flush();
-        assertNull(session.get(User.class, 150L));
+        em.remove(updated);
+        em.flush();
+        assertNull(em.find(User.class, 150L));
     }
 }

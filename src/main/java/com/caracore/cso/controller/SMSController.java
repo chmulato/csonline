@@ -6,7 +6,6 @@ import jakarta.ws.rs.core.Response;
 import com.caracore.cso.service.SMSService;
 import com.caracore.cso.entity.SMS;
 import java.util.List;
-import jakarta.inject.Inject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,9 +14,16 @@ import org.apache.logging.log4j.Logger;
 @Consumes(MediaType.APPLICATION_JSON)
 public class SMSController {
     private static final Logger logger = LogManager.getLogger(SMSController.class);
+    private SMSService smsService;
 
-    @Inject
-    SMSService smsService;
+    public SMSController() {
+        this.smsService = new SMSService();
+    }
+
+    // Construtor para injeção manual em testes
+    public SMSController(SMSService smsService) {
+        this.smsService = smsService;
+    }
 
     @GET
     public List<SMS> getAll() {

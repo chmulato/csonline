@@ -4,25 +4,29 @@ import com.caracore.cso.entity.Price;
 import com.caracore.cso.entity.User;
 import com.caracore.cso.entity.Customer;
 import org.junit.jupiter.api.*;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Persistence;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class PriceRepositoryTest {
-    private Session session;
-    private Transaction tx;
+    private EntityManager em;
+    private EntityTransaction tx;
 
     @BeforeEach
     void setUp() {
-        session = HibernateUtil.getSessionFactory().openSession();
-        tx = session.beginTransaction();
+        em = Persistence.createEntityManagerFactory("csonlinePU").createEntityManager();
+        tx = em.getTransaction();
+        tx.begin();
     }
 
     @AfterEach
     void tearDown() {
-        tx.rollback();
-        session.close();
+        if (tx.isActive()) {
+            tx.rollback();
+        }
+        em.close();
     }
 
     @Test
@@ -33,14 +37,14 @@ class PriceRepositoryTest {
         business.setName("Biz4");
         business.setLogin("biz4");
         business.setPassword("pass");
-        session.save(business);
+        em.persist(business);
 
         Customer customer = new Customer();
         customer.setId(131L);
         customer.setBusiness(business);
         customer.setFactorCustomer(1.1);
         customer.setPriceTable("D");
-        session.save(customer);
+        em.persist(customer);
 
         Price price = new Price();
         price.setId(132L);
@@ -50,21 +54,21 @@ class PriceRepositoryTest {
         price.setVehicle("Carro");
         price.setLocal("Local1");
         price.setPrice(100.0);
-        session.save(price);
-        session.flush();
+        em.persist(price);
+        em.flush();
 
-        Price found = session.get(Price.class, 132L);
+        Price found = em.find(Price.class, 132L);
         assertNotNull(found);
         assertEquals("Tabela1", found.getTableName());
 
         found.setTableName("Tabela2");
-        session.update(found);
-        session.flush();
-        Price updated = session.get(Price.class, 132L);
+        em.merge(found);
+        em.flush();
+        Price updated = em.find(Price.class, 132L);
         assertEquals("Tabela2", updated.getTableName());
 
-        session.delete(updated);
-        session.flush();
-        assertNull(session.get(Price.class, 132L));
+        em.remove(updated);
+        em.flush();
+        assertNull(em.find(Price.class, 132L));
     }
 }

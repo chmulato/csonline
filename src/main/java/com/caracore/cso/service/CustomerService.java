@@ -3,12 +3,12 @@ package com.caracore.cso.service;
 
 import com.caracore.cso.entity.Customer;
 import com.caracore.cso.entity.User;
-import com.caracore.cso.repository.HibernateUtil;
+import com.caracore.cso.repository.JPAUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.Query;
 
 import java.util.List;
 
@@ -16,97 +16,113 @@ public class CustomerService {
     private static final Logger logger = LogManager.getLogger(CustomerService.class);
 
     public List<Customer> findAll() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM Customer", Customer.class).list();
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            TypedQuery<Customer> query = em.createQuery("FROM Customer", Customer.class);
+            return query.getResultList();
         } catch (Exception e) {
             logger.error("Erro ao buscar todos os customers", e);
             throw e;
+        } finally {
+            em.close();
         }
     }
 
     public void save(Customer customer) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            session.beginTransaction();
-            session.saveOrUpdate(customer);
-            session.getTransaction().commit();
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.merge(customer);
+            em.getTransaction().commit();
         } catch (Exception e) {
             logger.error("Erro ao salvar customer", e);
+            em.getTransaction().rollback();
             throw e;
+        } finally {
+            em.close();
         }
     }
 
     public void update(Customer customer) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            session.beginTransaction();
-            session.update(customer);
-            session.getTransaction().commit();
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.merge(customer);
+            em.getTransaction().commit();
         } catch (Exception e) {
             logger.error("Erro ao atualizar customer", e);
+            em.getTransaction().rollback();
             throw e;
+        } finally {
+            em.close();
         }
     }
 
     public void delete(Long customerId) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            session.beginTransaction();
-            Customer customer = session.get(Customer.class, customerId);
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            Customer customer = em.find(Customer.class, customerId);
             if (customer != null) {
-                session.delete(customer);
+                em.remove(customer);
             }
-            session.getTransaction().commit();
+            em.getTransaction().commit();
         } catch (Exception e) {
             logger.error("Erro ao deletar customer id: " + customerId, e);
+            em.getTransaction().rollback();
             throw e;
+        } finally {
+            em.close();
         }
     }
 
     public Customer findById(Long id) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(Customer.class, id);
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            return em.find(Customer.class, id);
         } catch (Exception e) {
             logger.error("Erro ao buscar customer por id: " + id, e);
             throw e;
+        } finally {
+            em.close();
         }
     }
 
     public List<Customer> findAllByBusiness(Long businessId) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<Customer> query = session.createQuery("FROM Customer WHERE business.id = :businessId", Customer.class);
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            TypedQuery<Customer> query = em.createQuery("FROM Customer WHERE business.id = :businessId", Customer.class);
             query.setParameter("businessId", businessId);
-            return query.list();
+            return query.getResultList();
         } catch (Exception e) {
             logger.error("Erro ao buscar customers por businessId: " + businessId, e);
             throw e;
+        } finally {
+            em.close();
         }
     }
 
     public void updateFactorAndPriceTable(Long customerId, double factor, String priceTable) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            session.beginTransaction();
-            Query<?> query = session.createQuery("UPDATE Customer SET factorCustomer = :factor, priceTable = :priceTable WHERE id = :customerId");
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            Query query = em.createQuery("UPDATE Customer SET factorCustomer = :factor, priceTable = :priceTable WHERE id = :customerId");
             query.setParameter("factor", factor);
             query.setParameter("priceTable", priceTable);
             query.setParameter("customerId", customerId);
             query.executeUpdate();
-            session.getTransaction().commit();
+            em.getTransaction().commit();
         } catch (Exception e) {
             logger.error("Erro ao atualizar fator e tabela de preço do customer id: " + customerId, e);
+            em.getTransaction().rollback();
             throw e;
+        } finally {
+            em.close();
         }
     }
 
     public void deleteById(Long customerId) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            session.beginTransaction();
-            Customer customer = session.get(Customer.class, customerId);
-            if (customer != null) {
-                session.delete(customer);
-            }
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            logger.error("Erro ao deletar customer por id: " + customerId, e);
-            throw e;
-        }
+        delete(customerId);
     }
 
     public boolean canAccessDelivery(com.caracore.cso.entity.User customer, com.caracore.cso.entity.Delivery delivery) {

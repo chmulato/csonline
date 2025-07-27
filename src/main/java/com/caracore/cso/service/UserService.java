@@ -1,11 +1,11 @@
 package com.caracore.cso.service;
 
 import com.caracore.cso.entity.User;
-import com.caracore.cso.repository.HibernateUtil;
+import com.caracore.cso.repository.JPAUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 
@@ -13,102 +13,135 @@ public class UserService {
     private static final Logger logger = LogManager.getLogger(UserService.class);
 
     public void save(User user) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            session.beginTransaction();
-            session.saveOrUpdate(user);
-            session.getTransaction().commit();
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.merge(user);
+            em.getTransaction().commit();
         } catch (Exception e) {
             logger.error("Erro ao salvar usuário", e);
+            em.getTransaction().rollback();
             throw e;
+        } finally {
+            em.close();
         }
     }
 
     public void update(User user) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            session.beginTransaction();
-            session.update(user);
-            session.getTransaction().commit();
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.merge(user);
+            em.getTransaction().commit();
         } catch (Exception e) {
             logger.error("Erro ao atualizar usuário", e);
+            em.getTransaction().rollback();
             throw e;
+        } finally {
+            em.close();
         }
     }
 
     public void delete(Long userId) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            session.beginTransaction();
-            User user = session.get(User.class, userId);
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            User user = em.find(User.class, userId);
             if (user != null) {
-                session.delete(user);
+                em.remove(user);
             }
-            session.getTransaction().commit();
+            em.getTransaction().commit();
         } catch (Exception e) {
             logger.error("Erro ao deletar usuário id: " + userId, e);
+            em.getTransaction().rollback();
             throw e;
+        } finally {
+            em.close();
         }
     }
 
     public User findByLoginAndPassword(String login, String password) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<User> query = session.createQuery("FROM User WHERE login = :login AND password = :password", User.class);
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            TypedQuery<User> query = em.createQuery("FROM User WHERE login = :login AND password = :password", User.class);
             query.setParameter("login", login);
             query.setParameter("password", password);
-            return query.uniqueResult();
+            return query.getResultStream().findFirst().orElse(null);
         } catch (Exception e) {
             logger.error("Erro ao buscar usuário por login e senha: " + login, e);
             throw e;
+        } finally {
+            em.close();
         }
     }
 
     public User findById(Long id) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(User.class, id);
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            return em.find(User.class, id);
         } catch (Exception e) {
             logger.error("Erro ao buscar usuário por id: " + id, e);
             throw e;
+        } finally {
+            em.close();
         }
     }
 
     public User findByLogin(String login) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<User> query = session.createQuery("FROM User WHERE login = :login", User.class);
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            TypedQuery<User> query = em.createQuery("FROM User WHERE login = :login", User.class);
             query.setParameter("login", login);
-            return query.uniqueResult();
+            return query.getResultStream().findFirst().orElse(null);
         } catch (Exception e) {
             logger.error("Erro ao buscar usuário por login: " + login, e);
             throw e;
+        } finally {
+            em.close();
         }
     }
 
     public List<User> findAll() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM User ORDER BY role, name", User.class).list();
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            TypedQuery<User> query = em.createQuery("FROM User ORDER BY role, name", User.class);
+            return query.getResultList();
         } catch (Exception e) {
             logger.error("Erro ao buscar todos os usuários", e);
             throw e;
+        } finally {
+            em.close();
         }
     }
 
     public List<User> findAllBusiness() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM User WHERE role = 'BUSINESS' ORDER BY name", User.class).list();
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            TypedQuery<User> query = em.createQuery("FROM User WHERE role = 'BUSINESS' ORDER BY name", User.class);
+            return query.getResultList();
         } catch (Exception e) {
             logger.error("Erro ao buscar usuários BUSINESS", e);
             throw e;
+        } finally {
+            em.close();
         }
     }
 
     public void updateLoginPassword(String login, String password) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            session.beginTransaction();
-            Query<?> query = session.createQuery("UPDATE User SET password = :password WHERE login = :login");
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            jakarta.persistence.Query query = em.createQuery("UPDATE User SET password = :password WHERE login = :login");
             query.setParameter("password", password);
             query.setParameter("login", login);
             query.executeUpdate();
-            session.getTransaction().commit();
+            em.getTransaction().commit();
         } catch (Exception e) {
             logger.error("Erro ao atualizar senha do usuário: " + login, e);
+            em.getTransaction().rollback();
             throw e;
+        } finally {
+            em.close();
         }
     }
 

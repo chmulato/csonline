@@ -3,25 +3,29 @@ package com.caracore.cso.repository;
 import com.caracore.cso.entity.Courier;
 import com.caracore.cso.entity.User;
 import org.junit.jupiter.api.*;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Persistence;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class CourierRepositoryTest {
-    private Session session;
-    private Transaction tx;
+    private EntityManager em;
+    private EntityTransaction tx;
 
     @BeforeEach
     void setUp() {
-        session = HibernateUtil.getSessionFactory().openSession();
-        tx = session.beginTransaction();
+        em = Persistence.createEntityManagerFactory("csonlinePU").createEntityManager();
+        tx = em.getTransaction();
+        tx.begin();
     }
 
     @AfterEach
     void tearDown() {
-        tx.rollback();
-        session.close();
+        if (tx.isActive()) {
+            tx.rollback();
+        }
+        em.close();
     }
 
     @Test
@@ -32,7 +36,7 @@ class CourierRepositoryTest {
         business.setName("Biz2");
         business.setLogin("biz2");
         business.setPassword("pass");
-        session.save(business);
+        em.persist(business);
 
         User user = new User();
         user.setId(101L);
@@ -40,28 +44,28 @@ class CourierRepositoryTest {
         user.setName("Courier");
         user.setLogin("cour");
         user.setPassword("pass");
-        session.save(user);
+        em.persist(user);
 
         Courier courier = new Courier();
         courier.setId(200L);
         courier.setBusiness(business);
         courier.setUser(user);
         courier.setFactorCourier(2.0);
-        session.save(courier);
-        session.flush();
+        em.persist(courier);
+        em.flush();
 
-        Courier found = session.get(Courier.class, 200L);
+        Courier found = em.find(Courier.class, 200L);
         assertNotNull(found);
         assertEquals(2.0, found.getFactorCourier());
 
         found.setFactorCourier(3.0);
-        session.update(found);
-        session.flush();
-        Courier updated = session.get(Courier.class, 200L);
+        em.merge(found);
+        em.flush();
+        Courier updated = em.find(Courier.class, 200L);
         assertEquals(3.0, updated.getFactorCourier());
 
-        session.delete(updated);
-        session.flush();
-        assertNull(session.get(Courier.class, 200L));
+        em.remove(updated);
+        em.flush();
+        assertNull(em.find(Courier.class, 200L));
     }
 }

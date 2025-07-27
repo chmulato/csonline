@@ -78,11 +78,11 @@
             <artifactId>tomcat-embed-websocket</artifactId>
             <version>10.1.20</version>
         </dependency>
-        <!-- Hibernate ORM 6 -->
+        <!-- EclipseLink JPA -->
         <dependency>
-            <groupId>org.hibernate.orm</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>${hibernate.version}</version>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>eclipselink</artifactId>
+            <version>4.0.2</version>
         </dependency>
         <!-- Yasson JSON-B provider for Hibernate 6 -->
         <dependency>
@@ -95,7 +95,6 @@
             <groupId>jakarta.persistence</groupId>
             <artifactId>jakarta.persistence-api</artifactId>
             <version>3.1.0</version>
-            <scope>provided</scope>
         </dependency>
         <!-- H2 Database -->
         <dependency>
@@ -222,7 +221,7 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <includes>
-                    <include>log4j2.xml</include>
+                    <include>**/*</include>
                 </includes>
             </resource>
         </resources>

@@ -6,7 +6,6 @@ import jakarta.ws.rs.core.Response;
 import com.caracore.cso.service.CustomerService;
 import com.caracore.cso.entity.Customer;
 import java.util.List;
-import jakarta.inject.Inject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,8 +15,8 @@ import org.apache.logging.log4j.Logger;
 public class CustomerController {
     private static final Logger logger = LogManager.getLogger(CustomerController.class);
 
-    @Inject
-    CustomerService customerService;
+    // Troque a injeção por instanciamento direto para funcionar nos testes sem CDI
+    private CustomerService customerService = new CustomerService();
 
     @GET
     public List<Customer> getAll() {
@@ -76,3 +75,4 @@ public class CustomerController {
         }
     }
 }
+
