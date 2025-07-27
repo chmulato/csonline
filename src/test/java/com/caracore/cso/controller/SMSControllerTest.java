@@ -34,7 +34,7 @@ public class SMSControllerTest extends JerseyTest {
     @Test
     public void testCreateSMS() {
         String json = "{\"message\":\"Teste WhatsApp\",\"mobileTo\":\"11999999999\",\"mobileFrom\":\"11888888888\"}";
-        Response response = target("/sms").request().post(javax.ws.rs.client.Entity.json(json));
+        Response response = target("/sms").request().post(jakarta.ws.rs.client.Entity.json(json));
         assertEquals(201, response.getStatus());
     }
 }

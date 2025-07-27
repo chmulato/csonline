@@ -29,14 +29,14 @@ public class CustomerControllerTest extends JerseyTest {
     @Test
     public void testCreateCustomer() {
         String json = "{\"factorCustomer\":1.2,\"priceTable\":\"TabelaTest\"}";
-        Response response = target("/customers").request().post(javax.ws.rs.client.Entity.json(json));
+        Response response = target("/customers").request().post(jakarta.ws.rs.client.Entity.json(json));
         assertEquals(201, response.getStatus());
     }
 
     @Test
     public void testUpdateCustomer() {
         String json = "{\"factorCustomer\":1.3,\"priceTable\":\"TabelaAtualizada\"}";
-        Response response = target("/customers/1").request().put(javax.ws.rs.client.Entity.json(json));
+        Response response = target("/customers/1").request().put(jakarta.ws.rs.client.Entity.json(json));
         assertEquals(200, response.getStatus());
     }
 

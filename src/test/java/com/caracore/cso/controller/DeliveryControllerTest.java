@@ -28,14 +28,14 @@ public class DeliveryControllerTest extends JerseyTest {
     @Test
     public void testCreateDelivery() {
         String json = "{\"start\":\"Origem Teste\",\"destination\":\"Destino Teste\"}";
-        Response response = target("/deliveries").request().post(javax.ws.rs.client.Entity.json(json));
+        Response response = target("/deliveries").request().post(jakarta.ws.rs.client.Entity.json(json));
         assertEquals(201, response.getStatus());
     }
 
     @Test
     public void testUpdateDelivery() {
         String json = "{\"start\":\"Origem Atualizada\",\"destination\":\"Destino Atualizado\"}";
-        Response response = target("/deliveries/1").request().put(javax.ws.rs.client.Entity.json(json));
+        Response response = target("/deliveries/1").request().put(jakarta.ws.rs.client.Entity.json(json));
         assertEquals(200, response.getStatus());
     }
 

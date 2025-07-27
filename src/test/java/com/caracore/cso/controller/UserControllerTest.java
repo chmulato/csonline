@@ -28,14 +28,14 @@ public class UserControllerTest extends JerseyTest {
     @Test
     public void testCreateUser() {
         String json = "{\"login\":\"testuser\",\"password\":\"testpass\",\"role\":\"CUSTOMER\"}";
-        Response response = target("/users").request().post(javax.ws.rs.client.Entity.json(json));
+        Response response = target("/users").request().post(jakarta.ws.rs.client.Entity.json(json));
         assertEquals(201, response.getStatus());
     }
 
     @Test
     public void testUpdateUser() {
         String json = "{\"login\":\"updateduser\",\"password\":\"updatedpass\",\"role\":\"COURIER\"}";
-        Response response = target("/users/1").request().put(javax.ws.rs.client.Entity.json(json));
+        Response response = target("/users/1").request().put(jakarta.ws.rs.client.Entity.json(json));
         assertEquals(200, response.getStatus());
     }
 
