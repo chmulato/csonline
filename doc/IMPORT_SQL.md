@@ -8,6 +8,11 @@
 - SMS simulando troca de mensagens entre courier e customer, útil para rastreamento e histórico.
 
 Esses dados permitem validar cenários de autenticação, autorização, rastreamento, cálculo de preços e fluxo completo de entrega.
+  
+## Documentação dos Endpoints REST
+Todos os dados simulados podem ser consultados e validados via endpoints REST documentados automaticamente pelo Swagger/OpenAPI.
+- A especificação OpenAPI está disponível em `/api/openapi.json`.
+- Para visualizar, utilize Swagger UI ou [Swagger Editor Online](https://editor.swagger.io/).
 
 
 ## Exemplos de Consultas para Testes

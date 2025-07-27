@@ -27,6 +27,23 @@ CSOnline é um sistema de gestão de entregas desenvolvido em Java 11, utilizand
 3. O projeto gera o arquivo WAR em `target/csonline.war`.
 4. Faça o deploy do WAR em um servidor Jakarta EE 10 (Payara, WildFly, GlassFish, etc).
 5. O banco H2 é configurado automaticamente e os dados iniciais são carregados via `import.sql`.
+  
+## Documentação dos Endpoints REST (Swagger/OpenAPI)
+Todos os endpoints REST estão documentados automaticamente via Swagger/OpenAPI.
+- Acesse a especificação OpenAPI em: `http://localhost:8080/api/openapi.json`
+- Para visualizar via interface gráfica, utilize o Swagger UI apontando para essa URL.
+  - Exemplo: [Swagger Editor Online](https://editor.swagger.io/) → "File > Import URL" → cole o link acima.
+
+### Endpoints REST disponíveis
+- `/api/team` — Equipes
+- `/api/couriers` — Entregadores
+- `/api/customers` — Clientes
+- `/api/deliveries` — Entregas
+- `/api/users` — Usuários
+- `/api/sms` — Mensagens SMS
+- `/api/login` — Autenticação
+
+Todos aceitam e retornam JSON.
 
 ### Endpoints REST
 - Exemplo de login: `POST /api/login` (JSON)

@@ -1,6 +1,11 @@
 
 
 # Regras de Negócio - Camada de Serviços
+#
+## Documentação dos Endpoints REST
+Todos os endpoints REST do sistema são documentados automaticamente via Swagger/OpenAPI.
+- A especificação OpenAPI está disponível em `/api/openapi.json`.
+- Pode ser visualizada via Swagger UI ou [Swagger Editor Online](https://editor.swagger.io/).
 
 ## Usuário (UserService)
 - Usuário ADMIN:

@@ -22,6 +22,9 @@ O CSOnline é um sistema modular para gestão de entregas, desenvolvido em Java 
   - Exposição dos serviços via endpoints REST usando Jakarta EE 10/JAX-RS.
   - Controllers para autenticação e acesso aos serviços.
   - DTOs para transporte seguro de dados entre camadas e APIs.
+  - Documentação automática dos endpoints REST via Swagger/OpenAPI.
+  - Especificação OpenAPI disponível em `/api/openapi.json`.
+  - Pode ser visualizada via Swagger UI ou [Swagger Editor Online](https://editor.swagger.io/).
 
 - **Testes (Test):**
   - Testes unitários para cada serviço, repositório e controller REST.
