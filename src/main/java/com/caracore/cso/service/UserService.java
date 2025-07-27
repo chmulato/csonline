@@ -104,7 +104,7 @@ public class UserService {
     public List<User> findAll() {
         EntityManager em = JPAUtil.getEntityManager();
         try {
-            TypedQuery<User> query = em.createQuery("FROM User ORDER BY role, name", User.class);
+            TypedQuery<User> query = em.createQuery("SELECT u FROM User u ORDER BY u.role, u.name", User.class);
             return query.getResultList();
         } catch (Exception e) {
             logger.error("Erro ao buscar todos os usuários", e);

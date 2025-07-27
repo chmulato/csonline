@@ -7,9 +7,45 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import jakarta.ws.rs.core.Application;
 import jakarta.ws.rs.core.Response;
+import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CustomerControllerTest extends JerseyTest {
+    @BeforeEach
+    void setUpTestData() {
+        // Cria dados de cliente para os testes
+        var customerService = new com.caracore.cso.service.CustomerService();
+        var customers = customerService.findAll();
+        for (var c : customers) customerService.delete(c.getId());
+
+        var userService = new com.caracore.cso.service.UserService();
+        var users = userService.findAll();
+        for (var u : users) userService.delete(u.getId());
+
+        var business = new com.caracore.cso.entity.User();
+        business.setId(2L);
+        business.setRole("BUSINESS");
+        business.setName("Business");
+        business.setLogin("business");
+        business.setPassword("business123");
+        userService.save(business);
+
+        var customerUser = new com.caracore.cso.entity.User();
+        customerUser.setId(1L);
+        customerUser.setRole("CUSTOMER");
+        customerUser.setName("Customer");
+        customerUser.setLogin("customer");
+        customerUser.setPassword("customer123");
+        userService.save(customerUser);
+
+        var customer = new com.caracore.cso.entity.Customer();
+        customer.setId(1L);
+        customer.setBusiness(business);
+        customer.setUser(customerUser);
+        customer.setFactorCustomer(1.2);
+        customer.setPriceTable("TabelaTest");
+        customerService.save(customer);
+    }
 
     private static final Logger logger = LogManager.getLogger(CustomerControllerTest.class);
 
