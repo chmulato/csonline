@@ -5,7 +5,8 @@ Projeto Java para gestão de entregas, clientes, usuários, preços e SMS.
 ## Principais Tecnologias
 
 - Jakarta EE 10
-- Hibernate ORM 6
+- JPA (Jakarta Persistence API)
+- EclipseLink (JPA Provider)
 - Jersey (JAX-RS)
 - H2 Database
 - Log4j 2
@@ -19,12 +20,6 @@ mvn clean install
 mvn tomcat10:run
 ```
 
-## Testes
-
-```bash
-mvn test
-```
-
 ## Logging
 
 Os logs são gravados em `logs/app.log` (configurável via `log4j2.xml`).
@@ -34,8 +29,8 @@ Os logs são gravados em `logs/app.log` (configurável via `log4j2.xml`).
 Swagger disponível em `/api/openapi.json`.
 
 Acesse a interface Swagger UI em:  
-`http://localhost:8080/api/openapi.json`  
-(ou ajuste a porta conforme sua configuração Tomcat/Jetty)
+`http://localhost:8080/api/openapi.json`
+(ajuste a porta conforme sua configuração Tomcat)
 
 Os endpoints REST estão disponíveis em:  
 - `/api/users`
@@ -49,14 +44,15 @@ Os endpoints REST estão disponíveis em:
 
 - `src/main/java/com/caracore/cso/controller` - Controllers REST
 - `src/main/java/com/caracore/cso/service` - Serviços de negócio
-- `src/main/java/com/caracore/cso/repository` - Repositórios de acesso a dados
+- `src/main/java/com/caracore/cso/repository` - Repositórios JPA/EclipseLink
 - `src/main/java/com/caracore/cso/entity` - Entidades JPA
-- `src/main/resources` - Configurações (ex: `log4j2.xml`)
+- `src/main/resources` - Configurações (ex: `log4j2.xml`, `persistence.xml`)
 - `src/test/java` - Testes unitários
 
 ## Configuração
 
 - Edite `src/main/resources/log4j2.xml` para ajustar o log.
+- Edite `src/main/resources/persistence.xml` para configurar JPA/EclipseLink.
 - Banco de dados H2 em memória por padrão.
 
 ## Contato
