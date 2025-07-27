@@ -24,7 +24,19 @@ CSOnline é um sistema de gestão de entregas desenvolvido em Java 11, utilizand
 ## Como Executar
 1. Instale o Java 11 e Maven.
 2. Execute `mvn clean install` para compilar e rodar os testes.
-3. Para rodar o projeto, utilize Jetty ou outro servidor compatível.
+3. O projeto gera o arquivo WAR em `target/csonline.war`.
+4. Faça o deploy do WAR em um servidor Jakarta EE 10 (Payara, WildFly, GlassFish, etc).
+5. O banco H2 é configurado automaticamente e os dados iniciais são carregados via `import.sql`.
+
+### Endpoints REST
+- Exemplo de login: `POST /api/login` (JSON)
+  ```json
+  {
+    "login": "usuario",
+    "password": "senha"
+  }
+  ```
+- Retorno: dados do usuário autenticado ou erro 401.
 
 ## Documentação
 - [doc/INDEX.md](../doc/INDEX.md) — Índice dos documentos técnicos
