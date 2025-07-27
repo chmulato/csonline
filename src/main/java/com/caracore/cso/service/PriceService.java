@@ -69,6 +69,10 @@ public class PriceService {
         } catch (Exception e) {
             logger.error("Erro ao deletar price por id: " + priceId, e);
             em.getTransaction().rollback();
+            String msg = e.getMessage();
+            if (msg != null && msg.contains("integrity constraint violation")) {
+                throw new RuntimeException("Não foi possível deletar o preço. Existem registros vinculados a este preço.");
+            }
             throw e;
         } finally {
             em.close();

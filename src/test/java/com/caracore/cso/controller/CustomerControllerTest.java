@@ -109,8 +109,24 @@ public class CustomerControllerTest extends JerseyTest {
     @Test
     public void testDeleteCustomer() {
         try {
-            Response response = target("/customers/1").request().delete();
-            assertEquals(204, response.getStatus());
+            // Cria um usuário e um cliente vinculado para simular integridade referencial
+            String userJson = "{\"login\":\"refcustomer\",\"password\":\"refpass\",\"role\":\"BUSINESS\",\"name\":\"Ref Customer\"}";
+            Response userResponse = target("/users").request().post(jakarta.ws.rs.client.Entity.json(userJson));
+            assertEquals(201, userResponse.getStatus());
+            String location = userResponse.getHeaderString("Location");
+            assertNotNull(location);
+            String idStr = location.substring(location.lastIndexOf("/") + 1);
+            Long userId = Long.parseLong(idStr);
+
+            String customerJson = "{\"business\":{\"id\":" + userId + "},\"factorCustomer\":1.0,\"priceTable\":\"A\"}";
+            Response customerResponse = target("/customers").request().post(jakarta.ws.rs.client.Entity.json(customerJson));
+            assertEquals(201, customerResponse.getStatus());
+
+            // Tenta deletar o usuário vinculado ao cliente
+            Response deleteResponse = target("/users/" + userId).request().delete();
+            assertEquals(409, deleteResponse.getStatus());
+            String errorJson = deleteResponse.readEntity(String.class);
+            assertTrue(errorJson.contains("Não foi possível deletar o usuário"));
         } catch (Exception e) {
             logger.error("Erro em testDeleteCustomer", e);
             throw e;

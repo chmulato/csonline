@@ -77,6 +77,10 @@ public class DeliveryService {
         } catch (Exception e) {
             logger.error("Erro ao deletar delivery id: " + deliveryId, e);
             em.getTransaction().rollback();
+            String msg = e.getMessage();
+            if (msg != null && msg.contains("integrity constraint violation")) {
+                throw new RuntimeException("Não foi possível deletar a entrega. Existem registros vinculados a esta entrega.");
+            }
             throw e;
         } finally {
             em.close();

@@ -145,6 +145,10 @@ public class SMSService {
         } catch (Exception e) {
             logger.error("Erro ao deletar SMS por id: " + smsId, e);
             em.getTransaction().rollback();
+            String msg = e.getMessage();
+            if (msg != null && msg.contains("integrity constraint violation")) {
+                throw new RuntimeException("Não foi possível deletar o SMS. Existem registros vinculados a este SMS.");
+            }
             throw e;
         } finally {
             em.close();
