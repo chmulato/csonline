@@ -11,6 +11,7 @@
         <class>com.caracore.cso.entity.Delivery</class>
         <class>com.caracore.cso.entity.Price</class>
         <class>com.caracore.cso.entity.SMS</class>
+        <class>com.caracore.cso.entity.Team</class>
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver"/>
             <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:mem:csonline;DB_CLOSE_DELAY=-1"/>
