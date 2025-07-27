@@ -15,9 +15,7 @@ class UserServiceTest {
         // Limpa e insere dados necessários para os testes
         // Remove todos os usuários existentes
         var users = service.findAll();
-        for (User u : users) {
-            service.delete(u.getId());
-        }
+        for (var u : users) service.delete(u.getId());
 
         // Cria usuários de teste
         User admin = new User();

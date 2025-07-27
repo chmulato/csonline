@@ -5,11 +5,14 @@
             <PatternLayout pattern="%d [%t] %-5p %c - %m%n"/>
         </File>
         <Console name="ConsoleLogger" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d [%t] %-5p %c - %m%n"/>
+            <PatternLayout pattern="%style{%d{HH:mm:ss}}{cyan} %highlight{%-5p} %style{[%t]}{magenta} %c{1.} - %m%n"/>
+            <Filters>
+                <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
         </Console>
     </Appenders>
     <Loggers>
-        <Root level="info">
+        <Root level="debug">
             <AppenderRef ref="ConsoleLogger"/>
             <AppenderRef ref="FileLogger"/>
         </Root>

@@ -15,11 +15,11 @@ import java.util.List;
 public class CourierService {
     private static final Logger logger = LogManager.getLogger(CourierService.class);
 
-    public List<Courier> findAll() {
+    public java.util.List<Courier> findAll() {
         EntityManager em = JPAUtil.getEntityManager();
         try {
-            TypedQuery<Courier> query = em.createQuery("FROM Courier", Courier.class);
-            return query.getResultList();
+            TypedQuery<Courier> query = em.createQuery("SELECT c FROM Courier c", Courier.class);
+            return new java.util.ArrayList<>(query.getResultList());
         } catch (Exception e) {
             logger.error("Erro ao buscar todos os couriers", e);
             throw e;

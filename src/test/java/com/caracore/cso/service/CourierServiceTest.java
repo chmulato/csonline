@@ -16,8 +16,8 @@ class CourierServiceTest {
         // Limpa e insere dados necessários para os testes
         // Cria business
         var userService = new UserService();
-        var users = userService.findAll();
-        for (var u : users) userService.delete(u.getId());
+        java.util.List<com.caracore.cso.entity.User> users = userService.findAll();
+        for (com.caracore.cso.entity.User u : users) userService.delete(u.getId());
 
         var business = new com.caracore.cso.entity.User();
         business.setId(2L);
@@ -44,8 +44,8 @@ class CourierServiceTest {
 
         // Cria Delivery para teste de canAccessDelivery
         var deliveryService = new DeliveryService();
-        var deliveries = deliveryService.findAll();
-        for (var d : deliveries) deliveryService.delete(d.getId());
+        java.util.List<com.caracore.cso.entity.Delivery> deliveries = deliveryService.findAll();
+        for (com.caracore.cso.entity.Delivery d : deliveries) deliveryService.delete(d.getId());
 
         var delivery = new com.caracore.cso.entity.Delivery();
         delivery.setId(1L);

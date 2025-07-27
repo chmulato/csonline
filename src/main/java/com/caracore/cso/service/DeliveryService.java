@@ -14,11 +14,11 @@ import java.util.List;
 public class DeliveryService {
     private static final Logger logger = LogManager.getLogger(DeliveryService.class);
 
-    public List<Delivery> findAll() {
+    public java.util.List<Delivery> findAll() {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             TypedQuery<Delivery> query = em.createQuery("FROM Delivery", Delivery.class);
-            return query.getResultList();
+            return new java.util.ArrayList<>(query.getResultList());
         } catch (Exception e) {
             logger.error("Erro ao buscar todas as deliveries", e);
             throw e;

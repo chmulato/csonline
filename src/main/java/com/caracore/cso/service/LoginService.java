@@ -20,7 +20,7 @@ public class LoginService {
     public User authenticate(String login, String password) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
-            TypedQuery<User> query = em.createQuery("FROM User WHERE login = :login", User.class);
+            TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.login = :login", User.class);
             query.setParameter("login", login);
             User user = query.getResultStream().findFirst().orElse(null);
             if (user == null || !user.getPassword().equals(password)) {
@@ -28,9 +28,11 @@ public class LoginService {
                 throw new SecurityException("Login ou senha inválidos");
             }
             return user;
+        } catch (SecurityException se) {
+            throw se;
         } catch (Exception e) {
             logger.error("Erro ao autenticar usuário: " + login, e);
-            throw e;
+            throw new SecurityException("Login ou senha inválidos", e);
         } finally {
             em.close();
         }

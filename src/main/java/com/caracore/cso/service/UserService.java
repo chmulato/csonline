@@ -63,7 +63,7 @@ public class UserService {
     public User findByLoginAndPassword(String login, String password) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
-            TypedQuery<User> query = em.createQuery("FROM User WHERE login = :login AND password = :password", User.class);
+            TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.login = :login AND u.password = :password", User.class);
             query.setParameter("login", login);
             query.setParameter("password", password);
             return query.getResultStream().findFirst().orElse(null);
@@ -90,7 +90,7 @@ public class UserService {
     public User findByLogin(String login) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
-            TypedQuery<User> query = em.createQuery("FROM User WHERE login = :login", User.class);
+            TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.login = :login", User.class);
             query.setParameter("login", login);
             return query.getResultStream().findFirst().orElse(null);
         } catch (Exception e) {
@@ -101,11 +101,11 @@ public class UserService {
         }
     }
 
-    public List<User> findAll() {
+    public java.util.List<User> findAll() {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             TypedQuery<User> query = em.createQuery("SELECT u FROM User u ORDER BY u.role, u.name", User.class);
-            return query.getResultList();
+            return new java.util.ArrayList<>(query.getResultList());
         } catch (Exception e) {
             logger.error("Erro ao buscar todos os usuários", e);
             throw e;
@@ -117,7 +117,7 @@ public class UserService {
     public List<User> findAllBusiness() {
         EntityManager em = JPAUtil.getEntityManager();
         try {
-            TypedQuery<User> query = em.createQuery("FROM User WHERE role = 'BUSINESS' ORDER BY name", User.class);
+            TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.role = 'BUSINESS' ORDER BY u.name", User.class);
             return query.getResultList();
         } catch (Exception e) {
             logger.error("Erro ao buscar usuários BUSINESS", e);
