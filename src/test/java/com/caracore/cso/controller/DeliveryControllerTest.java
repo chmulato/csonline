@@ -14,7 +14,8 @@ public class DeliveryControllerTest extends JerseyTest {
 
     @Override
     protected Application configure() {
-        return new ResourceConfig(DeliveryController.class);
+        return new ResourceConfig(DeliveryController.class)
+            .register(com.caracore.cso.service.DeliveryService.class);
     }
 
     @Test
