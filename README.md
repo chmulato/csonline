@@ -40,6 +40,10 @@ Os endpoints REST estão disponíveis em:
 - `/api/sms`
 - `/api/login`
 
+## Documentação Completa
+
+Consulte o arquivo [INDEX.md](INDEX.md) para uma documentação detalhada do projeto.
+
 ## Estrutura de Pastas
 
 - `src/main/java/com/caracore/cso/controller` - Controllers REST
