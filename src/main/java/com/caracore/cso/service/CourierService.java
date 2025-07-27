@@ -91,7 +91,7 @@ public class CourierService {
     public List<Courier> findAllByBusiness(Long businessId) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
-            TypedQuery<Courier> query = em.createQuery("FROM Courier WHERE business.id = :businessId", Courier.class);
+            TypedQuery<Courier> query = em.createQuery("SELECT c FROM Courier c WHERE c.business.id = :businessId", Courier.class);
             query.setParameter("businessId", businessId);
             return query.getResultList();
         } catch (Exception e) {

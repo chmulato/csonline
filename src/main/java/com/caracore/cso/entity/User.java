@@ -27,13 +27,13 @@ public class User {
     private String mobile;
 
     // Relationships
-    @OneToMany(mappedBy = "business")
+    @OneToMany(mappedBy = "business", cascade = CascadeType.REMOVE)
     private List<Customer> customers;
 
-    @OneToMany(mappedBy = "business")
+    @OneToMany(mappedBy = "business", cascade = CascadeType.REMOVE)
     private List<Courier> couriers;
 
-    @OneToMany(mappedBy = "business")
+    @OneToMany(mappedBy = "business", cascade = CascadeType.REMOVE)
     private List<Delivery> deliveries;
 
     public Long getId() {

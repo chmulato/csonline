@@ -17,7 +17,7 @@ public class DeliveryService {
     public java.util.List<Delivery> findAll() {
         EntityManager em = JPAUtil.getEntityManager();
         try {
-            TypedQuery<Delivery> query = em.createQuery("FROM Delivery", Delivery.class);
+            TypedQuery<Delivery> query = em.createQuery("SELECT d FROM Delivery d", Delivery.class);
             return new java.util.ArrayList<>(query.getResultList());
         } catch (Exception e) {
             logger.error("Erro ao buscar todas as deliveries", e);
@@ -90,7 +90,7 @@ public class DeliveryService {
     public List<Delivery> findAllByBusiness(Long businessId) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
-            TypedQuery<Delivery> query = em.createQuery("FROM Delivery WHERE business.id = :businessId", Delivery.class);
+            TypedQuery<Delivery> query = em.createQuery("SELECT d FROM Delivery d WHERE d.business.id = :businessId", Delivery.class);
             query.setParameter("businessId", businessId);
             return query.getResultList();
         } catch (Exception e) {
@@ -104,7 +104,7 @@ public class DeliveryService {
     public List<Delivery> findAllNotCompletedByBusiness(Long businessId) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
-            TypedQuery<Delivery> query = em.createQuery("FROM Delivery WHERE business.id = :businessId AND completed = false", Delivery.class);
+            TypedQuery<Delivery> query = em.createQuery("SELECT d FROM Delivery d WHERE d.business.id = :businessId AND d.completed = false", Delivery.class);
             query.setParameter("businessId", businessId);
             return query.getResultList();
         } catch (Exception e) {

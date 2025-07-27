@@ -18,7 +18,7 @@ public class CustomerService {
     public List<Customer> findAll() {
         EntityManager em = JPAUtil.getEntityManager();
         try {
-            TypedQuery<Customer> query = em.createQuery("FROM Customer", Customer.class);
+            TypedQuery<Customer> query = em.createQuery("SELECT c FROM Customer c", Customer.class);
             return query.getResultList();
         } catch (Exception e) {
             logger.error("Erro ao buscar todos os customers", e);
@@ -91,7 +91,7 @@ public class CustomerService {
     public List<Customer> findAllByBusiness(Long businessId) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
-            TypedQuery<Customer> query = em.createQuery("FROM Customer WHERE business.id = :businessId", Customer.class);
+            TypedQuery<Customer> query = em.createQuery("SELECT c FROM Customer c WHERE c.business.id = :businessId", Customer.class);
             query.setParameter("businessId", businessId);
             return query.getResultList();
         } catch (Exception e) {

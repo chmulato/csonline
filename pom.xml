@@ -90,11 +90,12 @@
             <artifactId>yasson</artifactId>
             <version>3.0.3</version>
         </dependency>
-        <!-- API de Persistência (provided) -->
+        <!-- API de Persistência (necessário para build e testes locais) -->
         <dependency>
             <groupId>jakarta.persistence</groupId>
             <artifactId>jakarta.persistence-api</artifactId>
             <version>3.1.0</version>
+            <scope>compile</scope>
         </dependency>
         <!-- H2 Database -->
         <dependency>

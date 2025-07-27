@@ -16,7 +16,7 @@ public class SMSService {
     public List<SMS> findAll() {
         EntityManager em = JPAUtil.getEntityManager();
         try {
-            TypedQuery<SMS> query = em.createQuery("FROM SMS ORDER BY datetime ASC", SMS.class);
+            TypedQuery<SMS> query = em.createQuery("SELECT s FROM SMS s ORDER BY s.datetime ASC", SMS.class);
             return query.getResultList();
         } catch (Exception e) {
             logger.error("Erro ao buscar todas as SMS", e);
@@ -56,7 +56,7 @@ public class SMSService {
     public List<SMS> findAllByDelivery(Long deliveryId) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
-            TypedQuery<SMS> query = em.createQuery("FROM SMS WHERE delivery.id = :deliveryId ORDER BY type, piece", SMS.class);
+            TypedQuery<SMS> query = em.createQuery("SELECT s FROM SMS s WHERE s.delivery.id = :deliveryId ORDER BY s.type, s.piece", SMS.class);
             query.setParameter("deliveryId", deliveryId);
             return query.getResultList();
         } catch (Exception e) {
@@ -95,7 +95,7 @@ public class SMSService {
     public List<SMS> getDeliverySMSHistory(Long deliveryId) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
-            TypedQuery<SMS> query = em.createQuery("FROM SMS WHERE delivery.id = :deliveryId ORDER BY datetime ASC", SMS.class);
+            TypedQuery<SMS> query = em.createQuery("SELECT s FROM SMS s WHERE s.delivery.id = :deliveryId ORDER BY s.datetime ASC", SMS.class);
             query.setParameter("deliveryId", deliveryId);
             return query.getResultList();
         } catch (Exception e) {

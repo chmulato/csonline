@@ -28,7 +28,7 @@ public class PriceService {
     public List<Price> findAllByBusiness(Long businessId) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
-            TypedQuery<Price> query = em.createQuery("FROM Price WHERE business.id = :businessId", Price.class);
+            TypedQuery<Price> query = em.createQuery("SELECT p FROM Price p WHERE p.business.id = :businessId", Price.class);
             query.setParameter("businessId", businessId);
             return query.getResultList();
         } catch (Exception e) {
