@@ -3,11 +3,15 @@ package com.caracore.cso.controller;
 import org.glassfish.jersey.test.JerseyTest;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.jupiter.api.Test;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import jakarta.ws.rs.core.Application;
 import jakarta.ws.rs.core.Response;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CourierControllerTest extends JerseyTest {
+    private static final Logger logger = LogManager.getLogger(CourierControllerTest.class);
+
     @Override
     protected Application configure() {
         return new ResourceConfig(CourierController.class);
@@ -15,33 +19,58 @@ public class CourierControllerTest extends JerseyTest {
 
     @Test
     public void testGetAllCouriers() {
-        Response response = target("/couriers").request().get();
-        assertEquals(200, response.getStatus());
+        try {
+            Response response = target("/couriers").request().get();
+            assertEquals(200, response.getStatus());
+        } catch (Exception e) {
+            logger.error("Erro em testGetAllCouriers", e);
+            throw e;
+        }
     }
 
     @Test
     public void testGetCourierById() {
-        Response response = target("/couriers/1").request().get();
-        assertEquals(200, response.getStatus());
+        try {
+            Response response = target("/couriers/1").request().get();
+            assertEquals(200, response.getStatus());
+        } catch (Exception e) {
+            logger.error("Erro em testGetCourierById", e);
+            throw e;
+        }
     }
 
     @Test
     public void testCreateCourier() {
-        String json = "{\"factorCourier\":1.5}";
-        Response response = target("/couriers").request().post(jakarta.ws.rs.client.Entity.json(json));
-        assertEquals(201, response.getStatus());
+        try {
+            String json = "{\"factorCourier\":1.5}";
+            Response response = target("/couriers").request().post(jakarta.ws.rs.client.Entity.json(json));
+            assertEquals(201, response.getStatus());
+        } catch (Exception e) {
+            logger.error("Erro em testCreateCourier", e);
+            throw e;
+        }
     }
 
     @Test
     public void testUpdateCourier() {
-        String json = "{\"factorCourier\":2.0}";
-        Response response = target("/couriers/1").request().put(jakarta.ws.rs.client.Entity.json(json));
-        assertEquals(200, response.getStatus());
+        try {
+            String json = "{\"factorCourier\":2.0}";
+            Response response = target("/couriers/1").request().put(jakarta.ws.rs.client.Entity.json(json));
+            assertEquals(200, response.getStatus());
+        } catch (Exception e) {
+            logger.error("Erro em testUpdateCourier", e);
+            throw e;
+        }
     }
 
     @Test
     public void testDeleteCourier() {
-        Response response = target("/couriers/1").request().delete();
-        assertEquals(204, response.getStatus());
+        try {
+            Response response = target("/couriers/1").request().delete();
+            assertEquals(204, response.getStatus());
+        } catch (Exception e) {
+            logger.error("Erro em testDeleteCourier", e);
+            throw e;
+        }
     }
 }

@@ -7,34 +7,58 @@ import com.caracore.cso.service.SMSService;
 import com.caracore.cso.entity.SMS;
 import java.util.List;
 import jakarta.inject.Inject;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Path("/sms")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class SMSController {
+    private static final Logger logger = LogManager.getLogger(SMSController.class);
+
     @Inject
     SMSService smsService;
 
     @GET
     public List<SMS> getAll() {
-        return smsService.findAll();
+        try {
+            return smsService.findAll();
+        } catch (Exception e) {
+            logger.error("Erro ao buscar todas as SMS", e);
+            throw e;
+        }
     }
 
     @GET
     @Path("/{id}")
     public SMS getById(@PathParam("id") Long id) {
-        return smsService.findById(id);
+        try {
+            return smsService.findById(id);
+        } catch (Exception e) {
+            logger.error("Erro ao buscar SMS por id: " + id, e);
+            throw e;
+        }
     }
 
     @GET
     @Path("/delivery/{deliveryId}")
     public List<SMS> getByDelivery(@PathParam("deliveryId") Long deliveryId) {
-        return smsService.getDeliverySMSHistory(deliveryId);
+        try {
+            return smsService.getDeliverySMSHistory(deliveryId);
+        } catch (Exception e) {
+            logger.error("Erro ao buscar SMS por deliveryId: " + deliveryId, e);
+            throw e;
+        }
     }
 
     @POST
     public Response create(SMS sms) {
-        smsService.save(sms);
-        return Response.status(Response.Status.CREATED).build();
+        try {
+            smsService.save(sms);
+            return Response.status(Response.Status.CREATED).build();
+        } catch (Exception e) {
+            logger.error("Erro ao criar SMS", e);
+            return Response.serverError().entity("Erro ao criar SMS").build();
+        }
     }
 }

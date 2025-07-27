@@ -6,8 +6,12 @@ import org.junit.jupiter.api.Test;
 import jakarta.ws.rs.core.Application;
 import jakarta.ws.rs.core.Response;
 import static org.junit.jupiter.api.Assertions.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class DeliveryControllerTest extends JerseyTest {
+    private static final Logger logger = LogManager.getLogger(DeliveryControllerTest.class);
+
     @Override
     protected Application configure() {
         return new ResourceConfig(DeliveryController.class);
@@ -15,33 +19,58 @@ public class DeliveryControllerTest extends JerseyTest {
 
     @Test
     public void testGetAllDeliveries() {
-        Response response = target("/deliveries").request().get();
-        assertEquals(200, response.getStatus());
+        try {
+            Response response = target("/deliveries").request().get();
+            assertEquals(200, response.getStatus());
+        } catch (Exception e) {
+            logger.error("Erro em testGetAllDeliveries", e);
+            throw e;
+        }
     }
 
     @Test
     public void testGetDeliveryById() {
-        Response response = target("/deliveries/1").request().get();
-        assertEquals(200, response.getStatus());
+        try {
+            Response response = target("/deliveries/1").request().get();
+            assertEquals(200, response.getStatus());
+        } catch (Exception e) {
+            logger.error("Erro em testGetDeliveryById", e);
+            throw e;
+        }
     }
 
     @Test
     public void testCreateDelivery() {
-        String json = "{\"start\":\"Origem Teste\",\"destination\":\"Destino Teste\"}";
-        Response response = target("/deliveries").request().post(jakarta.ws.rs.client.Entity.json(json));
-        assertEquals(201, response.getStatus());
+        try {
+            String json = "{\"start\":\"Origem Teste\",\"destination\":\"Destino Teste\"}";
+            Response response = target("/deliveries").request().post(jakarta.ws.rs.client.Entity.json(json));
+            assertEquals(201, response.getStatus());
+        } catch (Exception e) {
+            logger.error("Erro em testCreateDelivery", e);
+            throw e;
+        }
     }
 
     @Test
     public void testUpdateDelivery() {
-        String json = "{\"start\":\"Origem Atualizada\",\"destination\":\"Destino Atualizado\"}";
-        Response response = target("/deliveries/1").request().put(jakarta.ws.rs.client.Entity.json(json));
-        assertEquals(200, response.getStatus());
+        try {
+            String json = "{\"start\":\"Origem Atualizada\",\"destination\":\"Destino Atualizado\"}";
+            Response response = target("/deliveries/1").request().put(jakarta.ws.rs.client.Entity.json(json));
+            assertEquals(200, response.getStatus());
+        } catch (Exception e) {
+            logger.error("Erro em testUpdateDelivery", e);
+            throw e;
+        }
     }
 
     @Test
     public void testDeleteDelivery() {
-        Response response = target("/deliveries/1").request().delete();
-        assertEquals(204, response.getStatus());
+        try {
+            Response response = target("/deliveries/1").request().delete();
+            assertEquals(204, response.getStatus());
+        } catch (Exception e) {
+            logger.error("Erro em testDeleteDelivery", e);
+            throw e;
+        }
     }
 }

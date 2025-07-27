@@ -4,13 +4,20 @@ import com.caracore.cso.entity.Price;
 import com.caracore.cso.repository.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
 public class PriceService {
+    private static final Logger logger = LogManager.getLogger(PriceService.class);
+
     public Price findById(Long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.get(Price.class, id);
+        } catch (Exception e) {
+            logger.error("Erro ao buscar price por id: " + id, e);
+            throw e;
         }
     }
 
@@ -19,6 +26,9 @@ public class PriceService {
             Query<Price> query = session.createQuery("FROM Price WHERE business.id = :businessId", Price.class);
             query.setParameter("businessId", businessId);
             return query.list();
+        } catch (Exception e) {
+            logger.error("Erro ao buscar prices por businessId: " + businessId, e);
+            throw e;
         }
     }
 
@@ -30,6 +40,9 @@ public class PriceService {
             query.setParameter("priceId", priceId);
             query.executeUpdate();
             session.getTransaction().commit();
+        } catch (Exception e) {
+            logger.error("Erro ao atualizar price id: " + priceId, e);
+            throw e;
         }
     }
 
@@ -41,6 +54,9 @@ public class PriceService {
                 session.delete(price);
             }
             session.getTransaction().commit();
+        } catch (Exception e) {
+            logger.error("Erro ao deletar price por id: " + priceId, e);
+            throw e;
         }
     }
 }

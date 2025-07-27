@@ -4,6 +4,8 @@ import com.caracore.cso.dto.LoginDTO;
 import com.caracore.cso.dto.UserDTO;
 import com.caracore.cso.entity.User;
 import com.caracore.cso.service.LoginService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
@@ -14,6 +16,8 @@ import jakarta.ws.rs.core.Response;
 
 @Path("/login")
 public class LoginController {
+    private static final Logger logger = LogManager.getLogger(LoginController.class);
+
     private final LoginService loginService;
 
     public LoginController() {
@@ -37,7 +41,11 @@ public class LoginController {
             userDTO.setRole(user.getRole());
             return Response.ok(userDTO).build();
         } catch (SecurityException e) {
+            logger.warn("Login inválido para usuário: {}", loginDTO.getLogin());
             return Response.status(Response.Status.UNAUTHORIZED).entity("Login ou senha inválidos").build();
+        } catch (Exception e) {
+            logger.error("Erro ao autenticar login", e);
+            return Response.serverError().entity("Erro ao autenticar login").build();
         }
     }
 }

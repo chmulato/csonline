@@ -2,10 +2,14 @@ package com.caracore.cso.service;
 
 import com.caracore.cso.entity.User;
 import com.caracore.cso.repository.HibernateUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 public class LoginService {
+    private static final Logger logger = LogManager.getLogger(LoginService.class);
+
     /**
      * Autentica o usuário pelo login e senha.
      * @param login login do usuário
@@ -20,9 +24,13 @@ public class LoginService {
             query.setParameter("login", login);
             User user = query.uniqueResult();
             if (user == null || !user.getPassword().equals(password)) {
+                logger.warn("Tentativa de login inválido para usuário: {}", login);
                 throw new SecurityException("Login ou senha inválidos");
             }
             return user;
+        } catch (Exception e) {
+            logger.error("Erro ao autenticar usuário: " + login, e);
+            throw e;
         }
     }
 }
