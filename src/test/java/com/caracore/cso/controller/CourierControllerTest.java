@@ -14,8 +14,10 @@ public class CourierControllerTest extends JerseyTest {
 
     @Override
     protected Application configure() {
-        return new ResourceConfig(CourierController.class)
-            .register(com.caracore.cso.service.CourierService.class);
+        return new ResourceConfig()
+            .register(CourierController.class)
+            .register(com.caracore.cso.service.CourierService.class)
+            .register(org.glassfish.jersey.jackson.JacksonFeature.class);
     }
 
     @Test
@@ -43,8 +45,25 @@ public class CourierControllerTest extends JerseyTest {
     @Test
     public void testCreateCourier() {
         try {
-            String json = "{\"factorCourier\":1.5}";
-            Response response = target("/couriers").request().post(jakarta.ws.rs.client.Entity.json(json));
+            // Cria User e Business mínimos
+            com.caracore.cso.entity.User business = new com.caracore.cso.entity.User();
+            business.setLogin("empresa_test");
+            business.setName("Empresa Teste");
+            business.setPassword("empresa123");
+            business.setRole("BUSINESS");
+
+            com.caracore.cso.entity.User courierUser = new com.caracore.cso.entity.User();
+            courierUser.setLogin("courier_test");
+            courierUser.setName("Courier Teste");
+            courierUser.setPassword("courier123");
+            courierUser.setRole("COURIER");
+
+            com.caracore.cso.entity.Courier courier = new com.caracore.cso.entity.Courier();
+            courier.setFactorCourier(1.5);
+            courier.setBusiness(business);
+            courier.setUser(courierUser);
+
+            Response response = target("/couriers").request().post(jakarta.ws.rs.client.Entity.json(courier));
             assertEquals(201, response.getStatus());
         } catch (Exception e) {
             logger.error("Erro em testCreateCourier", e);
@@ -67,16 +86,32 @@ public class CourierControllerTest extends JerseyTest {
     @Test
     public void testDeleteCourier() {
         try {
-            // Cria um courier isolado para teste de deleção
-            String json = "{\"factorCourier\":3.0}";
-            Response createResponse = target("/couriers").request().post(jakarta.ws.rs.client.Entity.json(json));
+            // Cria User e Business mínimos
+            com.caracore.cso.entity.User business = new com.caracore.cso.entity.User();
+            business.setLogin("empresa_test2");
+            business.setName("Empresa Teste 2");
+            business.setPassword("empresa456");
+            business.setRole("BUSINESS");
+
+            com.caracore.cso.entity.User courierUser = new com.caracore.cso.entity.User();
+            courierUser.setLogin("courier_test2");
+            courierUser.setName("Courier Teste 2");
+            courierUser.setPassword("courier456");
+            courierUser.setRole("COURIER");
+
+            com.caracore.cso.entity.Courier courier = new com.caracore.cso.entity.Courier();
+            courier.setFactorCourier(3.0);
+            courier.setBusiness(business);
+            courier.setUser(courierUser);
+
+            Response createResponse = target("/couriers").request().accept("application/json").post(jakarta.ws.rs.client.Entity.json(courier));
             assertEquals(201, createResponse.getStatus());
 
-            // Obtém o ID do courier criado (assumindo que retorna Location header)
-            String location = createResponse.getHeaderString("Location");
-            assertNotNull(location);
-            String idStr = location.substring(location.lastIndexOf("/") + 1);
-            int courierId = Integer.parseInt(idStr);
+            // Obtém o ID do courier criado do corpo da resposta
+            com.caracore.cso.entity.Courier created = createResponse.readEntity(com.caracore.cso.entity.Courier.class);
+            assertNotNull(created);
+            assertNotNull(created.getId());
+            Long courierId = created.getId();
 
             // Tenta deletar o courier recém-criado
             Response deleteResponse = target("/couriers/" + courierId).request().delete();

@@ -39,7 +39,6 @@ public class CustomerControllerTest extends JerseyTest {
         userService.save(customerUser);
 
         var customer = new com.caracore.cso.entity.Customer();
-        customer.setId(1L);
         customer.setBusiness(business);
         customer.setUser(customerUser);
         customer.setFactorCustomer(1.2);
@@ -80,8 +79,14 @@ public class CustomerControllerTest extends JerseyTest {
     @Test
     public void testCreateCustomer() {
         try {
-            String json = "{\"factorCustomer\":1.2,\"priceTable\":\"TabelaTest\"}";
-            Response response = target("/customers").request().post(jakarta.ws.rs.client.Entity.json(json));
+            // IDs já criados no setUpTestData: business=2, user=1
+            String json = "{" +
+                "\"factorCustomer\":1.2," +
+                "\"priceTable\":\"TabelaTest\"," +
+                "\"business\":{\"id\":2}," +
+                "\"user\":{\"id\":1}" +
+            "}";
+            Response response = target("/customers").request().header("Accept", "application/json").post(jakarta.ws.rs.client.Entity.json(json));
             assertEquals(201, response.getStatus());
         } catch (Exception e) {
             logger.error("Erro em testCreateCustomer", e);

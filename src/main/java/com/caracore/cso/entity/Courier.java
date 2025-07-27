@@ -7,13 +7,14 @@ import jakarta.persistence.CascadeType;
 @Table(name = "team")
 public class Courier {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "idbusiness", referencedColumnName = "id")
     private User business;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "idcourier", referencedColumnName = "id")
     private User user;
 

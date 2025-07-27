@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 @Table(name = "customer")
 public class Customer {
     @Id
+    @jakarta.persistence.GeneratedValue(strategy = jakarta.persistence.GenerationType.AUTO)
     private Long id;
 
     @ManyToOne

@@ -32,7 +32,7 @@ public class CourierService {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
-            em.merge(courier);
+            em.persist(courier);
             em.getTransaction().commit();
         } catch (Exception e) {
             logger.error("Erro ao salvar courier", e);

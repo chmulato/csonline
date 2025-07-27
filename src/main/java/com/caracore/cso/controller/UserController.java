@@ -52,7 +52,11 @@ public class UserController {
     public Response create(User user) {
         try {
             userService.save(user);
-            return Response.status(Response.Status.CREATED).build();
+            // Monta a URI do novo recurso criado
+            String location = "/users/" + user.getId();
+            return Response.status(Response.Status.CREATED)
+                .header("Location", location)
+                .build();
         } catch (Exception e) {
             logger.error("Erro ao criar usuário", e);
             return Response.serverError().entity("Erro ao criar usuário").build();

@@ -52,7 +52,7 @@ public class CourierController {
     public Response create(Courier courier) {
         try {
             courierService.save(courier);
-            return Response.status(Response.Status.CREATED).build();
+            return Response.status(Response.Status.CREATED).entity(courier).build();
         } catch (Exception e) {
             logger.error("Erro ao criar courier", e);
             return Response.serverError().entity("Erro ao criar courier").build();

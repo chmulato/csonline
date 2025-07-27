@@ -51,7 +51,7 @@ public class UserControllerTest extends JerseyTest {
     @Test
     public void testCreateUser() {
         try {
-            String json = "{\"login\":\"testuser\",\"password\":\"testpass\",\"role\":\"CUSTOMER\"}";
+            String json = "{\"login\":\"testuser\",\"password\":\"testpass\",\"role\":\"CUSTOMER\",\"name\":\"Test User\"}";
             Response response = target("/users").request().post(jakarta.ws.rs.client.Entity.json(json));
             assertEquals(201, response.getStatus());
         } catch (Exception e) {
@@ -63,7 +63,7 @@ public class UserControllerTest extends JerseyTest {
     @Test
     public void testUpdateUser() {
         try {
-            String json = "{\"login\":\"updateduser\",\"password\":\"updatedpass\",\"role\":\"COURIER\"}";
+            String json = "{\"login\":\"updateduser\",\"password\":\"updatedpass\",\"role\":\"COURIER\",\"name\":\"Updated User\"}";
             Response response = target("/users/1").request().put(jakarta.ws.rs.client.Entity.json(json));
             assertEquals(200, response.getStatus());
         } catch (Exception e) {
@@ -76,7 +76,7 @@ public class UserControllerTest extends JerseyTest {
     public void testDeleteUser() {
         try {
             // Cria um usuário isolado para teste de deleção
-            String json = "{\"login\":\"deleteuser\",\"password\":\"deletepass\",\"role\":\"CUSTOMER\"}";
+            String json = "{\"login\":\"deleteuser\",\"password\":\"deletepass\",\"role\":\"CUSTOMER\",\"name\":\"Delete User\"}";
             Response createResponse = target("/users").request().post(jakarta.ws.rs.client.Entity.json(json));
             assertEquals(201, createResponse.getStatus());
 
