@@ -30,6 +30,12 @@ public class SMSService {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
+            // Garante que o campo ID seja atribuído se não estiver definido
+            if (sms.getId() == null) {
+                // Gera o próximo valor de ID (simples para H2, pode ser ajustado para outros bancos)
+                Long nextId = ((Number) em.createQuery("SELECT COALESCE(MAX(s.id), 0) + 1 FROM SMS s").getSingleResult()).longValue();
+                sms.setId(nextId);
+            }
             em.persist(sms);
             em.getTransaction().commit();
         } catch (Exception e) {
@@ -80,6 +86,9 @@ public class SMSService {
             sms.setMessage(message);
             sms.setPiece(piece);
             sms.setDatetime(datetime);
+            // Garante que o campo ID seja atribuído
+            Long nextId = ((Number) em.createQuery("SELECT COALESCE(MAX(s.id), 0) + 1 FROM SMS s").getSingleResult()).longValue();
+            sms.setId(nextId);
             em.persist(sms);
             em.getTransaction().commit();
         } catch (Exception e) {

@@ -31,6 +31,10 @@ public class DeliveryService {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
+            if (delivery.getId() == null) {
+                Long nextId = ((Number) em.createQuery("SELECT COALESCE(MAX(d.id), 0) + 1 FROM Delivery d").getSingleResult()).longValue();
+                delivery.setId(nextId);
+            }
             em.merge(delivery);
             em.getTransaction().commit();
         } catch (Exception e) {
@@ -63,6 +67,10 @@ public class DeliveryService {
             em.getTransaction().begin();
             Delivery delivery = em.find(Delivery.class, deliveryId);
             if (delivery != null) {
+                // Remove SMS relacionados à delivery
+                Query smsDelete = em.createQuery("DELETE FROM SMS s WHERE s.delivery.id = :deliveryId");
+                smsDelete.setParameter("deliveryId", deliveryId);
+                smsDelete.executeUpdate();
                 em.remove(delivery);
             }
             em.getTransaction().commit();

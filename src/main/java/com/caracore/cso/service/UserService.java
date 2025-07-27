@@ -19,6 +19,10 @@ public class UserService {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
+            if (user.getId() == null) {
+                Long nextId = ((Number) em.createQuery("SELECT COALESCE(MAX(u.id), 0) + 1 FROM User u").getSingleResult()).longValue();
+                user.setId(nextId);
+            }
             em.merge(user);
             em.getTransaction().commit();
         } catch (Exception e) {
@@ -51,6 +55,11 @@ public class UserService {
             em.getTransaction().begin();
             User user = em.find(User.class, userId);
             if (user != null) {
+                // Remove registros TEAM relacionados ao usuário
+                jakarta.persistence.Query teamDelete = em.createQuery("DELETE FROM Team t WHERE t.business.id = :userId");
+                teamDelete.setParameter("userId", userId);
+                teamDelete.executeUpdate();
+
                 // Remove explicitamente os filhos para garantir deleção em cascata
                 if (user.getCouriers() != null) {
                     for (var courier : user.getCouriers()) {

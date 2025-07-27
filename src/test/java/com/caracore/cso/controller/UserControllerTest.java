@@ -1,5 +1,6 @@
 package com.caracore.cso.controller;
 
+
 import org.glassfish.jersey.test.JerseyTest;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.jupiter.api.Test;
@@ -8,14 +9,21 @@ import jakarta.ws.rs.core.Response;
 import static org.junit.jupiter.api.Assertions.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import com.caracore.cso.service.UserService;
 
 public class UserControllerTest extends JerseyTest {
     private static final Logger logger = LogManager.getLogger(UserControllerTest.class);
 
     @Override
     protected Application configure() {
+        UserService userService = new com.caracore.cso.service.UserService();
         return new ResourceConfig(UserController.class)
-            .register(com.caracore.cso.service.UserService.class);
+            .register(new org.glassfish.hk2.utilities.binding.AbstractBinder() {
+                @Override
+                protected void configure() {
+                    bind(userService).to(com.caracore.cso.service.UserService.class);
+                }
+            });
     }
 
     @Test
@@ -67,8 +75,20 @@ public class UserControllerTest extends JerseyTest {
     @Test
     public void testDeleteUser() {
         try {
-            Response response = target("/users/1").request().delete();
-            assertEquals(204, response.getStatus());
+            // Cria um usuário isolado para teste de deleção
+            String json = "{\"login\":\"deleteuser\",\"password\":\"deletepass\",\"role\":\"CUSTOMER\"}";
+            Response createResponse = target("/users").request().post(jakarta.ws.rs.client.Entity.json(json));
+            assertEquals(201, createResponse.getStatus());
+
+            // Obtém o ID do usuário criado (assumindo que retorna Location header)
+            String location = createResponse.getHeaderString("Location");
+            assertNotNull(location);
+            String idStr = location.substring(location.lastIndexOf("/") + 1);
+            Long userId = Long.parseLong(idStr);
+
+            // Tenta deletar o usuário recém-criado
+            Response deleteResponse = target("/users/" + userId).request().delete();
+            assertEquals(204, deleteResponse.getStatus());
         } catch (Exception e) {
             logger.error("Erro em testDeleteUser", e);
             throw e;

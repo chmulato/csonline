@@ -34,6 +34,12 @@ public class Delivery {
     private Boolean completed;
     private LocalDateTime datatime;
 
+    @OneToMany(mappedBy = "delivery", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private java.util.List<SMS> smsList;
+
+    public java.util.List<SMS> getSmsList() { return smsList; }
+    public void setSmsList(java.util.List<SMS> smsList) { this.smsList = smsList; }
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

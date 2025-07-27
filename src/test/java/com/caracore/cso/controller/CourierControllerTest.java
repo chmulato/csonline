@@ -67,8 +67,20 @@ public class CourierControllerTest extends JerseyTest {
     @Test
     public void testDeleteCourier() {
         try {
-            Response response = target("/couriers/1").request().delete();
-            assertEquals(204, response.getStatus());
+            // Cria um courier isolado para teste de deleção
+            String json = "{\"factorCourier\":3.0}";
+            Response createResponse = target("/couriers").request().post(jakarta.ws.rs.client.Entity.json(json));
+            assertEquals(201, createResponse.getStatus());
+
+            // Obtém o ID do courier criado (assumindo que retorna Location header)
+            String location = createResponse.getHeaderString("Location");
+            assertNotNull(location);
+            String idStr = location.substring(location.lastIndexOf("/") + 1);
+            int courierId = Integer.parseInt(idStr);
+
+            // Tenta deletar o courier recém-criado
+            Response deleteResponse = target("/couriers/" + courierId).request().delete();
+            assertEquals(204, deleteResponse.getStatus());
         } catch (Exception e) {
             logger.error("Erro em testDeleteCourier", e);
             throw e;
