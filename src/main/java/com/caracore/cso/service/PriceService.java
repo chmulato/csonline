@@ -24,7 +24,7 @@ public class PriceService {
             em.getTransaction().commit();
         } catch (Exception e) {
             logger.error("Erro ao salvar price", e);
-            em.getTransaction().rollback();
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
             throw e;
         } finally {
             em.close();
@@ -69,7 +69,7 @@ public class PriceService {
             em.getTransaction().commit();
         } catch (Exception e) {
             logger.error("Erro ao atualizar price id: " + priceId, e);
-            em.getTransaction().rollback();
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
             throw e;
         } finally {
             em.close();
@@ -87,10 +87,11 @@ public class PriceService {
             em.getTransaction().commit();
         } catch (Exception e) {
             logger.error("Erro ao deletar price por id: " + priceId, e);
-            em.getTransaction().rollback();
+            if (em.getTransaction().isActive()) try { em.getTransaction().rollback(); } catch (Exception ex) { /* ignora */ }
             String msg = e.getMessage();
-            if (msg != null && msg.contains("integrity constraint violation")) {
-                throw new RuntimeException("Não foi possível deletar o preço. Existem registros vinculados a este preço.");
+            if ((msg != null && msg.contains("integrity constraint violation")) ||
+                (e.getCause() != null && e.getCause().getMessage() != null && e.getCause().getMessage().contains("integrity constraint violation"))) {
+                throw new com.caracore.cso.exception.ReferentialIntegrityException("Não foi possível deletar o preço. Existem registros vinculados a este preço.", e);
             }
             throw e;
         } finally {

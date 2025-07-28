@@ -78,8 +78,9 @@ public class DeliveryService {
             logger.error("Erro ao deletar delivery id: " + deliveryId, e);
             em.getTransaction().rollback();
             String msg = e.getMessage();
-            if (msg != null && msg.contains("integrity constraint violation")) {
-                throw new RuntimeException("Não foi possível deletar a entrega. Existem registros vinculados a esta entrega.");
+            if ((msg != null && msg.contains("integrity constraint violation")) ||
+                (e.getCause() != null && e.getCause().getMessage() != null && e.getCause().getMessage().contains("integrity constraint violation"))) {
+                throw new com.caracore.cso.exception.ReferentialIntegrityException("Não foi possível deletar a entrega. Existem registros vinculados a esta entrega.", e);
             }
             throw e;
         } finally {

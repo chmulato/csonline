@@ -2,7 +2,6 @@ package com.caracore.cso.service;
 
 
 import com.caracore.cso.entity.Customer;
-import com.caracore.cso.entity.User;
 import com.caracore.cso.repository.JPAUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,7 +42,7 @@ public class CustomerService {
             em.getTransaction().commit();
         } catch (Exception e) {
             logger.error("Erro ao salvar customer", e);
-            em.getTransaction().rollback();
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
             throw e;
         } finally {
             em.close();
@@ -58,7 +57,7 @@ public class CustomerService {
             em.getTransaction().commit();
         } catch (Exception e) {
             logger.error("Erro ao atualizar customer", e);
-            em.getTransaction().rollback();
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
             throw e;
         } finally {
             em.close();
@@ -75,16 +74,14 @@ public class CustomerService {
             }
             em.getTransaction().commit();
         } catch (Exception e) {
-            try { em.getTransaction().rollback(); } catch (Exception ex) { /* ignora */ }
+            if (em.getTransaction().isActive()) try { em.getTransaction().rollback(); } catch (Exception ex) { /* ignora */ }
             String msg = e.getMessage();
-            if (msg != null && msg.contains("integrity constraint violation")) {
-                logger.warn("Não foi possível deletar o customer id: " + customerId + ". Existem vínculos que impedem a exclusão.");
-                throw new RuntimeException("Não foi possível deletar o cliente. Existem vínculos que impedem a exclusão.");
-            } else if (e.getCause() != null && e.getCause().getMessage() != null && e.getCause().getMessage().contains("integrity constraint violation")) {
-                logger.warn("Não foi possível deletar o customer id: " + customerId + ". Existem vínculos que impedem a exclusão.");
-                throw new RuntimeException("Não foi possível deletar o cliente. Existem vínculos que impedem a exclusão.");
+            if ((msg != null && msg.contains("integrity constraint violation")) ||
+                (e.getCause() != null && e.getCause().getMessage() != null && e.getCause().getMessage().contains("integrity constraint violation"))) {
+                logger.warn("Não foi possível deletar o cliente id: " + customerId + ". Existem vínculos que impedem a exclusão.");
+                throw new com.caracore.cso.exception.ReferentialIntegrityException("Não foi possível deletar o cliente. Existem vínculos que impedem a exclusão.", e);
             } else {
-                logger.error("Erro ao deletar customer id: " + customerId, e);
+                logger.error("Erro ao deletar cliente id: " + customerId, e);
                 throw e;
             }
         } finally {

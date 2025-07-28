@@ -4,6 +4,7 @@ import com.caracore.cso.entity.SMS;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import com.caracore.cso.service.TestDatabaseUtil;
 
 class SMSServiceTest {
     @Test
@@ -73,6 +74,7 @@ class SMSServiceTest {
 
     @BeforeEach
     void setUp() {
+        TestDatabaseUtil.clearDatabase();
         service = new SMSService();
     }
 

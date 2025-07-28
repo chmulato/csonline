@@ -2,9 +2,6 @@
 package com.caracore.cso.service;
 
 import com.caracore.cso.entity.User;
-import com.caracore.cso.entity.Courier;
-import com.caracore.cso.entity.Customer;
-import com.caracore.cso.entity.Delivery;
 import com.caracore.cso.repository.JPAUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,7 +20,7 @@ public class UserService {
             em.getTransaction().commit();
         } catch (Exception e) {
             logger.error("Erro ao salvar usuário", e);
-            em.getTransaction().rollback();
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
             throw e;
         } finally {
             em.close();
@@ -38,7 +35,7 @@ public class UserService {
             em.getTransaction().commit();
         } catch (Exception e) {
             logger.error("Erro ao atualizar usuário", e);
-            em.getTransaction().rollback();
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
             throw e;
         } finally {
             em.close();
@@ -51,38 +48,16 @@ public class UserService {
             em.getTransaction().begin();
             User user = em.find(User.class, userId);
             if (user != null) {
-                // Remove explicitamente os filhos para garantir deleção em cascata
-                if (user.getCouriers() != null) {
-                    for (var courier : user.getCouriers()) {
-                        em.remove(courier);
-                    }
-                    user.getCouriers().clear();
-                }
-                if (user.getCustomers() != null) {
-                    for (var customer : user.getCustomers()) {
-                        em.remove(customer);
-                    }
-                    user.getCustomers().clear();
-                }
-                if (user.getDeliveries() != null) {
-                    for (var delivery : user.getDeliveries()) {
-                        em.remove(delivery);
-                    }
-                    user.getDeliveries().clear();
-                }
                 em.remove(user);
             }
             em.getTransaction().commit();
         } catch (Exception e) {
-            try { em.getTransaction().rollback(); } catch (Exception ex) { /* ignora */ }
+            if (em.getTransaction().isActive()) try { em.getTransaction().rollback(); } catch (Exception ex) { /* ignora */ }
             String msg = e.getMessage();
-            // Garante mensagem amigável mesmo após erro de transação
-            if (msg != null && msg.contains("integrity constraint violation")) {
+            if ((msg != null && msg.contains("integrity constraint violation")) ||
+                (e.getCause() != null && e.getCause().getMessage() != null && e.getCause().getMessage().contains("integrity constraint violation"))) {
                 logger.warn("Não foi possível deletar o usuário id: " + userId + ". Existem clientes ou registros vinculados a este usuário.");
-                throw new RuntimeException("Não foi possível deletar o usuário. Existem clientes ou registros vinculados a este usuário.");
-            } else if (e.getCause() != null && e.getCause().getMessage() != null && e.getCause().getMessage().contains("integrity constraint violation")) {
-                logger.warn("Não foi possível deletar o usuário id: " + userId + ". Existem clientes ou registros vinculados a este usuário.");
-                throw new RuntimeException("Não foi possível deletar o usuário. Existem clientes ou registros vinculados a este usuário.");
+                throw new com.caracore.cso.exception.ReferentialIntegrityException("Não foi possível deletar o usuário. Existem clientes ou registros vinculados a este usuário.", e);
             } else {
                 logger.error("Erro ao deletar usuário id: " + userId, e);
                 throw e;
@@ -170,7 +145,7 @@ public class UserService {
             em.getTransaction().commit();
         } catch (Exception e) {
             logger.error("Erro ao atualizar senha do usuário: " + login, e);
-            em.getTransaction().rollback();
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
             throw e;
         } finally {
             em.close();

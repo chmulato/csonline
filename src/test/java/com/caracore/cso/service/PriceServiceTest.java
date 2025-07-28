@@ -4,6 +4,7 @@ import com.caracore.cso.entity.Price;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import com.caracore.cso.service.TestDatabaseUtil;
 
 class PriceServiceTest {
     @Test
@@ -74,6 +75,7 @@ class PriceServiceTest {
 
     @BeforeEach
     void setUp() {
+        TestDatabaseUtil.clearDatabase();
         service = new PriceService();
     }
 

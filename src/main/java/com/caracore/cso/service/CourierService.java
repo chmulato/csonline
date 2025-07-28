@@ -36,7 +36,7 @@ public class CourierService {
             em.getTransaction().commit();
         } catch (Exception e) {
             logger.error("Erro ao salvar courier", e);
-            try { em.getTransaction().rollback(); } catch (Exception ex) { /* ignora */ }
+            if (em.getTransaction().isActive()) try { em.getTransaction().rollback(); } catch (Exception ex) { /* ignora */ }
             throw e;
         } finally {
             em.close();
@@ -51,7 +51,7 @@ public class CourierService {
             em.getTransaction().commit();
         } catch (Exception e) {
             logger.error("Erro ao atualizar courier", e);
-            em.getTransaction().rollback();
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
             throw e;
         } finally {
             em.close();
@@ -64,21 +64,20 @@ public class CourierService {
             em.getTransaction().begin();
             Courier courier = em.find(Courier.class, courierId);
             if (courier != null) {
-                // Check for referencing deliveries
-                Long count = em.createQuery("SELECT COUNT(d) FROM Delivery d WHERE d.courier.id = :courierId", Long.class)
-                        .setParameter("courierId", courierId)
-                        .getSingleResult();
-                if (count != null && count > 0) {
-                    logger.warn("Não foi possível deletar o courier id: " + courierId + ". Existem vínculos que impedem a exclusão.");
-                    throw new RuntimeException("Não foi possível deletar o entregador. Existem vínculos que impedem a exclusão.");
-                }
                 em.remove(courier);
             }
             em.getTransaction().commit();
         } catch (Exception e) {
-            try { em.getTransaction().rollback(); } catch (Exception ex) { /* ignora */ }
-            logger.error("Erro ao deletar courier id: " + courierId, e);
-            throw e;
+            if (em.getTransaction().isActive()) try { em.getTransaction().rollback(); } catch (Exception ex) { /* ignora */ }
+            String msg = e.getMessage();
+            if ((msg != null && msg.contains("integrity constraint violation")) ||
+                (e.getCause() != null && e.getCause().getMessage() != null && e.getCause().getMessage().contains("integrity constraint violation"))) {
+                logger.warn("Não foi possível deletar o entregador id: " + courierId + ". Existem vínculos que impedem a exclusão.");
+                throw new com.caracore.cso.exception.ReferentialIntegrityException("Não foi possível deletar o entregador. Existem vínculos que impedem a exclusão.", e);
+            } else {
+                logger.error("Erro ao deletar entregador id: " + courierId, e);
+                throw e;
+            }
         } finally {
             em.close();
         }

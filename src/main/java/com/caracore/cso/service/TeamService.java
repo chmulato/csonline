@@ -27,9 +27,9 @@ public class TeamService {
         try {
             teamRepository.delete(id);
         } catch (Exception e) {
-            // Verifica se é violação de integridade referencial
-            if (e.getCause() != null && e.getCause().getMessage() != null && e.getCause().getMessage().contains("Referential integrity constraint violation")) {
-                throw new RuntimeException("Não é possível excluir o time pois existem registros vinculados.");
+            if ((e.getMessage() != null && e.getMessage().contains("Referential integrity constraint violation")) ||
+                (e.getCause() != null && e.getCause().getMessage() != null && e.getCause().getMessage().contains("Referential integrity constraint violation"))) {
+                throw new com.caracore.cso.exception.ReferentialIntegrityException("Não é possível excluir o time pois existem registros vinculados.", e);
             }
             throw e;
         }

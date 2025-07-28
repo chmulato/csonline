@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import jakarta.persistence.CascadeType;
 
 @Entity
-@Table(name = "team")
+@Table(name = "courier")
 public class Courier {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

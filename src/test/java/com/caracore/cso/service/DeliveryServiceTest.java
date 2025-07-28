@@ -4,6 +4,7 @@ import com.caracore.cso.entity.Delivery;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import com.caracore.cso.service.TestDatabaseUtil;
 
 class DeliveryServiceTest {
     @Test
@@ -73,6 +74,7 @@ class DeliveryServiceTest {
 
     @BeforeEach
     void setUp() {
+        TestDatabaseUtil.clearDatabase();
         service = new DeliveryService();
     }
 
