@@ -23,7 +23,9 @@ public class UserControllerTest extends JerseyTest {
                 protected void configure() {
                     bind(userService).to(com.caracore.cso.service.UserService.class);
                 }
-            });
+            })
+            .register(com.caracore.cso.controller.CustomerController.class)
+            .register(com.caracore.cso.service.CustomerService.class);
     }
 
     @Test
