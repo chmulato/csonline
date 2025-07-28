@@ -19,11 +19,7 @@ public class UserService {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
-            if (user.getId() == null) {
-                Long nextId = ((Number) em.createQuery("SELECT COALESCE(MAX(u.id), 0) + 1 FROM User u").getSingleResult()).longValue();
-                user.setId(nextId);
-            }
-            em.merge(user);
+            em.persist(user);
             em.getTransaction().commit();
         } catch (Exception e) {
             logger.error("Erro ao salvar usuário", e);

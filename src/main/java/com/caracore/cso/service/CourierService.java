@@ -36,7 +36,7 @@ public class CourierService {
             em.getTransaction().commit();
         } catch (Exception e) {
             logger.error("Erro ao salvar courier", e);
-            em.getTransaction().rollback();
+            try { em.getTransaction().rollback(); } catch (Exception ex) { /* ignora */ }
             throw e;
         } finally {
             em.close();
@@ -68,13 +68,18 @@ public class CourierService {
             }
             em.getTransaction().commit();
         } catch (Exception e) {
-            logger.error("Erro ao deletar courier id: " + courierId, e);
-            em.getTransaction().rollback();
+            try { em.getTransaction().rollback(); } catch (Exception ex) { /* ignora */ }
             String msg = e.getMessage();
             if (msg != null && msg.contains("integrity constraint violation")) {
+                logger.warn("Não foi possível deletar o courier id: " + courierId + ". Existem vínculos que impedem a exclusão.");
                 throw new RuntimeException("Não foi possível deletar o entregador. Existem vínculos que impedem a exclusão.");
+            } else if (e.getCause() != null && e.getCause().getMessage() != null && e.getCause().getMessage().contains("integrity constraint violation")) {
+                logger.warn("Não foi possível deletar o courier id: " + courierId + ". Existem vínculos que impedem a exclusão.");
+                throw new RuntimeException("Não foi possível deletar o entregador. Existem vínculos que impedem a exclusão.");
+            } else {
+                logger.error("Erro ao deletar courier id: " + courierId, e);
+                throw e;
             }
-            throw e;
         } finally {
             em.close();
         }

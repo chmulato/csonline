@@ -12,33 +12,34 @@ class CourierServiceTest {
         // Cria business
         var userService = new UserService();
         var business = new com.caracore.cso.entity.User();
-        business.setId(10L);
         business.setRole("BUSINESS");
         business.setName("BusinessRef");
         business.setLogin("businessref");
         business.setPassword("businessref123");
         userService.save(business);
+        business = userService.findByLogin("businessref");
 
         // Cria courier user
         var courierUser = new com.caracore.cso.entity.User();
-        courierUser.setId(11L);
         courierUser.setRole("COURIER");
         courierUser.setName("CourierRef");
         courierUser.setLogin("courierref");
         courierUser.setPassword("courierref123");
         userService.save(courierUser);
+        courierUser = userService.findByLogin("courierref");
 
         // Cria courier
         var courier = new com.caracore.cso.entity.Courier();
-        courier.setId(12L);
         courier.setBusiness(business);
         courier.setUser(courierUser);
         courier.setFactorCourier(1.5);
         service.save(courier);
+        // Buscar o courier persistido para pegar o ID real
+        var couriers = service.findAllByBusiness(business.getId());
+        final Long courierId = !couriers.isEmpty() ? couriers.get(0).getId() : null;
 
         // Cria delivery vinculado ao courier
         var delivery = new com.caracore.cso.entity.Delivery();
-        delivery.setId(13L);
         delivery.setBusiness(business);
         delivery.setCourier(courier);
         delivery.setStart("A");
@@ -56,7 +57,7 @@ class CourierServiceTest {
         new DeliveryService().save(delivery);
 
         // Tenta deletar o courier vinculado ao delivery
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> service.delete(12L));
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> service.delete(courierId));
         assertTrue(ex.getMessage().contains("Não foi possível deletar o entregador") || ex.getMessage().contains("vínculos"));
     }
     private CourierService service;
@@ -65,42 +66,51 @@ class CourierServiceTest {
     void setUp() {
         service = new CourierService();
 
-        // Limpa e insere dados necessários para os testes
-        // Cria business
+        // Limpa tabelas manualmente para evitar conflitos de chave primária
+        var em = com.caracore.cso.repository.JPAUtil.getEntityManager();
+        em.getTransaction().begin();
+        em.createNativeQuery("DELETE FROM sms").executeUpdate();
+        em.createNativeQuery("DELETE FROM delivery").executeUpdate();
+        em.createNativeQuery("DELETE FROM team").executeUpdate();
+        em.createNativeQuery("DELETE FROM customer").executeUpdate();
+        em.createNativeQuery("DELETE FROM price").executeUpdate();
+        em.createNativeQuery("DELETE FROM app_user").executeUpdate();
+        // Reset sequence for app_user.id (H2 specific)
+        em.createNativeQuery("ALTER TABLE app_user ALTER COLUMN id RESTART WITH 100").executeUpdate();
+        em.getTransaction().commit();
+        em.close();
+
+        // Cria business com login único para evitar conflito com import.sql
         var userService = new UserService();
-        java.util.List<com.caracore.cso.entity.User> users = userService.findAll();
-        for (com.caracore.cso.entity.User u : users) userService.delete(u.getId());
 
         var business = new com.caracore.cso.entity.User();
-        business.setId(2L);
         business.setRole("BUSINESS");
-        business.setName("Business");
-        business.setLogin("business");
-        business.setPassword("business123");
+        business.setName("Test Business");
+        business.setLogin("test_business");
+        business.setPassword("test_business123");
         userService.save(business);
+        business = userService.findByLogin("test_business");
 
         var courierUser = new com.caracore.cso.entity.User();
-        courierUser.setId(1L);
         courierUser.setRole("COURIER");
-        courierUser.setName("Courier");
-        courierUser.setLogin("courier");
-        courierUser.setPassword("courier123");
+        courierUser.setName("Test Courier");
+        courierUser.setLogin("test_courier");
+        courierUser.setPassword("test_courier123");
         userService.save(courierUser);
+        courierUser = userService.findByLogin("test_courier");
 
         var courier = new Courier();
-        courier.setId(1L);
         courier.setBusiness(business);
         courier.setUser(courierUser);
         courier.setFactorCourier(1.2);
         service.save(courier);
+        // Buscar o courier persistido para pegar o ID real
+        var couriers = service.findAllByBusiness(business.getId());
+        if (!couriers.isEmpty()) courier = couriers.get(0);
 
         // Cria Delivery para teste de canAccessDelivery
         var deliveryService = new DeliveryService();
-        java.util.List<com.caracore.cso.entity.Delivery> deliveries = deliveryService.findAll();
-        for (com.caracore.cso.entity.Delivery d : deliveries) deliveryService.delete(d.getId());
-
         var delivery = new com.caracore.cso.entity.Delivery();
-        delivery.setId(1L);
         delivery.setBusiness(business);
         delivery.setCourier(courier);
         delivery.setStart("A");
