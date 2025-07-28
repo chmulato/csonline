@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
     <Appenders>
-        <File name="FileLogger" fileName="logs/app.log" append="false">
+        <File name="FileLogger" fileName="logs/app.log" append="true">
+            <PatternLayout pattern="%d [%t] %-5p %c - %m%n"/>
+        </File>
+        <File name="TestLogger" fileName="logs/test.log" append="true">
             <PatternLayout pattern="%d [%t] %-5p %c - %m%n"/>
         </File>
         <Console name="ConsoleLogger" target="SYSTEM_OUT">
@@ -12,6 +15,13 @@
         </Console>
     </Appenders>
     <Loggers>
+        <!-- Logger exclusivo para classes de teste -->
+        <Logger name="com.caracore.cso.service" level="debug" additivity="false">
+            <AppenderRef ref="TestLogger"/>
+        </Logger>
+        <Logger name="com.caracore.cso.repository" level="debug" additivity="false">
+            <AppenderRef ref="TestLogger"/>
+        </Logger>
         <Root level="debug">
             <AppenderRef ref="ConsoleLogger"/>
             <AppenderRef ref="FileLogger"/>
