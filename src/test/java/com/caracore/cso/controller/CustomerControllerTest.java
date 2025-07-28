@@ -22,21 +22,22 @@ public class CustomerControllerTest extends JerseyTest {
         var users = userService.findAll();
         for (var u : users) userService.delete(u.getId());
 
+        long ts = System.currentTimeMillis();
         var business = new com.caracore.cso.entity.User();
-        business.setId(2L);
         business.setRole("BUSINESS");
-        business.setName("Business");
-        business.setLogin("business");
+        business.setName("Business" + ts);
+        business.setLogin("business_" + ts);
         business.setPassword("business123");
         userService.save(business);
+        business = userService.findByLogin("business_" + ts);
 
         var customerUser = new com.caracore.cso.entity.User();
-        customerUser.setId(1L);
         customerUser.setRole("CUSTOMER");
-        customerUser.setName("Customer");
-        customerUser.setLogin("customer");
+        customerUser.setName("Customer" + ts);
+        customerUser.setLogin("customer_" + ts);
         customerUser.setPassword("customer123");
         userService.save(customerUser);
+        customerUser = userService.findByLogin("customer_" + ts);
 
         var customer = new com.caracore.cso.entity.Customer();
         customer.setBusiness(business);
@@ -44,6 +45,10 @@ public class CustomerControllerTest extends JerseyTest {
         customer.setFactorCustomer(1.2);
         customer.setPriceTable("TabelaTest");
         customerService.save(customer);
+        // Store IDs for use in tests
+        System.setProperty("test.business.id", business.getId().toString());
+        System.setProperty("test.customerUser.id", customerUser.getId().toString());
+        System.setProperty("test.customer.id", customer.getId().toString());
     }
 
     private static final Logger logger = LogManager.getLogger(CustomerControllerTest.class);
@@ -64,27 +69,25 @@ public class CustomerControllerTest extends JerseyTest {
 
     @Test
     public void testGetCustomerById() {
-        Response response = target("/customers/1").request().get();
+        String customerId = System.getProperty("test.customer.id");
+        Response response = target("/customers/" + customerId).request().get();
         assertEquals(200, response.getStatus());
     }
 
     @Test
     public void testCreateCustomer() {
-        // IDs já criados no setUpTestData: business=2, user=1
-        String json = "{" +
-            "\"factorCustomer\":1.2," +
-            "\"priceTable\":\"TabelaTest\"," +
-            "\"business\":{\"id\":2}," +
-            "\"user\":{\"id\":1}" +
-        "}";
+        String businessId = System.getProperty("test.business.id");
+        String userId = System.getProperty("test.customerUser.id");
+        String json = String.format("{\"factorCustomer\":1.2,\"priceTable\":\"TabelaTest\",\"business\":{\"id\":%s},\"user\":{\"id\":%s}}", businessId, userId);
         Response response = target("/customers").request().header("Accept", "application/json").post(jakarta.ws.rs.client.Entity.json(json));
         assertEquals(201, response.getStatus());
     }
 
     @Test
     public void testUpdateCustomer() {
+        String customerId = System.getProperty("test.customer.id");
         String json = "{\"factorCustomer\":1.3,\"priceTable\":\"TabelaAtualizada\"}";
-        Response response = target("/customers/1").request().put(jakarta.ws.rs.client.Entity.json(json));
+        Response response = target("/customers/" + customerId).request().put(jakarta.ws.rs.client.Entity.json(json));
         assertEquals(200, response.getStatus());
     }
 
