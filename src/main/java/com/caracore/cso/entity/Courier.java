@@ -10,11 +10,11 @@ public class Courier {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @ManyToOne
     @JoinColumn(name = "idbusiness", referencedColumnName = "id")
     private User business;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @ManyToOne
     @JoinColumn(name = "idcourier", referencedColumnName = "id")
     private User user;
 
