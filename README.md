@@ -42,7 +42,7 @@ Os endpoints REST estão disponíveis em:
 
 ## Documentação Completa
 
-Consulte o arquivo [INDEX.md](INDEX.md) para uma documentação detalhada do projeto.
+Consulte o arquivo [INDEX.md](doc/INDEX.md) para uma documentação detalhada do projeto.
 
 ## Estrutura de Pastas
 
