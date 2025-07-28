@@ -31,11 +31,7 @@ public class DeliveryService {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
-            if (delivery.getId() == null) {
-                Long nextId = ((Number) em.createQuery("SELECT COALESCE(MAX(d.id), 0) + 1 FROM Delivery d").getSingleResult()).longValue();
-                delivery.setId(nextId);
-            }
-            em.merge(delivery);
+            em.persist(delivery);
             em.getTransaction().commit();
         } catch (Exception e) {
             logger.error("Erro ao salvar delivery", e);

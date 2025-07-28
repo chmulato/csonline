@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 @Table(name = "delivery")
 public class Delivery {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne
