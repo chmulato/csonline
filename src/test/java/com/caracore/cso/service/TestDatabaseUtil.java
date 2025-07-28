@@ -13,6 +13,7 @@ public class TestDatabaseUtil {
             em.createQuery("DELETE FROM Price").executeUpdate();
             em.createQuery("DELETE FROM Customer").executeUpdate();
             em.createQuery("DELETE FROM Courier").executeUpdate();
+            em.createQuery("DELETE FROM Team").executeUpdate();
             em.createNativeQuery("DELETE FROM app_user").executeUpdate();
             em.getTransaction().commit();
         } catch (Exception e) {
