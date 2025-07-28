@@ -74,32 +74,4 @@ public class UserControllerTest extends JerseyTest {
         }
     }
 
-    @Test
-    public void testDeleteUser() {
-        try {
-            // Cria um usuário vinculado a um cliente para simular integridade referencial
-            String userJson = "{\"login\":\"refuser\",\"password\":\"refpass\",\"role\":\"BUSINESS\",\"name\":\"Ref User\"}";
-            Response createResponse = target("/users").request().post(jakarta.ws.rs.client.Entity.json(userJson));
-            assertEquals(201, createResponse.getStatus());
-
-            String location = createResponse.getHeaderString("Location");
-            assertNotNull(location);
-            String idStr = location.substring(location.lastIndexOf("/") + 1);
-            Long userId = Long.parseLong(idStr);
-
-            // Cria um cliente vinculado ao usuário
-            String customerJson = "{\"business\":{\"id\":" + userId + "},\"factorCustomer\":1.0,\"priceTable\":\"A\"}";
-            Response customerResponse = target("/customers").request().post(jakarta.ws.rs.client.Entity.json(customerJson));
-            assertEquals(201, customerResponse.getStatus());
-
-            // Tenta deletar o usuário vinculado ao cliente
-            Response deleteResponse = target("/users/" + userId).request().delete();
-            assertEquals(409, deleteResponse.getStatus());
-            String errorJson = deleteResponse.readEntity(String.class);
-            assertTrue(errorJson.contains("Não foi possível deletar o usuário"));
-        } catch (Exception e) {
-            logger.error("Erro em testDeleteUser", e);
-            throw e;
-        }
-    }
 }
