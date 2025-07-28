@@ -30,12 +30,17 @@ public class CustomerController {
 
     @GET
     @Path("/{id}")
-    public Customer getById(@PathParam("id") Long id) {
+    public Response getById(@PathParam("id") Long id) {
         try {
-            return customerService.findById(id);
+            Customer customer = customerService.findById(id);
+            if (customer != null) {
+                return Response.ok(customer).build();
+            } else {
+                return Response.status(Response.Status.NO_CONTENT).build();
+            }
         } catch (Exception e) {
             logger.error("Erro ao buscar customer por id: " + id, e);
-            throw e;
+            return Response.serverError().entity("Erro ao buscar customer").build();
         }
     }
 
