@@ -8,13 +8,26 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-class PriceServiceTest {
+public class PriceServiceTest {
     private static final Logger logger = LoggerFactory.getLogger(PriceServiceTest.class);
     private PriceService service;
+
+    @BeforeEach
+    void setUp() {
+        try {
+            // TestDatabaseUtil.clearDatabase();
+            service = new PriceService();
+        } catch (Exception e) {
+            logger.error("Erro ao preparar o teste PriceServiceTest", e);
+            throw e;
+        }
+    }
+
     @Test
     void testDeletePriceWithDeliveryReference() {
         try {
             long ts = System.currentTimeMillis();
+
             // Cria business
             var userService = new UserService();
             var business = new com.caracore.cso.entity.User();
@@ -44,7 +57,10 @@ class PriceServiceTest {
 
             // Buscar o customer persistido para pegar o ID real
             var customers = new CustomerService().findAll();
-            customer = customers.stream().filter(c -> c.getUser().getLogin().equals("customerref_" + ts)).findFirst().orElse(customer);
+            customer = customers.stream()
+                .filter(c -> c.getUser().getLogin().equals("customerref_" + ts))
+                .findFirst()
+                .orElse(customer);
 
             // Cria price
             var price = new com.caracore.cso.entity.Price();
@@ -58,7 +74,10 @@ class PriceServiceTest {
 
             // Buscar o price persistido para pegar o ID real
             var prices = new PriceService().findAll();
-            price = prices.stream().filter(p -> p.getCustomer().getId().equals(customer.getId())).findFirst().orElse(price);
+            price = prices.stream()
+                .filter(p -> p.getCustomer().getId().equals(customer.getId()))
+                .findFirst()
+                .orElse(price);
 
             // Cria delivery vinculado ao price
             var delivery = new com.caracore.cso.entity.Delivery();
@@ -80,25 +99,16 @@ class PriceServiceTest {
 
             // Buscar o price persistido para pegar o ID real
             prices = new PriceService().findAll();
-            price = prices.stream().filter(p -> p.getCustomer().getId().equals(customer.getId())).findFirst().orElse(price);
+            price = prices.stream()
+                .filter(p -> p.getCustomer().getId().equals(customer.getId()))
+                .findFirst()
+                .orElse(price);
 
             // Tenta deletar o price vinculado ao delivery
             RuntimeException ex = assertThrows(RuntimeException.class, () -> service.deleteById(price.getId()));
             assertTrue(ex.getMessage().contains("Não foi possível deletar o preço") || ex.getMessage().contains("vinculados"));
         } catch (Exception e) {
             logger.error("Erro durante o teste testDeletePriceWithDeliveryReference em PriceServiceTest", e);
-            throw e;
-        }
-    }
-    // ...existing code...
-
-    @BeforeEach
-    void setUp() {
-        try {
-            // TestDatabaseUtil.clearDatabase();
-            service = new PriceService();
-        } catch (Exception e) {
-            logger.error("Erro ao preparar o teste PriceServiceTest", e);
             throw e;
         }
     }
