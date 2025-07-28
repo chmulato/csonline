@@ -108,35 +108,37 @@ public class CustomerControllerTest extends JerseyTest {
 
     @Test
     public void testDeleteCustomer() {
-        // Criação do usuário BUSINESS
-        String businessJson = "{\"login\":\"deletebiz\",\"password\":\"bizpass\",\"role\":\"BUSINESS\",\"name\":\"Delete Biz\"}";
-        Response businessResp = target("/users").request().post(jakarta.ws.rs.client.Entity.json(businessJson));
-        assertEquals(201, businessResp.getStatus());
-        String businessLocation = businessResp.getHeaderString("Location");
-        assertNotNull(businessLocation);
-        Long businessId = Long.parseLong(businessLocation.substring(businessLocation.lastIndexOf("/") + 1));
+        try {
+            // Criação do usuário BUSINESS
+            String businessJson = "{\"login\":\"deletebiz\",\"password\":\"bizpass\",\"role\":\"BUSINESS\",\"name\":\"Delete Biz\"}";
+            Response businessResp = target("/users").request().post(jakarta.ws.rs.client.Entity.json(businessJson));
+            assertEquals(201, businessResp.getStatus());
+            String businessLocation = businessResp.getHeaderString("Location");
+            assertNotNull(businessLocation);
+            Long businessId = Long.parseLong(businessLocation.substring(businessLocation.lastIndexOf("/") + 1));
 
-        // Criação do usuário CUSTOMER
-        String customerJson = "{\"login\":\"deletecust\",\"password\":\"custpass\",\"role\":\"CUSTOMER\",\"name\":\"Delete Cust\"}";
-        Response custResp = target("/users").request().post(jakarta.ws.rs.client.Entity.json(customerJson));
-        assertEquals(201, custResp.getStatus());
-        String custLocation = custResp.getHeaderString("Location");
-        assertNotNull(custLocation);
-        Long custId = Long.parseLong(custLocation.substring(custLocation.lastIndexOf("/") + 1));
+            // Criação do usuário CUSTOMER
+            String customerJson = "{\"login\":\"deletecust\",\"password\":\"custpass\",\"role\":\"CUSTOMER\",\"name\":\"Delete Cust\"}";
+            Response custResp = target("/users").request().post(jakarta.ws.rs.client.Entity.json(customerJson));
+            assertEquals(201, custResp.getStatus());
+            String custLocation = custResp.getHeaderString("Location");
+            assertNotNull(custLocation);
+            Long custId = Long.parseLong(custLocation.substring(custLocation.lastIndexOf("/") + 1));
 
-        // Criação do vínculo Customer
-        String vinculoJson = "{\"business\":{\"id\":" + businessId + "},\"user\":{\"id\":" + custId + "},\"factorCustomer\":1.0,\"priceTable\":\"TabelaX\"}";
-        Response vinculoResp = target("/customers").request().post(jakarta.ws.rs.client.Entity.json(vinculoJson));
-        assertEquals(201, vinculoResp.getStatus());
+            // Criação do vínculo Customer
+            String vinculoJson = "{\"business\":{\"id\":" + businessId + "},\"user\":{\"id\":" + custId + "},\"factorCustomer\":1.0,\"priceTable\":\"TabelaX\"}";
+            Response vinculoResp = target("/customers").request().post(jakarta.ws.rs.client.Entity.json(vinculoJson));
+            assertEquals(201, vinculoResp.getStatus());
 
-        // Tenta deletar o usuário BUSINESS (deveria falhar por integridade referencial)
-        Response delBizResp = target("/users/" + businessId).request().delete();
-        if (delBizResp.getStatus() == 409) {
+            // Tenta deletar o usuário BUSINESS (deveria falhar por integridade referencial)
+            Response delBizResp = target("/users/" + businessId).request().delete();
+            assertEquals(409, delBizResp.getStatus(), "Deleção de usuário vinculado deve retornar 409");
             String errorJson = delBizResp.readEntity(String.class);
             assertTrue(errorJson.contains("error"), "Mensagem JSON deve conter o campo 'error'");
             assertTrue(errorJson.contains("Não foi possível deletar o usuário"), "Mensagem deve ser padronizada");
-        } else {
-            assertEquals(204, delBizResp.getStatus());
+        } catch (Exception e) {
+            logger.error("Erro em testDeleteCustomer", e);
+            fail("Exceção inesperada: " + e.getMessage());
         }
     }
 }

@@ -7,6 +7,58 @@ import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CourierServiceTest {
+    @Test
+    void testDeleteCourierWithDeliveryReference() {
+        // Cria business
+        var userService = new UserService();
+        var business = new com.caracore.cso.entity.User();
+        business.setId(10L);
+        business.setRole("BUSINESS");
+        business.setName("BusinessRef");
+        business.setLogin("businessref");
+        business.setPassword("businessref123");
+        userService.save(business);
+
+        // Cria courier user
+        var courierUser = new com.caracore.cso.entity.User();
+        courierUser.setId(11L);
+        courierUser.setRole("COURIER");
+        courierUser.setName("CourierRef");
+        courierUser.setLogin("courierref");
+        courierUser.setPassword("courierref123");
+        userService.save(courierUser);
+
+        // Cria courier
+        var courier = new com.caracore.cso.entity.Courier();
+        courier.setId(12L);
+        courier.setBusiness(business);
+        courier.setUser(courierUser);
+        courier.setFactorCourier(1.5);
+        service.save(courier);
+
+        // Cria delivery vinculado ao courier
+        var delivery = new com.caracore.cso.entity.Delivery();
+        delivery.setId(13L);
+        delivery.setBusiness(business);
+        delivery.setCourier(courier);
+        delivery.setStart("A");
+        delivery.setDestination("B");
+        delivery.setContact("Contact");
+        delivery.setDescription("Desc");
+        delivery.setVolume("10");
+        delivery.setWeight("5");
+        delivery.setKm("2");
+        delivery.setAdditionalCost(1.0);
+        delivery.setCost(10.0);
+        delivery.setReceived(true);
+        delivery.setCompleted(false);
+        delivery.setDatatime(java.time.LocalDateTime.now());
+        new DeliveryService().save(delivery);
+
+        // Tenta deletar o courier vinculado ao delivery
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> service.delete(12L));
+        assertTrue(ex.getMessage().contains("Não foi possível deletar o entregador") || ex.getMessage().contains("vínculos"));
+    }
     private CourierService service;
 
     @BeforeEach

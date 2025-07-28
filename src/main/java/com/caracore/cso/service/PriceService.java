@@ -11,6 +11,25 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 
 public class PriceService {
+
+    public void save(Price price) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            if (price.getId() == null) {
+                Long nextId = ((Number) em.createQuery("SELECT COALESCE(MAX(p.id), 0) + 1 FROM Price p").getSingleResult()).longValue();
+                price.setId(nextId);
+            }
+            em.merge(price);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            logger.error("Erro ao salvar price", e);
+            em.getTransaction().rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
     private static final Logger logger = LogManager.getLogger(PriceService.class);
 
     public Price findById(Long id) {

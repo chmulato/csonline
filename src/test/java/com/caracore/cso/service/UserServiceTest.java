@@ -6,6 +6,38 @@ import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserServiceTest {
+    @Test
+    void testDeleteUserWithCustomerReference() {
+        // Cria um usuário BUSINESS
+        User business = new User();
+        business.setId(100L);
+        business.setRole("BUSINESS");
+        business.setName("BusinessRef");
+        business.setLogin("businessref");
+        business.setPassword("businessref123");
+        service.save(business);
+
+        // Cria um usuário CUSTOMER
+        User customerUser = new User();
+        customerUser.setId(101L);
+        customerUser.setRole("CUSTOMER");
+        customerUser.setName("CustomerRef");
+        customerUser.setLogin("customerref");
+        customerUser.setPassword("customerref123");
+        service.save(customerUser);
+
+        // Cria um cliente vinculado ao business
+        com.caracore.cso.entity.Customer customer = new com.caracore.cso.entity.Customer();
+        customer.setBusiness(business);
+        customer.setUser(customerUser);
+        customer.setFactorCustomer(1.1);
+        customer.setPriceTable("A");
+        new com.caracore.cso.service.CustomerService().save(customer);
+
+        // Tenta deletar o usuário business vinculado ao cliente
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> service.delete(100L));
+        assertTrue(ex.getMessage().contains("Não foi possível deletar o usuário") || ex.getMessage().contains("vínculos"));
+    }
     private UserService service;
 
     @BeforeEach

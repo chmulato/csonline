@@ -7,6 +7,37 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TeamServiceTest {
+    @Test
+    void testDeleteBusinessWithTeamReference() {
+        // Cria um usuário BUSINESS
+        User business = new User();
+        business.setId(200L);
+        business.setRole("BUSINESS");
+        business.setName("BusinessRef");
+        business.setLogin("businessref");
+        business.setPassword("businessref123");
+        new UserService().save(business);
+
+        // Cria um usuário COURIER
+        User courier = new User();
+        courier.setId(201L);
+        courier.setRole("COURIER");
+        courier.setName("CourierRef");
+        courier.setLogin("courierref");
+        courier.setPassword("courierref123");
+        new UserService().save(courier);
+
+        // Cria um time vinculado ao business
+        Team team = new Team();
+        team.setBusiness(business);
+        team.setCourier(courier);
+        team.setFactorCourier(1.5);
+        teamService.save(team);
+
+        // Tenta deletar o usuário business vinculado ao time
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> new UserService().delete(200L));
+        assertTrue(ex.getMessage().contains("Não é possível excluir o time") || ex.getMessage().contains("vinculados"));
+    }
     private TeamService teamService;
 
     @BeforeEach
