@@ -10,41 +10,26 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.caracore.cso.util.TestDataFactory;
+
 class UserServiceTest {
     private static final Logger logger = LoggerFactory.getLogger(UserServiceTest.class);
     private UserService service;
     @Test
     void testDeleteUserWithCustomerReference() {
         try {
-            long ts = System.currentTimeMillis();
-            // Cria um usuário BUSINESS
-            User business = new User();
-            business.setRole("BUSINESS");
-            business.setName("BusinessRef");
-            business.setLogin("businessref_" + ts);
-            business.setPassword("businessref123");
+            User business = TestDataFactory.createUser("BUSINESS");
             service.save(business);
-            business = service.findByLogin("businessref_" + ts);
+            business = service.findByLogin(business.getLogin());
 
-            // Cria um usuário CUSTOMER
-            User customerUser = new User();
-            customerUser.setRole("CUSTOMER");
-            customerUser.setName("CustomerRef");
-            customerUser.setLogin("customerref_" + ts);
-            customerUser.setPassword("customerref123");
+            User customerUser = TestDataFactory.createUser("CUSTOMER");
             service.save(customerUser);
-            customerUser = service.findByLogin("customerref_" + ts);
+            customerUser = service.findByLogin(customerUser.getLogin());
 
-            // Cria um cliente vinculado ao business
-            com.caracore.cso.entity.Customer customer = new com.caracore.cso.entity.Customer();
-            customer.setBusiness(business);
-            customer.setUser(customerUser);
-            customer.setFactorCustomer(1.1);
-            customer.setPriceTable("A");
+            com.caracore.cso.entity.Customer customer = TestDataFactory.createCustomer(business, customerUser);
             new com.caracore.cso.service.CustomerService().save(customer);
 
-            // Tenta deletar o usuário business vinculado ao cliente
-            final var businessId = business.getId();
+            final Long businessId = business.getId();
             RuntimeException ex = assertThrows(RuntimeException.class, () -> service.delete(businessId));
             assertTrue(ex.getMessage().contains("Não foi possível deletar o usuário") || ex.getMessage().contains("vínculos"));
         } catch (Exception e) {
@@ -62,36 +47,19 @@ class UserServiceTest {
             em.close();
             service = new UserService();
 
-            long ts = System.currentTimeMillis();
-            // Cria usuários de teste com login único
-            User admin = new User();
-            admin.setRole("ADMIN");
-            admin.setName("Administrador");
-            admin.setLogin("admin_" + ts);
-            admin.setPassword("admin123");
+            // Cria usuários de teste com dados únicos
+            User admin = TestDataFactory.createUser("ADMIN");
             service.save(admin);
 
-            User courier = new User();
-            courier.setRole("COURIER");
-            courier.setName("Courier");
-            courier.setLogin("courier_" + ts);
-            courier.setPassword("courier123");
+            User courier = TestDataFactory.createUser("COURIER");
             service.save(courier);
 
-            User business = new User();
-            business.setRole("BUSINESS");
-            business.setName("Business");
-            business.setLogin("business_" + ts);
-            business.setPassword("business123");
+            User business = TestDataFactory.createUser("BUSINESS");
             service.save(business);
 
             // Adiciona mais usuários se necessário para o teste de findAll
             for (long i = 4; i <= 6; i++) {
-                User u = new User();
-                u.setRole("USER");
-                u.setName("User" + i);
-                u.setLogin("user" + i + "_" + ts);
-                u.setPassword("pass" + i);
+                User u = TestDataFactory.createUser("USER");
                 service.save(u);
             }
         } catch (Exception e) {
@@ -103,17 +71,12 @@ class UserServiceTest {
     @Test
     void testFindByLoginAndPassword() {
         try {
-            long ts = System.currentTimeMillis();
-            User admin = new User();
-            admin.setRole("ADMIN");
-            admin.setName("Administrador");
-            admin.setLogin("admin_" + ts);
-            admin.setPassword("admin123");
+            User admin = TestDataFactory.createUser("ADMIN");
             service.save(admin);
-            User found = service.findByLoginAndPassword("admin_" + ts, "admin123");
+            User found = service.findByLoginAndPassword(admin.getLogin(), admin.getPassword());
             assertNotNull(found);
             assertEquals("ADMIN", found.getRole());
-            assertEquals("Administrador", found.getName());
+            assertEquals(admin.getName(), found.getName());
         } catch (Exception e) {
             logger.error("Erro durante o teste testFindByLoginAndPassword em UserServiceTest", e);
             throw e;
@@ -123,18 +86,13 @@ class UserServiceTest {
     @Test
     void testFindById() {
         try {
-            long ts = System.currentTimeMillis();
-            User admin = new User();
-            admin.setRole("ADMIN");
-            admin.setName("Administrador");
-            admin.setLogin("admin_" + ts);
-            admin.setPassword("admin123");
+            User admin = TestDataFactory.createUser("ADMIN");
             service.save(admin);
-            User found = service.findByLogin("admin_" + ts);
+            User found = service.findByLogin(admin.getLogin());
             assertNotNull(found);
             User user = service.findById(found.getId());
             assertNotNull(user);
-            assertEquals("admin_" + ts, user.getLogin());
+            assertEquals(admin.getLogin(), user.getLogin());
         } catch (Exception e) {
             logger.error("Erro durante o teste testFindById em UserServiceTest", e);
             throw e;
@@ -144,14 +102,9 @@ class UserServiceTest {
     @Test
     void testFindByLogin() {
         try {
-            long ts = System.currentTimeMillis();
-            User courier = new User();
-            courier.setRole("COURIER");
-            courier.setName("Courier");
-            courier.setLogin("courier_" + ts);
-            courier.setPassword("courier123");
+            User courier = TestDataFactory.createUser("COURIER");
             service.save(courier);
-            User user = service.findByLogin("courier_" + ts);
+            User user = service.findByLogin(courier.getLogin());
             assertNotNull(user);
             assertEquals("COURIER", user.getRole());
         } catch (Exception e) {
@@ -163,22 +116,13 @@ class UserServiceTest {
     @Test
     void testIsAdmin() {
         try {
-            long ts = System.currentTimeMillis();
-            User admin = new User();
-            admin.setRole("ADMIN");
-            admin.setName("Administrador");
-            admin.setLogin("admin_" + ts);
-            admin.setPassword("admin123");
+            User admin = TestDataFactory.createUser("ADMIN");
             service.save(admin);
-            User courier = new User();
-            courier.setRole("COURIER");
-            courier.setName("Courier");
-            courier.setLogin("courier_" + ts);
-            courier.setPassword("courier123");
+            User courier = TestDataFactory.createUser("COURIER");
             service.save(courier);
-            User adminFound = service.findByLoginAndPassword("admin_" + ts, "admin123");
+            User adminFound = service.findByLoginAndPassword(admin.getLogin(), admin.getPassword());
             assertTrue(service.isAdmin(adminFound));
-            User courierFound = service.findByLoginAndPassword("courier_" + ts, "courier123");
+            User courierFound = service.findByLoginAndPassword(courier.getLogin(), courier.getPassword());
             assertFalse(service.isAdmin(courierFound));
         } catch (Exception e) {
             logger.error("Erro durante o teste testIsAdmin em UserServiceTest", e);

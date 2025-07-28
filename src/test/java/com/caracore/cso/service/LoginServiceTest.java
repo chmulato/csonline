@@ -10,6 +10,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.caracore.cso.util.TestDataFactory;
+
 class LoginServiceTest {
     private static final Logger logger = LoggerFactory.getLogger(LoginServiceTest.class);
     private EntityManager em;
@@ -21,13 +23,7 @@ class LoginServiceTest {
             em = JPAUtil.getEntityManager();
             em.getTransaction().begin();
             loginService = new LoginService();
-            // Cria usuário de teste com login único
-            long ts = System.currentTimeMillis();
-            User user = new User();
-            user.setRole("ADMIN");
-            user.setName("Login Test");
-            user.setLogin("loginuser_" + ts);
-            user.setPassword("senha123");
+            User user = TestDataFactory.createUser("ADMIN");
             em.persist(user);
             em.getTransaction().commit();
         } catch (Exception e) {
@@ -40,7 +36,7 @@ class LoginServiceTest {
     void tearDown() {
         try {
             em.getTransaction().begin();
-            em.createQuery("DELETE FROM User WHERE id = 160").executeUpdate();
+            em.createQuery("DELETE FROM User").executeUpdate();
             em.getTransaction().commit();
             em.close();
         } catch (Exception e) {
@@ -51,9 +47,11 @@ class LoginServiceTest {
     @Test
     void testLoginSuccess() {
         try {
-            User user = loginService.authenticate("loginuser", "senha123");
-            assertNotNull(user);
-            assertEquals("Login Test", user.getName());
+            // Recupera o usuário criado no setUp
+            User user = (User) em.createQuery("SELECT u FROM User u WHERE u.role = 'ADMIN'").getSingleResult();
+            User authUser = loginService.authenticate(user.getLogin(), user.getPassword());
+            assertNotNull(authUser);
+            assertEquals(user.getName(), authUser.getName());
         } catch (Exception e) {
             logger.error("Erro durante o teste testLoginSuccess em LoginServiceTest", e);
             throw e;
@@ -63,11 +61,13 @@ class LoginServiceTest {
     @Test
     void testLoginFail() {
         try {
+            // Recupera o usuário criado no setUp
+            User user = (User) em.createQuery("SELECT u FROM User u WHERE u.role = 'ADMIN'").getSingleResult();
             assertThrows(SecurityException.class, () -> {
-                loginService.authenticate("loginuser", "wrongpass");
+                loginService.authenticate(user.getLogin(), "wrongpass");
             });
             assertThrows(SecurityException.class, () -> {
-                loginService.authenticate("wronguser", "senha123");
+                loginService.authenticate("wronguser", user.getPassword());
             });
         } catch (Exception e) {
             logger.error("Erro durante o teste testLoginFail em LoginServiceTest", e);

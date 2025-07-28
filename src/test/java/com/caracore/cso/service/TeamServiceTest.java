@@ -9,39 +9,29 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.caracore.cso.util.TestDataFactory;
+
 class TeamServiceTest {
     private static final Logger logger = LoggerFactory.getLogger(TeamServiceTest.class);
     private TeamService teamService;
     @Test
     void testDeleteBusinessWithTeamReference() {
         try {
-            // Cria um usuário BUSINESS
-            User business = new User();
-            business.setId(200L);
-            business.setRole("BUSINESS");
-            business.setName("BusinessRef");
-            business.setLogin("businessref");
-            business.setPassword("businessref123");
+            // Cria usuários BUSINESS e COURIER únicos
+            final User business = TestDataFactory.createUser("BUSINESS");
             new UserService().save(business);
+            User businessPersisted = new UserService().findByLogin(business.getLogin());
 
-            // Cria um usuário COURIER
-            User courier = new User();
-            courier.setId(201L);
-            courier.setRole("COURIER");
-            courier.setName("CourierRef");
-            courier.setLogin("courierref");
-            courier.setPassword("courierref123");
+            User courier = TestDataFactory.createUser("COURIER");
             new UserService().save(courier);
+            courier = new UserService().findByLogin(courier.getLogin());
 
             // Cria um time vinculado ao business
-            Team team = new Team();
-            team.setBusiness(business);
-            team.setCourier(courier);
-            team.setFactorCourier(1.5);
+            Team team = TestDataFactory.createTeam(businessPersisted, courier);
             teamService.save(team);
 
             // Tenta deletar o usuário business vinculado ao time
-            RuntimeException ex = assertThrows(RuntimeException.class, () -> new UserService().delete(200L));
+            RuntimeException ex = assertThrows(RuntimeException.class, () -> new UserService().delete(businessPersisted.getId()));
             assertTrue(ex.getMessage().contains("Não é possível excluir o time") || ex.getMessage().contains("vinculados"));
         } catch (Exception e) {
             logger.error("Erro durante o teste testDeleteBusinessWithTeamReference em TeamServiceTest", e);
@@ -67,27 +57,22 @@ class TeamServiceTest {
     @Test
     void testSaveAndFindById() {
         try {
-            Team team = new Team();
-            team.setFactorCourier(1.5);
-            User business = new User();
-            business.setLogin("business_login");
-            business.setName("Business Name");
-            business.setPassword("123456");
-            business.setRole("BUSINESS");
-            User courier = new User();
-            courier.setLogin("courier_login");
-            courier.setName("Courier Name");
-            courier.setPassword("654321");
-            courier.setRole("COURIER");
-            team.setBusiness(business);
-            team.setCourier(courier);
+            User business = TestDataFactory.createUser("BUSINESS");
+            new UserService().save(business);
+            business = new UserService().findByLogin(business.getLogin());
+
+            User courier = TestDataFactory.createUser("COURIER");
+            new UserService().save(courier);
+            courier = new UserService().findByLogin(courier.getLogin());
+
+            Team team = TestDataFactory.createTeam(business, courier);
             teamService.save(team);
 
             Team found = teamService.findById(team.getId());
             assertNotNull(found);
-            assertEquals(1.5, found.getFactorCourier());
-            assertEquals("Business Name", found.getBusiness().getName());
-            assertEquals("Courier Name", found.getCourier().getName());
+            assertEquals(team.getFactorCourier(), found.getFactorCourier());
+            assertEquals(business.getName(), found.getBusiness().getName());
+            assertEquals(courier.getName(), found.getCourier().getName());
         } catch (Exception e) {
             logger.error("Erro durante o teste testSaveAndFindById em TeamServiceTest", e);
             throw e;
@@ -97,10 +82,24 @@ class TeamServiceTest {
     @Test
     void testFindAll() {
         try {
-            Team team1 = new Team(); team1.setFactorCourier(1.1);
-            Team team2 = new Team(); team2.setFactorCourier(2.2);
+            User business = TestDataFactory.createUser("BUSINESS");
+            new UserService().save(business);
+            business = new UserService().findByLogin(business.getLogin());
+
+            User courier1 = TestDataFactory.createUser("COURIER");
+            new UserService().save(courier1);
+            courier1 = new UserService().findByLogin(courier1.getLogin());
+            Team team1 = TestDataFactory.createTeam(business, courier1);
+            team1.setFactorCourier(1.1);
             teamService.save(team1);
+
+            User courier2 = TestDataFactory.createUser("COURIER");
+            new UserService().save(courier2);
+            courier2 = new UserService().findByLogin(courier2.getLogin());
+            Team team2 = TestDataFactory.createTeam(business, courier2);
+            team2.setFactorCourier(2.2);
             teamService.save(team2);
+
             List<Team> all = teamService.findAll();
             assertEquals(2, all.size());
         } catch (Exception e) {
@@ -112,7 +111,16 @@ class TeamServiceTest {
     @Test
     void testDelete() {
         try {
-            Team team = new Team(); team.setFactorCourier(3.3);
+            User business = TestDataFactory.createUser("BUSINESS");
+            new UserService().save(business);
+            business = new UserService().findByLogin(business.getLogin());
+
+            User courier = TestDataFactory.createUser("COURIER");
+            new UserService().save(courier);
+            courier = new UserService().findByLogin(courier.getLogin());
+
+            Team team = TestDataFactory.createTeam(business, courier);
+            team.setFactorCourier(3.3);
             teamService.save(team);
             Long id = team.getId();
             teamService.delete(id);

@@ -8,71 +8,34 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.caracore.cso.util.TestDataFactory;
+
 class DeliveryServiceTest {
     private static final Logger logger = LoggerFactory.getLogger(DeliveryServiceTest.class);
     private DeliveryService service;
     @Test
     void testDeleteDeliveryWithSMSReference() {
         try {
-            long ts = System.currentTimeMillis();
-            // Cria business
             var userService = new UserService();
-            var business = new com.caracore.cso.entity.User();
-            business.setRole("BUSINESS");
-            business.setName("BusinessRef");
-            business.setLogin("businessref_" + ts);
-            business.setPassword("businessref123");
+            var business = TestDataFactory.createUser("BUSINESS");
             userService.save(business);
-            business = userService.findByLogin("businessref_" + ts);
+            business = userService.findByLogin(business.getLogin());
 
-            // Cria courier user
-            var courierUser = new com.caracore.cso.entity.User();
-            courierUser.setRole("COURIER");
-            courierUser.setName("CourierRef");
-            courierUser.setLogin("courierref_" + ts);
-            courierUser.setPassword("courierref123");
+            var courierUser = TestDataFactory.createUser("COURIER");
             userService.save(courierUser);
-            courierUser = userService.findByLogin("courierref_" + ts);
+            courierUser = userService.findByLogin(courierUser.getLogin());
 
-            // Cria courier
-            var courier = new com.caracore.cso.entity.Courier();
-            courier.setBusiness(business);
-            courier.setUser(courierUser);
-            courier.setFactorCourier(1.5);
+            var courier = TestDataFactory.createCourier(business, courierUser);
             new CourierService().save(courier);
-            // Buscar o courier persistido para pegar o ID real
             var couriers = new CourierService().findAllByBusiness(business.getId());
-            final Long courierId = !couriers.isEmpty() ? couriers.get(0).getId() : null;
+            if (!couriers.isEmpty()) courier = couriers.get(0);
 
-            // Cria delivery
-            var delivery = new com.caracore.cso.entity.Delivery();
-            delivery.setBusiness(business);
-            delivery.setCourier(courier);
-            delivery.setStart("A");
-            delivery.setDestination("B");
-            delivery.setContact("Contact");
-            delivery.setDescription("Desc");
-            delivery.setVolume("10");
-            delivery.setWeight("5");
-            delivery.setKm("2");
-            delivery.setAdditionalCost(1.0);
-            delivery.setCost(10.0);
-            delivery.setReceived(true);
-            delivery.setCompleted(false);
-            delivery.setDatatime(java.time.LocalDateTime.now());
+            var delivery = TestDataFactory.createDelivery(business, courier);
             service.save(delivery);
 
-            // Cria SMS vinculado ao delivery
-            var sms = new com.caracore.cso.entity.SMS();
-            sms.setDelivery(delivery);
-            sms.setMessage("Teste");
-            sms.setMobileFrom("11111111");
-            sms.setMobileTo("22222222");
-            sms.setPiece(1);
-            sms.setType("S");
+            var sms = TestDataFactory.createSMS(delivery);
             new SMSService().save(sms);
 
-            // Tenta deletar o delivery vinculado ao SMS
             RuntimeException ex = assertThrows(RuntimeException.class, () -> service.delete(delivery.getId()));
             assertTrue(ex.getMessage().contains("Não foi possível deletar a entrega") || ex.getMessage().contains("vinculados"));
         } catch (Exception e) {

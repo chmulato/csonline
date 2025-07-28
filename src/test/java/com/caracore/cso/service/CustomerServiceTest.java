@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.caracore.cso.util.TestDataFactory;
+
 class CustomerServiceTest {
     private static final Logger logger = LoggerFactory.getLogger(CustomerServiceTest.class);
     private CustomerService service;
@@ -16,49 +18,27 @@ class CustomerServiceTest {
     void testDeleteCustomerWithDeliveryReference() {
         try {
             var userService = new UserService();
-            var business = new com.caracore.cso.entity.User();
-            business.setId(30L);
-            business.setRole("BUSINESS");
-            business.setName("BusinessRef");
-            business.setLogin("businessref");
-            business.setPassword("businessref123");
+            var business = TestDataFactory.createUser("BUSINESS");
             userService.save(business);
+            business = userService.findByLogin(business.getLogin());
 
-            var customerUser = new com.caracore.cso.entity.User();
-            customerUser.setId(31L);
-            customerUser.setRole("CUSTOMER");
-            customerUser.setName("CustomerRef");
-            customerUser.setLogin("customerref");
-            customerUser.setPassword("customerref123");
+            var customerUser = TestDataFactory.createUser("CUSTOMER");
             userService.save(customerUser);
+            customerUser = userService.findByLogin(customerUser.getLogin());
 
-            var customer = new com.caracore.cso.entity.Customer();
-            customer.setId(32L);
-            customer.setBusiness(business);
-            customer.setUser(customerUser);
-            customer.setFactorCustomer(1.1);
-            customer.setPriceTable("A");
+
+            var customer = TestDataFactory.createCustomer(business, customerUser);
             service.save(customer);
 
-            var delivery = new com.caracore.cso.entity.Delivery();
-            delivery.setId(33L);
-            delivery.setBusiness(business);
+            var delivery = TestDataFactory.createDelivery(business, null);
             delivery.setCustomer(customer);
-            delivery.setStart("A");
-            delivery.setDestination("B");
-            delivery.setContact("Contact");
-            delivery.setDescription("Desc");
-            delivery.setVolume("10");
-            delivery.setWeight("5");
-            delivery.setKm("2");
-            delivery.setAdditionalCost(1.0);
-            delivery.setCost(10.0);
-            delivery.setReceived(true);
-            delivery.setCompleted(false);
-            delivery.setDatatime(java.time.LocalDateTime.now());
             new DeliveryService().save(delivery);
 
-            RuntimeException ex = assertThrows(RuntimeException.class, () -> service.delete(32L));
+            // Busca o id do customer salvo
+            var customers = service.findAllByBusiness(business.getId());
+            final Long customerId = !customers.isEmpty() ? customers.get(0).getId() : null;
+
+            RuntimeException ex = assertThrows(RuntimeException.class, () -> service.delete(customerId));
             assertTrue(ex.getMessage().contains("Não foi possível deletar o cliente") || ex.getMessage().contains("vínculos"));
         } catch (Exception e) {
             logger.error("Erro durante o teste testDeleteCustomerWithDeliveryReference em CustomerServiceTest", e);
