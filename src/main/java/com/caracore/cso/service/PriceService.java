@@ -1,3 +1,4 @@
+
 package com.caracore.cso.service;
 
 import com.caracore.cso.entity.Price;
@@ -7,10 +8,11 @@ import jakarta.persistence.TypedQuery;
 import jakarta.persistence.Query;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import java.util.List;
 
 public class PriceService {
+
+    private static final Logger logger = LogManager.getLogger(PriceService.class);
 
     public void save(Price price) {
         EntityManager em = JPAUtil.getEntityManager();
@@ -30,7 +32,6 @@ public class PriceService {
             em.close();
         }
     }
-    private static final Logger logger = LogManager.getLogger(PriceService.class);
 
     public Price findById(Long id) {
         EntityManager em = JPAUtil.getEntityManager();
@@ -94,6 +95,15 @@ public class PriceService {
                 throw new com.caracore.cso.exception.ReferentialIntegrityException("Não foi possível deletar o preço. Existem registros vinculados a este preço.", e);
             }
             throw e;
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Price> findAll() {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            return em.createQuery("SELECT p FROM Price p", Price.class).getResultList();
         } finally {
             em.close();
         }
