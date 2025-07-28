@@ -83,9 +83,13 @@ public class UserService {
             }
             em.getTransaction().commit();
         } catch (Exception e) {
-            em.getTransaction().rollback();
+            try { em.getTransaction().rollback(); } catch (Exception ex) { /* ignora */ }
             String msg = e.getMessage();
+            // Garante mensagem amigável mesmo após erro de transação
             if (msg != null && msg.contains("integrity constraint violation")) {
+                logger.warn("Não foi possível deletar o usuário id: " + userId + ". Existem clientes ou registros vinculados a este usuário.");
+                throw new RuntimeException("Não foi possível deletar o usuário. Existem clientes ou registros vinculados a este usuário.");
+            } else if (e.getCause() != null && e.getCause().getMessage() != null && e.getCause().getMessage().contains("integrity constraint violation")) {
                 logger.warn("Não foi possível deletar o usuário id: " + userId + ". Existem clientes ou registros vinculados a este usuário.");
                 throw new RuntimeException("Não foi possível deletar o usuário. Existem clientes ou registros vinculados a este usuário.");
             } else {

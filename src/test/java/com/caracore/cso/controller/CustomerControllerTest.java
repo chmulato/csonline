@@ -51,7 +51,9 @@ public class CustomerControllerTest extends JerseyTest {
     @Override
     protected Application configure() {
         return new ResourceConfig(CustomerController.class)
-            .register(com.caracore.cso.service.CustomerService.class);
+            .register(com.caracore.cso.service.CustomerService.class)
+            .register(com.caracore.cso.controller.UserController.class)
+            .register(com.caracore.cso.service.UserService.class);
     }
 
     @Test
