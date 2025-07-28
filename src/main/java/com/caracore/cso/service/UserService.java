@@ -51,11 +51,6 @@ public class UserService {
             em.getTransaction().begin();
             User user = em.find(User.class, userId);
             if (user != null) {
-                // Remove registros da tabela team relacionados ao usuário (query nativa)
-                jakarta.persistence.Query teamDelete = em.createNativeQuery("DELETE FROM team WHERE idbusiness = ?");
-                teamDelete.setParameter(1, userId);
-                teamDelete.executeUpdate();
-
                 // Remove explicitamente os filhos para garantir deleção em cascata
                 if (user.getCouriers() != null) {
                     for (var courier : user.getCouriers()) {
