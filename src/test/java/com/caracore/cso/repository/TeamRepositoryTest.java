@@ -20,7 +20,8 @@ public class TeamRepositoryTest {
             teamRepository = new TeamRepository(em);
             em.getTransaction().begin();
             em.createQuery("DELETE FROM Team").executeUpdate();
-            em.createQuery("DELETE FROM Customer").executeUpdate(); // Remove dependências antes de User
+            em.createQuery("DELETE FROM Customer").executeUpdate();
+            em.createQuery("DELETE FROM Courier").executeUpdate();
             em.createQuery("DELETE FROM User").executeUpdate();
             em.getTransaction().commit();
         } catch (Exception e) {
