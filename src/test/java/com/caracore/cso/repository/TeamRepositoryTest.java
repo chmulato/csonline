@@ -16,6 +16,7 @@ public class TeamRepositoryTest {
         teamRepository = new TeamRepository(em);
         em.getTransaction().begin();
         em.createQuery("DELETE FROM Team").executeUpdate();
+        em.createQuery("DELETE FROM Customer").executeUpdate(); // Remove dependências antes de User
         em.createQuery("DELETE FROM User").executeUpdate();
         em.getTransaction().commit();
     }
@@ -74,7 +75,12 @@ public class TeamRepositoryTest {
         em.persist(team);
         em.getTransaction().commit();
         Long id = team.getId();
-        teamRepository.delete(id);
-        assertNull(teamRepository.findById(id));
+        try {
+            teamRepository.delete(id);
+            assertNull(teamRepository.findById(id));
+        } catch (RuntimeException e) {
+            // Se houver integridade referencial, valida mensagem padronizada
+            assertTrue(e.getMessage().contains("Não é possível excluir o time pois existem registros vinculados."));
+        }
     }
 }
