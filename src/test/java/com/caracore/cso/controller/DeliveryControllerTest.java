@@ -14,25 +14,25 @@ import org.apache.logging.log4j.Logger;
 public class DeliveryControllerTest extends JerseyTest {
     @BeforeEach
     void setUpTestData() {
-        // Cria dados de entrega para os testes
+        // Limpa e cria dados de entrega usando TestDataFactory
         var deliveryService = new com.caracore.cso.service.DeliveryService();
         var deliveries = deliveryService.findAll();
         for (var d : deliveries) deliveryService.delete(d.getId());
 
-        var delivery = new com.caracore.cso.entity.Delivery();
-        delivery.setId(1L);
-        delivery.setStart("Origem Teste");
-        delivery.setDestination("Destino Teste");
-        delivery.setContact("Contato Teste");
-        delivery.setDescription("Descrição Teste");
-        delivery.setVolume("1");
-        delivery.setWeight("1");
-        delivery.setKm("1");
-        delivery.setAdditionalCost(0.0);
-        delivery.setCost(0.0);
-        delivery.setReceived(true);
-        delivery.setCompleted(false);
-        delivery.setDatatime(java.time.LocalDateTime.now());
+        // Cria business e courier para associar ao delivery
+        var userService = new com.caracore.cso.service.UserService();
+        var business = com.caracore.cso.util.TestDataFactory.createUser("BUSINESS");
+        userService.save(business);
+        business = userService.findByLogin(business.getLogin());
+        var courierUser = com.caracore.cso.util.TestDataFactory.createUser("COURIER");
+        userService.save(courierUser);
+        courierUser = userService.findByLogin(courierUser.getLogin());
+        var courier = com.caracore.cso.util.TestDataFactory.createCourier(business, courierUser);
+        new com.caracore.cso.service.CourierService().save(courier);
+        var couriers = new com.caracore.cso.service.CourierService().findAllByBusiness(business.getId());
+        if (!couriers.isEmpty()) courier = couriers.get(0);
+
+        var delivery = com.caracore.cso.util.TestDataFactory.createDelivery(business, courier);
         deliveryService.save(delivery);
     }
     private static final Logger logger = LogManager.getLogger(DeliveryControllerTest.class);
