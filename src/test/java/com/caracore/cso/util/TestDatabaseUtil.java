@@ -12,10 +12,11 @@ public class TestDatabaseUtil {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.createQuery("DELETE FROM Team").executeUpdate();
+            // Delete in order of dependencies to avoid referential integrity errors
+            em.createQuery("DELETE FROM SMS").executeUpdate();
             em.createQuery("DELETE FROM Delivery").executeUpdate();
             em.createQuery("DELETE FROM Price").executeUpdate();
-            em.createQuery("DELETE FROM SMS").executeUpdate();
+            em.createQuery("DELETE FROM Team").executeUpdate();
             em.createQuery("DELETE FROM Customer").executeUpdate();
             em.createQuery("DELETE FROM Courier").executeUpdate();
             em.createQuery("DELETE FROM User").executeUpdate();
