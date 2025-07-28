@@ -75,9 +75,12 @@ public class CustomerService {
             }
             em.getTransaction().commit();
         } catch (Exception e) {
-            em.getTransaction().rollback();
+            try { em.getTransaction().rollback(); } catch (Exception ex) { /* ignora */ }
             String msg = e.getMessage();
             if (msg != null && msg.contains("integrity constraint violation")) {
+                logger.warn("Não foi possível deletar o customer id: " + customerId + ". Existem vínculos que impedem a exclusão.");
+                throw new RuntimeException("Não foi possível deletar o cliente. Existem vínculos que impedem a exclusão.");
+            } else if (e.getCause() != null && e.getCause().getMessage() != null && e.getCause().getMessage().contains("integrity constraint violation")) {
                 logger.warn("Não foi possível deletar o customer id: " + customerId + ". Existem vínculos que impedem a exclusão.");
                 throw new RuntimeException("Não foi possível deletar o cliente. Existem vínculos que impedem a exclusão.");
             } else {
