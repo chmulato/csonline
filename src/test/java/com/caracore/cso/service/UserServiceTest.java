@@ -60,38 +60,35 @@ class UserServiceTest {
             em.close();
             service = new UserService();
 
-            // Cria usuários de teste
+            long ts = System.currentTimeMillis();
+            // Cria usuários de teste com login único
             User admin = new User();
-            admin.setId(1L);
             admin.setRole("ADMIN");
             admin.setName("Administrador");
-            admin.setLogin("admin");
+            admin.setLogin("admin_" + ts);
             admin.setPassword("admin123");
             service.save(admin);
 
             User courier = new User();
-            courier.setId(2L);
             courier.setRole("COURIER");
             courier.setName("Courier");
-            courier.setLogin("courier");
+            courier.setLogin("courier_" + ts);
             courier.setPassword("courier123");
             service.save(courier);
 
             User business = new User();
-            business.setId(3L);
             business.setRole("BUSINESS");
             business.setName("Business");
-            business.setLogin("business");
+            business.setLogin("business_" + ts);
             business.setPassword("business123");
             service.save(business);
 
             // Adiciona mais usuários se necessário para o teste de findAll
             for (long i = 4; i <= 6; i++) {
                 User u = new User();
-                u.setId(i);
                 u.setRole("USER");
                 u.setName("User" + i);
-                u.setLogin("user" + i);
+                u.setLogin("user" + i + "_" + ts);
                 u.setPassword("pass" + i);
                 service.save(u);
             }

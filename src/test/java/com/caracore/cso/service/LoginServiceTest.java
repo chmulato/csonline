@@ -21,12 +21,12 @@ class LoginServiceTest {
             em = JPAUtil.getEntityManager();
             em.getTransaction().begin();
             loginService = new LoginService();
-            // Cria usuário de teste
+            // Cria usuário de teste com login único
+            long ts = System.currentTimeMillis();
             User user = new User();
-            user.setId(160L);
             user.setRole("ADMIN");
             user.setName("Login Test");
-            user.setLogin("loginuser");
+            user.setLogin("loginuser_" + ts);
             user.setPassword("senha123");
             em.persist(user);
             em.getTransaction().commit();

@@ -37,28 +37,33 @@ class UserRepositoryTest {
     @Test
     void testCRUD() {
         try {
+            long ts = System.currentTimeMillis();
             User user = new User();
-            user.setId(150L);
             user.setRole("ADMIN");
             user.setName("Test User");
-            user.setLogin("test");
+            user.setLogin("test_" + ts);
             user.setPassword("123");
             em.persist(user);
             em.flush();
 
-            User found = em.find(User.class, 150L);
+            User found = em.createQuery("SELECT u FROM User u WHERE u.login = :login", User.class)
+                .setParameter("login", "test_" + ts)
+                .getSingleResult();
             assertNotNull(found);
             assertEquals("Test User", found.getName());
 
             found.setName("Updated");
             em.merge(found);
             em.flush();
-            User updated = em.find(User.class, 150L);
+            User updated = em.createQuery("SELECT u FROM User u WHERE u.login = :login", User.class)
+                .setParameter("login", "test_" + ts)
+                .getSingleResult();
             assertEquals("Updated", updated.getName());
 
             em.remove(updated);
             em.flush();
-            assertNull(em.find(User.class, 150L));
+            assertTrue(em.createQuery("SELECT COUNT(u) FROM User u WHERE u.login = :login", Long.class)
+                .setParameter("login", "test_" + ts).getSingleResult() == 0);
         } catch (Exception e) {
             logger.error("Erro durante o teste CRUD do UserRepository", e);
             throw e;
