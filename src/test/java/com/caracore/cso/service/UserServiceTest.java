@@ -1,6 +1,8 @@
 package com.caracore.cso.service;
 
 import com.caracore.cso.entity.User;
+import com.caracore.cso.util.TestDatabaseUtil;
+import com.caracore.cso.repository.JPAUtil;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -53,7 +55,9 @@ class UserServiceTest {
     @BeforeEach
     void setUp() {
         try {
-            // TestDatabaseUtil.clearDatabase();
+            var em = JPAUtil.getEntityManager();
+            TestDatabaseUtil.clearDatabase(em);
+            em.close();
             service = new UserService();
 
             // Cria usuários de teste
