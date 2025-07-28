@@ -48,7 +48,9 @@ class DeliveryServiceTest {
     @BeforeEach
     void setUp() {
         try {
-            // TestDatabaseUtil.clearDatabase();
+            var em = com.caracore.cso.repository.JPAUtil.getEntityManager();
+            com.caracore.cso.util.TestDatabaseUtil.clearDatabase(em);
+            em.close();
             service = new DeliveryService();
         } catch (Exception e) {
             logger.error("Erro ao preparar o teste DeliveryServiceTest", e);
