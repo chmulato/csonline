@@ -2,6 +2,9 @@
 package com.caracore.cso.service;
 
 import com.caracore.cso.entity.Courier;
+import com.caracore.cso.service.CourierService;
+import com.caracore.cso.service.UserService;
+import com.caracore.cso.service.DeliveryService;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
