@@ -31,13 +31,9 @@ public class UserControllerTest extends JerseyTest {
     @Override
     protected Application configure() {
         UserService userService = new com.caracore.cso.service.UserService();
-        return new ResourceConfig(UserController.class)
-            .register(new org.glassfish.hk2.utilities.binding.AbstractBinder() {
-                @Override
-                protected void configure() {
-                    bind(userService).to(com.caracore.cso.service.UserService.class);
-                }
-            })
+        UserController userController = new UserController(userService);
+        return new ResourceConfig()
+            .register(userController)
             .register(com.caracore.cso.controller.CustomerController.class)
             .register(com.caracore.cso.service.CustomerService.class);
     }

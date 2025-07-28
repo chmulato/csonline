@@ -14,36 +14,38 @@ class DeliveryServiceTest {
     @Test
     void testDeleteDeliveryWithSMSReference() {
         try {
+            long ts = System.currentTimeMillis();
             // Cria business
             var userService = new UserService();
             var business = new com.caracore.cso.entity.User();
-            business.setId(20L);
             business.setRole("BUSINESS");
             business.setName("BusinessRef");
-            business.setLogin("businessref");
+            business.setLogin("businessref_" + ts);
             business.setPassword("businessref123");
             userService.save(business);
+            business = userService.findByLogin("businessref_" + ts);
 
             // Cria courier user
             var courierUser = new com.caracore.cso.entity.User();
-            courierUser.setId(21L);
             courierUser.setRole("COURIER");
             courierUser.setName("CourierRef");
-            courierUser.setLogin("courierref");
+            courierUser.setLogin("courierref_" + ts);
             courierUser.setPassword("courierref123");
             userService.save(courierUser);
+            courierUser = userService.findByLogin("courierref_" + ts);
 
             // Cria courier
             var courier = new com.caracore.cso.entity.Courier();
-            courier.setId(22L);
             courier.setBusiness(business);
             courier.setUser(courierUser);
             courier.setFactorCourier(1.5);
             new CourierService().save(courier);
+            // Buscar o courier persistido para pegar o ID real
+            var couriers = new CourierService().findAllByBusiness(business.getId());
+            final Long courierId = !couriers.isEmpty() ? couriers.get(0).getId() : null;
 
             // Cria delivery
             var delivery = new com.caracore.cso.entity.Delivery();
-            delivery.setId(23L);
             delivery.setBusiness(business);
             delivery.setCourier(courier);
             delivery.setStart("A");
@@ -62,7 +64,6 @@ class DeliveryServiceTest {
 
             // Cria SMS vinculado ao delivery
             var sms = new com.caracore.cso.entity.SMS();
-            sms.setId(24L);
             sms.setDelivery(delivery);
             sms.setMessage("Teste");
             sms.setMobileFrom("11111111");
@@ -72,7 +73,7 @@ class DeliveryServiceTest {
             new SMSService().save(sms);
 
             // Tenta deletar o delivery vinculado ao SMS
-            RuntimeException ex = assertThrows(RuntimeException.class, () -> service.delete(23L));
+            RuntimeException ex = assertThrows(RuntimeException.class, () -> service.delete(delivery.getId()));
             assertTrue(ex.getMessage().contains("Não foi possível deletar a entrega") || ex.getMessage().contains("vinculados"));
         } catch (Exception e) {
             logger.error("Erro durante o teste testDeleteDeliveryWithSMSReference em DeliveryServiceTest", e);

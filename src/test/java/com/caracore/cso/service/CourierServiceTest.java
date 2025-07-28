@@ -77,24 +77,25 @@ class CourierServiceTest {
         try {
             service = new CourierService();
 
-            // Cria business com login único para evitar conflito com import.sql
+            // Cria business e courier user com login único
             var userService = new UserService();
+            long ts = System.currentTimeMillis();
 
             var business = new com.caracore.cso.entity.User();
             business.setRole("BUSINESS");
             business.setName("Test Business");
-            business.setLogin("test_business");
+            business.setLogin("test_business_" + ts);
             business.setPassword("test_business123");
             userService.save(business);
-            business = userService.findByLogin("test_business");
+            business = userService.findByLogin("test_business_" + ts);
 
             var courierUser = new com.caracore.cso.entity.User();
             courierUser.setRole("COURIER");
             courierUser.setName("Test Courier");
-            courierUser.setLogin("test_courier");
+            courierUser.setLogin("test_courier_" + ts);
             courierUser.setPassword("test_courier123");
             userService.save(courierUser);
-            courierUser = userService.findByLogin("test_courier");
+            courierUser = userService.findByLogin("test_courier_" + ts);
 
             var courier = new Courier();
             courier.setBusiness(business);

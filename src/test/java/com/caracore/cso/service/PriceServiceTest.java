@@ -14,37 +14,40 @@ class PriceServiceTest {
     @Test
     void testDeletePriceWithDeliveryReference() {
         try {
+            long ts = System.currentTimeMillis();
             // Cria business
             var userService = new UserService();
             var business = new com.caracore.cso.entity.User();
-            business.setId(50L);
             business.setRole("BUSINESS");
             business.setName("BusinessRef");
-            business.setLogin("businessref");
+            business.setLogin("businessref_" + ts);
             business.setPassword("businessref123");
             userService.save(business);
+            business = userService.findByLogin("businessref_" + ts);
 
             // Cria customer user
             var customerUser = new com.caracore.cso.entity.User();
-            customerUser.setId(51L);
             customerUser.setRole("CUSTOMER");
             customerUser.setName("CustomerRef");
-            customerUser.setLogin("customerref");
+            customerUser.setLogin("customerref_" + ts);
             customerUser.setPassword("customerref123");
             userService.save(customerUser);
+            customerUser = userService.findByLogin("customerref_" + ts);
 
             // Cria customer
             var customer = new com.caracore.cso.entity.Customer();
-            customer.setId(52L);
             customer.setBusiness(business);
             customer.setUser(customerUser);
             customer.setFactorCustomer(1.1);
             customer.setPriceTable("A");
             new CustomerService().save(customer);
 
+            // Buscar o customer persistido para pegar o ID real
+            var customers = new CustomerService().findAll();
+            customer = customers.stream().filter(c -> c.getUser().getLogin().equals("customerref_" + ts)).findFirst().orElse(customer);
+
             // Cria price
             var price = new com.caracore.cso.entity.Price();
-            price.setId(53L);
             price.setBusiness(business);
             price.setCustomer(customer);
             price.setTableName("Tabela1");
@@ -53,9 +56,12 @@ class PriceServiceTest {
             price.setPrice(100.0);
             service.save(price);
 
+            // Buscar o price persistido para pegar o ID real
+            var prices = new PriceService().findAll();
+            price = prices.stream().filter(p -> p.getCustomer().getId().equals(customer.getId())).findFirst().orElse(price);
+
             // Cria delivery vinculado ao price
             var delivery = new com.caracore.cso.entity.Delivery();
-            delivery.setId(54L);
             delivery.setBusiness(business);
             delivery.setCustomer(customer);
             delivery.setStart("A");
@@ -72,8 +78,12 @@ class PriceServiceTest {
             delivery.setDatatime(java.time.LocalDateTime.now());
             new DeliveryService().save(delivery);
 
+            // Buscar o price persistido para pegar o ID real
+            prices = new PriceService().findAll();
+            price = prices.stream().filter(p -> p.getCustomer().getId().equals(customer.getId())).findFirst().orElse(price);
+
             // Tenta deletar o price vinculado ao delivery
-            RuntimeException ex = assertThrows(RuntimeException.class, () -> service.deleteById(53L));
+            RuntimeException ex = assertThrows(RuntimeException.class, () -> service.deleteById(price.getId()));
             assertTrue(ex.getMessage().contains("Não foi possível deletar o preço") || ex.getMessage().contains("vinculados"));
         } catch (Exception e) {
             logger.error("Erro durante o teste testDeletePriceWithDeliveryReference em PriceServiceTest", e);
