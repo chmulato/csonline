@@ -13,6 +13,24 @@ import org.apache.logging.log4j.Logger;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class SMSController {
+    @DELETE
+    @Path("/{id}")
+    public Response delete(@PathParam("id") Long id) {
+        try {
+            smsService.deleteById(id);
+            return Response.noContent().build();
+        } catch (RuntimeException e) {
+            logger.error("Erro ao deletar SMS id: " + id, e);
+            // Se for violação de integridade, retorna 409 e mensagem JSON
+            return Response.status(Response.Status.CONFLICT)
+                .entity("{\"error\": \"" + e.getMessage() + "\"}")
+                .type(MediaType.APPLICATION_JSON)
+                .build();
+        } catch (Exception e) {
+            logger.error("Erro inesperado ao deletar SMS id: " + id, e);
+            return Response.serverError().entity("{\"error\": \"Erro ao deletar SMS\"}").type(MediaType.APPLICATION_JSON).build();
+        }
+    }
     private static final Logger logger = LogManager.getLogger(SMSController.class);
     private SMSService smsService;
 

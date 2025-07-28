@@ -69,9 +69,16 @@ public class DeliveryController {
         try {
             deliveryService.delete(id);
             return Response.noContent().build();
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             logger.error("Erro ao deletar delivery id: " + id, e);
-            return Response.serverError().entity("Erro ao deletar delivery").build();
+            // Se for violação de integridade, retorna 409 e mensagem JSON
+            return Response.status(jakarta.ws.rs.core.Response.Status.CONFLICT)
+                .entity("{\"error\": \"" + e.getMessage() + "\"}")
+                .type(jakarta.ws.rs.core.MediaType.APPLICATION_JSON)
+                .build();
+        } catch (Exception e) {
+            logger.error("Erro inesperado ao deletar delivery id: " + id, e);
+            return Response.serverError().entity("{\"error\": \"Erro ao deletar delivery\"}").type(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).build();
         }
     }
 }

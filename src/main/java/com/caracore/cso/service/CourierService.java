@@ -70,6 +70,10 @@ public class CourierService {
         } catch (Exception e) {
             logger.error("Erro ao deletar courier id: " + courierId, e);
             em.getTransaction().rollback();
+            String msg = e.getMessage();
+            if (msg != null && msg.contains("integrity constraint violation")) {
+                throw new RuntimeException("Não foi possível deletar o entregador. Existem vínculos que impedem a exclusão.");
+            }
             throw e;
         } finally {
             em.close();
