@@ -50,7 +50,6 @@ O CSOnline é um sistema modular para gestão de entregas, desenvolvido em Java 
 - JSF (Mojarra)
 - JUnit 5
 - JaCoCo
-- Jetty Embedded
 - Tomcat Embedded 10.1.x
 - Jersey (JAX-RS provider para testes REST)
 
