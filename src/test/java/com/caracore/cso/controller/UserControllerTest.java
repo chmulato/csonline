@@ -9,7 +9,9 @@ import jakarta.ws.rs.core.Response;
 import static org.junit.jupiter.api.Assertions.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import jakarta.ws.rs.core.GenericType;
 
 import com.caracore.cso.service.UserService;
 import com.caracore.cso.util.TestDatabaseUtil;
@@ -65,8 +67,8 @@ public class UserControllerTest extends JerseyTest {
             assertEquals(201, createResp.getStatus());
             // Recupera todos e pega o último ID
             Response allResp = target("/users").request().get();
-            ArrayList<?> users = allResp.readEntity(ArrayList.class);
-            int lastId = users.size();
+            List<Map<String, Object>> users = allResp.readEntity(new GenericType<List<Map<String, Object>>>() {});
+            int lastId = ((Number) users.get(users.size() - 1).get("id")).intValue();
             Response response = target("/users/" + lastId).request().get();
             assertEquals(200, response.getStatus());
         } catch (Exception e) {
@@ -98,8 +100,8 @@ public class UserControllerTest extends JerseyTest {
             assertEquals(201, createResp.getStatus());
             // Recupera todos e pega o último ID
             Response allResp = target("/users").request().get();
-            ArrayList<?> users = allResp.readEntity(ArrayList.class);
-            int lastId = users.size();
+            List<Map<String, Object>> users = allResp.readEntity(new GenericType<List<Map<String, Object>>>() {});
+            int lastId = ((Number) users.get(users.size() - 1).get("id")).intValue();
             String updateJson = String.format("{\"login\":\"updateduser_%d\",\"password\":\"updatedpass\",\"role\":\"COURIER\",\"name\":\"Updated User\"}", lastId);
             Response response = target("/users/" + lastId).request().put(jakarta.ws.rs.client.Entity.json(updateJson));
             assertEquals(200, response.getStatus());
