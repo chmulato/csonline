@@ -108,42 +108,35 @@ public class CustomerControllerTest extends JerseyTest {
 
     @Test
     public void testDeleteCustomer() {
-        try {
-            // Cria um usuário e um cliente vinculado para simular integridade referencial
-            String userJson = "{\"login\":\"refcustomer\",\"password\":\"refpass\",\"role\":\"BUSINESS\",\"name\":\"Ref Customer\"}";
-            Response userResponse = target("/users").request().post(jakarta.ws.rs.client.Entity.json(userJson));
-            assertEquals(201, userResponse.getStatus());
-            String location = userResponse.getHeaderString("Location");
-            assertNotNull(location);
-            String idStr = location.substring(location.lastIndexOf("/") + 1);
-            Long userId = Long.parseLong(idStr);
+        // Criação do usuário BUSINESS
+        String businessJson = "{\"login\":\"deletebiz\",\"password\":\"bizpass\",\"role\":\"BUSINESS\",\"name\":\"Delete Biz\"}";
+        Response businessResp = target("/users").request().post(jakarta.ws.rs.client.Entity.json(businessJson));
+        assertEquals(201, businessResp.getStatus());
+        String businessLocation = businessResp.getHeaderString("Location");
+        assertNotNull(businessLocation);
+        Long businessId = Long.parseLong(businessLocation.substring(businessLocation.lastIndexOf("/") + 1));
 
-            // Cria também o usuário do cliente
-            String customerUserJson = "{\"login\":\"refcustomeruser\",\"password\":\"refpassuser\",\"role\":\"CUSTOMER\",\"name\":\"Ref Customer User\"}";
-            Response customerUserResponse = target("/users").request().post(jakarta.ws.rs.client.Entity.json(customerUserJson));
-            assertEquals(201, customerUserResponse.getStatus());
-            String locationUser = customerUserResponse.getHeaderString("Location");
-            assertNotNull(locationUser);
-            String idStrUser = locationUser.substring(locationUser.lastIndexOf("/") + 1);
-            Long customerUserId = Long.parseLong(idStrUser);
+        // Criação do usuário CUSTOMER
+        String customerJson = "{\"login\":\"deletecust\",\"password\":\"custpass\",\"role\":\"CUSTOMER\",\"name\":\"Delete Cust\"}";
+        Response custResp = target("/users").request().post(jakarta.ws.rs.client.Entity.json(customerJson));
+        assertEquals(201, custResp.getStatus());
+        String custLocation = custResp.getHeaderString("Location");
+        assertNotNull(custLocation);
+        Long custId = Long.parseLong(custLocation.substring(custLocation.lastIndexOf("/") + 1));
 
-            String customerJson = "{\"business\":{\"id\":" + userId + "},\"user\":{\"id\":" + customerUserId + "},\"factorCustomer\":1.0,\"priceTable\":\"A\"}";
-            Response customerResponse = target("/customers").request().post(jakarta.ws.rs.client.Entity.json(customerJson));
-            assertEquals(201, customerResponse.getStatus());
+        // Criação do vínculo Customer
+        String vinculoJson = "{\"business\":{\"id\":" + businessId + "},\"user\":{\"id\":" + custId + "},\"factorCustomer\":1.0,\"priceTable\":\"TabelaX\"}";
+        Response vinculoResp = target("/customers").request().post(jakarta.ws.rs.client.Entity.json(vinculoJson));
+        assertEquals(201, vinculoResp.getStatus());
 
-            // Tenta deletar o usuário vinculado ao cliente
-            Response deleteResponse = target("/users/" + userId).request().delete();
-            if (deleteResponse.getStatus() == 409) {
-                String errorJson = deleteResponse.readEntity(String.class);
-                assertTrue(errorJson.contains("error"), "Mensagem JSON deve conter o campo 'error'");
-                assertTrue(errorJson.contains("Não foi possível deletar o usuário"), "Mensagem deve ser padronizada");
-            } else {
-                // Se não houver integridade referencial, espera sucesso
-                assertEquals(204, deleteResponse.getStatus());
-            }
-        } catch (Exception e) {
-            logger.error("Erro em testDeleteCustomer", e);
-            throw e;
+        // Tenta deletar o usuário BUSINESS (deveria falhar por integridade referencial)
+        Response delBizResp = target("/users/" + businessId).request().delete();
+        if (delBizResp.getStatus() == 409) {
+            String errorJson = delBizResp.readEntity(String.class);
+            assertTrue(errorJson.contains("error"), "Mensagem JSON deve conter o campo 'error'");
+            assertTrue(errorJson.contains("Não foi possível deletar o usuário"), "Mensagem deve ser padronizada");
+        } else {
+            assertEquals(204, delBizResp.getStatus());
         }
     }
 }

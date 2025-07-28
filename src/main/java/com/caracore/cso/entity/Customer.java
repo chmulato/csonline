@@ -14,7 +14,7 @@ public class Customer {
     private User business;
 
     @OneToOne
-    @JoinColumn(name = "idcustomer", referencedColumnName = "id")
+    @JoinColumn(name = "iduser", referencedColumnName = "id")
     private User user;
 
     private Double factorCustomer;

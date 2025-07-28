@@ -32,7 +32,14 @@ public class CustomerService {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
-            em.merge(customer);
+            // Garantir que business e user estejam gerenciados
+            if (customer.getBusiness() != null && customer.getBusiness().getId() != null) {
+                customer.setBusiness(em.find(com.caracore.cso.entity.User.class, customer.getBusiness().getId()));
+            }
+            if (customer.getUser() != null && customer.getUser().getId() != null) {
+                customer.setUser(em.find(com.caracore.cso.entity.User.class, customer.getUser().getId()));
+            }
+            em.persist(customer);
             em.getTransaction().commit();
         } catch (Exception e) {
             logger.error("Erro ao salvar customer", e);
