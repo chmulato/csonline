@@ -5,6 +5,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import com.caracore.cso.service.CustomerService;
 import com.caracore.cso.entity.Customer;
+import com.caracore.cso.service.UserService;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,6 +18,7 @@ public class CustomerController {
 
     // Troque a injeção por instanciamento direto para funcionar nos testes sem CDI
     private CustomerService customerService = new CustomerService();
+    private UserService userService = new UserService();
 
     @GET
     public List<Customer> getAll() {
@@ -47,6 +49,13 @@ public class CustomerController {
     @POST
     public Response create(Customer customer) {
         try {
+            // Persistir usuários associados se necessário
+            if (customer.getBusiness() != null && customer.getBusiness().getId() == null) {
+                userService.save(customer.getBusiness());
+            }
+            if (customer.getUser() != null && customer.getUser().getId() == null) {
+                userService.save(customer.getUser());
+            }
             customerService.save(customer);
             return Response.status(Response.Status.CREATED).build();
         } catch (Exception e) {
@@ -59,6 +68,13 @@ public class CustomerController {
     @Path("/{id}")
     public Response update(@PathParam("id") Long id, Customer customer) {
         try {
+            // Persistir usuários associados se necessário
+            if (customer.getBusiness() != null && customer.getBusiness().getId() == null) {
+                userService.save(customer.getBusiness());
+            }
+            if (customer.getUser() != null && customer.getUser().getId() == null) {
+                userService.save(customer.getUser());
+            }
             customer.setId(id);
             customerService.update(customer);
             return Response.ok().build();

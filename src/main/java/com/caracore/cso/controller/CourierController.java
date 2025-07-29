@@ -1,10 +1,11 @@
 package com.caracore.cso.controller;
 
+import com.caracore.cso.entity.Courier;
+import com.caracore.cso.service.CourierService;
+import com.caracore.cso.service.UserService;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import com.caracore.cso.service.CourierService;
-import com.caracore.cso.entity.Courier;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,16 +16,18 @@ import org.apache.logging.log4j.Logger;
 public class CourierController {
     private static final Logger logger = LogManager.getLogger(CourierController.class);
 
-    // Permite injeção para produção e instancia para teste
     private CourierService courierService;
+    private UserService userService;
 
     public CourierController() {
         this.courierService = new CourierService();
+        this.userService = new UserService();
     }
 
     // Construtor para injeção manual em testes
     public CourierController(CourierService courierService) {
         this.courierService = courierService;
+        this.userService = new UserService();
     }
 
     @GET
@@ -51,6 +54,13 @@ public class CourierController {
     @POST
     public Response create(Courier courier) {
         try {
+            // Persistir usuários associados se necessário
+            if (courier.getBusiness() != null && courier.getBusiness().getId() == null) {
+                userService.save(courier.getBusiness());
+            }
+            if (courier.getUser() != null && courier.getUser().getId() == null) {
+                userService.save(courier.getUser());
+            }
             courierService.save(courier);
             return Response.status(Response.Status.CREATED).entity(courier).build();
         } catch (Exception e) {

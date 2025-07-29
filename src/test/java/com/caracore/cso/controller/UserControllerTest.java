@@ -16,14 +16,16 @@ import jakarta.ws.rs.core.GenericType;
 
 import com.caracore.cso.service.UserService;
 import com.caracore.cso.util.TestDatabaseUtil;
+import com.caracore.cso.util.TestDataFactory;
 import com.caracore.cso.repository.JPAUtil;
 
 public class UserControllerTest extends JerseyTest {
     private static final Logger logger = LogManager.getLogger(UserControllerTest.class);
 
-    private String createUserJson(String prefix) {
-        String login = prefix + System.currentTimeMillis();
-        return String.format("{\"login\":\"%s\",\"password\":\"pass\",\"role\":\"CUSTOMER\",\"name\":\"%s\"}", login, prefix + " Name");
+    private String createUserJson(String role) {
+        var user = TestDataFactory.createUser(role);
+        return String.format("{\"login\":\"%s\",\"password\":\"%s\",\"role\":\"%s\",\"name\":\"%s\"}",
+                user.getLogin(), user.getPassword(), user.getRole(), user.getName());
     }
 
     @BeforeEach
@@ -46,7 +48,7 @@ public class UserControllerTest extends JerseyTest {
     @Test
     public void testGetAllUsers() {
         try {
-            String json = createUserJson("user_getall_");
+            String json = createUserJson("CUSTOMER");
             target("/users").request().post(jakarta.ws.rs.client.Entity.json(json));
             Response response = target("/users").request().get();
             assertEquals(200, response.getStatus());
@@ -59,7 +61,7 @@ public class UserControllerTest extends JerseyTest {
     @Test
     public void testGetUserById() {
         try {
-            String json = createUserJson("user_getbyid_");
+            String json = createUserJson("CUSTOMER");
             Response createResp = target("/users").request().post(jakarta.ws.rs.client.Entity.json(json));
             assertEquals(201, createResp.getStatus());
             // Recupera todos e pega o último ID
@@ -77,7 +79,7 @@ public class UserControllerTest extends JerseyTest {
     @Test
     public void testCreateUser() {
         try {
-            String json = createUserJson("testuser_").replace("pass", "testpass").replace("Name", "Test User");
+            String json = createUserJson("CUSTOMER");
             Response response = target("/users").request().post(jakarta.ws.rs.client.Entity.json(json));
             assertEquals(201, response.getStatus());
         } catch (Exception e) {
@@ -89,7 +91,7 @@ public class UserControllerTest extends JerseyTest {
     @Test
     public void testUpdateUser() {
         try {
-            String json = createUserJson("user_update_");
+            String json = createUserJson("CUSTOMER");
             Response createResp = target("/users").request().post(jakarta.ws.rs.client.Entity.json(json));
             assertEquals(201, createResp.getStatus());
             // Recupera todos e pega o último ID

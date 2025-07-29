@@ -24,10 +24,10 @@ public class TeamRepository {
         try {
             em.getTransaction().begin();
             if (team.getId() == null) {
-                Long nextId = ((Number) em.createQuery("SELECT COALESCE(MAX(t.id), 0) + 1 FROM Team t").getSingleResult()).longValue();
-                team.setId(nextId);
+                em.persist(team);
+            } else {
+                em.merge(team);
             }
-            em.merge(team);
             em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();

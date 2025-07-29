@@ -1,10 +1,13 @@
 package com.caracore.cso.controller;
 
+import com.caracore.cso.entity.Delivery;
+import com.caracore.cso.service.DeliveryService;
+import com.caracore.cso.service.UserService;
+import com.caracore.cso.service.CustomerService;
+import com.caracore.cso.service.CourierService;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import com.caracore.cso.service.DeliveryService;
-import com.caracore.cso.entity.Delivery;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,8 +18,10 @@ import org.apache.logging.log4j.Logger;
 public class DeliveryController {
     private static final Logger logger = LogManager.getLogger(DeliveryController.class);
 
-    // Troque a injeção por instanciamento direto para funcionar nos testes sem CDI
     private DeliveryService deliveryService = new DeliveryService();
+    private UserService userService = new UserService();
+    private CustomerService customerService = new CustomerService();
+    private CourierService courierService = new CourierService();
 
     @GET
     public List<Delivery> getAll() {
@@ -42,6 +47,16 @@ public class DeliveryController {
     @POST
     public Response create(Delivery delivery) {
         try {
+            // Persistir entidades associadas se necessário
+            if (delivery.getBusiness() != null && delivery.getBusiness().getId() == null) {
+                userService.save(delivery.getBusiness());
+            }
+            if (delivery.getCustomer() != null && delivery.getCustomer().getId() == null) {
+                customerService.save(delivery.getCustomer());
+            }
+            if (delivery.getCourier() != null && delivery.getCourier().getId() == null) {
+                courierService.save(delivery.getCourier());
+            }
             deliveryService.save(delivery);
             return Response.status(Response.Status.CREATED).build();
         } catch (Exception e) {
@@ -54,6 +69,16 @@ public class DeliveryController {
     @Path("/{id}")
     public Response update(@PathParam("id") Long id, Delivery delivery) {
         try {
+            // Persistir entidades associadas se necessário
+            if (delivery.getBusiness() != null && delivery.getBusiness().getId() == null) {
+                userService.save(delivery.getBusiness());
+            }
+            if (delivery.getCustomer() != null && delivery.getCustomer().getId() == null) {
+                customerService.save(delivery.getCustomer());
+            }
+            if (delivery.getCourier() != null && delivery.getCourier().getId() == null) {
+                courierService.save(delivery.getCourier());
+            }
             delivery.setId(id);
             deliveryService.update(delivery);
             return Response.ok().build();

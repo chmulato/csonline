@@ -2,6 +2,7 @@ package com.caracore.cso.controller;
 
 import com.caracore.cso.entity.Team;
 import com.caracore.cso.service.TeamService;
+import com.caracore.cso.service.UserService;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -12,6 +13,7 @@ import java.util.List;
 @Consumes(MediaType.APPLICATION_JSON)
 public class TeamController {
     private final TeamService teamService = new TeamService();
+    private final UserService userService = new UserService();
 
     @GET
     @Path("/{id}")
@@ -30,6 +32,13 @@ public class TeamController {
 
     @POST
     public Response create(Team team) {
+        // Persistir usuários associados se necessário
+        if (team.getBusiness() != null && team.getBusiness().getId() == null) {
+            userService.save(team.getBusiness());
+        }
+        if (team.getCourier() != null && team.getCourier().getId() == null) {
+            userService.save(team.getCourier());
+        }
         teamService.save(team);
         return Response.status(Response.Status.CREATED).entity(team).build();
     }
@@ -40,6 +49,13 @@ public class TeamController {
         Team existing = teamService.findById(id);
         if (existing == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        // Persistir usuários associados se necessário
+        if (team.getBusiness() != null && team.getBusiness().getId() == null) {
+            userService.save(team.getBusiness());
+        }
+        if (team.getCourier() != null && team.getCourier().getId() == null) {
+            userService.save(team.getCourier());
         }
         team.setId(id);
         teamService.save(team);
