@@ -15,6 +15,7 @@ public class UserService {
     public void save(User user) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
+            logger.info("[DEBUG] Salvando usuário com ID: {}", user.getId());
             em.getTransaction().begin();
             em.persist(user);
             em.getTransaction().commit();

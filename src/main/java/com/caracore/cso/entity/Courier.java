@@ -7,7 +7,7 @@ import jakarta.persistence.CascadeType;
 @Table(name = "courier")
 public class Courier {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(cascade = CascadeType.PERSIST)

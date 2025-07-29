@@ -45,6 +45,7 @@ public class TestDataFactory {
     public static User createUser(String role) {
         String unique = UUID.randomUUID().toString().replace("-", "");
         User user = new User();
+        user.setId(null); // Garante que o ID será sempre gerado pelo banco
         user.setRole(role);
         user.setName(role + "_Name_" + unique);
         user.setLogin(role.toLowerCase() + "_login_" + unique);
