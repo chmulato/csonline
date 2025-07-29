@@ -6,8 +6,8 @@ import jakarta.persistence.*;
 @Table(name = "sms")
 public class SMS {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @ManyToOne
     @JoinColumn(name = "iddelivery")
     private Delivery delivery;

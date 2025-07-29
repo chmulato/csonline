@@ -6,8 +6,8 @@ import jakarta.persistence.*;
 @Table(name = "price")
 public class Price {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @ManyToOne
     @JoinColumn(name = "idbusiness")
     private User business;

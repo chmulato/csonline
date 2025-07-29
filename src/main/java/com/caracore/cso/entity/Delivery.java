@@ -7,9 +7,8 @@ import java.time.LocalDateTime;
 @Table(name = "delivery")
 public class Delivery {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @ManyToOne
     @JoinColumn(name = "idbusiness")
     private User business;

@@ -6,9 +6,8 @@ import jakarta.persistence.*;
 @Table(name = "team")
 public class Team {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @ManyToOne
     @JoinColumn(name = "idbusiness", referencedColumnName = "id")
     private User business;
