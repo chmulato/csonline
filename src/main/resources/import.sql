@@ -1,4 +1,5 @@
--- Usuários
+-- Limpa usuários para evitar duplicidade
+DELETE FROM app_user;
 INSERT INTO app_user (id, role, name, login, password, email, email2, address, mobile)
 VALUES (1, 'ADMIN', 'Administrador', 'admin', 'admin123', 'admin@cso.com', NULL, 'Rua Central, 100', '11999999999');
 INSERT INTO app_user (id, role, name, login, password, email, email2, address, mobile)
