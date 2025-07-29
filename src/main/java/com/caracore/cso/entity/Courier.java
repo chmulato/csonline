@@ -1,7 +1,6 @@
 package com.caracore.cso.entity;
 
 import jakarta.persistence.*;
-import jakarta.persistence.CascadeType;
 
 @Entity
 @Table(name = "courier")
@@ -10,11 +9,11 @@ public class Courier {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "idbusiness", referencedColumnName = "id")
     private User business;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "idcourier", referencedColumnName = "id")
     private User user;
 
