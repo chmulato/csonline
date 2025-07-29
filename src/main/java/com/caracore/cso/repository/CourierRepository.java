@@ -2,7 +2,6 @@ package com.caracore.cso.repository;
 
 import com.caracore.cso.entity.Courier;
 import com.caracore.cso.exception.DAOException;
-import com.caracore.cso.repository.JPAUtil;
 import jakarta.persistence.EntityManager;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
