@@ -6,36 +6,27 @@ import org.junit.jupiter.api.Test;
 import jakarta.ws.rs.core.Application;
 import jakarta.ws.rs.core.Response;
 
-import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
+import com.caracore.cso.util.TestDatabaseUtil;
+import com.caracore.cso.util.TestDataFactory;
+import com.caracore.cso.repository.JPAUtil;
+import org.junit.jupiter.api.BeforeEach;
 
 public class DeliveryControllerTest extends JerseyTest {
+    private com.caracore.cso.entity.Delivery delivery;
+
     @BeforeEach
     void setUpTestData() {
-        // Limpa e cria dados de entrega usando TestDataFactory
-        var deliveryService = new com.caracore.cso.service.DeliveryService();
-        var deliveries = deliveryService.findAll();
-        for (var d : deliveries) deliveryService.delete(d.getId());
-
-        // Cria business e courier para associar ao delivery
-        var userService = new com.caracore.cso.service.UserService();
-        var business = com.caracore.cso.util.TestDataFactory.createUser("BUSINESS");
-        userService.save(business);
-        business = userService.findByLogin(business.getLogin());
-        var courierUser = com.caracore.cso.util.TestDataFactory.createUser("COURIER");
-        userService.save(courierUser);
-        courierUser = userService.findByLogin(courierUser.getLogin());
-        var courier = com.caracore.cso.util.TestDataFactory.createCourier(business, courierUser);
-        new com.caracore.cso.service.CourierService().save(courier);
-        var couriers = new com.caracore.cso.service.CourierService().findAllByBusiness(business.getId());
-        if (!couriers.isEmpty()) courier = couriers.get(0);
-
-        var delivery = com.caracore.cso.util.TestDataFactory.createDelivery(business, courier);
-        deliveryService.save(delivery);
+        var em = JPAUtil.getEntityManager();
+        TestDatabaseUtil.clearDatabase(em);
+        em.close();
+        // Cria dados únicos usando TestDataFactory
+        var business = TestDataFactory.createUser("BUSINESS");
+        var courierUser = TestDataFactory.createUser("COURIER");
+        var courier = TestDataFactory.createCourier(business, courierUser);
+        delivery = TestDataFactory.createDelivery(business, courier);
     }
-    private static final Logger logger = LogManager.getLogger(DeliveryControllerTest.class);
 
     @Override
     protected Application configure() {
@@ -45,58 +36,43 @@ public class DeliveryControllerTest extends JerseyTest {
 
     @Test
     public void testGetAllDeliveries() {
-        try {
-            Response response = target("/deliveries").request().get();
-            assertEquals(200, response.getStatus());
-        } catch (Exception e) {
-            logger.error("Erro em testGetAllDeliveries", e);
-            throw e;
-        }
+        // Garante que há pelo menos uma entrega
+        target("/deliveries").request().post(jakarta.ws.rs.client.Entity.json(delivery));
+        Response response = target("/deliveries").request().get();
+        assertEquals(200, response.getStatus());
     }
 
     @Test
     public void testGetDeliveryById() {
-        try {
-            Response response = target("/deliveries/1").request().get();
-            assertEquals(200, response.getStatus());
-        } catch (Exception e) {
-            logger.error("Erro em testGetDeliveryById", e);
-            throw e;
-        }
+        Response createResp = target("/deliveries").request().post(jakarta.ws.rs.client.Entity.json(delivery));
+        assertEquals(201, createResp.getStatus());
+        com.caracore.cso.entity.Delivery created = createResp.readEntity(com.caracore.cso.entity.Delivery.class);
+        Response response = target("/deliveries/" + created.getId()).request().get();
+        assertEquals(200, response.getStatus());
     }
 
     @Test
     public void testCreateDelivery() {
-        try {
-            String json = "{\"start\":\"Origem Teste\",\"destination\":\"Destino Teste\"}";
-            Response response = target("/deliveries").request().post(jakarta.ws.rs.client.Entity.json(json));
-            assertEquals(201, response.getStatus());
-        } catch (Exception e) {
-            logger.error("Erro em testCreateDelivery", e);
-            throw e;
-        }
+        Response response = target("/deliveries").request().post(jakarta.ws.rs.client.Entity.json(delivery));
+        assertEquals(201, response.getStatus());
     }
 
     @Test
     public void testUpdateDelivery() {
-        try {
-            String json = "{\"start\":\"Origem Atualizada\",\"destination\":\"Destino Atualizado\"}";
-            Response response = target("/deliveries/1").request().put(jakarta.ws.rs.client.Entity.json(json));
-            assertEquals(200, response.getStatus());
-        } catch (Exception e) {
-            logger.error("Erro em testUpdateDelivery", e);
-            throw e;
-        }
+        Response createResp = target("/deliveries").request().post(jakarta.ws.rs.client.Entity.json(delivery));
+        assertEquals(201, createResp.getStatus());
+        com.caracore.cso.entity.Delivery created = createResp.readEntity(com.caracore.cso.entity.Delivery.class);
+        String json = "{\"start\":\"Origem Atualizada\",\"destination\":\"Destino Atualizado\"}";
+        Response response = target("/deliveries/" + created.getId()).request().put(jakarta.ws.rs.client.Entity.json(json));
+        assertEquals(200, response.getStatus());
     }
 
     @Test
     public void testDeleteDelivery() {
-        try {
-            Response response = target("/deliveries/1").request().delete();
-            assertEquals(204, response.getStatus());
-        } catch (Exception e) {
-            logger.error("Erro em testDeleteDelivery", e);
-            throw e;
-        }
+        Response createResp = target("/deliveries").request().post(jakarta.ws.rs.client.Entity.json(delivery));
+        assertEquals(201, createResp.getStatus());
+        com.caracore.cso.entity.Delivery created = createResp.readEntity(com.caracore.cso.entity.Delivery.class);
+        Response deleteResp = target("/deliveries/" + created.getId()).request().delete();
+        assertEquals(204, deleteResp.getStatus());
     }
 }

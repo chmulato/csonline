@@ -1,4 +1,6 @@
+
 package com.caracore.cso.controller;
+import com.caracore.cso.util.TestDataFactory;
 
 import com.caracore.cso.dto.LoginDTO;
 import com.caracore.cso.dto.UserDTO;
@@ -43,20 +45,20 @@ class LoginControllerTest {
     @Test
     void testLoginSuccess() {
         try {
+            // Gera dados únicos para o teste
+            User user = TestDataFactory.createUser("ADMIN");
+            user.setId(System.currentTimeMillis()); // Garante ID único
             LoginDTO dto = new LoginDTO();
-            dto.setLogin("user");
-            dto.setPassword("pass");
-            User user = new User();
-            user.setId(1L);
-            user.setName("User Test");
-            user.setLogin("user");
-            user.setRole("ADMIN");
-            Mockito.when(loginService.authenticate("user", "pass")).thenReturn(user);
+            dto.setLogin(user.getLogin());
+            dto.setPassword(user.getPassword());
+            Mockito.when(loginService.authenticate(user.getLogin(), user.getPassword())).thenReturn(user);
 
             Response response = controller.login(dto);
             assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
             UserDTO userDTO = (UserDTO) response.getEntity();
-            assertEquals("User Test", userDTO.getName());
+            assertEquals(user.getName(), userDTO.getName());
+            assertEquals(user.getLogin(), userDTO.getLogin());
+            assertEquals(user.getRole(), userDTO.getRole());
         } catch (Exception e) {
             logger.error("Erro em testLoginSuccess", e);
             throw e;
@@ -66,10 +68,12 @@ class LoginControllerTest {
     @Test
     void testLoginFail() {
         try {
+            // Gera dados únicos para o teste
+            User user = TestDataFactory.createUser("ADMIN");
             LoginDTO dto = new LoginDTO();
-            dto.setLogin("user");
-            dto.setPassword("wrong");
-            Mockito.when(loginService.authenticate("user", "wrong")).thenThrow(new SecurityException());
+            dto.setLogin(user.getLogin());
+            dto.setPassword("senha_errada" + System.currentTimeMillis());
+            Mockito.when(loginService.authenticate(user.getLogin(), dto.getPassword())).thenThrow(new SecurityException());
 
             Response response = controller.login(dto);
             assertEquals(Response.Status.UNAUTHORIZED.getStatusCode(), response.getStatus());

@@ -9,8 +9,20 @@ import jakarta.ws.rs.core.Application;
 import jakarta.ws.rs.core.Response;
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.caracore.cso.util.TestDatabaseUtil;
+import com.caracore.cso.util.TestDataFactory;
+import com.caracore.cso.repository.JPAUtil;
+import org.junit.jupiter.api.BeforeEach;
+
 public class CourierControllerTest extends JerseyTest {
     private static final Logger logger = LogManager.getLogger(CourierControllerTest.class);
+
+    @BeforeEach
+    void cleanDatabase() {
+        var em = JPAUtil.getEntityManager();
+        TestDatabaseUtil.clearDatabase(em);
+        em.close();
+    }
 
     @Override
     protected Application configure() {
@@ -34,7 +46,14 @@ public class CourierControllerTest extends JerseyTest {
     @Test
     public void testGetCourierById() {
         try {
-            Response response = target("/couriers/1").request().get();
+            // Cria dados únicos para garantir isolamento
+            var business = TestDataFactory.createUser("BUSINESS");
+            var courierUser = TestDataFactory.createUser("COURIER");
+            var courier = TestDataFactory.createCourier(business, courierUser);
+            Response createResponse = target("/couriers").request().post(jakarta.ws.rs.client.Entity.json(courier));
+            assertEquals(201, createResponse.getStatus());
+            var created = createResponse.readEntity(com.caracore.cso.entity.Courier.class);
+            Response response = target("/couriers/" + created.getId()).request().get();
             assertEquals(200, response.getStatus());
         } catch (Exception e) {
             logger.error("Erro em testGetCourierById", e);
@@ -45,24 +64,9 @@ public class CourierControllerTest extends JerseyTest {
     @Test
     public void testCreateCourier() {
         try {
-            // Cria User e Business mínimos
-            com.caracore.cso.entity.User business = new com.caracore.cso.entity.User();
-            business.setLogin("empresa_test");
-            business.setName("Empresa Teste");
-            business.setPassword("empresa123");
-            business.setRole("BUSINESS");
-
-            com.caracore.cso.entity.User courierUser = new com.caracore.cso.entity.User();
-            courierUser.setLogin("courier_test");
-            courierUser.setName("Courier Teste");
-            courierUser.setPassword("courier123");
-            courierUser.setRole("COURIER");
-
-            com.caracore.cso.entity.Courier courier = new com.caracore.cso.entity.Courier();
-            courier.setFactorCourier(1.5);
-            courier.setBusiness(business);
-            courier.setUser(courierUser);
-
+            var business = TestDataFactory.createUser("BUSINESS");
+            var courierUser = TestDataFactory.createUser("COURIER");
+            var courier = TestDataFactory.createCourier(business, courierUser);
             Response response = target("/couriers").request().post(jakarta.ws.rs.client.Entity.json(courier));
             assertEquals(201, response.getStatus());
         } catch (Exception e) {
@@ -74,8 +78,14 @@ public class CourierControllerTest extends JerseyTest {
     @Test
     public void testUpdateCourier() {
         try {
+            var business = TestDataFactory.createUser("BUSINESS");
+            var courierUser = TestDataFactory.createUser("COURIER");
+            var courier = TestDataFactory.createCourier(business, courierUser);
+            Response createResponse = target("/couriers").request().post(jakarta.ws.rs.client.Entity.json(courier));
+            assertEquals(201, createResponse.getStatus());
+            var created = createResponse.readEntity(com.caracore.cso.entity.Courier.class);
             String json = "{\"factorCourier\":2.0}";
-            Response response = target("/couriers/1").request().put(jakarta.ws.rs.client.Entity.json(json));
+            Response response = target("/couriers/" + created.getId()).request().put(jakarta.ws.rs.client.Entity.json(json));
             assertEquals(200, response.getStatus());
         } catch (Exception e) {
             logger.error("Erro em testUpdateCourier", e);
@@ -86,34 +96,15 @@ public class CourierControllerTest extends JerseyTest {
     @Test
     public void testDeleteCourier() {
         try {
-            // Cria User e Business mínimos
-            com.caracore.cso.entity.User business = new com.caracore.cso.entity.User();
-            business.setLogin("empresa_test2");
-            business.setName("Empresa Teste 2");
-            business.setPassword("empresa456");
-            business.setRole("BUSINESS");
-
-            com.caracore.cso.entity.User courierUser = new com.caracore.cso.entity.User();
-            courierUser.setLogin("courier_test2");
-            courierUser.setName("Courier Teste 2");
-            courierUser.setPassword("courier456");
-            courierUser.setRole("COURIER");
-
-            com.caracore.cso.entity.Courier courier = new com.caracore.cso.entity.Courier();
-            courier.setFactorCourier(3.0);
-            courier.setBusiness(business);
-            courier.setUser(courierUser);
-
+            var business = TestDataFactory.createUser("BUSINESS");
+            var courierUser = TestDataFactory.createUser("COURIER");
+            var courier = TestDataFactory.createCourier(business, courierUser);
             Response createResponse = target("/couriers").request().accept("application/json").post(jakarta.ws.rs.client.Entity.json(courier));
             assertEquals(201, createResponse.getStatus());
-
-            // Obtém o ID do courier criado do corpo da resposta
-            com.caracore.cso.entity.Courier created = createResponse.readEntity(com.caracore.cso.entity.Courier.class);
+            var created = createResponse.readEntity(com.caracore.cso.entity.Courier.class);
             assertNotNull(created);
             assertNotNull(created.getId());
             Long courierId = created.getId();
-
-            // Tenta deletar o courier recém-criado
             Response deleteResponse = target("/couriers/" + courierId).request().delete();
             assertEquals(204, deleteResponse.getStatus());
         } catch (Exception e) {

@@ -1,7 +1,4 @@
-    private String createUserJson(String prefix) {
-        String login = prefix + System.currentTimeMillis();
-        return String.format("{\"login\":\"%s\",\"password\":\"pass\",\"role\":\"CUSTOMER\",\"name\":\"%s\"}", login, prefix + " Name");
-    }
+
 package com.caracore.cso.controller;
 
 import org.glassfish.jersey.test.JerseyTest;

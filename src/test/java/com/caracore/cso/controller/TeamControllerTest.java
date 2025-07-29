@@ -9,7 +9,19 @@ import org.glassfish.jersey.test.JerseyTest;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.caracore.cso.util.TestDatabaseUtil;
+import com.caracore.cso.util.TestDataFactory;
+import com.caracore.cso.repository.JPAUtil;
+import org.junit.jupiter.api.BeforeEach;
+
 public class TeamControllerTest extends JerseyTest {
+    @BeforeEach
+    void cleanDatabase() {
+        var em = JPAUtil.getEntityManager();
+        TestDatabaseUtil.clearDatabase(em);
+        em.close();
+    }
+
     @Override
     protected Application configure() {
         return new ResourceConfig()
@@ -19,20 +31,9 @@ public class TeamControllerTest extends JerseyTest {
 
     @Test
     void testCreateAndGetById() {
-        Team team = new Team();
-        team.setFactorCourier(1.5);
-        User business = new User();
-        business.setLogin("business_login");
-        business.setName("Business Name");
-        business.setPassword("123456");
-        business.setRole("BUSINESS");
-        User courier = new User();
-        courier.setLogin("courier_login");
-        courier.setName("Courier Name");
-        courier.setPassword("654321");
-        courier.setRole("COURIER");
-        team.setBusiness(business);
-        team.setCourier(courier);
+        User business = TestDataFactory.createUser("BUSINESS");
+        User courier = TestDataFactory.createUser("COURIER");
+        Team team = TestDataFactory.createTeam(business, courier);
 
         Response postResponse = target("/team").request().post(jakarta.ws.rs.client.Entity.json(team));
         assertEquals(Response.Status.CREATED.getStatusCode(), postResponse.getStatus());
@@ -43,7 +44,7 @@ public class TeamControllerTest extends JerseyTest {
         assertEquals(Response.Status.OK.getStatusCode(), getResponse.getStatus());
         Team found = getResponse.readEntity(Team.class);
         assertEquals(created.getId(), found.getId());
-        assertEquals(1.5, found.getFactorCourier());
+        assertEquals(team.getFactorCourier(), found.getFactorCourier());
     }
 
     @Test
@@ -54,7 +55,9 @@ public class TeamControllerTest extends JerseyTest {
 
     @Test
     void testUpdate() {
-        Team team = new Team();
+        User business = TestDataFactory.createUser("BUSINESS");
+        User courier = TestDataFactory.createUser("COURIER");
+        Team team = TestDataFactory.createTeam(business, courier);
         team.setFactorCourier(2.0);
         Response postResponse = target("/team").request().post(jakarta.ws.rs.client.Entity.json(team));
         Team created = postResponse.readEntity(Team.class);
@@ -67,7 +70,9 @@ public class TeamControllerTest extends JerseyTest {
 
     @Test
     void testDelete() {
-        Team team = new Team();
+        User business = TestDataFactory.createUser("BUSINESS");
+        User courier = TestDataFactory.createUser("COURIER");
+        Team team = TestDataFactory.createTeam(business, courier);
         team.setFactorCourier(4.0);
         Response postResponse = target("/team").request().post(jakarta.ws.rs.client.Entity.json(team));
         Team created = postResponse.readEntity(Team.class);
