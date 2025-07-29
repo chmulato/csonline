@@ -49,6 +49,10 @@ public class TestDataFactory {
         user.setName(role + "_Name_" + unique);
         user.setLogin(role.toLowerCase() + "_login_" + unique);
         user.setPassword(role.toLowerCase() + "_pass_" + unique);
+        user.setEmail(role.toLowerCase() + unique + "@test.com");
+        user.setEmail2(role.toLowerCase() + unique + "2@test.com");
+        user.setAddress("Rua Teste, 123 - " + unique);
+        user.setMobile("+55" + (long)(Math.random()*1_000_000_0000L + 10_000_000_00L));
         return user;
     }
 
