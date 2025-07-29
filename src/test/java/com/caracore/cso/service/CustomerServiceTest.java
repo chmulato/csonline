@@ -48,9 +48,25 @@ class CustomerServiceTest {
 
     @BeforeEach
     void setUp() {
+        var em = com.caracore.cso.repository.JPAUtil.getEntityManager();
         try {
-            // TestDatabaseUtil.clearDatabase();
+            com.caracore.cso.util.TestDatabaseUtil.clearDatabase(em);
+        } finally {
+            em.close();
+        }
+        try {
             service = new CustomerService();
+            var userService = new UserService();
+            var business = TestDataFactory.createUser("BUSINESS");
+            userService.save(business);
+            business = userService.findByLogin(business.getLogin());
+
+            var customerUser = TestDataFactory.createUser("CUSTOMER");
+            userService.save(customerUser);
+            customerUser = userService.findByLogin(customerUser.getLogin());
+
+            var customer = TestDataFactory.createCustomer(business, customerUser);
+            service.save(customer);
         } catch (Exception e) {
             logger.error("Erro ao preparar o teste CustomerServiceTest", e);
             throw e;

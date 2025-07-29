@@ -1,8 +1,8 @@
 package com.caracore.cso.controller;
 
-
 import org.glassfish.jersey.test.JerseyTest;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import jakarta.ws.rs.core.Application;
 import jakarta.ws.rs.core.Response;
@@ -20,12 +20,11 @@ import com.caracore.cso.repository.JPAUtil;
 public class UserControllerTest extends JerseyTest {
     private static final Logger logger = LogManager.getLogger(UserControllerTest.class);
 
-    @Override
-    public void setUp() throws Exception {
+    @BeforeEach
+    public void cleanDatabase() {
         var em = JPAUtil.getEntityManager();
         TestDatabaseUtil.clearDatabase(em);
         em.close();
-        super.setUp();
     }
 
     @Override
@@ -106,5 +105,4 @@ public class UserControllerTest extends JerseyTest {
             throw e;
         }
     }
-
 }

@@ -50,11 +50,30 @@ class SMSServiceTest {
 
     @BeforeEach
     void setUp() {
+        var em = com.caracore.cso.repository.JPAUtil.getEntityManager();
         try {
-            var em = com.caracore.cso.repository.JPAUtil.getEntityManager();
             com.caracore.cso.util.TestDatabaseUtil.clearDatabase(em);
+        } finally {
             em.close();
+        }
+        try {
             service = new SMSService();
+            var userService = new UserService();
+            var business = TestDataFactory.createUser("BUSINESS");
+            userService.save(business);
+            business = userService.findByLogin(business.getLogin());
+
+            var courierUser = TestDataFactory.createUser("COURIER");
+            userService.save(courierUser);
+            courierUser = userService.findByLogin(courierUser.getLogin());
+
+            var courier = TestDataFactory.createCourier(business, courierUser);
+            new CourierService().save(courier);
+            var couriers = new CourierService().findAllByBusiness(business.getId());
+            if (!couriers.isEmpty()) courier = couriers.get(0);
+
+            var delivery = TestDataFactory.createDelivery(business, courier);
+            new DeliveryService().save(delivery);
         } catch (Exception e) {
             logger.error("Erro ao preparar o teste SMSServiceTest", e);
             throw e;

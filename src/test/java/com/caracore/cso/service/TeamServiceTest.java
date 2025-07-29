@@ -42,12 +42,25 @@ class TeamServiceTest {
 
     @BeforeEach
     void setUp() {
+        var em = com.caracore.cso.repository.JPAUtil.getEntityManager();
+        try {
+            com.caracore.cso.util.TestDatabaseUtil.clearDatabase(em);
+        } finally {
+            em.close();
+        }
         try {
             teamService = new TeamService();
-            // Limpa todos os registros
-            for (Team t : teamService.findAll()) {
-                teamService.delete(t.getId());
-            }
+            var userService = new UserService();
+            var business = TestDataFactory.createUser("BUSINESS");
+            userService.save(business);
+            business = userService.findByLogin(business.getLogin());
+
+            var courier = TestDataFactory.createUser("COURIER");
+            userService.save(courier);
+            courier = userService.findByLogin(courier.getLogin());
+
+            var team = TestDataFactory.createTeam(business, courier);
+            teamService.save(team);
         } catch (Exception e) {
             logger.error("Erro ao preparar o teste TeamServiceTest", e);
             throw e;

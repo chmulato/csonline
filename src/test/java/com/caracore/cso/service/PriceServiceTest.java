@@ -14,6 +14,12 @@ class PriceServiceTest {
 
     @BeforeEach
     void setUp() {
+        var em = com.caracore.cso.repository.JPAUtil.getEntityManager();
+        try {
+            com.caracore.cso.util.TestDatabaseUtil.clearDatabase(em);
+        } finally {
+            em.close();
+        }
         priceService = new PriceService();
         business = TestDataFactory.createUser("BUSINESS");
         new UserService().save(business);

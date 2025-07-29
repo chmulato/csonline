@@ -41,12 +41,14 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
+        var em = JPAUtil.getEntityManager();
         try {
-            var em = JPAUtil.getEntityManager();
             TestDatabaseUtil.clearDatabase(em);
+        } finally {
             em.close();
+        }
+        try {
             service = new UserService();
-
             // Cria usuários de teste com dados únicos
             User admin = TestDataFactory.createUser("ADMIN");
             service.save(admin);
