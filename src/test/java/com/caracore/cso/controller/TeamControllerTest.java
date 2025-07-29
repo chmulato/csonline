@@ -1,34 +1,34 @@
-import com.caracore.cso.service.UserServiceTestHelper;
 package com.caracore.cso.controller;
 
 import com.caracore.cso.entity.Team;
 import com.caracore.cso.entity.User;
+import com.caracore.cso.repository.JPAUtil;
+import com.caracore.cso.service.UserServiceTestHelper;
+import com.caracore.cso.util.TestDataFactory;
+import com.caracore.cso.util.TestDatabaseUtil;
 import jakarta.ws.rs.core.Application;
 import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.caracore.cso.util.TestDatabaseUtil;
-import com.caracore.cso.util.TestDataFactory;
-import com.caracore.cso.repository.JPAUtil;
-import org.junit.jupiter.api.BeforeEach;
-
 public class TeamControllerTest extends JerseyTest {
+
     @BeforeEach
     void cleanDatabase() {
         var em = JPAUtil.getEntityManager();
         TestDatabaseUtil.clearDatabase(em);
         em.close();
-
-}
+    }
 
     @Override
     protected Application configure() {
         return new ResourceConfig()
-            .register(TeamController.class)
-            .register(org.glassfish.jersey.jackson.JacksonFeature.class);
+                .register(TeamController.class)
+                .register(org.glassfish.jersey.jackson.JacksonFeature.class);
     }
 
     @Test
@@ -122,4 +122,4 @@ public class TeamControllerTest extends JerseyTest {
         Response getResponse = target("/team/" + created.getId()).request().get();
         assertEquals(Response.Status.NOT_FOUND.getStatusCode(), getResponse.getStatus());
     }
-
+}
