@@ -13,14 +13,14 @@
         <class>com.caracore.cso.entity.SMS</class>
         <class>com.caracore.cso.entity.Team</class>
         <properties>
-            <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver"/>
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:mem:csonline;DB_CLOSE_DELAY=-1;LOCK_MODE=3;AUTO_SERVER=FALSE"/>
+            <property name="jakarta.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:hsqldb:mem:testdb"/>
             <property name="jakarta.persistence.jdbc.user" value="sa"/>
             <property name="jakarta.persistence.jdbc.password" value=""/>
             <property name="eclipselink.logging.level" value="FINE"/>
             <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>
             <property name="eclipselink.ddl-generation.output-mode" value="database"/>
-            <property name="eclipselink.target-database" value="org.eclipse.persistence.platform.database.H2Platform"/>
+            <property name="eclipselink.target-database" value="org.eclipse.persistence.platform.database.HSQLPlatform"/>
         </properties>
     </persistence-unit>
 </persistence>
