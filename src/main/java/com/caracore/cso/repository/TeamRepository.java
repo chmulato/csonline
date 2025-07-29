@@ -32,13 +32,15 @@ public class TeamRepository {
             }
             // Validação de unicidade: não pode haver outro Team com mesmo business e courier
             if (team.getBusiness() != null && team.getCourier() != null) {
-                Long count = em.createQuery(
-                    "SELECT COUNT(t) FROM Team t WHERE t.business.id = :businessId AND t.courier.id = :courierId" +
-                    (team.getId() != null ? " AND t.id <> :id" : ""), Long.class)
+                var queryStr = "SELECT COUNT(t) FROM Team t WHERE t.business.id = :businessId AND t.courier.id = :courierId" +
+                    (team.getId() != null ? " AND t.id <> :id" : "");
+                var query = em.createQuery(queryStr, Long.class)
                     .setParameter("businessId", team.getBusiness().getId())
-                    .setParameter("courierId", team.getCourier().getId())
-                    .setParameter(team.getId() != null ? "id" : "dummy", team.getId())
-                    .getSingleResult();
+                    .setParameter("courierId", team.getCourier().getId());
+                if (team.getId() != null) {
+                    query.setParameter("id", team.getId());
+                }
+                Long count = query.getSingleResult();
                 if (count > 0) {
                     throw new IllegalArgumentException("Já existe um Team para este business e courier.");
                 }
