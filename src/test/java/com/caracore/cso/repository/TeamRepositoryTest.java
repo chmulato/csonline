@@ -1,4 +1,7 @@
+
 package com.caracore.cso.repository;
+import com.caracore.cso.factory.UserFactory;
+import com.caracore.cso.factory.TeamFactory;
 
 import com.caracore.cso.entity.Team;
 import com.caracore.cso.entity.User;
@@ -33,29 +36,18 @@ public class TeamRepositoryTest {
     @Test
     void testSaveAndFindById() {
         try {
-            // Criar e persistir User válido para business
+            // Criar e persistir Users únicos para business e courier
             em.getTransaction().begin();
-            User business = new User();
-            business.setLogin("business_login");
-            business.setName("Business Name");
-            business.setPassword("123456");
+            User business = UserFactory.createUniqueUser();
             business.setRole("BUSINESS");
             em.persist(business);
-
-            // Criar e persistir User válido para courier
-            User courier = new User();
-            courier.setLogin("courier_login");
-            courier.setName("Courier Name");
-            courier.setPassword("654321");
+            User courier = UserFactory.createUniqueUser();
             courier.setRole("COURIER");
             em.persist(courier);
             em.getTransaction().commit();
 
             em.getTransaction().begin();
-            Team team = new Team();
-            team.setFactorCourier(1.5);
-            team.setBusiness(business);
-            team.setCourier(courier);
+            Team team = TeamFactory.createTeam(business, courier, 1.5);
             em.persist(team);
             em.getTransaction().commit();
 
@@ -74,8 +66,17 @@ public class TeamRepositoryTest {
     void testFindAll() {
         try {
             em.getTransaction().begin();
-            Team team1 = new Team(); team1.setFactorCourier(1.1);
-            Team team2 = new Team(); team2.setFactorCourier(2.2);
+            User business = UserFactory.createUniqueUser();
+            business.setRole("BUSINESS");
+            em.persist(business);
+            User courier1 = UserFactory.createUniqueUser();
+            courier1.setRole("COURIER");
+            em.persist(courier1);
+            User courier2 = UserFactory.createUniqueUser();
+            courier2.setRole("COURIER");
+            em.persist(courier2);
+            Team team1 = TeamFactory.createTeam(business, courier1, 1.1);
+            Team team2 = TeamFactory.createTeam(business, courier2, 2.2);
             em.persist(team1);
             em.persist(team2);
             em.getTransaction().commit();
@@ -90,7 +91,13 @@ public class TeamRepositoryTest {
     @Test
     void testDelete() {
         em.getTransaction().begin();
-        Team team = new Team(); team.setFactorCourier(3.3);
+        User business = UserFactory.createUniqueUser();
+        business.setRole("BUSINESS");
+        em.persist(business);
+        User courier = UserFactory.createUniqueUser();
+        courier.setRole("COURIER");
+        em.persist(courier);
+        Team team = TeamFactory.createTeam(business, courier, 3.3);
         em.persist(team);
         em.getTransaction().commit();
         Long id = team.getId();

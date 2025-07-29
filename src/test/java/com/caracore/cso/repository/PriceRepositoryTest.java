@@ -1,4 +1,8 @@
+
 package com.caracore.cso.repository;
+import com.caracore.cso.factory.UserFactory;
+import com.caracore.cso.factory.CustomerFactory;
+import com.caracore.cso.factory.PriceFactory;
 
 import com.caracore.cso.entity.Price;
 import com.caracore.cso.entity.User;
@@ -24,6 +28,13 @@ class PriceRepositoryTest {
             em = Persistence.createEntityManagerFactory("csonlinePU").createEntityManager();
             tx = em.getTransaction();
             tx.begin();
+            // Limpa tabelas relevantes para garantir isolamento
+            em.createQuery("DELETE FROM Price").executeUpdate();
+            em.createQuery("DELETE FROM Team").executeUpdate();
+            em.createQuery("DELETE FROM Customer").executeUpdate();
+            em.createQuery("DELETE FROM User").executeUpdate();
+            tx.commit();
+            tx.begin();
         } catch (Exception e) {
             logger.error("Erro ao iniciar EntityManager ou transação", e);
             throw e;
@@ -45,45 +56,28 @@ class PriceRepositoryTest {
     @Test
     void testCRUD() {
         try {
-            User business = new User();
-            business.setId(130L);
+            User business = UserFactory.createUniqueUser();
             business.setRole("BUSINESS");
-            business.setName("Biz4");
-            business.setLogin("biz4");
-            business.setPassword("pass");
             em.persist(business);
-
-            Customer customer = new Customer();
-            customer.setId(131L);
-            customer.setBusiness(business);
-            customer.setFactorCustomer(1.1);
-            customer.setPriceTable("D");
+            Customer customer = CustomerFactory.createUniqueCustomer(business);
             em.persist(customer);
-
-            Price price = new Price();
-            price.setId(132L);
-            price.setBusiness(business);
-            price.setCustomer(customer);
-            price.setTableName("Tabela1");
-            price.setVehicle("Carro");
-            price.setLocal("Local1");
-            price.setPrice(100.0);
+            Price price = PriceFactory.createUniquePrice(business, customer);
             em.persist(price);
             em.flush();
 
-            Price found = em.find(Price.class, 132L);
+            Price found = em.find(Price.class, price.getId());
             assertNotNull(found);
-            assertEquals("Tabela1", found.getTableName());
+            assertEquals(price.getTableName(), found.getTableName());
 
             found.setTableName("Tabela2");
             em.merge(found);
             em.flush();
-            Price updated = em.find(Price.class, 132L);
+            Price updated = em.find(Price.class, price.getId());
             assertEquals("Tabela2", updated.getTableName());
 
             em.remove(updated);
             em.flush();
-            assertNull(em.find(Price.class, 132L));
+            assertNull(em.find(Price.class, price.getId()));
         } catch (Exception e) {
             logger.error("Erro durante o teste CRUD do PriceRepository", e);
             throw e;

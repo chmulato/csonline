@@ -1,4 +1,7 @@
+
 package com.caracore.cso.repository;
+import com.caracore.cso.factory.UserFactory;
+import com.caracore.cso.factory.CourierFactory;
 
 import com.caracore.cso.entity.Courier;
 import com.caracore.cso.entity.User;
@@ -23,6 +26,12 @@ class CourierRepositoryTest {
             em = Persistence.createEntityManagerFactory("csonlinePU").createEntityManager();
             tx = em.getTransaction();
             tx.begin();
+            // Limpa tabelas relevantes para garantir isolamento
+            em.createQuery("DELETE FROM Team").executeUpdate();
+            em.createQuery("DELETE FROM Courier").executeUpdate();
+            em.createQuery("DELETE FROM User").executeUpdate();
+            tx.commit();
+            tx.begin();
         } catch (Exception e) {
             logger.error("Erro ao iniciar EntityManager ou transação", e);
             throw e;
@@ -44,43 +53,29 @@ class CourierRepositoryTest {
     @Test
     void testCRUD() {
         try {
-            User business = new User();
-            business.setId(100L);
+            User business = UserFactory.createUniqueUser();
             business.setRole("BUSINESS");
-            business.setName("Biz2");
-            business.setLogin("biz2");
-            business.setPassword("pass");
             em.persist(business);
-
-            User user = new User();
-            user.setId(101L);
+            User user = UserFactory.createUniqueUser();
             user.setRole("COURIER");
-            user.setName("Courier");
-            user.setLogin("cour");
-            user.setPassword("pass");
             em.persist(user);
-
-            Courier courier = new Courier();
-            courier.setId(200L);
-            courier.setBusiness(business);
-            courier.setUser(user);
-            courier.setFactorCourier(2.0);
+            Courier courier = CourierFactory.createUniqueCourier(business, user);
             em.persist(courier);
             em.flush();
 
-            Courier found = em.find(Courier.class, 200L);
+            Courier found = em.find(Courier.class, courier.getId());
             assertNotNull(found);
-            assertEquals(2.0, found.getFactorCourier());
+            assertEquals(courier.getFactorCourier(), found.getFactorCourier());
 
             found.setFactorCourier(3.0);
             em.merge(found);
             em.flush();
-            Courier updated = em.find(Courier.class, 200L);
+            Courier updated = em.find(Courier.class, courier.getId());
             assertEquals(3.0, updated.getFactorCourier());
 
             em.remove(updated);
             em.flush();
-            assertNull(em.find(Courier.class, 200L));
+            assertNull(em.find(Courier.class, courier.getId()));
         } catch (Exception e) {
             logger.error("Erro durante o teste CRUD do CourierRepository", e);
             throw e;

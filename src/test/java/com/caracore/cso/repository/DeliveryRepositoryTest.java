@@ -1,4 +1,9 @@
+
 package com.caracore.cso.repository;
+import com.caracore.cso.factory.UserFactory;
+import com.caracore.cso.factory.CustomerFactory;
+import com.caracore.cso.factory.CourierFactory;
+import com.caracore.cso.factory.DeliveryFullFactory;
 
 import com.caracore.cso.entity.Delivery;
 import com.caracore.cso.entity.User;
@@ -27,6 +32,14 @@ class DeliveryRepositoryTest {
             em = Persistence.createEntityManagerFactory("csonlinePU").createEntityManager();
             tx = em.getTransaction();
             tx.begin();
+            // Limpa tabelas relevantes para garantir isolamento
+            em.createQuery("DELETE FROM Delivery").executeUpdate();
+            em.createQuery("DELETE FROM Team").executeUpdate();
+            em.createQuery("DELETE FROM Courier").executeUpdate();
+            em.createQuery("DELETE FROM Customer").executeUpdate();
+            em.createQuery("DELETE FROM User").executeUpdate();
+            tx.commit();
+            tx.begin();
         } catch (Exception e) {
             logger.error("Erro ao iniciar EntityManager ou transação", e);
             throw e;
@@ -48,78 +61,37 @@ class DeliveryRepositoryTest {
     @Test
     void testCRUD() {
         try {
-            User business = new User();
-            business.setId(120L);
+            User business = UserFactory.createUniqueUser();
             business.setRole("BUSINESS");
-            business.setName("Biz3");
-            business.setLogin("biz3");
-            business.setPassword("pass");
             em.persist(business);
-
-            User user = new User();
-            user.setId(121L);
+            User user = UserFactory.createUniqueUser();
             user.setRole("CUSTOMER");
-            user.setName("Customer2");
-            user.setLogin("cust2");
-            user.setPassword("pass");
             em.persist(user);
-
-            Customer customer = new Customer();
-            customer.setId(122L);
-            customer.setBusiness(business);
+            Customer customer = CustomerFactory.createUniqueCustomer(business);
             customer.setUser(user);
-            customer.setFactorCustomer(1.2);
-            customer.setPriceTable("C");
             em.persist(customer);
-
-            User courierUser = new User();
-            courierUser.setId(123L);
+            User courierUser = UserFactory.createUniqueUser();
             courierUser.setRole("COURIER");
-            courierUser.setName("Courier2");
-            courierUser.setLogin("cour2");
-            courierUser.setPassword("pass");
             em.persist(courierUser);
-
-            Courier courier = new Courier();
-            courier.setId(124L);
-            courier.setBusiness(business);
-            courier.setUser(courierUser);
-            courier.setFactorCourier(2.5);
+            Courier courier = CourierFactory.createUniqueCourier(business, courierUser);
             em.persist(courier);
-
-            Delivery delivery = new Delivery();
-            delivery.setId(125L);
-            delivery.setBusiness(business);
-            delivery.setCustomer(customer);
-            delivery.setCourier(courier);
-            delivery.setStart("A");
-            delivery.setDestination("B");
-            delivery.setContact("Contact");
-            delivery.setDescription("Desc");
-            delivery.setVolume("10");
-            delivery.setWeight("5");
-            delivery.setKm("2");
-            delivery.setAdditionalCost(1.0);
-            delivery.setCost(10.0);
-            delivery.setReceived(true);
-            delivery.setCompleted(false);
-            delivery.setDatatime(LocalDateTime.now());
+            Delivery delivery = DeliveryFullFactory.createUniqueDelivery(business, customer, courier);
             em.persist(delivery);
             em.flush();
 
-            Delivery found = em.find(Delivery.class, 125L);
+            Delivery found = em.find(Delivery.class, delivery.getId());
             assertNotNull(found);
-            assertEquals("A", found.getStart());
+            assertEquals(delivery.getStart(), found.getStart());
 
             found.setStart("C");
             em.merge(found);
             em.flush();
-            Delivery updated = em.find(Delivery.class, 125L);
+            Delivery updated = em.find(Delivery.class, delivery.getId());
             assertEquals("C", updated.getStart());
 
             em.remove(updated);
             em.flush();
-            assertNull(em.find(Delivery.class, 125L));
+            assertNull(em.find(Delivery.class, delivery.getId()));
         } catch (Exception e) {
             logger.error("Erro durante o teste CRUD do DeliveryRepository", e);
             throw e;

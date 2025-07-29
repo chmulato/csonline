@@ -1,4 +1,7 @@
+
 package com.caracore.cso.repository;
+import com.caracore.cso.factory.UserFactory;
+import com.caracore.cso.factory.CustomerFactory;
 
 import com.caracore.cso.entity.Customer;
 import com.caracore.cso.entity.User;
@@ -23,6 +26,12 @@ class CustomerRepositoryTest {
             em = Persistence.createEntityManagerFactory("csonlinePU").createEntityManager();
             tx = em.getTransaction();
             tx.begin();
+            // Limpa tabelas relevantes para garantir isolamento
+            em.createQuery("DELETE FROM Team").executeUpdate();
+            em.createQuery("DELETE FROM Customer").executeUpdate();
+            em.createQuery("DELETE FROM User").executeUpdate();
+            tx.commit();
+            tx.begin();
         } catch (Exception e) {
             logger.error("Erro ao iniciar EntityManager ou transação", e);
             throw e;
@@ -44,44 +53,30 @@ class CustomerRepositoryTest {
     @Test
     void testCRUD() {
         try {
-            User business = new User();
-            business.setId(110L);
+            User business = UserFactory.createUniqueUser();
             business.setRole("BUSINESS");
-            business.setName("Biz");
-            business.setLogin("biz");
-            business.setPassword("pass");
             em.persist(business);
-
-            User user = new User();
-            user.setId(111L);
+            User user = UserFactory.createUniqueUser();
             user.setRole("CUSTOMER");
-            user.setName("Customer");
-            user.setLogin("cust");
-            user.setPassword("pass");
             em.persist(user);
-
-            Customer customer = new Customer();
-            customer.setId(112L);
-            customer.setBusiness(business);
+            Customer customer = CustomerFactory.createUniqueCustomer(business);
             customer.setUser(user);
-            customer.setFactorCustomer(1.5);
-            customer.setPriceTable("A");
             em.persist(customer);
             em.flush();
 
-            Customer found = em.find(Customer.class, 112L);
+            Customer found = em.find(Customer.class, customer.getId());
             assertNotNull(found);
-            assertEquals("A", found.getPriceTable());
+            assertEquals(customer.getPriceTable(), found.getPriceTable());
 
             found.setPriceTable("B");
             em.merge(found);
             em.flush();
-            Customer updated = em.find(Customer.class, 112L);
+            Customer updated = em.find(Customer.class, customer.getId());
             assertEquals("B", updated.getPriceTable());
 
             em.remove(updated);
             em.flush();
-            assertNull(em.find(Customer.class, 112L));
+            assertNull(em.find(Customer.class, customer.getId()));
         } catch (Exception e) {
             logger.error("Erro durante o teste CRUD do CustomerRepository", e);
             throw e;
