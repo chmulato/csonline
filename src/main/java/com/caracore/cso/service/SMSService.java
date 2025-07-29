@@ -154,17 +154,16 @@ public class SMSService {
             em.getTransaction().begin();
             SMS sms = em.find(SMS.class, smsId);
             if (sms != null) {
+                if (sms.getDelivery() != null) {
+                    em.getTransaction().rollback();
+                    throw new com.caracore.cso.exception.ReferentialIntegrityException("Não foi possível deletar o SMS. Existem registros vinculados a este SMS.");
+                }
                 em.remove(sms);
             }
             em.getTransaction().commit();
         } catch (Exception e) {
             logger.error("Erro ao deletar SMS por id: " + smsId, e);
-            em.getTransaction().rollback();
-            String msg = e.getMessage();
-            if ((msg != null && msg.contains("integrity constraint violation")) ||
-                (e.getCause() != null && e.getCause().getMessage() != null && e.getCause().getMessage().contains("integrity constraint violation"))) {
-                throw new com.caracore.cso.exception.ReferentialIntegrityException("Não foi possível deletar o SMS. Existem registros vinculados a este SMS.", e);
-            }
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
             throw e;
         } finally {
             em.close();

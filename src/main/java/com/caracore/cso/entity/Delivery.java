@@ -34,7 +34,7 @@ public class Delivery {
     private Boolean completed;
     private LocalDateTime datatime;
 
-    @OneToMany(mappedBy = "delivery", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "delivery")
     private java.util.List<SMS> smsList;
 
     public java.util.List<SMS> getSmsList() { return smsList; }

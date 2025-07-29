@@ -50,17 +50,6 @@ class TeamServiceTest {
         }
         try {
             teamService = new TeamService();
-            var userService = new UserService();
-            var business = TestDataFactory.createUser("BUSINESS");
-            userService.save(business);
-            business = userService.findByLogin(business.getLogin());
-
-            var courier = TestDataFactory.createUser("COURIER");
-            userService.save(courier);
-            courier = userService.findByLogin(courier.getLogin());
-
-            var team = TestDataFactory.createTeam(business, courier);
-            teamService.save(team);
         } catch (Exception e) {
             logger.error("Erro ao preparar o teste TeamServiceTest", e);
             throw e;

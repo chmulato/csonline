@@ -83,21 +83,20 @@ public class DeliveryService {
             em.getTransaction().begin();
             Delivery delivery = em.find(Delivery.class, deliveryId);
             if (delivery != null) {
-                // Remove SMS relacionados à delivery
-                Query smsDelete = em.createQuery("DELETE FROM SMS s WHERE s.delivery.id = :deliveryId");
-                smsDelete.setParameter("deliveryId", deliveryId);
-                smsDelete.executeUpdate();
+                // Verifica se existem SMS vinculados a esta entrega
+                Long smsCount = em.createQuery("SELECT COUNT(s) FROM SMS s WHERE s.delivery.id = :deliveryId", Long.class)
+                    .setParameter("deliveryId", deliveryId)
+                    .getSingleResult();
+                if (smsCount != null && smsCount > 0) {
+                    em.getTransaction().rollback();
+                    throw new com.caracore.cso.exception.ReferentialIntegrityException("Não foi possível deletar a entrega. Existem registros vinculados a esta entrega.");
+                }
                 em.remove(delivery);
             }
             em.getTransaction().commit();
         } catch (Exception e) {
             logger.error("Erro ao deletar delivery id: " + deliveryId, e);
-            em.getTransaction().rollback();
-            String msg = e.getMessage();
-            if ((msg != null && msg.contains("integrity constraint violation")) ||
-                (e.getCause() != null && e.getCause().getMessage() != null && e.getCause().getMessage().contains("integrity constraint violation"))) {
-                throw new com.caracore.cso.exception.ReferentialIntegrityException("Não foi possível deletar a entrega. Existem registros vinculados a esta entrega.", e);
-            }
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
             throw e;
         } finally {
             em.close();

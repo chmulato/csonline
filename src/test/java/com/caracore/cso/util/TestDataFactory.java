@@ -61,7 +61,7 @@ public class TestDataFactory {
         Courier courier = new Courier();
         courier.setBusiness(business);
         courier.setUser(courierUser);
-        courier.setFactorCourier(1.0);
+        courier.setFactorCourier(1.2);
         return courier;
     }
 
