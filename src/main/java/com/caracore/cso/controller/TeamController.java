@@ -39,8 +39,15 @@ public class TeamController {
         if (team.getCourier() != null && team.getCourier().getId() == null) {
             userService.save(team.getCourier());
         }
-        teamService.save(team);
-        return Response.status(Response.Status.CREATED).entity(team).build();
+        try {
+            teamService.save(team);
+            return Response.status(Response.Status.CREATED).entity(team).build();
+        } catch (IllegalArgumentException e) {
+            return Response.status(Response.Status.CONFLICT)
+                .entity("{\"error\": \"" + e.getMessage() + "\"}")
+                .type(MediaType.APPLICATION_JSON)
+                .build();
+        }
     }
 
     @PUT
@@ -58,8 +65,15 @@ public class TeamController {
             userService.save(team.getCourier());
         }
         team.setId(id);
-        teamService.save(team);
-        return Response.ok(team).build();
+        try {
+            teamService.save(team);
+            return Response.ok(team).build();
+        } catch (IllegalArgumentException e) {
+            return Response.status(Response.Status.CONFLICT)
+                .entity("{\"error\": \"" + e.getMessage() + "\"}")
+                .type(MediaType.APPLICATION_JSON)
+                .build();
+        }
     }
 
     @DELETE

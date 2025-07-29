@@ -17,9 +17,41 @@ public class PriceRepository {
     @Transactional
     public void save(Price price) {
         try {
-            em.persist(price);
+            em.getTransaction().begin();
+            // Garante que business e customer estão gerenciados
+            if (price.getBusiness() != null && price.getBusiness().getId() != null) {
+                price.setBusiness(em.find(com.caracore.cso.entity.User.class, price.getBusiness().getId()));
+            }
+            if (price.getCustomer() != null && price.getCustomer().getId() != null) {
+                price.setCustomer(em.find(com.caracore.cso.entity.Customer.class, price.getCustomer().getId()));
+            }
+            // Validação de unicidade: não pode haver outro Price com mesmo business, customer, tableName, vehicle e local
+            if (price.getBusiness() != null && price.getCustomer() != null && price.getTableName() != null && price.getVehicle() != null && price.getLocal() != null) {
+                String jpql = "SELECT COUNT(p) FROM Price p WHERE p.business.id = :businessId AND p.customer.id = :customerId AND p.tableName = :tableName AND p.vehicle = :vehicle AND p.local = :local" +
+                        (price.getId() != null ? " AND p.id <> :id" : "");
+                var query = em.createQuery(jpql, Long.class)
+                        .setParameter("businessId", price.getBusiness().getId())
+                        .setParameter("customerId", price.getCustomer().getId())
+                        .setParameter("tableName", price.getTableName())
+                        .setParameter("vehicle", price.getVehicle())
+                        .setParameter("local", price.getLocal());
+                if (price.getId() != null) {
+                    query.setParameter("id", price.getId());
+                }
+                Long count = query.getSingleResult();
+                if (count > 0) {
+                    throw new IllegalArgumentException("Já existe um Price para esta combinação de business, customer, tableName, vehicle e local.");
+                }
+            }
+            if (price.getId() == null) {
+                em.persist(price);
+            } else {
+                em.merge(price);
+            }
+            em.getTransaction().commit();
         } catch (Exception e) {
             logger.error("Erro ao salvar Price", e);
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
             throw e;
         }
     }
