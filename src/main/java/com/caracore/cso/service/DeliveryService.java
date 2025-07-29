@@ -31,6 +31,26 @@ public class DeliveryService {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
+            // Garante que entidades relacionadas estejam gerenciadas
+            if (delivery.getBusiness() != null && delivery.getBusiness().getId() != null) {
+                delivery.setBusiness(em.find(com.caracore.cso.entity.User.class, delivery.getBusiness().getId()));
+            }
+            if (delivery.getCustomer() != null && delivery.getCustomer().getId() != null) {
+                delivery.setCustomer(em.find(com.caracore.cso.entity.Customer.class, delivery.getCustomer().getId()));
+            }
+            if (delivery.getCourier() != null && delivery.getCourier().getId() != null) {
+                com.caracore.cso.entity.Courier managedCourier = em.find(com.caracore.cso.entity.Courier.class, delivery.getCourier().getId());
+                // Ensure Courier's User and Business are managed
+                if (managedCourier != null) {
+                    if (managedCourier.getUser() != null && managedCourier.getUser().getId() != null) {
+                        managedCourier.setUser(em.find(com.caracore.cso.entity.User.class, managedCourier.getUser().getId()));
+                    }
+                    if (managedCourier.getBusiness() != null && managedCourier.getBusiness().getId() != null) {
+                        managedCourier.setBusiness(em.find(com.caracore.cso.entity.User.class, managedCourier.getBusiness().getId()));
+                    }
+                }
+                delivery.setCourier(managedCourier);
+            }
             em.persist(delivery);
             em.getTransaction().commit();
         } catch (Exception e) {

@@ -25,7 +25,16 @@ public class SMSControllerTest extends JerseyTest {
         var business = TestDataFactory.createUser("BUSINESS");
         var courierUser = TestDataFactory.createUser("COURIER");
         var courier = TestDataFactory.createCourier(business, courierUser);
+        // Persiste business e courier
+        new com.caracore.cso.service.UserService().save(business);
+        new com.caracore.cso.service.UserService().save(courierUser);
+        new com.caracore.cso.service.CourierService().save(courier);
+        // Persiste delivery
         delivery = TestDataFactory.createDelivery(business, courier);
+        new com.caracore.cso.service.DeliveryService().save(delivery);
+        // Busca delivery persistida para garantir ID
+        var deliveries = new com.caracore.cso.service.DeliveryService().findAll();
+        if (!deliveries.isEmpty()) delivery = deliveries.get(0);
         sms = TestDataFactory.createSMS(delivery);
     }
 
@@ -64,5 +73,19 @@ public class SMSControllerTest extends JerseyTest {
     public void testCreateSMS() {
         Response response = target("/sms").request().post(jakarta.ws.rs.client.Entity.json(sms));
         assertEquals(201, response.getStatus());
+
+        // Tenta criar outro SMS igual (mesmo delivery, type e piece)
+        com.caracore.cso.entity.SMS smsDuplicado = new com.caracore.cso.entity.SMS();
+        smsDuplicado.setDelivery(sms.getDelivery());
+        smsDuplicado.setType(sms.getType());
+        smsDuplicado.setPiece(sms.getPiece());
+        smsDuplicado.setMobileFrom(sms.getMobileFrom());
+        smsDuplicado.setMobileTo(sms.getMobileTo());
+        smsDuplicado.setMessage("Mensagem duplicada");
+        smsDuplicado.setDatetime(sms.getDatetime());
+        Response resp2 = target("/sms").request().post(jakarta.ws.rs.client.Entity.json(smsDuplicado));
+        assertEquals(409, resp2.getStatus());
+        String msg = resp2.readEntity(String.class).toLowerCase();
+        assertTrue(msg.contains("entrega") || msg.contains("piece") || msg.contains("tipo") || msg.contains("existe"));
     }
 }

@@ -13,6 +13,24 @@ import org.slf4j.LoggerFactory;
 import com.caracore.cso.util.TestDataFactory;
 
 class UserServiceTest {
+    @Test
+    void testNaoPermiteDuplicidadeDeLoginOuEmail() {
+        User user1 = TestDataFactory.createUser("ADMIN");
+        service.save(user1);
+        // Tenta criar outro usuário com mesmo login
+        User user2 = TestDataFactory.createUser("ADMIN");
+        user2.setLogin(user1.getLogin());
+        user2.setEmail("email_unico@test.com");
+        Exception ex1 = assertThrows(IllegalArgumentException.class, () -> service.save(user2));
+        assertTrue(ex1.getMessage().toLowerCase().contains("login"));
+
+        // Tenta criar outro usuário com mesmo email
+        User user3 = TestDataFactory.createUser("ADMIN");
+        user3.setEmail(user1.getEmail());
+        user3.setLogin("login_unico_para_email");
+        Exception ex2 = assertThrows(IllegalArgumentException.class, () -> service.save(user3));
+        assertTrue(ex2.getMessage().toLowerCase().contains("email"));
+    }
     private static final Logger logger = LoggerFactory.getLogger(UserServiceTest.class);
     private UserService service;
     @Test

@@ -57,8 +57,25 @@ public class DeliveryController {
             if (delivery.getCourier() != null && delivery.getCourier().getId() == null) {
                 courierService.save(delivery.getCourier());
             }
+            // Reatribui entidades gerenciadas
+            if (delivery.getBusiness() != null && delivery.getBusiness().getId() != null) {
+                delivery.setBusiness(userService.findById(delivery.getBusiness().getId()));
+            }
+            if (delivery.getCustomer() != null && delivery.getCustomer().getId() != null) {
+                delivery.setCustomer(customerService.findById(delivery.getCustomer().getId()));
+            }
+            if (delivery.getCourier() != null && delivery.getCourier().getId() != null) {
+                // Always re-fetch managed Courier after save
+                delivery.setCourier(courierService.findById(delivery.getCourier().getId()));
+            }
             deliveryService.save(delivery);
-            return Response.status(Response.Status.CREATED).build();
+            return Response.status(Response.Status.CREATED).entity(delivery).build();
+        } catch (IllegalArgumentException e) {
+            logger.warn("Violação de unicidade ao criar delivery: {}", e.getMessage());
+            return Response.status(Response.Status.CONFLICT)
+                .entity("{\"error\": \"" + e.getMessage() + "\"}")
+                .type(MediaType.APPLICATION_JSON)
+                .build();
         } catch (Exception e) {
             logger.error("Erro ao criar delivery", e);
             return Response.serverError().entity("Erro ao criar delivery").build();

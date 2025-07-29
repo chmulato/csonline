@@ -63,6 +63,12 @@ public class CourierController {
             }
             courierService.save(courier);
             return Response.status(Response.Status.CREATED).entity(courier).build();
+        } catch (IllegalArgumentException e) {
+            logger.warn("Violação de unicidade ao criar courier: {}", e.getMessage());
+            return Response.status(Response.Status.CONFLICT)
+                .entity("{\"error\": \"" + e.getMessage() + "\"}")
+                .type(MediaType.APPLICATION_JSON)
+                .build();
         } catch (Exception e) {
             logger.error("Erro ao criar courier", e);
             return Response.serverError().entity("Erro ao criar courier").build();

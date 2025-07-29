@@ -79,7 +79,13 @@ public class SMSController {
     public Response create(SMS sms) {
         try {
             smsService.save(sms);
-            return Response.status(Response.Status.CREATED).build();
+            return Response.status(Response.Status.CREATED).entity(sms).build();
+        } catch (IllegalArgumentException e) {
+            logger.warn("Violação de unicidade ao criar SMS: {}", e.getMessage());
+            return Response.status(Response.Status.CONFLICT)
+                .entity("{\"error\": \"" + e.getMessage() + "\"}")
+                .type(MediaType.APPLICATION_JSON)
+                .build();
         } catch (Exception e) {
             logger.error("Erro ao criar SMS", e);
             return Response.serverError().entity("Erro ao criar SMS").build();

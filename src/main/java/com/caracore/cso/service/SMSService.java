@@ -30,9 +30,24 @@ public class SMSService {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
+            // Garante que a Delivery está gerenciada
+            if (sms.getDelivery() != null && sms.getDelivery().getId() != null) {
+                sms.setDelivery(em.find(com.caracore.cso.entity.Delivery.class, sms.getDelivery().getId()));
+            }
+            // Validação de unicidade: não pode haver outro SMS com mesmo delivery, type e piece
+            if (sms.getDelivery() != null && sms.getType() != null && sms.getPiece() != null) {
+                Long count = em.createQuery(
+                    "SELECT COUNT(s) FROM SMS s WHERE s.delivery.id = :deliveryId AND s.type = :type AND s.piece = :piece", Long.class)
+                    .setParameter("deliveryId", sms.getDelivery().getId())
+                    .setParameter("type", sms.getType())
+                    .setParameter("piece", sms.getPiece())
+                    .getSingleResult();
+                if (count > 0) {
+                    throw new IllegalArgumentException("Já existe um SMS para esta entrega, tipo e piece.");
+                }
+            }
             // Garante que o campo ID seja atribuído se não estiver definido
             if (sms.getId() == null) {
-                // Gera o próximo valor de ID (simples para H2, pode ser ajustado para outros bancos)
                 Long nextId = ((Number) em.createQuery("SELECT COALESCE(MAX(s.id), 0) + 1 FROM SMS s").getSingleResult()).longValue();
                 sms.setId(nextId);
             }
@@ -40,7 +55,7 @@ public class SMSService {
             em.getTransaction().commit();
         } catch (Exception e) {
             logger.error("Erro ao salvar SMS", e);
-            em.getTransaction().rollback();
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
             throw e;
         } finally {
             em.close();

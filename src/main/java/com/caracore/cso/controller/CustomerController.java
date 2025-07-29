@@ -57,7 +57,13 @@ public class CustomerController {
                 userService.save(customer.getUser());
             }
             customerService.save(customer);
-            return Response.status(Response.Status.CREATED).build();
+            return Response.status(Response.Status.CREATED).entity(customer).build();
+        } catch (IllegalArgumentException e) {
+            logger.warn("Violação de unicidade ao criar customer: {}", e.getMessage());
+            return Response.status(Response.Status.CONFLICT)
+                .entity("{\"error\": \"" + e.getMessage() + "\"}")
+                .type(MediaType.APPLICATION_JSON)
+                .build();
         } catch (Exception e) {
             logger.error("Erro ao criar customer", e);
             return Response.serverError().entity("Erro ao criar customer").build();

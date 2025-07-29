@@ -17,6 +17,21 @@ public class UserService {
         try {
             logger.info("[DEBUG] Salvando usuário com ID: {}", user.getId());
             em.getTransaction().begin();
+            // Validação de unicidade de login
+            if (user.getId() == null) {
+                TypedQuery<User> loginQuery = em.createQuery("SELECT u FROM User u WHERE u.login = :login", User.class);
+                loginQuery.setParameter("login", user.getLogin());
+                if (!loginQuery.getResultList().isEmpty()) {
+                    throw new IllegalArgumentException("Login já existe: " + user.getLogin());
+                }
+                if (user.getEmail() != null && !user.getEmail().isEmpty()) {
+                    TypedQuery<User> emailQuery = em.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class);
+                    emailQuery.setParameter("email", user.getEmail());
+                    if (!emailQuery.getResultList().isEmpty()) {
+                        throw new IllegalArgumentException("Email já existe: " + user.getEmail());
+                    }
+                }
+            }
             em.persist(user);
             em.getTransaction().commit();
         } catch (Exception e) {

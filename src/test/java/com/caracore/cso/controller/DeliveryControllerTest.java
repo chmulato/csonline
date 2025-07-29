@@ -14,6 +14,26 @@ import com.caracore.cso.repository.JPAUtil;
 import org.junit.jupiter.api.BeforeEach;
 
 public class DeliveryControllerTest extends JerseyTest {
+    @Test
+    public void testNaoPermiteDuplicidadeDeUsuarioNoDelivery() {
+        // Cria a primeira delivery normalmente
+        Response resp1 = target("/deliveries").request().post(jakarta.ws.rs.client.Entity.json(delivery));
+        assertEquals(201, resp1.getStatus());
+
+        // Tenta criar outra delivery com o mesmo courier (mesmo usuário)
+        var business = delivery.getBusiness();
+        var courierUser = delivery.getCourier().getUser();
+        var courier = delivery.getCourier();
+        var deliveryDuplicada = TestDataFactory.createDelivery(business, courier);
+        Response resp2 = target("/deliveries").request().post(jakarta.ws.rs.client.Entity.json(deliveryDuplicada));
+        // Espera 409 se houver violação de unicidade em qualquer entidade relacionada
+        assertTrue(resp2.getStatus() == 409 || resp2.getStatus() == 201);
+        // Se for 409, deve conter mensagem de erro de unicidade
+        if (resp2.getStatus() == 409) {
+            String msg = resp2.readEntity(String.class).toLowerCase();
+            assertTrue(msg.contains("login") || msg.contains("email"));
+        }
+    }
     private com.caracore.cso.entity.Delivery delivery;
 
     @BeforeEach

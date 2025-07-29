@@ -32,6 +32,27 @@ public class CourierService {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
+            // Garante que o usuário do courier já está persistido e gerenciado
+            if (courier.getUser() != null) {
+                if (courier.getUser().getId() == null) {
+                    UserService userService = new UserService();
+                    userService.save(courier.getUser());
+                    // Always re-fetch managed instance after save
+                    courier.setUser(em.find(com.caracore.cso.entity.User.class, courier.getUser().getId()));
+                } else {
+                    courier.setUser(em.find(com.caracore.cso.entity.User.class, courier.getUser().getId()));
+                }
+            }
+            if (courier.getBusiness() != null) {
+                if (courier.getBusiness().getId() == null) {
+                    UserService userService = new UserService();
+                    userService.save(courier.getBusiness());
+                    // Always re-fetch managed instance after save
+                    courier.setBusiness(em.find(com.caracore.cso.entity.User.class, courier.getBusiness().getId()));
+                } else {
+                    courier.setBusiness(em.find(com.caracore.cso.entity.User.class, courier.getBusiness().getId()));
+                }
+            }
             em.persist(courier);
             em.getTransaction().commit();
         } catch (Exception e) {

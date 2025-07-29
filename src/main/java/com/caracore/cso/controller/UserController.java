@@ -52,10 +52,15 @@ public class UserController {
     public Response create(User user) {
         try {
             userService.save(user);
-            // Monta a URI do novo recurso criado
             String location = "/users/" + user.getId();
             return Response.status(Response.Status.CREATED)
                 .header("Location", location)
+                .build();
+        } catch (IllegalArgumentException e) {
+            logger.warn("Violação de unicidade ao criar usuário: {}", e.getMessage());
+            return Response.status(Response.Status.CONFLICT)
+                .entity("{\"error\": \"" + e.getMessage() + "\"}")
+                .type(MediaType.APPLICATION_JSON)
                 .build();
         } catch (Exception e) {
             logger.error("Erro ao criar usuário", e);
