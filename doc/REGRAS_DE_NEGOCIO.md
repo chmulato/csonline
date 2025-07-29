@@ -46,6 +46,8 @@ Todos os endpoints REST do sistema são documentados automaticamente via Swagger
   - Não pode alterar dados de outros clientes.
 
 ## Entrega (DeliveryService)
+### Regras de Exclusão
+- Não é permitido excluir uma entrega (Delivery) se existirem mensagens (SMS) vinculadas a ela. Neste caso, a operação lança uma `ReferentialIntegrityException` com mensagem clara ao usuário.
 - Consulta de entregas:
   - Permite consultar entregas por cliente ou courier, respeitando as regras de autorização.
   - ADMIN pode consultar todas as entregas.
@@ -57,6 +59,8 @@ Todos os endpoints REST do sistema são documentados automaticamente via Swagger
   - Apenas envolvidos (courier, customer, ADMIN) podem acessar o histórico.
 
 ## SMS (SMSService)
+### Regras de Exclusão
+- Não é permitido excluir uma mensagem (SMS) se ela estiver vinculada a uma entrega (Delivery). Neste caso, a operação lança uma `ReferentialIntegrityException` com mensagem clara ao usuário.
 - Registro de mensagens:
   - Permite registrar mensagens entre courier e customer para rastreamento da entrega.
   - Mensagens podem ser enviadas via WhatsApp, SMS ou outros canais definidos.

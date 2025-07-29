@@ -8,7 +8,7 @@ Projeto Java para gestão de entregas, clientes, usuários, preços e SMS.
 - JPA (Jakarta Persistence API)
 - EclipseLink (JPA Provider)
 - Jersey (JAX-RS)
-- H2 Database
+- HSQLDB (HyperSQL Database)
 - Log4j 2
 - Swagger/OpenAPI
 - JUnit 5, Mockito
@@ -57,7 +57,7 @@ Consulte o arquivo [INDEX.md](doc/INDEX.md) para uma documentação detalhada do
 
 - Edite `src/main/resources/log4j2.xml` para ajustar o log.
 - Edite `src/main/resources/persistence.xml` para configurar JPA/EclipseLink.
-- Banco de dados H2 em memória por padrão.
+- Banco de dados HSQLDB em memória por padrão (configurável em `src/main/resources/persistence.xml` e `application.properties`).
 
 ## Contato
 

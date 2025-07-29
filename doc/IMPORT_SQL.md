@@ -93,6 +93,8 @@ INSERT INTO sms (id, iddelivery, piece, type, mobileTo, mobileFrom, message, dat
 ## Observações
 - Os dados podem ser ajustados conforme necessidade do ambiente ou testes, incluindo novos clientes, couriers, entregas ou preços.
 - Para evitar conflitos em testes automatizados, utilize IDs altos nos testes unitários.
-- O arquivo deve ser colocado em `src/main/resources/import.sql` para ser carregado automaticamente pelo Hibernate/H2.
+
+- O arquivo deve ser colocado em `src/main/resources/import.sql` para ser carregado automaticamente pelo Hibernate/HSQLDB.
+- O HSQLDB possui pequenas diferenças de sintaxe em relação ao H2, mas os comandos SQL deste arquivo são compatíveis com ambos. Caso utilize outro banco, ajuste os tipos e funções conforme necessário.
 - Consulte as regras de negócio em [REGRAS_DE_NEGOCIO.md](REGRAS_DE_NEGOCIO.md) para entender os vínculos entre entidades e restrições de acesso.
 - Os dados simulam cenários completos para validação da camada REST, serviços e regras de negócio.
