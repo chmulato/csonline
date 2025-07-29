@@ -2,11 +2,6 @@
 /target/
 !.mvn/wrapper/maven-wrapper.jar
 
-# Eclipse
-.classpath
-.project
-.settings/
-
 # VS Code
 .vscode/
 
