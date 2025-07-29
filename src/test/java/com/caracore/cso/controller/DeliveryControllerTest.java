@@ -41,10 +41,11 @@ public class DeliveryControllerTest extends JerseyTest {
         var em = JPAUtil.getEntityManager();
         TestDatabaseUtil.clearDatabase(em);
         em.close();
-        // Cria dados únicos usando TestDataFactory
+        // Cria dados únicos e independentes para cada papel
         var business = TestDataFactory.createUser("BUSINESS");
+        var courierBusiness = TestDataFactory.createUser("COURIER_BUSINESS"); // business do courier
         var courierUser = TestDataFactory.createUser("COURIER");
-        var courier = TestDataFactory.createCourier(business, courierUser);
+        var courier = TestDataFactory.createCourier(courierBusiness, courierUser);
         delivery = TestDataFactory.createDelivery(business, courier);
     }
 
