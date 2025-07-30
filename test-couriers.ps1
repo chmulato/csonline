@@ -12,10 +12,13 @@ Como usar:
 3. Siga as instruções na tela
 #>
 
-Write-Host "Certifique-se de que a aplicação está rodando localmente em http://localhost:8080"
+
+Write-Host "Certifique-se de que a aplicação está rodando localmente em http://localhost:8080/csonline"
 Read-Host "Pressione ENTER para continuar após iniciar a aplicação"
 
-$uri = "http://localhost:8080/couriers"
+$endpoint = Read-Host "Informe o endpoint para testar (ex: /couriers)"
+if (-not $endpoint.StartsWith("/")) { $endpoint = "/$endpoint" }
+$uri = "http://localhost:8080/csonline$endpoint"
 Write-Host "Testando GET $uri"
 
 $start = Get-Date
