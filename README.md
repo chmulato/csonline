@@ -19,67 +19,40 @@ Projeto Java para gestão de entregas, clientes, usuários, preços e SMS.
 
 ## Como executar
 
-### Ambiente recomendado: Payara Server 6 (Windows/PowerShell)
+
+### Como executar no Tomcat 10+ (Windows/PowerShell)
 
 Scripts automatizados estão disponíveis na raiz do projeto:
 
-1. **Preparar o artefato WAR:**
+1. **Preparar o artefato WAR e copiar para o Tomcat:**
    ```powershell
    pwsh ./prepare-artifact.ps1 [-DskipTests]
    ```
-   Gera o arquivo `target/csonline-1.0-SNAPSHOT.war`.
+   Gera o arquivo `target/csonline-1.0-SNAPSHOT.war` e copia para `server\apache-tomcat-10.1.43\webapps`.
 
-
-2. **Iniciar o Payara Server:**
+2. **Iniciar o Tomcat:**
    ```powershell
-   pwsh ./start-payara.ps1 [dominio]
+   pwsh ./start-tomcat10+.ps1
    ```
-   Inicia o domínio informado (padrão: domain1) do Payara em http://localhost:8080/.
+   Inicia o Tomcat 10+ em http://localhost:8080/.
 
-3. **Deploy do WAR:**
+3. **Parar o Tomcat:**
    ```powershell
-   pwsh ./deploy-payara.ps1 [dominio]
+   pwsh ./stop-tomcat10+.ps1
    ```
-   Copia o WAR para a pasta de autodeploy do domínio informado (padrão: domain1). O deploy é feito automaticamente.
+   Para o Tomcat 10+.
 
-4. **Parar o Payara Server:**
+4. **Deploy manual do WAR (opcional):**
    ```powershell
-   pwsh ./stop-payara.ps1 [dominio]
+   pwsh ./deploy-tomcat10+.ps1
    ```
-   Para o domínio informado (padrão: domain1) do Payara.
+   Copia o WAR para a pasta webapps do Tomcat.
 
-> **Dica:**
-> Se você criou um novo domínio (ex: domain2), basta passar o nome como argumento nos scripts acima:
-> ```powershell
-> pwsh ./start-payara.ps1 domain2
-> pwsh ./deploy-payara.ps1 domain2
-> pwsh ./stop-payara.ps1 domain2
-> ```
-
-> Para criar um novo domínio com senha mestre salva, use:
-> ```powershell
-> server\payara6\bin\asadmin create-domain --savemasterpassword=true domain2
-> ```
-> Depois, utilize normalmente nos scripts.
-
----
-
-### Alternativas
-
-#### Tomcat 10+
-1. Baixe o Tomcat 10 em: https://tomcat.apache.org/download-10.cgi
-2. Extraia o Tomcat em uma pasta.
-3. Copie o arquivo `target/csonline-1.0-SNAPSHOT.war` para a pasta `webapps` do Tomcat.
-4. Inicie o Tomcat com `bin/startup.bat` (Windows) ou `bin/startup.sh` (Linux/Mac).
-5. Acesse: http://localhost:8080/
-
-#### Payara Micro (Jakarta EE 10)
-1. Baixe o Payara Micro: https://www.payara.fish/downloads/payara-micro/
-2. Execute:
-   ```bash
-   java -jar payara-micro*.jar --deploy target/csonline-1.0-SNAPSHOT.war
+5. **Configurar DataSource JDBC (opcional):**
+   ```powershell
+   pwsh ./config-tomcat10+.ps1
    ```
-3. Acesse: http://localhost:8080/
+   Copia o driver JDBC e configura o DataSource no Tomcat (exemplo para HSQLDB).
 
 ---
 
