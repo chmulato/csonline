@@ -15,9 +15,32 @@ Projeto Java para gestão de entregas, clientes, usuários, preços e SMS.
 
 ## Como executar
 
+
+### 1. Gerar o WAR
 ```bash
-mvn clean install
-mvn tomcat10:run
+mvn clean package
+```
+
+### 2. Executar localmente
+
+#### Opção A: Tomcat 10+
+1. Baixe o Tomcat 10 em: https://tomcat.apache.org/download-10.cgi
+2. Extraia o Tomcat em uma pasta.
+3. Copie o arquivo `target/csonline-1.0-SNAPSHOT.war` para a pasta `webapps` do Tomcat.
+4. Inicie o Tomcat com `bin/startup.bat` (Windows) ou `bin/startup.sh` (Linux/Mac).
+5. Acesse: http://localhost:8080/
+
+#### Opção B: Payara Micro (Jakarta EE 10)
+1. Baixe o Payara Micro: https://www.payara.fish/downloads/payara-micro/
+2. Execute:
+   ```bash
+   java -jar payara-micro*.jar --deploy target/csonline-1.0-SNAPSHOT.war
+   ```
+3. Acesse: http://localhost:8080/
+
+Se quiser pular os testes na build:
+```bash
+mvn clean package -DskipTests
 ```
 
 ## Logging

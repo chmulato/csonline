@@ -6,7 +6,7 @@
     <groupId>com.caracore.cso</groupId>
     <artifactId>csonline</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
@@ -197,28 +197,7 @@
     </dependencies>
     <build>
         <plugins>
-            <!-- Tomcat Embedded Plugin para Jakarta EE 10 -->
-            <plugin>
-                <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat10-maven-plugin</artifactId>
-                <version>10.1.20</version>
-                <configuration>
-                    <path>/</path>
-                    <port>8080</port>
-                </configuration>
-            </plugin>
-            <!-- Jetty Embedded Plugin -->
-            <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>${jetty.version}</version>
-                <configuration>
-                    <scanIntervalSeconds>10</scanIntervalSeconds>
-                    <webApp>
-                        <contextPath>/</contextPath>
-                    </webApp>
-                </configuration>
-            </plugin>
+            <!-- Nenhum plugin de servidor embedded, use Tomcat/Payara/GlassFish standalone para rodar o WAR -->
             <!-- JaCoCo para cobertura de testes -->
             <plugin>
                 <groupId>org.jacoco</groupId>
