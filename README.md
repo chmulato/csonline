@@ -24,6 +24,32 @@ Projeto Java para gestão de entregas, clientes, usuários, preços e SMS.
 
 Scripts automatizados estão disponíveis na raiz do projeto:
 
+#### Diagrama de Sequência dos Scripts
+
+```mermaid
+sequenceDiagram
+    participant Dev as Desenvolvedor
+    participant PS as PowerShell
+    participant Tomcat as Tomcat 10+
+    participant WAR as WAR
+
+    Dev->>PS: Executa prepare-artifact.ps1
+    PS->>WAR: Gera e copia WAR para webapps
+    Dev->>PS: Executa config-tomcat10+.ps1 (opcional)
+    PS->>Tomcat: Configura DataSource JDBC
+    Dev->>PS: Executa start-tomcat10+.ps1
+    PS->>Tomcat: Inicia Tomcat
+    Tomcat->>WAR: Faz deploy automático
+    Dev->>PS: Executa stop-tomcat10+.ps1 (quando necessário)
+    PS->>Tomcat: Para Tomcat
+    Note over Dev,PS: deploy-tomcat10+.ps1 pode ser usado para copiar o WAR manualmente a qualquer momento
+```
+
+**Resumo da ordem típica:**
+
+1. `prepare-artifact.ps1` → 2. `config-tomcat10+.ps1` (opcional) → 3. `start-tomcat10+.ps1` → 4. `stop-tomcat10+.ps1`
+   - Use `deploy-tomcat10+.ps1` se quiser apenas copiar o WAR manualmente.
+
 1. **Preparar o artefato WAR e copiar para o Tomcat:**
    ```powershell
    pwsh ./prepare-artifact.ps1 [-DskipTests]
