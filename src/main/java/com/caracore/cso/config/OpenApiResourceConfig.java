@@ -1,5 +1,6 @@
 package com.caracore.cso.config;
 
+// For Swagger Core 2.x with Jakarta, the correct import is usually:
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
 import org.glassfish.jersey.server.ResourceConfig;
 import jakarta.ws.rs.ApplicationPath;
