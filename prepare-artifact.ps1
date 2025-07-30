@@ -1,11 +1,12 @@
 # Script para preparar o artefato WAR do projeto
 # Uso: execute este script na raiz do projeto para compilar e gerar o WAR
+# Aceita argumentos extras do Maven, ex: -DskipTests
 
 Write-Host "Iniciando build do projeto..."
 
 $mvn = "mvn"
 
-# Permite passar -DskipTests como argumento opcional
+# Permite passar argumentos extras para o Maven
 $extraArgs = $args -join " "
 
 $cmd = "$mvn clean package $extraArgs"

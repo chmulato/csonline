@@ -29,23 +29,38 @@ Scripts automatizados estão disponíveis na raiz do projeto:
    ```
    Gera o arquivo `target/csonline-1.0-SNAPSHOT.war`.
 
+
 2. **Iniciar o Payara Server:**
    ```powershell
-   pwsh ./start-payara.ps1
+   pwsh ./start-payara.ps1 [dominio]
    ```
-   Inicia o domínio padrão do Payara em http://localhost:8080/.
+   Inicia o domínio informado (padrão: domain1) do Payara em http://localhost:8080/.
 
 3. **Deploy do WAR:**
    ```powershell
-   pwsh ./deploy-payara.ps1
+   pwsh ./deploy-payara.ps1 [dominio]
    ```
-   Copia o WAR para a pasta de autodeploy do Payara. O deploy é feito automaticamente.
+   Copia o WAR para a pasta de autodeploy do domínio informado (padrão: domain1). O deploy é feito automaticamente.
 
 4. **Parar o Payara Server:**
    ```powershell
-   pwsh ./stop-payara.ps1
+   pwsh ./stop-payara.ps1 [dominio]
    ```
-   Para o domínio padrão do Payara.
+   Para o domínio informado (padrão: domain1) do Payara.
+
+> **Dica:**
+> Se você criou um novo domínio (ex: domain2), basta passar o nome como argumento nos scripts acima:
+> ```powershell
+> pwsh ./start-payara.ps1 domain2
+> pwsh ./deploy-payara.ps1 domain2
+> pwsh ./stop-payara.ps1 domain2
+> ```
+
+> Para criar um novo domínio com senha mestre salva, use:
+> ```powershell
+> server\payara6\bin\asadmin create-domain --savemasterpassword=true domain2
+> ```
+> Depois, utilize normalmente nos scripts.
 
 ---
 

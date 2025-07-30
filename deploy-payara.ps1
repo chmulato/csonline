@@ -1,9 +1,10 @@
 # Script para deploy do WAR no Payara Server 6
-# Uso: execute este script na raiz do projeto após gerar o WAR com 'mvn clean package'
+# Uso: pwsh ./deploy-payara.ps1 [dominio]
 
 $payaraHome = "server\payara6"
 $warFile = "target\csonline-1.0-SNAPSHOT.war"
-$autodeployDir = "$payaraHome\glassfish\domains\domain1\autodeploy"
+$domain = if ($args.Count -ge 1) { $args[0] } else { "domain1" }
+$autodeployDir = "$payaraHome\glassfish\domains\$domain\autodeploy"
 
 if (!(Test-Path $warFile)) {
     Write-Host "Arquivo WAR não encontrado em $warFile. Execute 'mvn clean package' antes."
