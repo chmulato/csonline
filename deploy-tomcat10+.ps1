@@ -15,6 +15,13 @@ if (!(Test-Path $tomcatWebapps)) {
 }
 
 Write-Host "Copiando $warFile para $tomcatWebapps ..."
-Copy-Item $warFile $tomcatWebapps -Force
-Write-Host "Deploy enviado! O Tomcat fará o deploy automático."
-Write-Host "Acesse: http://localhost:8080/csonline-1.0-SNAPSHOT/"
+try {
+    Copy-Item $warFile $tomcatWebapps -Force -ErrorAction Stop
+    Write-Host "Deploy enviado! O Tomcat fará o deploy automático."
+    Write-Host "Acesse: http://localhost:8080/csonline-1.0-SNAPSHOT/"
+    Write-Host "Se o WAR já estava implantado, o Tomcat fará o redeploy automaticamente."
+} catch {
+    Write-Host "Erro ao copiar o WAR para o Tomcat: $_"
+    Write-Host "Verifique permissões de escrita e se o Tomcat está rodando."
+    exit 1
+}

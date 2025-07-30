@@ -10,11 +10,18 @@ if (!(Test-Path $shutdown)) {
 }
 
 Write-Host "Parando o Tomcat 10+ ..."
-& $shutdown
+Push-Location "$tomcatHome\bin"
+$output = cmd /c shutdown.bat 2>&1
+Pop-Location
 
-if ($LASTEXITCODE -eq 0) {
+Write-Host $output
+
+if ($output -match "Tomcat stopped" -or $output -match "Shutdown completed") {
     Write-Host "Tomcat parado com sucesso."
+} elseif ($output -match "CATALINA_HOME") {
+    Write-Host "Erro: CATALINA_HOME não está definido corretamente. Execute o script a partir do diretório do projeto e verifique a instalação do Tomcat."
+    exit 1
 } else {
-    Write-Host "Falha ao parar o Tomcat. Verifique os logs."
+    Write-Host "Falha ao parar o Tomcat. Veja a saída acima e verifique os logs em server/apache-tomcat-10.1.43/logs/catalina.out."
     exit 1
 }

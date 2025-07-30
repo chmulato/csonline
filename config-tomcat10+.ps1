@@ -2,16 +2,21 @@
 # Uso: pwsh ./config-tomcat10+-datasource.ps1
 
 $tomcatLib = "server\apache-tomcat-10.1.43\lib"
-$driverJar = "target\dependency\hsqldb-2.7.2.jar" # Ajuste o caminho se necessário
+$driverJar = "target\csonline-1.0-SNAPSHOT\WEB-INF\lib\hsqldb-2.7.2.jar" # Ajuste o caminho se necessário
 $contextFile = "server\apache-tomcat-10.1.43\conf\context.xml"
 
 # Copia o driver JDBC para o Tomcat
 if (!(Test-Path $driverJar)) {
-    Write-Host "Driver JDBC não encontrado em $driverJar. Certifique-se de que o JAR está disponível."
+    Write-Host "[ERRO] Driver JDBC não encontrado em $driverJar. Certifique-se de que o JAR está disponível."
     exit 1
 }
-Copy-Item $driverJar $tomcatLib -Force
-Write-Host "Driver JDBC copiado para $tomcatLib"
+try {
+    Copy-Item $driverJar $tomcatLib -Force -ErrorAction Stop
+    Write-Host "[OK] Driver JDBC copiado para $tomcatLib"
+} catch {
+    Write-Host "[ERRO] Falha ao copiar o driver JDBC: $_"
+    exit 1
+}
 
 # Cria ou atualiza o context.xml com o DataSource
 $datasource = @"
@@ -25,7 +30,11 @@ $datasource = @"
 </Context>
 "@
 
-Set-Content -Path $contextFile -Value $datasource -Encoding UTF8
-Write-Host "Arquivo context.xml atualizado com DataSource para HSQLDB."
-
-Write-Host "Reinicie o Tomcat para aplicar a configuração."
+try {
+    Set-Content -Path $contextFile -Value $datasource -Encoding UTF8 -ErrorAction Stop
+    Write-Host "[OK] Arquivo context.xml atualizado com DataSource para HSQLDB."
+    Write-Host "Reinicie o Tomcat para aplicar a configuração."
+} catch {
+    Write-Host "[ERRO] Falha ao atualizar o context.xml: $_"
+    exit 1
+}
