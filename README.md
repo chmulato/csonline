@@ -37,6 +37,8 @@ sequenceDiagram
     PS->>WAR: Gera e copia WAR para webapps
     Dev->>PS: Executa config-tomcat10+.ps1 (opcional)
     PS->>Tomcat: Configura DataSource JDBC
+    Dev->>PS: Executa config-ssl-tomcat10+.ps1 (opcional)
+    PS->>Tomcat: Configura HTTPS/SSL
     Dev->>PS: Executa start-tomcat10+.ps1
     PS->>Tomcat: Inicia Tomcat
     Tomcat->>WAR: Faz deploy automático
@@ -47,7 +49,7 @@ sequenceDiagram
 
 **Resumo da ordem típica:**
 
-1. `prepare-artifact.ps1` → 2. `config-tomcat10+.ps1` (opcional) → 3. `start-tomcat10+.ps1` → 4. `stop-tomcat10+.ps1`
+1. `prepare-artifact.ps1` → 2. `config-tomcat10+.ps1` (opcional) → 3. `config-ssl-tomcat10+.ps1` (opcional) → 4. `start-tomcat10+.ps1` → 5. `stop-tomcat10+.ps1`
    - Use `deploy-tomcat10+.ps1` se quiser apenas copiar o WAR manualmente.
 
 1. **Preparar o artefato WAR e copiar para o Tomcat:**
@@ -79,6 +81,12 @@ sequenceDiagram
    pwsh ./config-tomcat10+.ps1
    ```
    Copia o driver JDBC e configura o DataSource no Tomcat (exemplo para HSQLDB).
+
+6. **Configurar HTTPS/SSL (opcional):**
+   ```powershell
+   pwsh ./config-ssl-tomcat10+.ps1
+   ```
+   Gera um certificado autoassinado, configura o conector SSL no Tomcat (porta 8443) e orienta sobre reinício do servidor. Após executar, acesse: https://localhost:8443/csonline/
 
 ---
 

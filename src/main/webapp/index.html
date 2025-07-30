@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>csonline - Página Inicial</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2em; background: #f9f9f9; }
+        h1 { color: #2c3e50; }
+        .swagger-container { margin: 2em 0; }
+        ul { background: #fff; padding: 1em; border-radius: 8px; box-shadow: 0 2px 8px #eee; }
+        li { margin-bottom: 0.5em; }
+        a { color: #2980b9; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <h1>Bem-vindo ao csonline</h1>
+    <p>API para gestão de entregas, clientes, usuários, preços e SMS.</p>
+
+    <div class="swagger-container">
+        <h2>Documentação Swagger</h2>
+        <iframe src="/swagger-ui/index.html" width="100%" height="600" frameborder="0" style="background: #fff;"></iframe>
+        <p>Se o Swagger UI não aparecer acima, acesse diretamente: <a href="/swagger-ui/index.html" target="_blank">/swagger-ui/index.html</a></p>
+    </div>
+
+    <h2>Principais Endpoints REST</h2>
+    <ul>
+        <li><a href="/api/users" target="_blank">/api/users</a></li>
+        <li><a href="/api/customers" target="_blank">/api/customers</a></li>
+        <li><a href="/api/couriers" target="_blank">/api/couriers</a></li>
+        <li><a href="/api/deliveries" target="_blank">/api/deliveries</a></li>
+        <li><a href="/api/sms" target="_blank">/api/sms</a></li>
+        <li><a href="/api/login" target="_blank">/api/login</a></li>
+    </ul>
+</body>
+</html>
