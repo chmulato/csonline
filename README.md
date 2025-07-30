@@ -16,21 +16,49 @@ Projeto Java para gestão de entregas, clientes, usuários, preços e SMS.
 ## Como executar
 
 
-### 1. Gerar o WAR
-```bash
-mvn clean package
-```
 
-### 2. Executar localmente
+## Como executar
 
-#### Opção A: Tomcat 10+
+### Ambiente recomendado: Payara Server 6 (Windows/PowerShell)
+
+Scripts automatizados estão disponíveis na raiz do projeto:
+
+1. **Preparar o artefato WAR:**
+   ```powershell
+   pwsh ./prepare-artifact.ps1 [-DskipTests]
+   ```
+   Gera o arquivo `target/csonline-1.0-SNAPSHOT.war`.
+
+2. **Iniciar o Payara Server:**
+   ```powershell
+   pwsh ./start-payara.ps1
+   ```
+   Inicia o domínio padrão do Payara em http://localhost:8080/.
+
+3. **Deploy do WAR:**
+   ```powershell
+   pwsh ./deploy-payara.ps1
+   ```
+   Copia o WAR para a pasta de autodeploy do Payara. O deploy é feito automaticamente.
+
+4. **Parar o Payara Server:**
+   ```powershell
+   pwsh ./stop-payara.ps1
+   ```
+   Para o domínio padrão do Payara.
+
+---
+
+### Alternativas
+
+#### Tomcat 10+
 1. Baixe o Tomcat 10 em: https://tomcat.apache.org/download-10.cgi
 2. Extraia o Tomcat em uma pasta.
 3. Copie o arquivo `target/csonline-1.0-SNAPSHOT.war` para a pasta `webapps` do Tomcat.
 4. Inicie o Tomcat com `bin/startup.bat` (Windows) ou `bin/startup.sh` (Linux/Mac).
 5. Acesse: http://localhost:8080/
 
-#### Opção B: Payara Micro (Jakarta EE 10)
+#### Payara Micro (Jakarta EE 10)
 1. Baixe o Payara Micro: https://www.payara.fish/downloads/payara-micro/
 2. Execute:
    ```bash
@@ -38,10 +66,7 @@ mvn clean package
    ```
 3. Acesse: http://localhost:8080/
 
-Se quiser pular os testes na build:
-```bash
-mvn clean package -DskipTests
-```
+---
 
 ## Logging
 
