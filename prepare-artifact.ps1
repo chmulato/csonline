@@ -6,7 +6,7 @@ Write-Host "Iniciando build do projeto..."
 
 $mvn = "mvn"
 $tomcatWebapps = "server\apache-tomcat-10.1.43\webapps"
-$warFile = "target\csonline-1.0-SNAPSHOT.war"
+$warFile = "target\csonline.war"
 
 # Permite passar argumentos extras para o Maven
 $extraArgs = $args -join " "
@@ -28,7 +28,7 @@ if (Test-Path $warFile) {
         Copy-Item $warFile $tomcatWebapps -Force
         Write-Host "WAR copiado para o Tomcat. Inicie o Tomcat com:"
         Write-Host "server\\apache-tomcat-10.1.43\\bin\\startup.bat"
-        Write-Host "Acesse: http://localhost:8080/csonline-1.0-SNAPSHOT/"
+        Write-Host "Acesse: http://localhost:8080/csonline/"
     } else {
         Write-Host "Diretório do Tomcat não encontrado: $tomcatWebapps"
     }
