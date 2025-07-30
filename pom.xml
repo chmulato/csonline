@@ -18,47 +18,71 @@
         <jersey.version>3.1.5</jersey.version>
     </properties>
     <dependencies>
+        <!-- =========================-->
+        <!-- Jakarta EE APIs principais-->
+        <!-- =========================-->
+        <!-- JAX-RS API: Suporte a RESTful Services (Jakarta EE 10) -->
         <dependency>
             <groupId>jakarta.ws.rs</groupId>
             <artifactId>jakarta.ws.rs-api</artifactId>
             <version>3.1.0</version>
         </dependency>
+        <!-- Transações Jakarta -->
         <dependency>
             <groupId>jakarta.transaction</groupId>
             <artifactId>jakarta.transaction-api</artifactId>
             <version>2.0.1</version>
             <scope>compile</scope>
-        </dependency>        
-        <!--
-        <dependency>
-            <groupId>jakarta.enterprise</groupId>
-            <artifactId>jakarta.enterprise.cdi-api</artifactId>
-            <version>4.0.1</version>
         </dependency>
-        <dependency>
-            <groupId>jakarta.persistence</groupId>
-            <artifactId>jakarta.persistence-api</artifactId>
-            <version>3.1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.validation</groupId>
-            <artifactId>jakarta.validation-api</artifactId>
-            <version>3.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.annotation</groupId>
-            <artifactId>jakarta.annotation-api</artifactId>
-            <version>2.1.1</version>
-        </dependency>
-        -->
-        <!-- Servlet API (Tomcat já fornece, mas pode ser útil para build) -->
+        <!-- Servlet API: Necessário para build, Tomcat já fornece em runtime -->
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
             <version>6.0.0</version>
             <scope>provided</scope>
         </dependency>
-        <!-- Jackson core para Jersey JSON -->
+        <!-- JPA API: Suporte a persistência (Jakarta EE 10) -->
+        <dependency>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
+            <version>3.1.0</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- =========================-->
+        <!-- REST/Jersey + JSON       -->
+        <!-- =========================-->
+        <!-- Jersey Server: Implementação JAX-RS -->
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-server</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
+        <!-- Jersey JSON: Suporte a JSON via Jackson -->
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+            <version>3.1.3</version>
+        </dependency>
+        <!-- Jersey HK2: Injeção de dependência -->
+        <dependency>
+            <groupId>org.glassfish.jersey.inject</groupId>
+            <artifactId>jersey-hk2</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
+        <!-- Jersey Servlet: Integração com Servlet Container -->
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-servlet</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
+        <!-- Jersey Common: Utilitários internos -->
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-common</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
+        <!-- Jackson Core: Serialização JSON -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
@@ -74,50 +98,33 @@
             <artifactId>jackson-datatype-jsr310</artifactId>
             <version>2.15.2</version>
         </dependency>
-        <!-- Jersey/JAX-RS para REST -->
-        <dependency>
-            <groupId>org.glassfish.jersey.core</groupId>
-            <artifactId>jersey-server</artifactId>
-            <version>${jersey.version}</version>
-        </dependency>
-        <!-- Jersey JSON support -->
-        <dependency>
-            <groupId>org.glassfish.jersey.media</groupId>
-            <artifactId>jersey-media-json-jackson</artifactId>
-            <version>3.1.3</version>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.jersey.inject</groupId>
-            <artifactId>jersey-hk2</artifactId>
-            <version>${jersey.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.jersey.containers</groupId>
-            <artifactId>jersey-container-servlet</artifactId>
-            <version>${jersey.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.jersey.core</groupId>
-            <artifactId>jersey-common</artifactId>
-            <version>${jersey.version}</version>
-        </dependency>
-        <!-- Swagger/OpenAPI -->
+
+        <!-- =========================-->
+        <!-- Swagger/OpenAPI          -->
+        <!-- =========================-->
+        <!-- swagger-jaxrs2: Integração Swagger com JAX-RS -->
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-jaxrs2</artifactId>
             <version>${swagger.version}</version>
         </dependency>
+        <!-- swagger-integration: Utilitários Swagger -->
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-integration</artifactId>
             <version>${swagger.version}</version>
         </dependency>
+        <!-- swagger-annotations: Anotações OpenAPI -->
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-annotations</artifactId>
             <version>${swagger.version}</version>
         </dependency>
-        <!-- Tomcat Embedded para Jakarta EE 10 -->
+
+        <!-- =========================-->
+        <!-- Tomcat Embedded           -->
+        <!-- =========================-->
+        <!-- Para build e testes locais, não usado em produção -->
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>
@@ -133,77 +140,100 @@
             <artifactId>tomcat-embed-websocket</artifactId>
             <version>10.1.20</version>
         </dependency>
-        <!-- EclipseLink JPA -->
+
+        <!-- =========================-->
+        <!-- JPA/JAXB/JSON-B           -->
+        <!-- =========================-->
+        <!-- EclipseLink: Implementação JPA -->
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>eclipselink</artifactId>
             <version>4.0.2</version>
         </dependency>
-        <!-- Yasson JSON-B provider for Hibernate 6 -->
+        <!-- Yasson: JSON-B provider para Hibernate 6 -->
         <dependency>
             <groupId>org.eclipse</groupId>
             <artifactId>yasson</artifactId>
             <version>3.0.3</version>
         </dependency>
-        <!-- API de Persistência (necessário para build e testes locais) -->
-        <dependency>
-            <groupId>jakarta.persistence</groupId>
-            <artifactId>jakarta.persistence-api</artifactId>
-            <version>3.1.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <!-- HSQLDB -->
+
+        <!-- =========================-->
+        <!-- Banco de Dados            -->
+        <!-- =========================-->
+        <!-- HSQLDB: Banco em memória para testes/desenvolvimento -->
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
             <version>2.7.2</version>
             <scope>runtime</scope>
         </dependency>
-        <!-- JSF (Mojarra) -->
+
+        <!-- =========================-->
+        <!-- JSF (Mojarra)             -->
+        <!-- =========================-->
+        <!-- JSF: Interface de usuário -->
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>jakarta.faces</artifactId>
             <version>4.0.1</version>
         </dependency>
-        <!-- JUnit 5 para testes unitários -->
+
+        <!-- =========================-->
+        <!-- Logging                   -->
+        <!-- =========================-->
+        <!-- Log4j 2: Logging da aplicação -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.22.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.22.1</version>
+        </dependency>
+
+        <!-- =========================-->
+        <!-- CDI (Weld)                -->
+        <!-- =========================-->
+        <!-- Weld: Implementação CDI para Tomcat -->
+        <dependency>
+            <groupId>org.jboss.weld.servlet</groupId>
+            <artifactId>weld-servlet-shaded</artifactId>
+            <version>5.1.2.Final</version>
+        </dependency>
+
+        <!-- =========================-->
+        <!-- Dependências de Teste     -->
+        <!-- =========================-->
+        <!-- JUnit 5: Testes unitários -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>5.10.2</version>
             <scope>test</scope>
         </dependency>
-        <!-- Mockito para testes -->
+        <!-- Mockito: Mocking para testes -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>5.2.0</version>
             <scope>test</scope>
         </dependency>
-        <!-- javax.annotation-api para Hibernate 6 -->
-        <dependency>
-            <groupId>javax.annotation</groupId>
-            <artifactId>javax.annotation-api</artifactId>
-            <version>1.3.2</version>
-        </dependency>
-        <dependency>
-        <!-- Weld Servlet para CDI -->
-        <groupId>org.jboss.weld.servlet</groupId>
-            <artifactId>weld-servlet-shaded</artifactId>
-            <version>5.1.2.Final</version>
-        </dependency>
-        <!-- Testes com Jersey -->
+        <!-- Jersey Test Framework: Testes de recursos REST -->
         <dependency>
             <groupId>org.glassfish.jersey.test-framework.providers</groupId>
             <artifactId>jersey-test-framework-provider-inmemory</artifactId>
             <version>3.1.3</version>
             <scope>test</scope>
         </dependency>
+        <!-- Jersey Client: Necessário para testes Jersey -->
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-client</artifactId>
             <version>3.1.3</version>
         </dependency>
-        <!-- JAXB para suporte ao Hibernate/Jackson no Java 11+ -->
+        <!-- JAXB (javax): Compatibilidade para testes Jersey/Jackson -->
         <dependency>
             <groupId>org.glassfish.jaxb</groupId>
             <artifactId>jaxb-runtime</artifactId>
@@ -216,16 +246,12 @@
             <version>2.3.1</version>
             <scope>test</scope>
         </dependency>
-        <!-- Log4j 2 para logging -->
+        <!-- javax.annotation-api: Compatibilidade para testes -->
         <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>2.22.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>2.22.1</version>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>1.3.2</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>
