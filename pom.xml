@@ -335,6 +335,7 @@
         </dependency>
     </dependencies>
     <build>
+        <finalName>csonline</finalName>
         <plugins>
             <!-- Nenhum plugin de servidor embedded, use Tomcat/Payara/GlassFish standalone para rodar o WAR -->
             <!-- JaCoCo para cobertura de testes -->
