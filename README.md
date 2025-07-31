@@ -91,9 +91,24 @@ sequenceDiagram
 
 ---
 
+
 ## Logging
 
-Os logs são gravados em `logs/app.log` (configurável via `log4j2.xml`).
+Os logs customizados da aplicação são gravados em `logs/app.log` (relativo à raiz do projeto, configurado via scripts e logging do WildFly).
+
+Para visualizar o log:
+
+- Acesse o arquivo diretamente: `logs/app.log`
+- Ou, via CLI do WildFly:
+  ```powershell
+  pwsh ./config-log-wildfly-31.ps1   # (executa a configuração, se necessário)
+  Get-Content ./logs/app.log -Wait   # (acompanha o log em tempo real)
+  ```
+
+Além disso, o log padrão do servidor WildFly está em:
+`server/wildfly-31.0.1.Final/standalone/log/server.log`
+
+Você pode ajustar o formato e destino do log customizado editando o script ou via console administrativo do WildFly.
 
 ## Documentação da API
 
