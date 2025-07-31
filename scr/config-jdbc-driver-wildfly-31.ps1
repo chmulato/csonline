@@ -16,17 +16,31 @@ if (!(Test-Path $driverJar)) {
 Write-Host "[OK] Driver JDBC encontrado. Copiando para deployments..."
 Copy-Item $driverJar "$wildflyHome\standalone\deployments\" -Force
 Write-Host "[OK] Driver JDBC copiado para $wildflyHome\standalone\deployments."
+if ($?) {
+    Write-Host "[OK] Driver JDBC copiado para $wildflyHome\standalone\deployments."
+} else {
+    Write-Host "[ERRO] Falha ao copiar o driver JDBC."
+    exit 1
+}
 
 # 2. Comando CLI para criar o driver JDBC
 Write-Host "[PASSO 2] Gerando script CLI para criar driver JDBC..."
 $commands = @"
+"@
 deploy $driverJar
 /subsystem=datasources/jdbc-driver=hsqldb:add(driver-name=hsqldb,driver-module-name=deployment.hsqldb-2.7.2.jar,driver-class-name=org.hsqldb.jdbcDriver)
+"@
 "@
 
 # 3. Executa o CLI
 Write-Host "[PASSO 3] Gerando script CLI temporário em: $env:TEMP\wildfly-jdbc-driver.cli"
 $cliScript = "$env:TEMP\wildfly-jdbc-driver.cli"
+if ($?) {
+    Write-Host "[OK] Script CLI gerado com sucesso."
+} else {
+    Write-Host "[ERRO] Falha ao gerar o script CLI."
+    exit 1
+}
 $commands | Set-Content -Path $cliScript -Encoding UTF8
 Write-Host "[DEBUG] Conteúdo do script CLI gerado:"
 Get-Content $cliScript | ForEach-Object { Write-Host $_ }

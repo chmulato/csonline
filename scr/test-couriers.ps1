@@ -28,8 +28,13 @@ try {
     $status = "200 OK"
     Write-Host "[OK] Requisição bem-sucedida."
 } catch {
-    $status = $_.Exception.Response.StatusCode.value__ + " " + $_.Exception.Response.StatusDescription
-    $response = $_.Exception.Message
+    if ($_.Exception.Response) {
+        $status = $_.Exception.Response.StatusCode.value__ + " " + $_.Exception.Response.StatusDescription
+        $response = $_.Exception.Response | ConvertTo-Json -Depth 5
+    } else {
+        $status = "ERRO"
+        $response = $_.Exception.Message
+    }
     Write-Host "[ERRO] Falha na requisição: $status"
 }
 $end = Get-Date
@@ -38,4 +43,14 @@ $elapsed = ($end - $start).TotalMilliseconds
 Write-Host "[INFO] Status HTTP: $status"
 Write-Host "[INFO] Tempo de resposta: $elapsed ms"
 Write-Host "[INFO] Resposta recebida:"
-$response | ConvertTo-Json -Depth 5
+Write-Host "--------------------------------------------------"
+if ($response) {
+    try {
+        $response | ConvertTo-Json -Depth 5 | Write-Host
+    } catch {
+        Write-Host $response
+    }
+} else {
+    Write-Host "(sem conteúdo)"
+}
+Write-Host "--------------------------------------------------"

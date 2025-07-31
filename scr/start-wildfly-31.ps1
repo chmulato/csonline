@@ -9,18 +9,22 @@ if (!(Test-Path $startup)) {
     exit 1
 }
 
-Write-Host "Iniciando o WildFly 31 ..."
+Write-Host "[INFO] Iniciando o WildFly 31 ..."
 Push-Location "$wildflyHome\bin"
+Write-Host "[DEBUG] Executando: $startup"
 $output = cmd /c standalone.bat 2>&1
 Pop-Location
 
-Write-Host $output
+Write-Host "[INFO] Saída do WildFly (standalone.bat):"
+Write-Host "--------------------------------------------------"
+$output | ForEach-Object { Write-Host $_ }
+Write-Host "--------------------------------------------------"
 
 if ($output -match "WildFly Full" -or $output -match "started in") {
-    Write-Host "WildFly iniciado com sucesso!"
-    Write-Host "Acesse: http://localhost:8080/"
-    Write-Host "Gerenciamento (console): http://localhost:9990/console"
+    Write-Host "[OK] WildFly iniciado com sucesso!"
+    Write-Host "[INFO] Acesse: http://localhost:8080/"
+    Write-Host "[INFO] Gerenciamento (console): http://localhost:9990/console"
 } else {
-    Write-Host "Falha ao iniciar o WildFly. Veja a saída acima e verifique os logs em server/wildfly-31.0.1.Final/standalone/log/server.log."
+    Write-Host "[ERRO] Falha ao iniciar o WildFly. Veja a saída acima e verifique os logs em server/wildfly-31.0.1.Final/standalone/log/server.log."
     exit 1
 }

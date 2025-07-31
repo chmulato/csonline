@@ -9,16 +9,20 @@ if (!(Test-Path $shutdown)) {
     exit 1
 }
 
-Write-Host "Parando o WildFly 31 ..."
+Write-Host "[INFO] Parando o WildFly 31 ..."
 Push-Location "$wildflyHome\bin"
+Write-Host "[DEBUG] Executando: jboss-cli.bat --connect command=:shutdown"
 $output = cmd /c "jboss-cli.bat --connect command=:shutdown" 2>&1
 Pop-Location
 
-Write-Host $output
+Write-Host "[INFO] Saída do comando de shutdown do WildFly:"
+Write-Host "--------------------------------------------------"
+$output | ForEach-Object { Write-Host $_ }
+Write-Host "--------------------------------------------------"
 
 if ($output -match "closed" -or $output -match "shutdown" -or $output -match "Disconnected") {
-    Write-Host "WildFly parado com sucesso."
+    Write-Host "[OK] WildFly parado com sucesso."
 } else {
-    Write-Host "Falha ao parar o WildFly. Veja a saída acima e verifique os logs em server/wildfly-31.0.1.Final/standalone/log/server.log."
+    Write-Host "[ERRO] Falha ao parar o WildFly. Veja a saída acima e verifique os logs em server/wildfly-31.0.1.Final/standalone/log/server.log."
     exit 1
 }

@@ -11,7 +11,12 @@ Write-Host "[INFO] Configurando log da aplicação para $logDir no WildFly 31...
 # 1. Cria o diretório de logs se não existir
 if (!(Test-Path $logDir)) {
     New-Item -ItemType Directory -Path $logDir | Out-Null
-    Write-Host "[OK] Diretório de logs criado: $logDir"
+    if ($?) {
+        Write-Host "[OK] Diretório de logs criado: $logDir"
+    } else {
+        Write-Host "[ERRO] Falha ao criar o diretório de logs."
+        exit 1
+    }
 } else {
     Write-Host "[OK] Diretório de logs já existe: $logDir"
 }
@@ -26,8 +31,21 @@ $commands = @"
 # 3. Executa o CLI
 $cliScript = "$env:TEMP\wildfly-log.cli"
 $commands | Set-Content -Path $cliScript -Encoding UTF8
+if ($?) {
+    Write-Host "[OK] Script CLI gerado com sucesso."
+} else {
+    Write-Host "[ERRO] Falha ao gerar o script CLI."
+    exit 1
+}
+Write-Host "[DEBUG] Conteúdo do script CLI gerado:"
+Get-Content $cliScript | ForEach-Object { Write-Host $_ }
+
 Write-Host "[INFO] Executando jboss-cli para configurar logging..."
-& $cli --connect --file=$cliScript
+$cliOutput = & $cli --connect --file=$cliScript 2>&1
+Write-Host "[INFO] Saída do jboss-cli:"
+Write-Host "--------------------------------------------------"
+$cliOutput | ForEach-Object { Write-Host $_ }
+Write-Host "--------------------------------------------------"
 if ($LASTEXITCODE -eq 0) {
     Write-Host "[OK] Log customizado configurado no WildFly 31."
     Write-Host "[INFO] Reinicie o WildFly para garantir que a configuração está ativa."
