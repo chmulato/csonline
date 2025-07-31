@@ -23,29 +23,40 @@ Este documento apresenta as principais orientações para uso, administração e
 ## 2. Principais Scripts de Administração
 
 - **Iniciar o servidor:**
-  ```powershell
-  pwsh ./start-wildfly-31.ps1
-  ```
-- **Parar o servidor:**
-  ```powershell
-  pwsh ./stop-wildfly-31.ps1
-  ```
+  
+```powershell
+pwsh ./start-wildfly-31.ps1
+```
+- 
+**Parar o servidor:**
+
+```powershell
+pwsh ./stop-wildfly-31.ps1
+```
+
 - **Deploy manual do WAR:**
-  ```powershell
-  pwsh ./deploy-wildfly-31.ps1
-  ```
+
+```powershell
+pwsh ./deploy-wildfly-31.ps1
+```
+
 - **Configurar driver JDBC/DataSource:**
-  ```powershell
-  pwsh ./config-wildfly-31.ps1 [-SomenteDriver]
-  ```
+
+```powershell
+pwsh ./config-wildfly-31.ps1 [-SomenteDriver]
+```
+
 - **Configurar log customizado:**
-  ```powershell
-  pwsh ./config-log-wildfly-31.ps1
-  ```
+
+```powershell
+pwsh ./config-log-wildfly-31.ps1
+```
+
 - **Configurar HTTPS/SSL:**
-  ```powershell
-  pwsh ./config-ssl-wildfly-31.ps1
-  ```
+
+```powershell
+pwsh ./config-ssl-wildfly-31.ps1
+```
 
 ## 3. Acesso à Administração
 
