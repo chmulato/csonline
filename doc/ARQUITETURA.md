@@ -43,30 +43,31 @@ O CSOnline é um sistema modular para gestão de entregas, desenvolvido em Java 
 
 
 ## Tecnologias
-- Java 11
+O CSOnline é um sistema modular para gestão de entregas, desenvolvido em Java 11, utilizando Jakarta EE 10, Hibernate ORM, HSQLDB (WildFly 31) e JSF. O projeto segue boas práticas de separação de camadas e responsabilidade.
 - Jakarta EE 10
 - Hibernate ORM 6.4.4.Final
-- H2 Database
-- JSF (Mojarra)
-- JUnit 5
+  - Responsáveis pelo acesso e manipulação dos dados via Hibernate.
+  - Utilizam EntityManager para operações CRUD.
 - JaCoCo
-- Tomcat Embedded 10.1.x
-- Jersey (JAX-RS provider para testes REST)
-
-
+  - Exposição dos serviços via endpoints REST usando Jakarta EE 10/JAX-RS (Jersey).
+  - Especificação OpenAPI disponível em `/api/openapi.json`.
+  - Pode ser visualizada via Swagger UI em `/csonline/swagger-ui/index.html` ou [Swagger Editor Online](https://editor.swagger.io/).
 ## Diagrama Simplificado
 
 ```
+3. Repositórios manipulam entidades e persistem dados no HSQLDB via Hibernate.
 [JSF] → [Service] → [Repository] → [Entity] → [H2 Database]
 [REST Controller] → [Service] → [Repository] → [Entity] → [H2 Database]
-```
-
+- HSQLDB (HyperSQL Database)
+- WildFly 31 (Application Server)
 
 ## Observações
 - Todas as operações sensíveis lançam DAOException.
-- Regras de autorização centralizadas na camada de serviço.
-- Segurança implementada via LoginService e controle de acesso por roles.
+```
+[JSF] → [Service] → [Repository] → [Entity] → [HSQLDB]
+[REST Controller] → [Service] → [Repository] → [Entity] → [HSQLDB]
+```
 - Testes REST utilizam Jersey como provedor JAX-RS.
 - Dados iniciais são carregados via import.sql (um insert por linha).
-- Testes unitários utilizam IDs altos para evitar conflitos com dados iniciais.
+- Dados iniciais são carregados via import.sql (um insert por linha) no HSQLDB.
 - Documentação e exemplos disponíveis em `doc/INDEX.md`.
