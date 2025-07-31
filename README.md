@@ -20,7 +20,8 @@ Projeto Java para gestão de entregas, clientes, usuários, preços e SMS.
 ## Como executar
 
 
-### Como executar no Tomcat 10+ (Windows/PowerShell)
+
+### Como executar no WildFly 31 (Windows/PowerShell)
 
 Scripts automatizados estão disponíveis na raiz do projeto:
 
@@ -30,63 +31,63 @@ Scripts automatizados estão disponíveis na raiz do projeto:
 sequenceDiagram
     participant Dev as Desenvolvedor
     participant PS as PowerShell
-    participant Tomcat as Tomcat 10+
+    participant WildFly as WildFly 31
     participant WAR as WAR
 
-    Dev->>PS: Executa prepare-artifact.ps1
-    PS->>WAR: Gera e copia WAR para webapps
-    Dev->>PS: Executa config-tomcat10+.ps1 (opcional)
-    PS->>Tomcat: Configura DataSource JDBC
-    Dev->>PS: Executa config-ssl-tomcat10+.ps1 (opcional)
-    PS->>Tomcat: Configura HTTPS/SSL
-    Dev->>PS: Executa start-tomcat10+.ps1
-    PS->>Tomcat: Inicia Tomcat
-    Tomcat->>WAR: Faz deploy automático
-    Dev->>PS: Executa stop-tomcat10+.ps1 (quando necessário)
-    PS->>Tomcat: Para Tomcat
-    Note over Dev,PS: deploy-tomcat10+.ps1 pode ser usado para copiar o WAR manualmente a qualquer momento
+    Dev->>PS: Executa prepare-artifact-wildfly.ps1
+    PS->>WAR: Gera e copia WAR para deployments
+    Dev->>PS: Executa config-wildfly-31.ps1 (opcional)
+    PS->>WildFly: Configura DataSource JDBC
+    Dev->>PS: Executa config-ssl-wildfly-31.ps1 (opcional)
+    PS->>WildFly: Configura HTTPS/SSL
+    Dev->>PS: Executa start-wildfly-31.ps1
+    PS->>WildFly: Inicia WildFly
+    WildFly->>WAR: Faz deploy automático
+    Dev->>PS: Executa stop-wildfly-31.ps1 (quando necessário)
+    PS->>WildFly: Para WildFly
+    Note over Dev,PS: deploy-wildfly-31.ps1 pode ser usado para copiar o WAR manualmente a qualquer momento
 ```
 
 **Resumo da ordem típica:**
 
-1. `prepare-artifact.ps1` → 2. `config-tomcat10+.ps1` (opcional) → 3. `config-ssl-tomcat10+.ps1` (opcional) → 4. `start-tomcat10+.ps1` → 5. `stop-tomcat10+.ps1`
-   - Use `deploy-tomcat10+.ps1` se quiser apenas copiar o WAR manualmente.
+1. `prepare-artifact-wildfly.ps1` → 2. `config-wildfly-31.ps1` (opcional) → 3. `config-ssl-wildfly-31.ps1` (opcional) → 4. `start-wildfly-31.ps1` → 5. `stop-wildfly-31.ps1`
+   - Use `deploy-wildfly-31.ps1` se quiser apenas copiar o WAR manualmente.
 
-1. **Preparar o artefato WAR e copiar para o Tomcat:**
+1. **Preparar o artefato WAR e copiar para o WildFly:**
    ```powershell
-   pwsh ./prepare-artifact.ps1 [-DskipTests]
+   pwsh ./prepare-artifact-wildfly.ps1 [-DskipTests]
    ```
-   Gera o arquivo `target/csonline-1.0-SNAPSHOT.war` e copia para `server\apache-tomcat-10.1.43\webapps`.
+   Gera o arquivo `target/csonline.war` e copia para `server\wildfly-31.0.1.Final\standalone\deployments`.
 
-2. **Iniciar o Tomcat:**
+2. **Iniciar o WildFly:**
    ```powershell
-   pwsh ./start-tomcat10+.ps1
+   pwsh ./start-wildfly-31.ps1
    ```
-   Inicia o Tomcat 10+ em http://localhost:8080/.
+   Inicia o WildFly 31 em http://localhost:8080/.
 
-3. **Parar o Tomcat:**
+3. **Parar o WildFly:**
    ```powershell
-   pwsh ./stop-tomcat10+.ps1
+   pwsh ./stop-wildfly-31.ps1
    ```
-   Para o Tomcat 10+.
+   Para o WildFly 31.
 
 4. **Deploy manual do WAR (opcional):**
    ```powershell
-   pwsh ./deploy-tomcat10+.ps1
+   pwsh ./deploy-wildfly-31.ps1
    ```
-   Copia o WAR para a pasta webapps do Tomcat.
+   Copia o WAR para a pasta deployments do WildFly.
 
 5. **Configurar DataSource JDBC (opcional):**
    ```powershell
-   pwsh ./config-tomcat10+.ps1
+   pwsh ./config-wildfly-31.ps1
    ```
-   Copia o driver JDBC e configura o DataSource no Tomcat (exemplo para HSQLDB).
+   Copia o driver JDBC e configura o DataSource no WildFly (exemplo para HSQLDB).
 
 6. **Configurar HTTPS/SSL (opcional):**
    ```powershell
-   pwsh ./config-ssl-tomcat10+.ps1
+   pwsh ./config-ssl-wildfly-31.ps1
    ```
-   Gera um certificado autoassinado, configura o conector SSL no Tomcat (porta 8443) e orienta sobre reinício do servidor. Após executar, acesse: https://localhost:8443/csonline/
+   Gera um certificado autoassinado, configura o HTTPS no WildFly (porta 8443) e orienta sobre reinício do servidor. Após executar, acesse: https://localhost:8443/csonline/
 
 ---
 
@@ -96,11 +97,12 @@ Os logs são gravados em `logs/app.log` (configurável via `log4j2.xml`).
 
 ## Documentação da API
 
+
 Swagger disponível em `/api/openapi.json`.
 
 Acesse a interface Swagger UI em:  
-`http://localhost:8080/api/openapi.json`
-(ajuste a porta conforme sua configuração Tomcat)
+`http://localhost:8080/csonline/swagger-ui/index.html`
+(ajuste a porta conforme sua configuração WildFly)
 
 Os endpoints REST estão disponíveis em:  
 - `/api/users`
