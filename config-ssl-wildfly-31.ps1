@@ -11,7 +11,8 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-Write-Host "[INFO] Gerando keystore autoassinado..."
+
+Write-Host "[PASSO 1] Gerando keystore autoassinado..."
 $keytool = "keytool"
 $keystoreFullPath = Join-Path $WildflyPath $KeystoreFile
 
@@ -24,13 +25,14 @@ if (!(Test-Path $keystoreFullPath)) {
 Write-Host "[OK] Keystore criado em: $keystoreFullPath"
 
 # Atualizar standalone.xml
+Write-Host "[PASSO 2] Atualizando standalone.xml para configurar HTTPS..."
 $standaloneXml = Join-Path $WildflyPath "standalone/configuration/standalone.xml"
 if (!(Test-Path $standaloneXml)) {
     Write-Error "[ERRO] Não encontrado: $standaloneXml"
     exit 1
 }
 
-Write-Host "[INFO] Configurando HTTPS em $standaloneXml..."
+Write-Host "[INFO] Lendo e modificando $standaloneXml..."
 
 # Lê o conteúdo do standalone.xml
 [xml]$xml = Get-Content $standaloneXml
@@ -62,5 +64,6 @@ $ssl.SetAttribute('keystore-type', 'PKCS12')
 # Salva o XML modificado
 $xml.Save($standaloneXml)
 
-Write-Host "[OK] HTTPS configurado no WildFly. Reinicie o servidor para ativar o SSL."
+Write-Host "[OK] HTTPS configurado no WildFly."
+Write-Host "[INFO] Reinicie o servidor para ativar o SSL."
 Write-Host "Acesse: https://localhost:8443/ (ajuste a porta se necessário)"
