@@ -5,11 +5,15 @@ Este guia mostra como preparar o WildFly 31 para rodar a aplicação csonline co
 ## 1. Adicionar o driver HSQLDB como módulo
 
 1. Crie a pasta do módulo:
+
    ```
    C:\dev\csonline\server\wildfly-31.0.1.Final\modules\org\hsqldb\main
    ```
+
 2. Baixe o JAR do HSQLDB (ex: `hsqldb-2.7.2.jar`) e coloque nessa pasta.
+
 3. Crie o arquivo `module.xml` nessa mesma pasta com o conteúdo:
+
    ```xml
    <module name="org.hsqldb">
        <resources>
@@ -25,10 +29,13 @@ Este guia mostra como preparar o WildFly 31 para rodar a aplicação csonline co
 ## 2. Configurar o datasource no standalone.xml
 
 1. Abra:
+
    ```
    C:\dev\csonline\server\wildfly-31.0.1.Final\standalone\configuration\standalone.xml
    ```
+
 2. Dentro da tag `<subsystem xmlns="...datasources...">`, adicione:
+
    ```xml
    <datasource jndi-name="java:/jdbc/csonlineDS" pool-name="csonlineDS" enabled="true">
        <connection-url>jdbc:hsqldb:mem:testdb</connection-url>
@@ -48,6 +55,7 @@ Este guia mostra como preparar o WildFly 31 para rodar a aplicação csonline co
 ## 3. Ajustar o persistence.xml
 
 No arquivo `src/main/resources/META-INF/persistence.xml`, configure:
+
 ```xml
 <jta-data-source>java:/jdbc/csonlineDS</jta-data-source>
 ```
