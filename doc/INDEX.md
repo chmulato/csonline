@@ -6,7 +6,9 @@
 3. [IMPORT_SQL.md](IMPORT_SQL.md) — Estrutura e exemplos de dados iniciais.
 4. [CONFIG_WILDFLY.md](CONFIG_WILDFLY.md) — Guia de configuração do WildFly 31 para o projeto.
 5. [SEQUENCIA_SCRIPTS.md](SEQUENCIA_SCRIPTS.md) — Ordem recomendada de execução dos scripts do projeto.
+
 6. [HISTORIA_DO_PROJETO.md](HISTORIA_DO_PROJETO.md) — Linha do tempo, decisões e evolução do projeto.
-7. [INDEX.md](INDEX.md) — Este índice de documentos.
+7. [WILDFLY_USO.md](WILDFLY_USO.md) — Guia de uso, administração e boas práticas do servidor WildFly 31.
+8. [INDEX.md](INDEX.md) — Este índice de documentos.
 
 Adicione novos documentos à pasta `doc` e atualize este índice conforme necessário.

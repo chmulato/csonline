@@ -10,13 +10,22 @@ pwsh ./prepare-artifact-wildfly.ps1 [-DskipTests]
 
 Gera o arquivo `target/csonline.war` e copia para `server/wildfly-31.0.1.Final/standalone/deployments`.
 
-## 2. Configurar o DataSource JDBC (opcional, apenas se usar banco externo ou customizado)
+
+## 2. Configurar o Driver JDBC e/ou DataSource (opcional)
+
+Para configurar apenas o driver JDBC:
+
+```powershell
+pwsh ./config-wildfly-31.ps1 -SomenteDriver
+```
+
+Para configurar o driver JDBC e o DataSource (padrão):
 
 ```powershell
 pwsh ./config-wildfly-31.ps1
 ```
 
-Copia o driver JDBC e configura o DataSource no WildFly (exemplo para HSQLDB).
+O script copia o driver JDBC e, se não usar o parâmetro `-SomenteDriver`, também configura o DataSource no WildFly (exemplo para HSQLDB).
 
 ## 3. Configurar o log customizado da aplicação (opcional)
 

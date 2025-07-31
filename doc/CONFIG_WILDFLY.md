@@ -1,8 +1,34 @@
+
 # Configuração do WildFly 31 para o projeto csonline
 
 Este guia mostra como preparar o WildFly 31 para rodar a aplicação csonline com HSQLDB em memória.
 
-## 1. Adicionar o driver HSQLDB como módulo
+> **Dica:** Para automatizar a configuração do driver JDBC e do DataSource, utilize os scripts PowerShell já prontos no projeto. Veja exemplos abaixo.
+
+
+## 1. Configurar driver JDBC e DataSource via script (recomendado)
+
+Execute na raiz do projeto:
+
+Para configurar apenas o driver JDBC:
+
+```powershell
+pwsh ./config-wildfly-31.ps1 -SomenteDriver
+```
+
+Para configurar driver JDBC e DataSource:
+
+```powershell
+pwsh ./config-wildfly-31.ps1
+```
+
+Esses scripts copiam o JAR do driver para o WildFly e executam os comandos necessários via jboss-cli. Não é preciso criar módulos manualmente.
+
+---
+
+## 2. (Alternativo) Adicionar o driver HSQLDB como módulo manualmente
+
+Se preferir configurar manualmente, siga os passos abaixo:
 
 1. Crie a pasta do módulo:
 
@@ -26,7 +52,7 @@ Este guia mostra como preparar o WildFly 31 para rodar a aplicação csonline co
    </module>
    ```
 
-## 2. Configurar o datasource no standalone.xml
+## 3. Configurar o datasource no standalone.xml (manual)
 
 1. Abra:
 
@@ -52,7 +78,7 @@ Este guia mostra como preparar o WildFly 31 para rodar a aplicação csonline co
    </drivers>
    ```
 
-## 3. Ajustar o persistence.xml
+## 4. Ajustar o persistence.xml
 
 No arquivo `src/main/resources/META-INF/persistence.xml`, configure:
 
@@ -60,16 +86,16 @@ No arquivo `src/main/resources/META-INF/persistence.xml`, configure:
 <jta-data-source>java:/jdbc/csonlineDS</jta-data-source>
 ```
 
-## 4. Ajustar application.properties
+## 5. Ajustar application.properties
 
 Remova ou comente as linhas relacionadas a datasource, username, password e dialect.
 
-## 5. Reinicie o WildFly
+## 6. Reinicie o WildFly
 
 - Use o script `start-wildfly-31.ps1` ou rode manualmente o `standalone.bat`.
 - O WildFly fará o deploy do WAR e criará o banco em memória automaticamente.
 
-## 6. Teste a aplicação
+## 7. Teste a aplicação
 
 - Acesse: http://localhost:8080/csonline/
 - O banco estará em memória, pronto para uso.
