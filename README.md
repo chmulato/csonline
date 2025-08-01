@@ -4,6 +4,7 @@ Projeto Java para gestão de entregas, clientes, usuários, preços e SMS.
 
 ## Principais Tecnologias
 
+
 - Jakarta EE 10
 - JPA (Jakarta Persistence API)
 - EclipseLink (JPA Provider)
@@ -12,11 +13,16 @@ Projeto Java para gestão de entregas, clientes, usuários, preços e SMS.
 - Log4j 2
 - Swagger/OpenAPI
 - JUnit 5, Mockito
+- Vue 3 + Vite (SPA front-end)
 
 
 ## Sucesso do Deploy: index.html e Swagger UI
 
-O deploy no WildFly 31 foi realizado com sucesso. A página principal (`index.html`) e a documentação interativa das APIs (Swagger UI) estão acessíveis:
+
+O deploy no WildFly 31 foi realizado com sucesso. Agora o sistema conta com:
+
+- Página principal (`index.html`) servida pelo front-end Vue SPA, com navegação dinâmica (login, menu principal, gestão de usuários, logout).
+- Documentação interativa das APIs (Swagger UI) acessível para testes e validação dos endpoints REST.
 
 - Página inicial: [http://localhost:8080/csonline/index.html](http://localhost:8080/csonline/index.html)
 - Swagger UI: [http://localhost:8080/csonline/swagger-ui/index.html](http://localhost:8080/csonline/swagger-ui/index.html)
@@ -26,6 +32,30 @@ Exemplo real do Swagger UI em funcionamento:
 ![Swagger UI](img/swagger-ui.png)
 
 ## Como executar
+
+## Como executar o front-end Vue SPA
+
+1. Instale as dependências do front-end:
+   ```powershell
+   cd frontend
+   npm install
+   ```
+2. Execute em modo desenvolvimento:
+   ```powershell
+   npm run dev
+   ```
+   Acesse em [http://localhost:5173](http://localhost:5173) (porta padrão Vite).
+3. Para build de produção:
+   ```powershell
+   npm run build
+   ```
+   Os arquivos finais estarão em `frontend/dist`.
+4. Use o script PowerShell para copiar o build para o backend:
+   ```powershell
+   pwsh ./src/build-frontend.ps1
+   ```
+   Isso copia o conteúdo de `dist/` para `src/main/webapp/` e serve o SPA junto ao backend.
+
 
 ### Como executar no WildFly 31 (Windows/PowerShell)
 
@@ -135,9 +165,10 @@ Os endpoints REST estão disponíveis em:
 
 ## Documentação Completa
 
-Consulte o arquivo [INDEX.md](doc/INDEX.md) para uma documentação detalhada do projeto.
+Consulte o arquivo [doc/INDEX.md](doc/INDEX.md) para uma documentação detalhada do projeto, incluindo arquitetura, navegação, integração e segurança do front-end SPA.
 
 ## Estrutura de Pastas
+
 
 - `src/main/java/com/caracore/cso/controller` - Controllers REST
 - `src/main/java/com/caracore/cso/service` - Serviços de negócio
@@ -145,16 +176,26 @@ Consulte o arquivo [INDEX.md](doc/INDEX.md) para uma documentação detalhada do
 - `src/main/java/com/caracore/cso/entity` - Entidades JPA
 - `src/main/resources` - Configurações (ex: `log4j2.xml`, `persistence.xml`)
 - `src/test/java` - Testes unitários
+- `frontend/` - Front-end SPA Vue 3 + Vite
+  - `src/components/` - Componentes Vue (Login, MainLayout, UserManagement, Logout)
+  - `dist/` - Build final do front-end
 
 ## Configuração
+
 
 - Edite `src/main/resources/log4j2.xml` para ajustar o log.
 - Edite `src/main/resources/persistence.xml` para configurar JPA/EclipseLink.
 - Banco de dados HSQLDB em memória por padrão (configurável em `src/main/resources/persistence.xml` e `application.properties`).
+- Para customizar o front-end, edite os componentes Vue em `frontend/src/components/`.
 
 ## Contato
 
+
 Para dúvidas ou sugestões, abra uma issue.
+
+---
+
+**Observação:** O front-end SPA está em evolução, com navegação, integração e segurança planejadas. Consulte a documentação técnica para acompanhar os próximos passos e novas funcionalidades.
 
 ## Licença
 
