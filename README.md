@@ -13,7 +13,15 @@ Projeto Java para gestão de entregas, clientes, usuários, preços e SMS.
 - Swagger/OpenAPI
 - JUnit 5, Mockito
 
-##  Swagger UI - Exemplo de documentação das APIs:
+
+## Sucesso do Deploy: index.html e Swagger UI
+
+O deploy no WildFly 31 foi realizado com sucesso. A página principal (`index.html`) e a documentação interativa das APIs (Swagger UI) estão acessíveis:
+
+- Página inicial: [http://localhost:8080/csonline/index.html](http://localhost:8080/csonline/index.html)
+- Swagger UI: [http://localhost:8080/csonline/swagger-ui/index.html](http://localhost:8080/csonline/swagger-ui/index.html)
+
+Exemplo real do Swagger UI em funcionamento:
 
 ![Swagger UI](img/swagger-ui.png)
 
