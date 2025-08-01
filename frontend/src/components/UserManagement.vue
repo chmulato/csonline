@@ -10,6 +10,7 @@
         <tr>
           <th>Nome</th>
           <th>Email</th>
+          <th>WhatsApp</th>
           <th>Perfil</th>
           <th>Ações</th>
         </tr>
@@ -18,6 +19,7 @@
         <tr v-for="user in users" :key="user.id">
           <td>{{ user.name }}</td>
           <td>{{ user.email }}</td>
+          <td>{{ user.mobile }}</td>
           <td>{{ user.role }}</td>
           <td>
             <button @click="editUser(user)">Editar</button>
@@ -33,6 +35,7 @@
         <form @submit.prevent="saveUser">
           <input v-model="form.name" type="text" placeholder="Nome" required />
           <input v-model="form.email" type="email" placeholder="Email" required />
+          <input v-model="form.mobile" type="tel" placeholder="WhatsApp (ex: 41999887766)" required />
           <select v-model="form.role" required>
             <option value="admin">Administrador</option>
             <option value="user">Usuário</option>
@@ -57,14 +60,14 @@ function goBack() {
   emit('back');
 }
 const users = ref([
-  { id: 1, name: 'Admin', email: 'admin@csonline.com', role: 'admin' },
-  { id: 2, name: 'João Courier', email: 'courier@csonline.com', role: 'courier' },
-  { id: 3, name: 'Maria Cliente', email: 'customer@csonline.com', role: 'customer' },
-  { id: 4, name: 'Gestor', email: 'user@csonline.com', role: 'user' }
+  { id: 1, name: 'Admin', email: 'admin@csonline.com', mobile: '41999887766', role: 'admin' },
+  { id: 2, name: 'João Courier', email: 'courier@csonline.com', mobile: '41988776655', role: 'courier' },
+  { id: 3, name: 'Maria Cliente', email: 'customer@csonline.com', mobile: '41977665544', role: 'customer' },
+  { id: 4, name: 'Gestor', email: 'user@csonline.com', mobile: '41966554433', role: 'user' }
 ]);
 const showForm = ref(false);
 const editingUser = ref(null);
-const form = ref({ name: '', email: '', role: 'user', password: '' });
+const form = ref({ name: '', email: '', mobile: '', role: 'user', password: '' });
 
 function editUser(user) {
   editingUser.value = user;
@@ -87,7 +90,7 @@ function saveUser() {
 function cancel() {
   showForm.value = false;
   editingUser.value = null;
-  form.value = { name: '', email: '', role: 'user', password: '' };
+  form.value = { name: '', email: '', mobile: '', role: 'user', password: '' };
 }
 </script>
 
@@ -162,7 +165,7 @@ button:hover {
   display: flex;
   gap: 8px;
 }
-select, input[type="text"], input[type="email"], input[type="password"] {
+select, input[type="text"], input[type="email"], input[type="tel"], input[type="password"] {
   width: 100%;
   margin-bottom: 12px;
   padding: 8px;

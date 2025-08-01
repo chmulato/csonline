@@ -7,7 +7,8 @@
     <nav v-if="drawer" class="drawer">
       <ul>
         <li><a href="#">Entregas</a></li>
-        <li><a href="#">Clientes</a></li>
+        <li><a href="#" @click.prevent="customerMgmt">Empresas</a></li>
+        <li><a href="#" @click.prevent="courierMgmt">Entregadores</a></li>
         <li><a href="#" @click.prevent="userMgmt">Usuários</a></li>
         <li><a href="#">Preços</a></li>
         <li><a href="#">SMS</a></li>
@@ -24,12 +25,18 @@
 <script setup>
 import { ref } from 'vue';
 const drawer = ref(false);
-const emit = defineEmits(['logout', 'userMgmt']);
+const emit = defineEmits(['logout', 'userMgmt', 'courierMgmt', 'customerMgmt']);
 function logout() {
   emit('logout');
 }
 function userMgmt() {
   emit('userMgmt');
+}
+function courierMgmt() {
+  emit('courierMgmt');
+}
+function customerMgmt() {
+  emit('customerMgmt');
 }
 </script>
 
