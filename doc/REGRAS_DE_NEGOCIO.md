@@ -2,6 +2,29 @@
 
 # Regras de Negócio - Camada de Serviços
 #
+# ## Front-End: Gestão de Usuários (Vue SPA)
+#
+# A tela de gestão de usuários permite visualizar, cadastrar, editar e excluir usuários dos seguintes perfis:
+#
+# - **Administrador (admin):** Acesso total ao sistema, pode gerenciar todos os usuários, entregas, preços e mensagens.
+# - **Usuário (user):** Perfil de gestão das entregas, com acesso às funcionalidades administrativas relacionadas às entregas.
+# - **Entregador (courier):** Acesso restrito às entregas vinculadas ao próprio usuário, consulta de histórico e mensagens.
+# - **Cliente (customer):** Acesso restrito às entregas vinculadas ao próprio usuário, consulta de histórico e mensagens.
+#
+# ### Funcionalidades da tela:
+# - Listagem de usuários com nome, email e perfil.
+# - Cadastro de novo usuário (formulário modal).
+# - Edição de dados do usuário (nome, email, perfil, senha).
+# - Exclusão de usuário.
+# - Navegação protegida por perfil (a implementar: integração com backend e autenticação).
+#
+# ### Navegação:
+# - Acesso à tela principal após login.
+# - Menu sanduíche para acessar gestão de usuários e demais funcionalidades.
+# - Futuras integrações permitirão navegação entre entregas, clientes, preços e mensagens conforme perfil.
+#
+# *Consulte o arquivo FRONTEND_VUE.md para detalhes técnicos e evolução da interface.*
+#
 ## Documentação dos Endpoints REST
 Todos os endpoints REST do sistema são documentados automaticamente via Swagger/OpenAPI.
 - A especificação OpenAPI está disponível em `/api/openapi.json`.
