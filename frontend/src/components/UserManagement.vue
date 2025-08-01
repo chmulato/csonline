@@ -3,6 +3,7 @@
     <h2>Gestão de Usuários</h2>
     <div class="actions">
       <button @click="showForm = true">Novo Usuário</button>
+      <button class="back-btn" @click="goBack">Voltar</button>
     </div>
     <table>
       <thead>
@@ -51,6 +52,10 @@
 
 <script setup>
 import { ref } from 'vue';
+const emit = defineEmits(['back']);
+function goBack() {
+  emit('back');
+}
 const users = ref([
   { id: 1, name: 'Admin', email: 'admin@csonline.com', role: 'admin' },
   { id: 2, name: 'João Courier', email: 'courier@csonline.com', role: 'courier' },
@@ -101,6 +106,19 @@ function cancel() {
 .actions {
   margin-bottom: 16px;
 }
+ .back-btn {
+   margin-left: 8px;
+   padding: 8px 18px;
+   background: #888;
+   color: #fff;
+   border: none;
+   border-radius: 4px;
+   font-weight: bold;
+   cursor: pointer;
+ }
+ .back-btn:hover {
+   background: #555;
+ }
 table {
   width: 100%;
   border-collapse: collapse;
