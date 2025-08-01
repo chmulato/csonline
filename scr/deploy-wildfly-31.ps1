@@ -2,8 +2,7 @@
 # Uso: pwsh ./deploy-wildfly-31.ps1
 
 
-# Caminhos relativos à raiz do projeto
-$root = Split-Path -Parent $MyInvocation.MyCommand.Definition
+$root = Split-Path (Split-Path -Parent $MyInvocation.MyCommand.Definition) -Parent
 $wildflyDeploy = Join-Path $root "server/wildfly-31.0.1.Final/standalone/deployments"
 $warFile = Join-Path $root "target/csonline.war"
 
