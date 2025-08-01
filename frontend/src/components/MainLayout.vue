@@ -6,12 +6,13 @@
     </header>
     <nav v-if="drawer" class="drawer">
       <ul>
-        <li><a href="#">Entregas</a></li>
+        <li><a href="#" @click.prevent="deliveryMgmt">Entregas</a></li>
         <li><a href="#" @click.prevent="customerMgmt">Empresas</a></li>
         <li><a href="#" @click.prevent="courierMgmt">Entregadores</a></li>
+        <li><a href="#" @click.prevent="teamMgmt">Times</a></li>
         <li><a href="#" @click.prevent="userMgmt">Usuários</a></li>
-        <li><a href="#">Preços</a></li>
-        <li><a href="#">SMS</a></li>
+        <li><a href="#" @click.prevent="priceMgmt">Preços</a></li>
+        <li><a href="#" @click.prevent="smsMgmt">SMS</a></li>
         <li><a href="#" @click.prevent="logout">Sair</a></li>
       </ul>
     </nav>
@@ -25,7 +26,7 @@
 <script setup>
 import { ref } from 'vue';
 const drawer = ref(false);
-const emit = defineEmits(['logout', 'userMgmt', 'courierMgmt', 'customerMgmt']);
+const emit = defineEmits(['logout', 'userMgmt', 'courierMgmt', 'customerMgmt', 'deliveryMgmt', 'teamMgmt', 'smsMgmt', 'priceMgmt']);
 function logout() {
   emit('logout');
 }
@@ -37,6 +38,18 @@ function courierMgmt() {
 }
 function customerMgmt() {
   emit('customerMgmt');
+}
+function deliveryMgmt() {
+  emit('deliveryMgmt');
+}
+function teamMgmt() {
+  emit('teamMgmt');
+}
+function smsMgmt() {
+  emit('smsMgmt');
+}
+function priceMgmt() {
+  emit('priceMgmt');
 }
 </script>
 
