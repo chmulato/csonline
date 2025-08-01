@@ -13,6 +13,9 @@
 
 <script setup>
 import { ref } from 'vue';
+import Login from './components/Login.vue';
+import MainLayout from './components/MainLayout.vue';
+import Logout from './components/Logout.vue';
 import UserManagement from './components/UserManagement.vue';
 
 const isLogged = ref(false);
