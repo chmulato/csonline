@@ -13,13 +13,11 @@ Projeto Java para gestão de entregas, clientes, usuários, preços e SMS.
 - Swagger/OpenAPI
 - JUnit 5, Mockito
 
+##  Swagger UI - Exemplo de documentação das APIs:
+
+![Swagger UI](img/swagger-ui.png)
+
 ## Como executar
-
-
-
-## Como executar
-
-
 
 ### Como executar no WildFly 31 (Windows/PowerShell)
 
