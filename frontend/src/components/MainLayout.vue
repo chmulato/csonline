@@ -11,7 +11,7 @@
         <li><a href="#">Usuários</a></li>
         <li><a href="#">Preços</a></li>
         <li><a href="#">SMS</a></li>
-        <li><a href="#">Sair</a></li>
+        <li><a href="#" @click.prevent="logout">Sair</a></li>
       </ul>
     </nav>
     <main>
@@ -24,6 +24,10 @@
 <script setup>
 import { ref } from 'vue';
 const drawer = ref(false);
+const emit = defineEmits(['logout']);
+function logout() {
+  emit('logout');
+}
 </script>
 
 <style scoped>

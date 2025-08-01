@@ -2,8 +2,9 @@
   <header class="app-header">
     <h1>CSOnline</h1>
   </header>
-  <Login v-if="!isLogged" @login="onLogin" />
-  <MainLayout v-else />
+  <Login v-if="!isLogged && !isLogout" @login="onLogin" />
+  <MainLayout v-else-if="isLogged && !isLogout" @logout="onLogout" />
+  <Logout v-if="isLogout" @backToLogin="onBackToLogin" />
   <footer class="app-footer">
     Cara Core Informática &copy; 2025
   </footer>
@@ -13,10 +14,22 @@
 import { ref } from 'vue';
 import Login from './components/Login.vue';
 import MainLayout from './components/MainLayout.vue';
+import Logout from './components/Logout.vue';
 
 const isLogged = ref(false);
+const isLogout = ref(false);
+
 function onLogin() {
   isLogged.value = true;
+  isLogout.value = false;
+}
+function onLogout() {
+  isLogged.value = false;
+  isLogout.value = true;
+}
+function onBackToLogin() {
+  isLogged.value = false;
+  isLogout.value = false;
 }
 </script>
 
