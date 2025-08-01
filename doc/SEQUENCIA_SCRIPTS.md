@@ -1,6 +1,8 @@
+
 # Sequência Recomendada de Execução dos Scripts (WildFly 31)
 
-Este documento orienta a ordem correta de execução dos scripts PowerShell para build, deploy e configuração do ambiente da aplicação csonline no WildFly 31.
+Este documento apresenta a ordem real e recomendada dos scripts PowerShell utilizados para build, deploy, configuração e troubleshooting do ambiente da aplicação csonline no WildFly 31. A sequência foi validada com sucesso no deploy de julho/2025.
+
 
 ## 1. Preparar o artefato WAR e copiar para o WildFly
 
@@ -11,29 +13,24 @@ pwsh ./prepare-artifact-wildfly.ps1 [-DskipTests]
 Gera o arquivo `target/csonline.war` e copia para `server/wildfly-31.0.1.Final/standalone/deployments`.
 
 
-## 2. Configurar o Driver JDBC e/ou DataSource (opcional)
 
-Para configurar apenas o driver JDBC:
-
-```powershell
-pwsh ./config-wildfly-31.ps1 -SomenteDriver
-```
-
-Para configurar o driver JDBC e o DataSource (padrão):
+## 2. Configurar o Driver JDBC e DataSource
 
 ```powershell
 pwsh ./config-wildfly-31.ps1
 ```
 
-O script copia o driver JDBC e, se não usar o parâmetro `-SomenteDriver`, também configura o DataSource no WildFly (exemplo para HSQLDB).
+O script copia o driver JDBC e configura o DataSource padrão (exemplo: HSQLDB). Para configurar apenas o driver, use o parâmetro `-SomenteDriver`.
 
-## 3. Configurar o log customizado da aplicação (opcional)
+
+## 3. Configurar o log customizado da aplicação
 
 ```powershell
 pwsh ./config-log-wildfly-31.ps1
 ```
 
 Cria o diretório de logs e configura o handler para gravar logs da aplicação em `logs/app.log`.
+
 
 ## 4. Configurar HTTPS/SSL (opcional)
 
@@ -43,6 +40,7 @@ pwsh ./config-ssl-wildfly-31.ps1
 
 Gera um certificado autoassinado, configura o HTTPS no WildFly (porta 8443) e orienta sobre reinício do servidor.
 
+
 ## 5. Iniciar o WildFly
 
 ```powershell
@@ -51,7 +49,16 @@ pwsh ./start-wildfly-31.ps1
 
 Inicia o WildFly 31 em http://localhost:8080/.
 
-## 6. Parar o WildFly
+
+## 6. Deploy manual do WAR (opcional)
+
+```powershell
+pwsh ./deploy-wildfly-31.ps1
+```
+
+Copia o WAR para a pasta deployments do WildFly a qualquer momento (útil para hot deploy sem rebuild).
+
+## 7. Parar o WildFly
 
 ```powershell
 pwsh ./stop-wildfly-31.ps1
@@ -59,13 +66,17 @@ pwsh ./stop-wildfly-31.ps1
 
 Para o WildFly 31.
 
-## 7. Deploy manual do WAR (opcional)
 
-```powershell
-pwsh ./deploy-wildfly-31.ps1
-```
+---
 
-Copia o WAR para a pasta deployments do WildFly a qualquer momento.
+## Troubleshooting e Acesso
+
+- Se ocorrer erro de deploy, verifique o log em `server/wildfly-31.0.1.Final/standalone/log/server.log`.
+- O acesso ao sistema é feito por:
+  - Página principal: http://localhost:8080/csonline/index.html
+  - Swagger UI: http://localhost:8080/csonline/swagger-ui/index.html
+  - OpenAPI JSON: http://localhost:8080/csonline/api/openapi.json
+- Scripts agora usam paths relativos, logs detalhados e checagem automática do Java.
 
 ---
 
@@ -74,3 +85,4 @@ Copia o WAR para a pasta deployments do WildFly a qualquer momento.
 - Execute os scripts sempre a partir da raiz do projeto.
 - Scripts opcionais só são necessários se você quiser customizar o ambiente além do padrão.
 - Consulte o README e os demais documentos da pasta `doc` para detalhes de cada etapa.
+- Para troubleshooting detalhado, consulte também o histórico do git e o arquivo `HISTORIA_DO_PROJETO.md`.

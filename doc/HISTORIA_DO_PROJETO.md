@@ -31,7 +31,16 @@
 - Documentação dos endpoints REST e regras de negócio centralizadas para facilitar onboarding e manutenção.
 
 ## Conclusão
-O projeto evoluiu de uma base simples para uma arquitetura robusta, com forte foco em testes automatizados, isolamento de dados, unicidade de informações e boas práticas de desenvolvimento. Cada etapa do git mostra o compromisso com qualidade, refino contínuo, rastreabilidade e adaptação às melhores tecnologias do ecossistema Java/Jakarta EE.
+
+## Novos Marcos (Julho/2025)
+
+- **Deploy WildFly 31:** Após ajustes finos no `pom.xml` e nos scripts, o deploy no WildFly 31 foi realizado com sucesso, sem conflitos de dependências Jakarta EE. O acesso ao sistema via `/csonline/index.html` confirmou a entrega correta dos arquivos estáticos.
+- **Swagger/OpenAPI disponível:** Com a inclusão das dependências JAXB, o endpoint `/csonline/api/openapi.json` passou a funcionar, permitindo a visualização e teste das APIs REST diretamente pelo Swagger UI.
+- **Scripts portáveis e robustos:** Todos os scripts PowerShell foram revisados para uso de paths relativos, logs detalhados e checagem automática do ambiente Java, facilitando o setup em qualquer máquina.
+- **Troubleshooting documentado:** O processo de troubleshooting (logs, erros de deploy, conflitos de dependências) foi registrado e serviu de aprendizado para futuras migrações e manutenções.
+- **Histórico git enriquecido:** Os últimos commits documentam claramente cada ajuste, desde a configuração do ambiente até a resolução de erros de build e deploy, reforçando a rastreabilidade e a cultura DevOps do projeto.
+
+O projeto agora está estável, com deploy automatizado, documentação viva e APIs REST documentadas e testáveis via Swagger. O acesso ao index.html e ao Swagger UI marca o fechamento de um ciclo de evolução e maturidade.
 
 ---
 
