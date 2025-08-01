@@ -18,6 +18,7 @@ const isLogged = ref(false);
 function onLogin() {
   isLogged.value = true;
 }
+</script>
 
 <style scoped>
 .app-header {
@@ -39,4 +40,3 @@ function onLogin() {
   font-family: Arial, sans-serif;
 }
 </style>
-</script>
