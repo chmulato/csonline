@@ -1,10 +1,14 @@
 # Documentação do Front-End SPA (Vue.js)
+#
+# Consulte também o arquivo [ARQUITETURA_VUE.md](ARQUITETURA_VUE.md) para uma visão geral da arquitetura, boas práticas e controle de versões do front-end.
 
 ## Estrutura do Projeto
 
 - Localização: `frontend/`
 - Framework: Vue 3 + Vite
+- Componentes em `src/components/` (Login, MainLayout, UserManagement, etc)
 - Build final: `frontend/dist` (copiar para `src/main/webapp` para deploy junto ao backend)
+- Scripts de build e deploy: `src/build-frontend.ps1`
 
 ## Páginas e Navegação
 
@@ -12,14 +16,16 @@
 
 - **Arquivo:** `src/components/Login.vue`
 - **Descrição:** Tela inicial de autenticação. Usuário informa login e senha.
-- **Fluxo:** Após login bem-sucedido, navega para a tela principal.
+- **Fluxo:** Após login bem-sucedido, navega para a tela principal. Logs de tentativa de login são exibidos apenas em ambiente de desenvolvimento.
 
 ### 2. Tela Principal (Layout)
 
 - **Arquivo:** `src/components/MainLayout.vue`
 - **Descrição:** Layout principal do sistema após login.
 - **Elementos:**
-  - Header com título e botão menu sanduíche (☰)
+  - Header fixo com nome da aplicação
+  - Footer fixo com copyright "Cara Core Informática © 2025"
+  - Botão menu sanduíche (☰) para abrir menu lateral
   - Menu lateral (drawer) com links para funcionalidades:
     - Entregas
     - Clientes
@@ -35,29 +41,36 @@
 - Inicial: `/` → Login
 - Após login: `/main` (simulado via estado, SPA)
 - Menu sanduíche abre/fecha o drawer lateral
-- Futuras rotas podem ser adicionadas com Vue Router
+- Futuras rotas podem ser adicionadas com Vue Router para navegação avançada
 
 ## Integração com Backend
 
 - Endpoints REST disponíveis em `/api/*` (ex: `/api/couriers`, `/api/customers`)
 - Autenticação e navegação protegida podem ser implementadas via chamada à API
+- O backend controla o acesso por perfil; o front-end oculta menus conforme o perfil, mas nunca confia só nisso
 
 ## Build e Deploy
 
 - `npm install` para instalar dependências
 - `npm run dev` para desenvolvimento local
 - `npm run build` para gerar arquivos finais em `dist/`
-- Copiar conteúdo de `dist/` para `src/main/webapp/` para servir via WildFly
+
+---
+
+- Use o script `src/build-frontend.ps1` para copiar o conteúdo de `dist/` para `src/main/webapp/` e servir via WildFly
+
+---
 
 ## Customização
 
 - Estilos podem ser ajustados nos arquivos `.vue`
 - Novas páginas podem ser criadas em `src/components/`
 - Para navegação avançada, adicionar Vue Router
+- Logs de console devem ser feitos apenas com devLog e restritos ao ambiente de desenvolvimento
 
 ## Screenshots
 
-- Adicione imagens da tela de login, tela principal e menu sanduíche conforme evolução
+- Adicione imagens da tela de login, tela principal, menu sanduíche e gestão de usuários conforme evolução
 
 ## Segurança da Aplicação (Adendo)
 
