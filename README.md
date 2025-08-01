@@ -318,7 +318,7 @@ Para dúvidas, sugestões ou contribuições, abra uma issue no repositório.
 - Implementar autenticação JWT
 - Adicionar controle de acesso por perfil
 
-**O sistema CSOnline está pronto para uso em desenvolvimento e preparado para integração completa!** 🚀
+**O sistema CSOnline está pronto para uso em desenvolvimento e preparado para integração completa!**
 
 ---
 
