@@ -70,11 +70,18 @@
 
 ## Screenshots
 
-- Adicione imagens da tela de login, tela principal, menu sanduíche e gestão de usuários conforme evolução
+- Telas implementadas até julho/2025:
+  - Login: autenticação simulada, logs restritos ao ambiente de desenvolvimento.
+  - Tela principal: menu sanduíche, navegação entre funcionalidades, mensagem de boas-vindas.
+  - Gestão de usuários: listagem, cadastro, edição, exclusão simulados, botão "Voltar" para retornar ao menu principal.
+  - Logout: tela de saída com feedback visual e opção de retornar ao login.
+
+Imagens podem ser adicionadas conforme evolução visual e integração com backend.
 
 ## Segurança da Aplicação (Adendo)
 
-A segurança do front-end Vue será implementada ao final do desenvolvimento das páginas principais. Os principais pontos a serem considerados:
+
+A segurança do front-end Vue está planejada para ser implementada após a conclusão das principais telas e integração com o backend. Pontos já considerados e documentados:
 
 - Autenticação baseada em token (JWT) ou sessão, validada pelo backend.
 - Proteção de rotas e menus conforme perfil do usuário (admin, user, courier, customer).
@@ -84,8 +91,20 @@ A segurança do front-end Vue será implementada ao final do desenvolvimento das
 - Proteção contra XSS e CSRF (evitar v-html, tokens seguros).
 - Nunca armazenar dados sensíveis no front-end.
 
-*A implementação da segurança será detalhada e aplicada após o término das páginas principais do sistema.*
+
+*A implementação da segurança será detalhada e aplicada após o término das páginas principais do sistema e início da integração com autenticação JWT e controle de perfis.*
 
 ---
 
-*Este documento deve ser atualizado conforme novas páginas, funcionalidades e camadas de segurança forem implementadas no front-end.*
+
+---
+
+## Próximos Passos
+
+- Integração do front-end SPA com autenticação JWT e backend REST.
+- Implementação de proteção de rotas e menus conforme perfil do usuário.
+- Evolução da gestão de usuários para operações reais via API.
+- Adição de novas funcionalidades e telas conforme requisitos do sistema.
+- Atualização contínua da documentação técnica e screenshots.
+
+*Este documento deve ser atualizado conforme novas páginas, funcionalidades, integrações e camadas de segurança forem implementadas no front-end.*

@@ -34,27 +34,23 @@
 
 ## Novos Marcos (Julho/2025)
 
-- **Deploy WildFly 31:** Após ajustes finos no `pom.xml` e nos scripts, o deploy no WildFly 31 foi realizado com sucesso, sem conflitos de dependências Jakarta EE. O acesso ao sistema via `/csonline/index.html` confirmou a entrega correta dos arquivos estáticos.
-- **Swagger/OpenAPI disponível:** Com a inclusão das dependências JAXB, o endpoint `/csonline/api/openapi.json` passou a funcionar, permitindo a visualização e teste das APIs REST diretamente pelo Swagger UI.
-- **Scripts portáveis e robustos:** Todos os scripts PowerShell foram revisados para uso de paths relativos, logs detalhados e checagem automática do ambiente Java, facilitando o setup em qualquer máquina.
-- **Troubleshooting documentado:** O processo de troubleshooting (logs, erros de deploy, conflitos de dependências) foi registrado e serviu de aprendizado para futuras migrações e manutenções.
-- **Histórico git enriquecido:** Os últimos commits documentam claramente cada ajuste, desde a configuração do ambiente até a resolução de erros de build e deploy, reforçando a rastreabilidade e a cultura DevOps do projeto.
-
+ **Front-end Vue SPA:** Em julho/2025, iniciamos a implementação do front-end moderno em Vue 3 + Vite, trazendo uma experiência de usuário responsiva, navegação dinâmica (login, menu principal, gestão de usuários, logout) e integração futura com autenticação JWT. O SPA foi estruturado com componentes modulares, scripts de build automatizados e documentação viva.
+ **Navegação e usabilidade:** A navegação entre telas (login, principal, gestão de usuários, logout) foi refinada com estado reativo, eventos e feedback visual, garantindo fluxo intuitivo e modular. O menu lateral permite acesso rápido às principais funcionalidades, e a tela de gestão de usuários já suporta cadastro, edição e exclusão simulados.
+ **Automação e integração:** Scripts PowerShell para build e deploy do front-end foram aprimorados, com logs detalhados e checagem automática do ambiente. O processo de integração contínua agora contempla tanto backend quanto frontend, facilitando o onboarding e a manutenção.
+ **Segurança planejada:** A arquitetura do SPA já prevê autenticação JWT, proteção de rotas e controle de acesso por perfil, com adendo de segurança documentado e pronto para implementação após as principais telas.
+ **Documentação ampliada:** Toda a evolução do front-end, navegação, integração e segurança foi registrada nos arquivos de documentação técnica, facilitando o entendimento e a evolução futura do sistema.
 O projeto agora está estável, com deploy automatizado, documentação viva e APIs REST documentadas e testáveis via Swagger. O acesso ao index.html e ao Swagger UI marca o fechamento de um ciclo de evolução e maturidade.
 
 ---
-
 
 ## Dificuldades e Desafios Superados
 
 Ao longo da jornada do CSOnline, enfrentamos muitos desafios típicos de projetos de software robustos:
 
-- **Migração de tecnologias:** A transição do Java EE para Jakarta EE exigiu adaptações profundas em dependências, namespaces e configurações, além de ajustes em bibliotecas de terceiros.
-- **Isolamento de testes:** Garantir que cada teste rodasse de forma independente, sem "sujar" o banco ou depender de dados de outros testes, foi um desafio constante. Isso exigiu a criação de utilitários de limpeza e fábricas de dados.
-- **Integridade referencial:** Lidar com constraints do banco, especialmente em deleções em cascata e entidades relacionadas, gerou muitos erros difíceis de rastrear, exigindo refino nas entidades, scripts SQL e regras explícitas na camada de serviço para garantir mensagens claras ao usuário.
-- **Concorrência em testes:** Problemas de concorrência e dados compartilhados em execuções paralelas de testes levaram à configuração cuidadosa do Maven Surefire e à revisão de todos os métodos de setup.
-- **Evolução de requisitos:** Mudanças de escopo, inclusão de novas entidades e endpoints REST exigiram refatorações frequentes, sempre mantendo a compatibilidade e a cobertura de testes.
-- **Logging e rastreabilidade:** Garantir logs claros e úteis para depuração, sem poluir o ambiente de produção, foi um ajuste fino entre configurações e boas práticas.
+ - **Front-end SPA e integração:** A criação do front-end Vue SPA trouxe novos desafios: estruturação de componentes, navegação reativa, comunicação entre telas, automação de build/deploy e integração futura com autenticação. Ajustar o fluxo de navegação, eventos e feedback visual exigiu refino e testes constantes.
+ - **Automação multiplataforma:** Adaptar scripts de build e deploy para funcionar em diferentes ambientes (Windows, Linux) e garantir logs detalhados e paths relativos foi essencial para facilitar o setup e a manutenção.
+ - **Segurança e controle de acesso:** Planejar a autenticação JWT, proteção de rotas e controle de perfis no SPA exigiu estudo e documentação, preparando o sistema para futuras integrações seguras.
+ - **Documentação viva:** Manter a documentação técnica atualizada, cobrindo tanto backend quanto frontend, foi fundamental para garantir rastreabilidade, onboarding rápido e evolução contínua.
 
 Cada obstáculo trouxe aprendizados e fortaleceu a arquitetura do projeto. O resultado é um sistema mais resiliente, testável e pronto para evoluir.
 
