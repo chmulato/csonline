@@ -1,10 +1,46 @@
-# csonline
+# CSOnline - Sistema de Gestão de Entregas
 
-Projeto Java para gestão de entregas, clientes, usuários, preços e SMS.
+Sistema completo para gestão de entregas, entregadores, clientes, empresas, equipes, preços e comunicação via SMS/WhatsApp. Desenvolvido com Jakarta EE 10 no backend e Vue 3 + Vite no frontend.
+
+## Funcionalidades Implementadas
+
+### **Sistema Completo de Gestão**
+
+**Frontend Vue 3 SPA - 100% Funcional:**
+- **Gestão de Usuários** - CRUD completo para administradores do sistema
+- **Gestão de Entregadores** - Cadastro e controle de couriers com comissões
+- **Gestão de Empresas** - Centros de distribuição (Customers) com endereços
+- **Gestão de Entregas** - Sistema completo com status, filtros e rastreamento
+- **Gestão de Equipes** - Vinculação de entregadores aos centros de distribuição
+- **Gestão de SMS/WhatsApp** - Sistema de mensagens com templates para entregas
+- **Gestão de Preços** - Tabelas de preços por empresa, veículo e localização
+- **Sistema de Login/Logout** - Autenticação com navegação completa
+
+### **Recursos Técnicos:**
+- Interface responsiva e moderna
+- Dashboard com estatísticas em cada módulo
+- Sistema de filtros e busca avançada
+- Modais para criação/edição/visualização
+- Validação de formulários
+- Navegação SPA sem reload de página
+- Dados simulados para desenvolvimento
+
+### **Backend Jakarta EE 10:**
+- APIs REST completamente documentadas
+- Swagger UI integrado para testes
+- Banco de dados HSQLDB
+- Logging customizado
+- Deploy automatizado no WildFly 31
 
 ## Principais Tecnologias
 
+### **Frontend:**
+- Vue 3 + Composition API
+- Vite (build tool)
+- CSS3 moderno e responsivo
+- FontAwesome (ícones)
 
+### **Backend:**
 - Jakarta EE 10
 - JPA (Jakarta Persistence API)
 - EclipseLink (JPA Provider)
@@ -13,7 +49,11 @@ Projeto Java para gestão de entregas, clientes, usuários, preços e SMS.
 - Log4j 2
 - Swagger/OpenAPI
 - JUnit 5, Mockito
-- Vue 3 + Vite (SPA front-end)
+
+### **Deploy:**
+- WildFly 31 Application Server
+- Scripts PowerShell automatizados
+- Build e deploy integrados
 
 
 ## Sucesso do Deploy: index.html e Swagger UI
@@ -31,35 +71,37 @@ Exemplo real do Swagger UI em funcionamento:
 
 ![Swagger UI](img/swagger-ui.png)
 
-## Como executar
+## Como Executar
 
-## Como executar o front-end Vue SPA
+### **Front-end Vue SPA (Desenvolvimento)**
 
-1. Instale as dependências do front-end:
+1. **Instale as dependências:**
    ```powershell
    cd frontend
    npm install
    ```
-2. Execute em modo desenvolvimento:
+
+2. **Execute em modo desenvolvimento:**
    ```powershell
    npm run dev
    ```
    Acesse em [http://localhost:5173](http://localhost:5173) (porta padrão Vite).
-3. Para build de produção:
+
+3. **Build de produção:**
    ```powershell
    npm run build
    ```
    Os arquivos finais estarão em `frontend/dist`.
-4. Use o script PowerShell para copiar o build para o backend:
+
+4. **Integrar build com backend:**
    ```powershell
    pwsh ./src/build-frontend.ps1
    ```
-   Isso copia o conteúdo de `dist/` para `src/main/webapp/` e serve o SPA junto ao backend.
+   Copia o conteúdo de `dist/` para `src/main/webapp/` e serve o SPA junto ao backend.
 
+### **Backend + Deploy WildFly 31**
 
-### Como executar no WildFly 31 (Windows/PowerShell)
-
-Scripts automatizados estão disponíveis na raiz do projeto:
+Scripts automatizados estão disponíveis na raiz do projeto para facilitar o deploy:
 
 #### Diagrama de Sequência dos Scripts
 
@@ -84,10 +126,15 @@ sequenceDiagram
     Note over Dev,PS: deploy-wildfly-31.ps1 pode ser usado para copiar o WAR manualmente a qualquer momento
 ```
 
-**Resumo da ordem típica:**
+**Ordem típica de execução:**
 
-1. `prepare-artifact-wildfly.ps1` → 2. `config-wildfly-31.ps1` (opcional) → 3. `config-ssl-wildfly-31.ps1` (opcional) → 4. `start-wildfly-31.ps1` → 5. `stop-wildfly-31.ps1`
-   - Use `deploy-wildfly-31.ps1` se quiser apenas copiar o WAR manualmente.
+1. `prepare-artifact-wildfly.ps1` → Gera e copia WAR
+2. `config-wildfly-31.ps1` (opcional) → Configura DataSource
+3. `config-ssl-wildfly-31.ps1` (opcional) → Configura HTTPS
+4. `start-wildfly-31.ps1` → Inicia servidor
+5. `stop-wildfly-31.ps1` → Para servidor quando necessário
+
+**🔧 Comandos detalhados:**
 
 1. **Preparar o artefato WAR e copiar para o WildFly:**
    ```powershell
@@ -123,12 +170,31 @@ sequenceDiagram
    ```powershell
    pwsh ./config-ssl-wildfly-31.ps1
    ```
-   Gera um certificado autoassinado, configura o HTTPS no WildFly (porta 8443) e orienta sobre reinício do servidor. Após executar, acesse: https://localhost:8443/csonline/
+   Gera certificado autoassinado e configura HTTPS (porta 8443).
+   Após executar, acesse: https://localhost:8443/csonline/
 
----
+## Acessos do Sistema
+
+### **URLs Principais:**
+- **Frontend SPA:** [http://localhost:5173](http://localhost:5173) (desenvolvimento)
+- **Sistema Completo:** [http://localhost:8080/csonline/](http://localhost:8080/csonline/) (produção)
+- **Swagger UI:** [http://localhost:8080/csonline/swagger-ui/index.html](http://localhost:8080/csonline/swagger-ui/index.html)
+- **APIs REST:** `http://localhost:8080/csonline/api/`
+
+### **Módulos Disponíveis no Frontend:**
+- **Login** → Autenticação do sistema
+- **Dashboard Principal** → Menu de navegação
+- **Usuários** → Gestão de administradores
+- **Entregadores** → Cadastro de couriers
+- **Empresas** → Centros de distribuição
+- **Entregas** → Controle de entregas
+- **Equipes** → Times de entregadores
+- **SMS/WhatsApp** → Mensagens para entregas
+- **Preços** → Tabelas de preços
+- **Logout** → Saída do sistema
 
 
-## Logging
+## Logging e Monitoramento
 
 Os logs customizados da aplicação são gravados em `logs/app.log` (relativo à raiz do projeto, configurado via scripts e logging do WildFly).
 
@@ -146,7 +212,7 @@ Além disso, o log padrão do servidor WildFly está em:
 
 Você pode ajustar o formato e destino do log customizado editando o script ou via console administrativo do WildFly.
 
-## Documentação da API
+## Documentação da API REST
 
 
 Swagger disponível em `/api/openapi.json`.
@@ -156,46 +222,107 @@ Acesse a interface Swagger UI em:
 (ajuste a porta conforme sua configuração WildFly)
 
 Os endpoints REST estão disponíveis em:  
-- `/api/users`
-- `/api/customers`
-- `/api/couriers`
-- `/api/deliveries`
-- `/api/sms`
-- `/api/login`
+- `/api/users` - Gestão de usuários
+- `/api/customers` - Gestão de empresas/centros de distribuição
+- `/api/couriers` - Gestão de entregadores
+- `/api/deliveries` - Gestão de entregas
+- `/api/teams` - Gestão de equipes
+- `/api/prices` - Gestão de preços
+- `/api/sms` - Gestão de SMS/WhatsApp
+- `/api/login` - Autenticação
 
 ## Documentação Completa
 
-Consulte o arquivo [doc/INDEX.md](doc/INDEX.md) para uma documentação detalhada do projeto, incluindo arquitetura, navegação, integração e segurança do front-end SPA.
+Consulte o arquivo [doc/INDEX.md](doc/INDEX.md) para documentação detalhada do projeto, incluindo:
+- **Arquitetura do sistema**
+- **Regras de negócio**
+- **Guias de integração**
+- **Documentação completa do frontend Vue**
+- **Especificações de segurança**
 
-## Estrutura de Pastas
+## Estrutura do Projeto
 
 
-- `src/main/java/com/caracore/cso/controller` - Controllers REST
-- `src/main/java/com/caracore/cso/service` - Serviços de negócio
-- `src/main/java/com/caracore/cso/repository` - Repositórios JPA/EclipseLink
-- `src/main/java/com/caracore/cso/entity` - Entidades JPA
-- `src/main/resources` - Configurações (ex: `log4j2.xml`, `persistence.xml`)
-- `src/test/java` - Testes unitários
-- `frontend/` - Front-end SPA Vue 3 + Vite
-  - `src/components/` - Componentes Vue (Login, MainLayout, UserManagement, Logout)
-  - `dist/` - Build final do front-end
+### **Backend (Jakarta EE):**
+- `src/main/java/com/caracore/cso/controller/` - Controllers REST
+- `src/main/java/com/caracore/cso/service/` - Serviços de negócio
+- `src/main/java/com/caracore/cso/repository/` - Repositórios JPA/EclipseLink
+- `src/main/java/com/caracore/cso/entity/` - Entidades JPA
+- `src/main/resources/` - Configurações (log4j2.xml, persistence.xml)
+- `src/test/java/` - Testes unitários
+
+### **Frontend (Vue 3 SPA):**
+- `frontend/src/components/` - Componentes Vue
+  - `Login.vue` - Tela de autenticação
+  - `MainLayout.vue` - Layout principal com menu
+  - `UserManagement.vue` - Gestão de usuários
+  - `CourierManagement.vue` - Gestão de entregadores
+  - `CustomerManagement.vue` - Gestão de empresas
+  - `DeliveryManagement.vue` - Gestão de entregas
+  - `TeamManagement.vue` - Gestão de equipes
+  - `SMSManagement.vue` - Gestão de SMS/WhatsApp
+  - `PriceManagement.vue` - Gestão de preços
+  - `Logout.vue` - Tela de logout
+- `frontend/dist/` - Build final do front-end
+- `src/main/webapp/` - Frontend integrado ao backend
+
+### **Scripts e Configurações:**
+- `*.ps1` - Scripts PowerShell para deploy automatizado
+- `doc/` - Documentação completa do projeto
+- `logs/` - Logs da aplicação
 
 ## Configuração
 
 
-- Edite `src/main/resources/log4j2.xml` para ajustar o log.
-- Edite `src/main/resources/persistence.xml` para configurar JPA/EclipseLink.
-- Banco de dados HSQLDB em memória por padrão (configurável em `src/main/resources/persistence.xml` e `application.properties`).
-- Para customizar o front-end, edite os componentes Vue em `frontend/src/components/`.
+- **Backend:** Edite `src/main/resources/log4j2.xml` para ajustar logs e `src/main/resources/persistence.xml` para configurar JPA/EclipseLink
+- **Banco de dados:** HSQLDB em memória por padrão (configurável em `persistence.xml` e `application.properties`)
+- **Frontend:** Customize os componentes Vue em `frontend/src/components/`
+- **Deploy:** Use os scripts PowerShell na raiz para automação completa
+
+## Próximos Passos
+
+### **Em Desenvolvimento:**
+- **Integração Frontend-Backend:** Substituir dados simulados por APIs reais
+- **Autenticação JWT:** Implementar login seguro com tokens
+- **Controle de Acesso:** Perfis de usuário (admin, courier, customer)
+- **Relatórios:** Dashboards avançados e relatórios de performance
+
+### **Funcionalidades Futuras:**
+- **PWA:** Service Worker para funcionalidade offline
+- **Notificações Push:** Alertas em tempo real
+- **Geolocalização:** Rastreamento de entregas em tempo real
+- **API Mobile:** Endpoints específicos para app móvel
 
 ## Contato
 
 
-Para dúvidas ou sugestões, abra uma issue.
+Para dúvidas, sugestões ou contribuições, abra uma issue no repositório.
 
 ---
 
-**Observação:** O front-end SPA está em evolução, com navegação, integração e segurança planejadas. Consulte a documentação técnica para acompanhar os próximos passos e novas funcionalidades.
+## **Estado Atual do Projeto**
+
+**Frontend Vue 3 SPA: 100% Completo**
+- Todos os 7 módulos principais implementados
+- Interface moderna e responsiva
+- Navegação fluida entre telas
+- Dados simulados para desenvolvimento
+
+**Backend Jakarta EE: APIs Documentadas**
+- Swagger UI funcional
+- Endpoints REST organizados
+- Deploy automatizado WildFly 31
+
+**Próximo Marco: Integração Frontend + Backend**
+- Substituir dados simulados por APIs reais
+- Implementar autenticação JWT
+- Adicionar controle de acesso por perfil
+
+**O sistema CSOnline está pronto para uso em desenvolvimento e preparado para integração completa!** 🚀
+
+---
+
+**Observação:** O sistema está completamente funcional em modo de desenvolvimento. A documentação técnica completa está disponível em `doc/` e será atualizada conforme a evolução da integração backend-frontend.
 
 ## Licença
 
