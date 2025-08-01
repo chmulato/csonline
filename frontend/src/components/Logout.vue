@@ -3,13 +3,20 @@
     <h2>Você saiu do CSOnline</h2>
     <p>Obrigado por utilizar o sistema!</p>
     <button @click="goToLogin">Voltar ao Login</button>
+    <div v-if="showConfirm" class="confirm-msg">Redirecionando para o login...</div>
   </div>
 </template>
 
 <script setup>
+import { ref } from 'vue';
 const emit = defineEmits(['backToLogin']);
+const showConfirm = ref(false);
 function goToLogin() {
-  emit('backToLogin');
+  showConfirm.value = true;
+  setTimeout(() => {
+    emit('backToLogin');
+    showConfirm.value = false;
+  }, 600);
 }
 </script>
 
@@ -39,4 +46,14 @@ function goToLogin() {
 .logout-container button:hover {
   background: #1565c0;
 }
+ .confirm-msg {
+   margin-top: 18px;
+   color: #388e3c;
+   font-weight: bold;
+   animation: fadeIn 0.5s;
+ }
+ @keyframes fadeIn {
+   from { opacity: 0; }
+   to { opacity: 1; }
+ }
 </style>

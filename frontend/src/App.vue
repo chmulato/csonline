@@ -2,8 +2,9 @@
   <header class="app-header">
     <h1>CSOnline</h1>
   </header>
-  <Login v-if="!isLogged && !isLogout" @login="onLogin" />
-  <MainLayout v-else-if="isLogged && !isLogout" @logout="onLogout" />
+  <Login v-if="!isLogged && !isUserMgmt && !isLogout" @login="onLogin" />
+  <MainLayout v-else-if="isLogged && !isLogout && !isUserMgmt" @logout="onLogout" @userMgmt="onUserMgmt" />
+  <UserManagement v-if="isUserMgmt" @back="onBackFromUserMgmt" />
   <Logout v-if="isLogout" @backToLogin="onBackToLogin" />
   <footer class="app-footer">
     Cara Core Informática &copy; 2025
@@ -12,24 +13,32 @@
 
 <script setup>
 import { ref } from 'vue';
-import Login from './components/Login.vue';
-import MainLayout from './components/MainLayout.vue';
-import Logout from './components/Logout.vue';
+import UserManagement from './components/UserManagement.vue';
 
 const isLogged = ref(false);
 const isLogout = ref(false);
+const isUserMgmt = ref(false);
 
 function onLogin() {
   isLogged.value = true;
   isLogout.value = false;
+  isUserMgmt.value = false;
 }
 function onLogout() {
   isLogged.value = false;
   isLogout.value = true;
+  isUserMgmt.value = false;
+}
+function onUserMgmt() {
+  isUserMgmt.value = true;
+}
+function onBackFromUserMgmt() {
+  isUserMgmt.value = false;
 }
 function onBackToLogin() {
   isLogged.value = false;
   isLogout.value = false;
+  isUserMgmt.value = false;
 }
 </script>
 

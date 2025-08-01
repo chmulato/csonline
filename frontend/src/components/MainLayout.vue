@@ -8,7 +8,7 @@
       <ul>
         <li><a href="#">Entregas</a></li>
         <li><a href="#">Clientes</a></li>
-        <li><a href="#">Usuários</a></li>
+        <li><a href="#" @click.prevent="userMgmt">Usuários</a></li>
         <li><a href="#">Preços</a></li>
         <li><a href="#">SMS</a></li>
         <li><a href="#" @click.prevent="logout">Sair</a></li>
@@ -24,9 +24,12 @@
 <script setup>
 import { ref } from 'vue';
 const drawer = ref(false);
-const emit = defineEmits(['logout']);
+const emit = defineEmits(['logout', 'userMgmt']);
 function logout() {
   emit('logout');
+}
+function userMgmt() {
+  emit('userMgmt');
 }
 </script>
 
