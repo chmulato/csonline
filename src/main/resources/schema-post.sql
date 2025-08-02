@@ -10,4 +10,4 @@ ALTER TABLE courier DROP CONSTRAINT FK_courier_idbusiness;
 ALTER TABLE courier ADD CONSTRAINT FK_courier_idbusiness
     FOREIGN KEY (idbusiness) REFERENCES app_user(id) ON DELETE CASCADE;
 
--- Adicione outros ALTER TABLE conforme necessário para demais FKs
+-- Outros ALTERs podem ser adicionados aqui
