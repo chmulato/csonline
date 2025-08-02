@@ -1,16 +1,74 @@
 # Migrações e Gerenciamento de Dados com Flyway
 
-Este documento unificado descreve como o sistema CSOnline utiliza o Flyway para gerenciar migrações de banco de dados, incluindo a estrutura do esquema e os dados iniciais.
+Este documento unificado descreve como o sistema CSOnline utiliza o Flyway para gerenciar migrações de banco de dados, incluindo a estrutura do esquema e os dados iniciais, executando sobre uma instância HSQLDB containerizada com Docker.
 
 ## Visão Geral
 
-A partir de agosto de 2025, o CSOnline adotou o Flyway como solução para gerenciamento de migrações de banco de dados. Esta abordagem substitui o uso do arquivo `import.sql` tradicional, oferecendo:
+A partir de agosto de 2025, o CSOnline adotou o Flyway como solução para gerenciamento de migrações de banco de dados, **executando sobre uma instância HSQLDB containerizada com Docker**. Esta abordagem substitui o uso do arquivo `import.sql` tradicional, oferecendo:
 
 1. **Controle de versão do esquema do banco de dados** - Similar ao controle de versão de código
 2. **Atualizações incrementais consistentes** - Sem necessidade de recriar todo o banco
 3. **Execução automática de migrações** - Durante a inicialização da aplicação
 4. **Histórico completo de alterações** - Rastreabilidade de todas as mudanças
 5. **Consistência entre ambientes** - Desenvolvimento, teste e produção seguem o mesmo processo
+6. **Banco de dados containerizado** - HSQLDB executando em container Docker para isolamento e facilidade de setup
+
+## Configuração do Banco de Dados com Docker
+
+### Arquivo docker-compose.yml
+
+O projeto utiliza Docker Compose para executar o banco de dados HSQLDB:
+
+```yaml
+version: '3.8'
+
+services:
+  hsqldb:
+    image: datagrip/hsqldb:latest
+    container_name: csonline-hsqldb
+    ports:
+      - "9001:9001"  # Porta padrão do HSQLDB
+    volumes:
+      - ./hsqldb-data:/data  # Persistência dos dados
+    restart: unless-stopped
+```
+
+### Configurações de Conexão
+
+As configurações de conexão estão definidas no arquivo `application.properties`:
+
+```properties
+# Configurações da conexão com o banco de dados
+db.url=jdbc:hsqldb:hsql://localhost:9001/test
+db.username=sa
+db.password=
+```
+
+### Como Iniciar o Banco de Dados
+
+1. **Iniciar o container HSQLDB:**
+   ```powershell
+   docker-compose up -d hsqldb
+   ```
+
+2. **Verificar se o container está rodando:**
+   ```powershell
+   docker ps
+   ```
+
+3. **Parar o container (quando necessário):**
+   ```powershell
+   docker-compose down
+   ```
+
+4. **Ver logs do container:**
+   ```powershell
+   docker logs csonline-hsqldb
+   ```
+
+### Persistência de Dados
+
+Os dados do banco são persistidos no diretório `hsqldb-data/` na raiz do projeto, garantindo que as informações não sejam perdidas quando o container for reiniciado.
 
 ## Estrutura das Migrações
 
@@ -109,6 +167,8 @@ Para facilitar estas operações, o projeto inclui um script PowerShell `flyway-
 
 ## Configuração
 
+### Configurações do Flyway
+
 As configurações do Flyway estão definidas no arquivo `application.properties`:
 
 ```properties
@@ -118,7 +178,30 @@ flyway.locations=classpath:db/migration
 flyway.baseline-on-migrate=true
 flyway.baseline-version=0
 flyway.validate-on-migrate=true
+
+# Configurações da conexão com o banco de dados Docker
+db.url=jdbc:hsqldb:hsql://localhost:9001/test
+db.username=sa
+db.password=
 ```
+
+### Pré-requisitos
+
+Antes de executar a aplicação, certifique-se de que:
+
+1. **Docker e Docker Compose estão instalados**
+2. **O container HSQLDB está rodando:**
+   ```powershell
+   docker-compose up -d hsqldb
+   ```
+3. **A porta 9001 está disponível** para conexão com o banco de dados
+
+### Fluxo de Inicialização
+
+1. Inicie o container HSQLDB com Docker Compose
+2. Execute a aplicação (WildFly ou testes)
+3. O Flyway conecta automaticamente ao banco containerizado
+4. As migrações são executadas na inicialização da aplicação
 
 ## Boas Práticas para Migrações
 
@@ -129,6 +212,53 @@ flyway.validate-on-migrate=true
 5. **Teste as migrações antes de implantá-las** - Use o comando `flyway:validate`
 
 ## Solução de Problemas
+
+### Problemas com Docker e Banco de Dados
+
+#### Container não inicia ou não conecta
+1. Verifique se o Docker está rodando:
+   ```powershell
+   docker version
+   ```
+
+2. Verifique se a porta 9001 está livre:
+   ```powershell
+   netstat -an | findstr 9001
+   ```
+
+3. Reinicie o container:
+   ```powershell
+   docker-compose down
+   docker-compose up -d hsqldb
+   ```
+
+4. Verifique os logs do container:
+   ```powershell
+   docker logs csonline-hsqldb
+   ```
+
+#### Limpar dados do banco (reset completo)
+```powershell
+# Parar o container
+docker-compose down
+
+# Remover dados persistidos
+Remove-Item -Recurse -Force hsqldb-data
+
+# Reiniciar o container
+docker-compose up -d hsqldb
+```
+
+#### Acessar o banco de dados diretamente
+```powershell
+# Conectar ao container
+docker exec -it csonline-hsqldb bash
+
+# Ou usar um cliente HSQLDB externo conectando em:
+# URL: jdbc:hsqldb:hsql://localhost:9001/test
+# User: sa
+# Password: (vazio)
+```
 
 ### Erro "Migration checksum mismatch"
 
@@ -141,9 +271,11 @@ Este erro ocorre quando um script de migração já aplicado foi modificado. Sol
 
 Verifique os logs da aplicação. Os erros mais comuns são:
 
-1. Sintaxe SQL inválida
-2. Dependências entre tabelas não respeitadas (chaves estrangeiras)
-3. Violações de restrições de unicidade
+1. **Container HSQLDB não está rodando** - Verifique com `docker ps`
+2. **Sintaxe SQL inválida**
+3. **Dependências entre tabelas não respeitadas** (chaves estrangeiras)
+4. **Violações de restrições de unicidade**
+5. **Problema de conectividade** - Verifique se a porta 9001 está acessível
 
 ## Exemplos de Cenários Simulados
 
@@ -184,6 +316,19 @@ Todos os dados simulados podem ser consultados e validados via endpoints REST do
 
 ## Dicas para Testes
 
+### Preparação do Ambiente
+1. **Sempre inicie o container Docker primeiro:**
+   ```powershell
+   docker-compose up -d hsqldb
+   ```
+
+2. **Verifique a conectividade antes de executar testes:**
+   ```powershell
+   # Use os scripts de teste automatizados
+   .\run-tests.ps1 -HealthCheck
+   ```
+
+### Estratégias de Teste
 - Utilize os dados das migrações do Flyway para validar regras de negócio, persistência e integração entre camadas.
 - Teste cenários de atualização, deleção e consulta por diferentes atributos e perfis de usuário.
 - Simule operações de rastreamento e autorização usando os vínculos entre entidades (courier, customer, delivery).
@@ -191,8 +336,55 @@ Todos os dados simulados podem ser consultados e validados via endpoints REST do
 - Expanda os scripts de migração conforme necessidade, adicionando novos scripts com versões superiores (V3, V4, etc.).
 - Os dados simulam o fluxo completo do sistema, incluindo autenticação, autorização, entrega, rastreamento e histórico de mensagens.
 
+### Reset do Ambiente de Teste
+```powershell
+# Script completo para reset do ambiente
+docker-compose down
+Remove-Item -Recurse -Force hsqldb-data -ErrorAction SilentlyContinue
+docker-compose up -d hsqldb
+
+# Aguardar o container inicializar (alguns segundos)
+Start-Sleep -Seconds 5
+
+# Executar testes para verificar se as migrações foram aplicadas
+.\run-tests.ps1 -HealthCheck
+```
+
 ## Evolução do Projeto
 
-A migração do método tradicional (`import.sql`) para o Flyway representa um avanço significativo na maturidade técnica do projeto CSOnline, oferecendo maior robustez, rastreabilidade e facilidade de manutenção.
+A evolução do CSOnline em termos de gerenciamento de dados passou por várias fases:
+
+1. **Fase Inicial**: Uso do arquivo `import.sql` tradicional
+2. **Migração para Flyway** (Agosto 2025): Implementação de migrações versionadas
+3. **Containerização com Docker** (Agosto 2025): HSQLDB executando em container Docker
+
+### Benefícios da Containerização
+
+A migração para Docker trouxe benefícios adicionais:
+
+- **Isolamento**: O banco de dados roda em ambiente isolado
+- **Portabilidade**: Funciona igual em qualquer máquina com Docker
+- **Facilidade de setup**: Um comando para ter o banco funcionando
+- **Consistência**: Mesma versão do HSQLDB em todos os ambientes
+- **Reset fácil**: Possibilidade de limpar dados facilmente
+- **Desenvolvimento multiplataforma**: Windows, Linux e macOS
+
+### Comandos Úteis para Desenvolvimento
+
+```powershell
+# Iniciar o ambiente completo
+docker-compose up -d
+
+# Ver status dos containers
+docker ps
+
+# Parar tudo
+docker-compose down
+
+# Reset completo (limpar dados)
+docker-compose down && Remove-Item -Recurse -Force hsqldb-data && docker-compose up -d
+```
+
+Esta evolução representa um avanço significativo na maturidade técnica do projeto CSOnline, oferecendo maior robustez, rastreabilidade, facilidade de manutenção e portabilidade através da containerização.
 
 Para mais detalhes sobre a migração do sistema antigo para o Flyway, consulte [MIGRACAO_IMPORT_SQL.md](MIGRACAO_IMPORT_SQL.md).
