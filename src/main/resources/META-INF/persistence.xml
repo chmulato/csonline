@@ -22,8 +22,14 @@
             <property name="eclipselink.ddl-generation.output-mode" value="database"/>
             <property name="eclipselink.target-database" value="org.eclipse.persistence.platform.database.HSQLPlatform"/>
             <!-- Configuração para executar script SQL inicial -->
-            <property name="jakarta.persistence.sql-load-script-source" value="import.sql"/>
+            <property name="jakarta.persistence.sql-load-script-source" value="sql-load.sql"/>
             <property name="eclipselink.deploy-on-startup" value="true"/>
+            <property name="eclipselink.logging.level.sql" value="FINE"/>
+            <property name="eclipselink.ddl-generation.output-mode" value="both"/>
+            <property name="eclipselink.create-ddl-jdbc-file-name" value="create.sql"/>
+            <property name="eclipselink.drop-ddl-jdbc-file-name" value="drop.sql"/>
+            <property name="eclipselink.application-location" value="./"/>
+            <property name="eclipselink.cache.shared.default" value="false"/>
         </properties>
     </persistence-unit>
 </persistence>
