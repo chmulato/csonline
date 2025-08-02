@@ -249,65 +249,139 @@ public class DataInitializer {
             String[] commands = sql.split(";\\s*[\r\n]+");
             logger.info("Executando " + commands.length + " comandos SQL do script " + scriptName);
             
+            // Primeiro, verificamos todas as queries para separar DDL, DML e outras operações
+            java.util.List<String> dmlCommands = new java.util.ArrayList<>();
+            java.util.List<String> ddlCommands = new java.util.ArrayList<>();
+            java.util.List<String> otherCommands = new java.util.ArrayList<>();
+            
             for (String command : commands) {
                 String trimmedCommand = command.trim();
                 if (!trimmedCommand.isEmpty() && !trimmedCommand.startsWith("--")) {
-                    commandCount++;
-                    
-                    // Log detalhado do comando (evitando comandos muito longos)
-                    String logCommand = trimmedCommand.length() > 100 ? 
-                        trimmedCommand.substring(0, 100) + "..." : 
-                        trimmedCommand;
-                    
-                    // Log mais detalhado para entender o que está sendo executado
-                    if (trimmedCommand.toUpperCase().startsWith("INSERT")) {
-                        try {
-                            int intoIndex = trimmedCommand.toUpperCase().indexOf("INTO");
-                            int bracketIndex = trimmedCommand.indexOf("(", intoIndex);
-                            if (intoIndex > 0 && bracketIndex > intoIndex) {
-                                String tableName = trimmedCommand.substring(intoIndex + 5, bracketIndex).trim();
-                                logger.info("Comando #" + commandCount + ": INSERT na tabela: " + tableName);
-                            } else {
-                                logger.info("Comando #" + commandCount + ": " + logCommand);
-                            }
-                        } catch (Exception e) {
-                            logger.info("Comando #" + commandCount + ": " + logCommand);
-                        }
+                    String upperCommand = trimmedCommand.toUpperCase();
+                    if (upperCommand.startsWith("INSERT") || upperCommand.startsWith("UPDATE") || upperCommand.startsWith("DELETE")) {
+                        dmlCommands.add(trimmedCommand);
+                    } else if (upperCommand.startsWith("CREATE") || upperCommand.startsWith("ALTER") || upperCommand.startsWith("DROP")) {
+                        ddlCommands.add(trimmedCommand);
                     } else {
-                        logger.info("Executando comando #" + commandCount + ": " + logCommand);
-                    }
-                    
-                    // Cada comando em sua própria transação para evitar rollback completo
-                    entityManager.getTransaction().begin();
-                    try {
-                        // Usar JPA nativo para executar o SQL diretamente através do EntityManager
-                        int affected = entityManager.createNativeQuery(trimmedCommand).executeUpdate();
-                        entityManager.getTransaction().commit();
-                        successCount++;
-                        logger.info("Comando #" + commandCount + " executado com sucesso. Linhas afetadas: " + affected);
-                    } catch (Exception e) {
-                        // Rollback apenas deste comando
-                        if (entityManager.getTransaction().isActive()) {
-                            entityManager.getTransaction().rollback();
-                        }
-                        errorCount++;
-                        logger.log(Level.SEVERE, "Erro ao executar comando #" + commandCount + " de " + scriptType + ": " + logCommand, e);
-                        // Detalhe completo da exceção para diagnóstico
-                        logger.log(Level.SEVERE, "Detalhes do erro: " + e.getMessage(), e);
-                        
-                        // Se for um erro de SQL, vamos tentar dar mais informações
-                        if (e.getMessage() != null && e.getMessage().contains("constraint")) {
-                            logger.severe("Possível violação de constraint. Verifique se as tabelas referenciadas já existem " +
-                                         "e se os dados respeitam as restrições de chave estrangeira.");
-                        }
+                        otherCommands.add(trimmedCommand);
                     }
                 }
             }
+            
+            // Executar DDL primeiro
+            logger.info("Executando " + ddlCommands.size() + " comandos DDL");
+            for (String command : ddlCommands) {
+                executeCommand(entityManager, command, ++commandCount, scriptType, true);
+                if (isSuccessful()) {
+                    successCount++;
+                } else {
+                    errorCount++;
+                }
+            }
+            
+            // Executar DML depois
+            logger.info("Executando " + dmlCommands.size() + " comandos DML");
+            for (String command : dmlCommands) {
+                executeCommand(entityManager, command, ++commandCount, scriptType, false);
+                if (isSuccessful()) {
+                    successCount++;
+                } else {
+                    errorCount++;
+                }
+            }
+            
+            // Executar outros comandos
+            logger.info("Executando " + otherCommands.size() + " outros comandos");
+            for (String command : otherCommands) {
+                executeCommand(entityManager, command, ++commandCount, scriptType, false);
+                if (isSuccessful()) {
+                    successCount++;
+                } else {
+                    errorCount++;
+                }
+            }
+            
             logger.info("Execução de comandos finalizada: " + successCount + " sucessos, " + 
                    errorCount + " erros de um total de " + commandCount + " comandos");
             
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Erro ao executar script de " + scriptType + ": ", e);
+        }
+    }
+    
+    // Flag para controlar sucesso da execução do comando
+    private boolean lastCommandSuccessful = false;
+    
+    private boolean isSuccessful() {
+        return lastCommandSuccessful;
+    }
+    
+    private void executeCommand(EntityManager entityManager, String command, int commandCount, String scriptType, boolean ignoreFail) {
+        lastCommandSuccessful = false;
+        String trimmedCommand = command.trim();
+        
+        // Log detalhado do comando (evitando comandos muito longos)
+        String logCommand = trimmedCommand.length() > 100 ? 
+            trimmedCommand.substring(0, 100) + "..." : 
+            trimmedCommand;
+        
+        // Log mais detalhado para entender o que está sendo executado
+        if (trimmedCommand.toUpperCase().startsWith("INSERT")) {
+            try {
+                int intoIndex = trimmedCommand.toUpperCase().indexOf("INTO");
+                int bracketIndex = trimmedCommand.indexOf("(", intoIndex);
+                if (intoIndex > 0 && bracketIndex > intoIndex) {
+                    String tableName = trimmedCommand.substring(intoIndex + 5, bracketIndex).trim();
+                    logger.info("Comando #" + commandCount + ": INSERT na tabela: " + tableName);
+                } else {
+                    logger.info("Comando #" + commandCount + ": " + logCommand);
+                }
+            } catch (Exception e) {
+                logger.info("Comando #" + commandCount + ": " + logCommand);
+            }
+        } else if (trimmedCommand.toUpperCase().startsWith("ALTER")) {
+            logger.info("Comando #" + commandCount + " (DDL): " + logCommand);
+        } else {
+            logger.info("Executando comando #" + commandCount + ": " + logCommand);
+        }
+        
+        // Cada comando em sua própria transação para evitar rollback completo
+        entityManager.getTransaction().begin();
+        try {
+            // Usar JPA nativo para executar o SQL diretamente através do EntityManager
+            int affected = entityManager.createNativeQuery(trimmedCommand).executeUpdate();
+            entityManager.flush(); // Garantir que todas as alterações sejam enviadas ao banco
+            entityManager.getTransaction().commit();
+            lastCommandSuccessful = true;
+            logger.info("Comando #" + commandCount + " executado com sucesso. Linhas afetadas: " + affected);
+            
+            // Limpar o contexto de persistência após cada execução bem-sucedida
+            entityManager.clear();
+        } catch (Exception e) {
+            // Rollback apenas deste comando
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+            
+            if (ignoreFail && (e.getMessage() != null && 
+                (e.getMessage().contains("object not found") || 
+                 e.getMessage().contains("não existe")))) {
+                logger.warning("Erro ignorado para comando DDL #" + commandCount + ": " + e.getMessage());
+                lastCommandSuccessful = true; // Consideramos como sucesso se for um erro esperado em DDL
+            } else {
+                logger.log(Level.SEVERE, "Erro ao executar comando #" + commandCount + " de " + scriptType + ": " + logCommand, e);
+                // Detalhe completo da exceção para diagnóstico
+                logger.log(Level.SEVERE, "Detalhes do erro: " + e.getMessage(), e);
+                
+                // Se for um erro de SQL, vamos tentar dar mais informações
+                if (e.getMessage() != null && e.getMessage().contains("constraint")) {
+                    logger.severe("Possível violação de constraint. Verifique se as tabelas referenciadas já existem " +
+                                "e se os dados respeitam as restrições de chave estrangeira.");
+                }
+            }
+            
+            // Limpar o contexto de persistência após erro para evitar problemas futuros
+            entityManager.clear();
         }
     }
 }
