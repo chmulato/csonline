@@ -15,6 +15,12 @@
         </Console>
     </Appenders>
     <Loggers>
+        <!-- Logger específico para o DataInitializer -->
+        <Logger name="com.caracore.cso.config.DataInitializer" level="debug" additivity="false">
+            <AppenderRef ref="FileLogger"/>
+            <AppenderRef ref="ConsoleLogger"/>
+        </Logger>
+        
         <!-- Logger exclusivo para classes de teste -->
         <Logger name="com.caracore.cso.service" level="debug" additivity="false">
             <AppenderRef ref="TestLogger"/>
