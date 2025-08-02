@@ -4,6 +4,7 @@ package com.caracore.cso.config;
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
 import org.glassfish.jersey.server.ResourceConfig;
 import jakarta.ws.rs.ApplicationPath;
+import jakarta.enterprise.inject.Vetoed;
 
 import com.caracore.cso.controller.TeamController;
 import com.caracore.cso.controller.CourierController;
@@ -12,6 +13,13 @@ import com.caracore.cso.controller.DeliveryController;
 import com.caracore.cso.controller.UserController;
 import com.caracore.cso.controller.SMSController;
 
+/**
+ * Configuração de recursos da API REST
+ * 
+ * @Vetoed é usado para indicar que esta classe não deve ser gerenciada pelo CDI (Contexts and Dependency Injection)
+ * Isso evita o erro: "Bean type class com.caracore.cso.config.OpenApiResourceConfig is not proxyable because it contains a final method"
+ */
+@Vetoed
 @ApplicationPath("/api")
 public class OpenApiResourceConfig extends ResourceConfig {
     public OpenApiResourceConfig() {
