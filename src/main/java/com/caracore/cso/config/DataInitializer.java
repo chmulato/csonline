@@ -15,6 +15,10 @@ import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+/**
+ * Inicializador de dados para o sistema.
+ * Executa o script import.sql para carregar dados iniciais quando o aplicativo inicia.
+ */
 @Singleton
 @Startup
 public class DataInitializer {
@@ -24,6 +28,10 @@ public class DataInitializer {
     @PersistenceContext(unitName = "csonlinePU")
     private EntityManager entityManager;
     
+    /**
+     * Método executado automaticamente após a injeção de dependências.
+     * Verifica se existem dados no sistema e, caso não existam, executa o script de importação.
+     */
     @PostConstruct
     public void init() {
         try {
@@ -44,6 +52,10 @@ public class DataInitializer {
         }
     }
     
+    /**
+     * Executa o script import.sql para carregar dados iniciais.
+     * Lê o arquivo do classpath e executa cada comando SQL separadamente.
+     */
     private void executeImportScript() {
         try {
             // Obtém a conexão JDBC diretamente do EntityManager
@@ -62,18 +74,18 @@ public class DataInitializer {
             }
             
             // Executa o script SQL
-            Statement statement = connection.createStatement();
-            for (String command : sql.split(";")) {
-                if (!command.trim().isEmpty()) {
-                    try {
-                        statement.execute(command);
-                    } catch (Exception e) {
-                        logger.log(Level.SEVERE, "Erro ao executar comando: " + command, e);
+            try (Statement statement = connection.createStatement()) {
+                for (String command : sql.split(";")) {
+                    if (!command.trim().isEmpty()) {
+                        try {
+                            statement.execute(command);
+                        } catch (Exception e) {
+                            logger.log(Level.SEVERE, "Erro ao executar comando: " + command, e);
+                        }
                     }
                 }
+                logger.info("Script SQL executado com sucesso!");
             }
-            statement.close();
-            logger.info("Script SQL executado com sucesso!");
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Erro ao executar script SQL: ", e);
         }
