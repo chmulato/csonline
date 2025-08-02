@@ -1,5 +1,6 @@
 package com.caracore.cso.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class User {
     private List<Customer> customers;
 
     @OneToMany(mappedBy = "business", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonManagedReference("user-couriers")
     private List<Courier> couriers;
 
     @OneToMany(mappedBy = "business", cascade = CascadeType.REMOVE, orphanRemoval = true)

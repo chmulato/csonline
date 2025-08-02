@@ -1,8 +1,11 @@
 package com.caracore.cso.config;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.Resource;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
+import jakarta.ejb.TransactionManagement;
+import jakarta.ejb.TransactionManagementType;
 import jakarta.inject.Inject;
 import javax.sql.DataSource;
 
@@ -16,11 +19,12 @@ import org.slf4j.LoggerFactory;
  */
 @Singleton
 @Startup
+@TransactionManagement(TransactionManagementType.BEAN)
 public class FlywayConfig {
 
     private static final Logger logger = LoggerFactory.getLogger(FlywayConfig.class);
     
-    @Inject
+    @Resource(lookup = "java:/HSQLDBDatasource")
     private DataSource dataSource;
     
     @Inject

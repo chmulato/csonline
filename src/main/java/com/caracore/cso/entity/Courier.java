@@ -1,5 +1,6 @@
 package com.caracore.cso.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,6 +12,7 @@ public class Courier {
     private Long id;
     @ManyToOne
     @JoinColumn(name = "idbusiness", referencedColumnName = "id")
+    @JsonBackReference("user-couriers")
     private User business;
 
     @ManyToOne
