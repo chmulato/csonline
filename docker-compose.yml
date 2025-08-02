@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  hsqldb:
+    image: datagrip/hsqldb:latest
+    container_name: csonline-hsqldb
+    ports:
+      - "9001:9001"  # Porta padrão do HSQLDB
+    volumes:
+      - ./hsqldb-data:/data  # Persistência dos dados
+    restart: unless-stopped

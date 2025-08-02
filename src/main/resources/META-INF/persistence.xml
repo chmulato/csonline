@@ -15,7 +15,7 @@
         <properties>
             <!-- Configurações de conexão com o banco de dados -->
             <property name="jakarta.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver"/>
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:hsqldb:mem:testdb"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:hsqldb:hsql://localhost:9001/test"/>
             <property name="jakarta.persistence.jdbc.user" value="sa"/>
             <property name="jakarta.persistence.jdbc.password" value=""/>
             
@@ -27,11 +27,12 @@
             <property name="eclipselink.logging.session" value="true"/>
             <property name="eclipselink.logging.thread" value="true"/>
             <property name="eclipselink.logging.exceptions" value="true"/>
-            <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
+            <!-- Desativando geração de DDL pelo EclipseLink, pois agora é gerenciado pelo Flyway -->
+            <property name="eclipselink.ddl-generation" value="none"/>
             <property name="eclipselink.ddl-generation.output-mode" value="database"/>
             <property name="eclipselink.target-database" value="org.eclipse.persistence.platform.database.HSQLPlatform"/>
             
-            <!-- O carregamento de dados será feito manualmente pelo DataInitializer -->
+            <!-- O carregamento de dados será feito pelo Flyway via scripts de migração -->
             <!-- <property name="jakarta.persistence.sql-load-script-source" value="import.sql"/> -->
         </properties>
     </persistence-unit>

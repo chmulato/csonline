@@ -222,13 +222,30 @@ No início de agosto, uma série de commits marcou a evolução da infraestrutur
 - **Os scripts SQL foram domados**, executados em ordem precisa e com tratamento de exceções
 - **A documentação floresceu**, explicando cada escolha arquitetural com clareza e propósito
 
-### **Capítulo V: A Visão de Futuro (Agosto/2025)**
+### **Capítulo V: Evolução do Gerenciamento de Dados (Agosto/2025)**
+
+O início de agosto trouxe uma nova revolução ao CSOnline: a implementação do **Flyway para gerenciamento de migrações de banco de dados**. Após semanas de aprimoramento do sistema de inicialização de dados, a equipe percebeu que era hora de adotar uma abordagem mais robusta e escalável.
+
+- **Primeira etapa:** Configuração do Flyway como dependência e estruturação dos diretórios de migração
+- **Segunda etapa:** Criação do script V1__Create_tables.sql para definição do esquema
+- **Terceira etapa:** Implementação do script V2__Insert_initial_data.sql para dados iniciais
+- **Quarta etapa:** Desenvolvimento da classe FlywayConfig para inicialização automática
+- **Quinta etapa:** Criação de ferramentas de suporte para gerenciamento de migrações
+
+Esta evolução trouxe **benefícios imediatos**:
+- **Controle de versão do banco de dados** com histórico de migrações
+- **Consistência entre ambientes** de desenvolvimento, teste e produção
+- **Atualizações incrementais** sem necessidade de recriar o banco
+- **Rastreabilidade de mudanças** no esquema e nos dados iniciais
+- **Melhor gerenciamento de erros** em operações de banco de dados
+
+### **Capítulo VI: A Visão de Futuro (Agosto/2025)**
 
 Hoje, o CSOnline é um **sistema completo de gestão de entregas** com:
 - **7 módulos funcionais** com CRUDs completos
 - **Interface moderna e responsiva** 
 - **Navegação SPA fluida**
-- **Inicialização de dados robusta**
+- **Migrações de banco de dados controladas pelo Flyway**
 - **Configuração flexível para múltiplos ambientes**
 - **Deploy automatizado**
 - **Documentação viva**
@@ -240,7 +257,7 @@ O CSOnline não é apenas um software; é uma narrativa viva de evolução técn
 
 ---
 
-_Histórico atualizado automaticamente com base no git log e marcos de desenvolvimento na cidade de Campo Largo, PR, sexta-feira, 02 de agosto de 2025. Última atualização: Otimizações de backend e configuração de persistência flexível para múltiplos ambientes._
+_Histórico atualizado automaticamente com base no git log e marcos de desenvolvimento na cidade de Campo Largo, PR, sexta-feira, 02 de agosto de 2025. Última atualização: Implementação do Flyway para migrações de banco de dados._
 
 ## Atualizações de Agosto 2025 - Otimizações no Backend e Configuração JPA
 
@@ -271,3 +288,29 @@ As otimizações implementadas trazem benefícios significativos:
 - **Integridade de dados**: Execução de scripts em ordem correta e com tratamento de transações
 
 Estas melhorias complementam o trabalho realizado no frontend, garantindo que toda a stack da aplicação esteja preparada para evolução contínua e deployment em diferentes ambientes.
+
+### **2 de Agosto de 2025: Implementação do Flyway para Migrações de Banco de Dados**
+
+Em um importante avanço na gestão do banco de dados, o CSOnline implementou o Flyway para controle de migrações:
+
+- **Migrações versionadas**: Implementação de scripts SQL versionados (V1, V2, etc.) para criação de esquema e inserção de dados iniciais, permitindo evolução controlada do banco de dados.
+
+- **Inicialização automática**: Desenvolvimento da classe `FlywayConfig` que executa as migrações automaticamente durante o startup da aplicação, garantindo consistência do banco de dados.
+
+- **Suporte para múltiplos ambientes**: Configuração flexível através do arquivo `application.properties`, permitindo habilitar/desabilitar migrações e definir comportamentos específicos.
+
+- **Ferramentas de gerenciamento**: Criação de script PowerShell `flyway-manage.ps1` para facilitar a execução manual de comandos do Flyway, como info, migrate, clean, validate e repair.
+
+- **Documentação detalhada**: Elaboração do documento `MIGRATIONS.md` com instruções completas sobre o uso do Flyway, e atualização do `IMPORT_SQL.md` para refletir a nova abordagem.
+
+### **Impacto e Benefícios das Migrações com Flyway**
+
+A implementação do Flyway trouxe benefícios adicionais ao projeto:
+
+- **Controle de versão do esquema**: Histórico completo de alterações no banco de dados
+- **Consistência entre ambientes**: Mesmo processo de migração em desenvolvimento, teste e produção
+- **Atualizações incrementais**: Possibilidade de evoluir o esquema sem recriar todo o banco
+- **Diagnóstico aprimorado**: Visualização clara do estado das migrações através do comando info
+- **Integração com CI/CD**: Facilidade para incluir migrações em pipelines de integração contínua
+
+Estas melhorias representam um avanço significativo na maturidade técnica do projeto, consolidando uma base sólida para evolução contínua e deployment em ambientes de produção.

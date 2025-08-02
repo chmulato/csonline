@@ -31,6 +31,7 @@ Sistema completo para gestão de entregas, entregadores, clientes, empresas, equ
 - Banco de dados HSQLDB (exclusivamente)
 - Logging customizado
 - Deploy automatizado no WildFly 31
+- Flyway para migrações de banco de dados
 
 ## Principais Tecnologias
 
@@ -46,6 +47,7 @@ Sistema completo para gestão de entregas, entregadores, clientes, empresas, equ
 - EclipseLink (JPA Provider)
 - Jersey (JAX-RS)
 - HSQLDB (HyperSQL Database) - única solução de banco de dados utilizada
+- Flyway (Migrações de banco de dados)
 - Log4j 2
 - Swagger/OpenAPI
 - JUnit 5, Mockito

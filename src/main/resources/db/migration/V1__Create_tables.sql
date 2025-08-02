@@ -1,0 +1,81 @@
+-- Criação das tabelas iniciais do sistema
+CREATE TABLE IF NOT EXISTS app_user (
+    id INT NOT NULL PRIMARY KEY,
+    role VARCHAR(50) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    login VARCHAR(50) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    email2 VARCHAR(255),
+    address VARCHAR(255),
+    mobile VARCHAR(20)
+);
+
+CREATE TABLE IF NOT EXISTS customer (
+    id INT NOT NULL PRIMARY KEY,
+    idbusiness INT NOT NULL,
+    iduser INT NOT NULL,
+    factorCustomer DECIMAL(10, 2),
+    priceTable VARCHAR(50),
+    FOREIGN KEY (iduser) REFERENCES app_user(id)
+);
+
+CREATE TABLE IF NOT EXISTS courier (
+    id INT NOT NULL PRIMARY KEY,
+    idbusiness INT NOT NULL,
+    idcourier INT NOT NULL,
+    factorCourier DECIMAL(10, 2),
+    FOREIGN KEY (idcourier) REFERENCES app_user(id)
+);
+
+CREATE TABLE IF NOT EXISTS team (
+    id INT NOT NULL PRIMARY KEY,
+    idbusiness INT NOT NULL,
+    idcourier INT NOT NULL,
+    factorCourier DECIMAL(10, 2),
+    FOREIGN KEY (idcourier) REFERENCES courier(id)
+);
+
+CREATE TABLE IF NOT EXISTS price (
+    id INT NOT NULL PRIMARY KEY,
+    idbusiness INT NOT NULL,
+    idcustomer INT NOT NULL,
+    tableName VARCHAR(50) NOT NULL,
+    vehicle VARCHAR(50) NOT NULL,
+    local VARCHAR(100) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (idcustomer) REFERENCES customer(id)
+);
+
+CREATE TABLE IF NOT EXISTS delivery (
+    id INT NOT NULL PRIMARY KEY,
+    idbusiness INT NOT NULL,
+    idcustomer INT NOT NULL,
+    idcourier INT NOT NULL,
+    start VARCHAR(255) NOT NULL,
+    destination VARCHAR(255) NOT NULL,
+    contact VARCHAR(255),
+    description VARCHAR(255),
+    volume VARCHAR(50),
+    weight VARCHAR(50),
+    km VARCHAR(10),
+    additionalCost DECIMAL(10, 2),
+    cost DECIMAL(10, 2) NOT NULL,
+    received BOOLEAN DEFAULT FALSE,
+    completed BOOLEAN DEFAULT FALSE,
+    datatime TIMESTAMP,
+    FOREIGN KEY (idcustomer) REFERENCES customer(id),
+    FOREIGN KEY (idcourier) REFERENCES courier(id)
+);
+
+CREATE TABLE IF NOT EXISTS sms (
+    id INT NOT NULL PRIMARY KEY,
+    iddelivery INT NOT NULL,
+    piece INT NOT NULL,
+    type VARCHAR(50) NOT NULL,
+    mobileTo VARCHAR(20) NOT NULL,
+    mobileFrom VARCHAR(20) NOT NULL,
+    message VARCHAR(255) NOT NULL,
+    datetime TIMESTAMP,
+    FOREIGN KEY (iddelivery) REFERENCES delivery(id)
+);
