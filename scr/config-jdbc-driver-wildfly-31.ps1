@@ -23,16 +23,29 @@ if ($?) {
     exit 1
 }
 
-# 2. Comando CLI para criar o driver JDBC e datasource
-Write-Host "[PASSO 2] Gerando script CLI para criar driver JDBC e datasource..."
+# 2. Primeiro deploy do driver JAR, depois configuração do datasource
+Write-Host "[PASSO 2] Fazendo deploy do driver JDBC..."
+$deployCommand = @"
+deploy $driverJar --force
+"@
+
+$deployScript = "$env:TEMP\wildfly-deploy-driver.cli"
+$deployCommand | Set-Content -Path $deployScript -Encoding UTF8
+
+Write-Host "[PASSO 2.1] Executando deploy do driver JDBC..."
+$deployOutput = & $cli --connect --file=$deployScript 2>&1
+Write-Host "[DEBUG] Saída do deploy:" -ForegroundColor Yellow
+$deployOutput | ForEach-Object { Write-Host $_ }
+
+# 3. Comando CLI para criar o datasource
+Write-Host "[PASSO 3] Gerando script CLI para criar datasource..."
 $commands = @"
-/subsystem=datasources/jdbc-driver=hsqldb:add(driver-name=hsqldb,driver-module-name=deployment.hsqldb-2.7.2.jar,driver-class-name=org.hsqldb.jdbc.JDBCDriver)
-/subsystem=datasources/data-source=HSQLDBDatasource:add(jndi-name=java:/HSQLDBDatasource,driver-name=hsqldb,connection-url=jdbc:hsqldb:hsql://localhost:9001/csonline,user-name=sa,password=password)
+/subsystem=datasources/data-source=HSQLDBDatasource:add(jndi-name=java:/HSQLDBDatasource,driver-name=hsqldb-2.7.2.jar,connection-url=jdbc:hsqldb:hsql://localhost:9001/csonline,user-name=sa,password=password)
 /subsystem=datasources/data-source=HSQLDBDatasource:enable()
 "@
 
-# 3. Executa o CLI
-Write-Host "[PASSO 3] Gerando script CLI temporário em: $env:TEMP\wildfly-jdbc-driver.cli"
+# 4. Executa o CLI para datasource
+Write-Host "[PASSO 4] Gerando script CLI temporário em: $env:TEMP\wildfly-jdbc-driver.cli"
 $cliScript = "$env:TEMP\wildfly-jdbc-driver.cli"
 if ($?) {
     Write-Host "[OK] Script CLI gerado com sucesso."
@@ -44,7 +57,7 @@ $commands | Set-Content -Path $cliScript -Encoding UTF8
 Write-Host "[DEBUG] Conteúdo do script CLI gerado:"
 Get-Content $cliScript | ForEach-Object { Write-Host $_ }
 
-Write-Host "[PASSO 4] Executando o jboss-cli para configurar o WildFly..."
+Write-Host "[PASSO 5] Executando o jboss-cli para configurar o datasource..."
 $cliOutput = & $cli --connect --file=$cliScript 2>&1
 Write-Host "[DEBUG] Saída do jboss-cli:" -ForegroundColor Yellow
 $cliOutput | ForEach-Object { Write-Host $_ }
