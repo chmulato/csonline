@@ -17,7 +17,7 @@ import jakarta.persistence.PersistenceContext;
 
 /**
  * Inicializador de dados para o sistema.
- * Executa o script import.sql para carregar dados iniciais quando o aplicativo inicia.
+ * Executa scripts SQL para configurar o banco de dados quando o aplicativo inicia.
  */
 @Singleton
 @Startup
@@ -30,7 +30,7 @@ public class DataInitializer {
     
     /**
      * Método executado automaticamente após a injeção de dependências.
-     * Verifica se existem dados no sistema e, caso não existam, executa o script de importação.
+     * Verifica se existem dados no sistema e, caso não existam, executa os scripts de inicialização.
      */
     @PostConstruct
     public void init() {
@@ -41,11 +41,17 @@ public class DataInitializer {
             Long count = (Long) entityManager.createQuery("SELECT COUNT(u) FROM com.caracore.cso.entity.User u").getSingleResult();
             
             if (count == 0) {
-                logger.info("Nenhum usuário encontrado. Carregando dados iniciais...");
+                logger.info("Nenhum usuário encontrado. Configurando banco de dados...");
+                
+                // Executa o script de importação de dados
                 executeImportScript();
                 logger.info("Dados iniciais carregados com sucesso!");
+                
+                // Executa o script de pós-esquema para ajustar constraints
+                executeSchemaPostScript();
+                logger.info("Ajustes de esquema aplicados com sucesso!");
             } else {
-                logger.info("Dados já existem. Pulando carga inicial.");
+                logger.info("Dados já existem. Pulando inicialização.");
             }
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Erro ao inicializar dados: ", e);
@@ -57,14 +63,31 @@ public class DataInitializer {
      * Lê o arquivo do classpath e executa cada comando SQL separadamente.
      */
     private void executeImportScript() {
+        executeScriptFromClasspath("import.sql", "importação de dados");
+    }
+    
+    /**
+     * Executa o script schema-post.sql para ajustar o esquema do banco de dados.
+     * Lê o arquivo do classpath e executa cada comando SQL separadamente.
+     */
+    private void executeSchemaPostScript() {
+        executeScriptFromClasspath("schema-post.sql", "ajuste de esquema");
+    }
+    
+    /**
+     * Método utilitário para executar scripts SQL do classpath.
+     * @param scriptName Nome do arquivo de script no classpath
+     * @param scriptType Descrição do tipo de script (para mensagens de log)
+     */
+    private void executeScriptFromClasspath(String scriptName, String scriptType) {
         try {
             // Obtém a conexão JDBC diretamente do EntityManager
             Connection connection = entityManager.unwrap(Connection.class);
             
             // Lê o script SQL do classpath
-            InputStream is = getClass().getClassLoader().getResourceAsStream("import.sql");
+            InputStream is = getClass().getClassLoader().getResourceAsStream(scriptName);
             if (is == null) {
-                logger.severe("Arquivo import.sql não encontrado!");
+                logger.severe("Arquivo " + scriptName + " não encontrado!");
                 return;
             }
             
@@ -80,14 +103,14 @@ public class DataInitializer {
                         try {
                             statement.execute(command);
                         } catch (Exception e) {
-                            logger.log(Level.SEVERE, "Erro ao executar comando: " + command, e);
+                            logger.log(Level.SEVERE, "Erro ao executar comando de " + scriptType + ": " + command, e);
                         }
                     }
                 }
-                logger.info("Script SQL executado com sucesso!");
+                logger.info("Script de " + scriptType + " executado com sucesso!");
             }
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Erro ao executar script SQL: ", e);
+            logger.log(Level.SEVERE, "Erro ao executar script de " + scriptType + ": ", e);
         }
     }
 }
