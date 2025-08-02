@@ -23,13 +23,12 @@ if ($?) {
     exit 1
 }
 
-# 2. Comando CLI para criar o driver JDBC
-Write-Host "[PASSO 2] Gerando script CLI para criar driver JDBC..."
+# 2. Comando CLI para criar o driver JDBC e datasource
+Write-Host "[PASSO 2] Gerando script CLI para criar driver JDBC e datasource..."
 $commands = @"
-"@
-deploy $driverJar
-/subsystem=datasources/jdbc-driver=hsqldb:add(driver-name=hsqldb,driver-module-name=deployment.hsqldb-2.7.2.jar,driver-class-name=org.hsqldb.jdbcDriver)
-"@
+/subsystem=datasources/jdbc-driver=hsqldb:add(driver-name=hsqldb,driver-module-name=deployment.hsqldb-2.7.2.jar,driver-class-name=org.hsqldb.jdbc.JDBCDriver)
+/subsystem=datasources/data-source=HSQLDBDatasource:add(jndi-name=java:/HSQLDBDatasource,driver-name=hsqldb,connection-url=jdbc:hsqldb:hsql://localhost:9001/csonline,user-name=sa,password=password)
+/subsystem=datasources/data-source=HSQLDBDatasource:enable()
 "@
 
 # 3. Executa o CLI
