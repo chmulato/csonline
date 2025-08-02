@@ -6,7 +6,8 @@
 Write-Host "[INFO] Iniciando build do projeto..."
 
 # Caminhos relativos à raiz do projeto
-$root = Split-Path -Parent $MyInvocation.MyCommand.Definition
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
+$root = Split-Path -Parent $scriptDir  # Vai para a raiz do projeto (um nível acima de scr)
 $mvn = "mvn"
 $wildflyDeploy = Join-Path $root "server/wildfly-31.0.1.Final/standalone/deployments"
 $warFile = Join-Path $root "target/csonline.war"
