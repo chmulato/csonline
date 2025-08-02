@@ -56,8 +56,10 @@ public class DataInitializer {
                 return;
             }
             
-            String sql = new BufferedReader(new InputStreamReader(is))
-                    .lines().collect(Collectors.joining("\n"));
+            String sql;
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
+                sql = reader.lines().collect(Collectors.joining("\n"));
+            }
             
             // Executa o script SQL
             Statement statement = connection.createStatement();
@@ -76,5 +78,4 @@ public class DataInitializer {
             logger.log(Level.SEVERE, "Erro ao executar script SQL: ", e);
         }
     }
-}
 }
