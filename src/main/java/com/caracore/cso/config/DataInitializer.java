@@ -3,8 +3,7 @@ package com.caracore.cso.config;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.sql.Connection;
-import java.sql.Statement;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -152,6 +151,28 @@ public class DataInitializer {
         try {
             logger.info("===== RESUMO DE DADOS EXISTENTES =====");
             
+            // Lista todas as tabelas
+            logger.info("Tabelas disponíveis no banco de dados:");
+            try {
+                // Consulta específica para HSQLDB para listar tabelas
+                @SuppressWarnings("unchecked")
+                List<String> tableNames = entityManager.createNativeQuery(
+                        "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='PUBLIC'")
+                    .getResultList();
+                
+                for (String tableName : tableNames) {
+                    logger.info("- Tabela: " + tableName);
+                    
+                    // Obter contagem de registros para cada tabela
+                    Long count = (Long) entityManager.createNativeQuery(
+                            "SELECT COUNT(*) FROM " + tableName)
+                        .getSingleResult();
+                    logger.info("  Registros: " + count);
+                }
+            } catch (Exception e) {
+                logger.log(Level.SEVERE, "Erro ao listar tabelas: ", e);
+            }
+            
             // Consulta e loga a quantidade de registros em cada tabela principal
             Long userCount = (Long) entityManager.createQuery("SELECT COUNT(u) FROM com.caracore.cso.entity.User u").getSingleResult();
             logger.info("Usuários existentes: " + userCount);
@@ -182,10 +203,6 @@ public class DataInitializer {
         try {
             logger.info("Iniciando execução do script " + scriptName + " para " + scriptType);
             
-            // Obtém a conexão JDBC diretamente do EntityManager
-            Connection connection = entityManager.unwrap(Connection.class);
-            logger.info("Conexão JDBC obtida com sucesso");
-            
             // Lê o script SQL do classpath
             InputStream is = getClass().getClassLoader().getResourceAsStream(scriptName);
             if (is == null) {
@@ -209,31 +226,30 @@ public class DataInitializer {
             int successCount = 0;
             int errorCount = 0;
             
-            try (Statement statement = connection.createStatement()) {
-                String[] commands = sql.split(";");
-                logger.info("Executando " + commands.length + " comandos SQL do script " + scriptName);
-                
-                for (String command : commands) {
-                    if (!command.trim().isEmpty()) {
-                        commandCount++;
-                        String trimmedCommand = command.trim();
-                        String logCommand = trimmedCommand.length() > 100 ? 
-                            trimmedCommand.substring(0, 100) + "..." : 
-                            trimmedCommand;
-                        
-                        try {
-                            logger.info("Executando comando #" + commandCount + ": " + logCommand);
-                            statement.execute(trimmedCommand);
-                            successCount++;
-                        } catch (Exception e) {
-                            errorCount++;
-                            logger.log(Level.SEVERE, "Erro ao executar comando #" + commandCount + " de " + scriptType + ": " + logCommand, e);
-                        }
+            String[] commands = sql.split(";");
+            logger.info("Executando " + commands.length + " comandos SQL do script " + scriptName);
+            
+            for (String command : commands) {
+                if (!command.trim().isEmpty()) {
+                    commandCount++;
+                    String trimmedCommand = command.trim();
+                    String logCommand = trimmedCommand.length() > 100 ? 
+                        trimmedCommand.substring(0, 100) + "..." : 
+                        trimmedCommand;
+                    
+                    try {
+                        logger.info("Executando comando #" + commandCount + ": " + logCommand);
+                        // Usar JPA nativo para executar o SQL diretamente através do EntityManager
+                        entityManager.createNativeQuery(trimmedCommand).executeUpdate();
+                        successCount++;
+                    } catch (Exception e) {
+                        errorCount++;
+                        logger.log(Level.SEVERE, "Erro ao executar comando #" + commandCount + " de " + scriptType + ": " + logCommand, e);
                     }
                 }
-                logger.info("Execução de comandos finalizada: " + successCount + " sucessos, " + 
-                           errorCount + " erros de um total de " + commandCount + " comandos");
             }
+            logger.info("Execução de comandos finalizada: " + successCount + " sucessos, " + 
+                   errorCount + " erros de um total de " + commandCount + " comandos");
             
             // Commit da transação
             entityManager.getTransaction().commit();
