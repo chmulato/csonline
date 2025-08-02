@@ -91,11 +91,6 @@ public class DataInitializer {
                 Long newCount = (Long) entityManager.createQuery("SELECT COUNT(u) FROM com.caracore.cso.entity.User u").getSingleResult();
                 logger.info("Contagem de usuários após import.sql: " + newCount);
                 
-                // Executa o script de pós-esquema para ajustar constraints
-                logger.info("Iniciando execução do script schema-post.sql...");
-                executeSchemaPostScript(entityManager);
-                logger.info("Ajustes de esquema aplicados com sucesso!");
-                
                 // Verifica e registra os dados carregados
                 verifyLoadedData(entityManager);
             } else {
@@ -116,15 +111,6 @@ public class DataInitializer {
                 emf.close();
             }
         }
-    }
-    
-    /**
-     * Executa o script de ajuste de esquema (schema-post.sql).
-     * 
-     * @param entityManager EntityManager para executar os comandos
-     */
-    private void executeSchemaPostScript(EntityManager entityManager) {
-        executeScriptFromClasspath(entityManager, "schema-post.sql", "ajuste de esquema");
     }
     
     /**
