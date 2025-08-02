@@ -1,5 +1,13 @@
--- Limpa usuários para evitar duplicidade
+-- Limpa dados em ordem correta para evitar constraint violations
+DELETE FROM sms;
+DELETE FROM delivery;
+DELETE FROM price;
+DELETE FROM courier;
+DELETE FROM team;
+DELETE FROM customer;
 DELETE FROM app_user;
+
+-- Usuários
 INSERT INTO app_user (id, role, name, login, password, email, email2, address, mobile)
 VALUES (1, 'ADMIN', 'Administrador', 'admin', 'admin123', 'admin@cso.com', NULL, 'Rua Central, 100', '11999999999');
 INSERT INTO app_user (id, role, name, login, password, email, email2, address, mobile)
@@ -21,7 +29,13 @@ INSERT INTO customer (id, idbusiness, idcustomer, factorCustomer, priceTable)
 VALUES (2, 2, 6, 1.2, 'TabelaB');
 
 
--- Equipes
+-- Equipes/Couriers (tabela courier)
+INSERT INTO courier (id, idbusiness, idcourier, factorCourier)
+VALUES (1, 2, 3, 1.2);
+INSERT INTO courier (id, idbusiness, idcourier, factorCourier)
+VALUES (2, 2, 5, 1.3);
+
+-- Equipes (tabela team)
 INSERT INTO team (id, idbusiness, idcourier, factorCourier)
 VALUES (1, 2, 3, 1.2);
 INSERT INTO team (id, idbusiness, idcourier, factorCourier)
