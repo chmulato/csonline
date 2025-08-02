@@ -99,46 +99,45 @@ public class DataInitializer {
                 // Verifica e registra os dados carregados
                 verifyLoadedData(entityManager);
             } else {
-                logger.info("Dados já existem. Pulando inicialização.");
-                // Exibe um resumo dos dados existentes
+                logger.info("Dados já existem no banco. Pulando inicialização...");
                 summarizeExistingData(entityManager);
             }
+            
+            logger.info("========== FINALIZADO PROCESSAMENTO DE DADOS ==========");
+            
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Erro ao inicializar dados: ", e);
+            logger.log(Level.SEVERE, "Erro durante inicialização de dados: ", e);
         } finally {
-            // Fecha os recursos
+            // Fecha recursos
             if (entityManager != null && entityManager.isOpen()) {
                 entityManager.close();
             }
             if (emf != null && emf.isOpen()) {
                 emf.close();
             }
-            logger.info("========== FINALIZADO PROCESSAMENTO DE DADOS ==========");
         }
     }
     
     /**
-     * Executa o script import.sql para carregar dados iniciais.
-     * Lê o arquivo do classpath e executa cada comando SQL separadamente.
+     * Executa o script de ajuste de esquema (schema-post.sql).
      * 
-     * @param entityManager EntityManager para executar os comandos SQL
-     */
-    private void executeImportScript(EntityManager entityManager) {
-        executeScriptFromClasspath(entityManager, "import.sql", "importação de dados");
-    }
-    
-    /**
-     * Executa o script schema-post.sql para ajustar o esquema do banco de dados.
-     * Lê o arquivo do classpath e executa cada comando SQL separadamente.
-     * 
-     * @param entityManager EntityManager para executar os comandos SQL
+     * @param entityManager EntityManager para executar os comandos
      */
     private void executeSchemaPostScript(EntityManager entityManager) {
         executeScriptFromClasspath(entityManager, "schema-post.sql", "ajuste de esquema");
     }
     
     /**
-     * Verifica e registra os dados que foram carregados no banco.
+     * Executa o script de importação de dados (import.sql).
+     * 
+     * @param entityManager EntityManager para executar os comandos
+     */
+    private void executeImportScript(EntityManager entityManager) {
+        executeScriptFromClasspath(entityManager, "import.sql", "importação de dados");
+    }
+    
+    /**
+     * Verifica e registra informações sobre os dados carregados.
      * 
      * @param entityManager EntityManager para consultar os dados
      */
@@ -146,7 +145,6 @@ public class DataInitializer {
         try {
             logger.info("===== VERIFICAÇÃO DE DADOS CARREGADOS =====");
             
-            // Consulta e loga a quantidade de registros em cada tabela principal
             Long userCount = (Long) entityManager.createQuery("SELECT COUNT(u) FROM com.caracore.cso.entity.User u").getSingleResult();
             logger.info("Usuários carregados: " + userCount);
             
@@ -199,28 +197,16 @@ public class DataInitializer {
                     Long count = (Long) entityManager.createNativeQuery(
                             "SELECT COUNT(*) FROM " + tableName)
                         .getSingleResult();
+                    
                     logger.info("  Registros: " + count);
                 }
             } catch (Exception e) {
-                logger.log(Level.SEVERE, "Erro ao listar tabelas: ", e);
+                logger.log(Level.WARNING, "Erro ao listar tabelas: " + e.getMessage());
             }
             
-            // Consulta e loga a quantidade de registros em cada tabela principal
-            Long userCount = (Long) entityManager.createQuery("SELECT COUNT(u) FROM com.caracore.cso.entity.User u").getSingleResult();
-            logger.info("Usuários existentes: " + userCount);
-            
-            Long courierCount = (Long) entityManager.createQuery("SELECT COUNT(c) FROM com.caracore.cso.entity.Courier c").getSingleResult();
-            logger.info("Entregadores existentes: " + courierCount);
-            
-            Long customerCount = (Long) entityManager.createQuery("SELECT COUNT(c) FROM com.caracore.cso.entity.Customer c").getSingleResult();
-            logger.info("Clientes existentes: " + customerCount);
-            
-            Long deliveryCount = (Long) entityManager.createQuery("SELECT COUNT(d) FROM com.caracore.cso.entity.Delivery d").getSingleResult();
-            logger.info("Entregas existentes: " + deliveryCount);
-            
-            logger.info("===== FIM DO RESUMO DE DADOS =====");
+            logger.info("===== FIM DO RESUMO =====");
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Erro ao resumir dados existentes: ", e);
+            logger.log(Level.WARNING, "Erro ao resumir dados existentes: " + e.getMessage());
         }
     }
     
@@ -253,10 +239,6 @@ public class DataInitializer {
                 logger.info("Prévia do conteúdo: " + preview);
             }
             
-            // Iniciamos uma transação, pois estamos usando RESOURCE_LOCAL
-            entityManager.getTransaction().begin();
-            logger.info("Transação iniciada para executar o script " + scriptName);
-            
             // Executa o script SQL
             int commandCount = 0;
             int successCount = 0;
@@ -269,7 +251,7 @@ public class DataInitializer {
             
             for (String command : commands) {
                 String trimmedCommand = command.trim();
-                if (!trimmedCommand.isEmpty()) {
+                if (!trimmedCommand.isEmpty() && !trimmedCommand.startsWith("--")) {
                     commandCount++;
                     
                     // Log detalhado do comando (evitando comandos muito longos)
@@ -295,12 +277,19 @@ public class DataInitializer {
                         logger.info("Executando comando #" + commandCount + ": " + logCommand);
                     }
                     
+                    // Cada comando em sua própria transação para evitar rollback completo
+                    entityManager.getTransaction().begin();
                     try {
                         // Usar JPA nativo para executar o SQL diretamente através do EntityManager
                         int affected = entityManager.createNativeQuery(trimmedCommand).executeUpdate();
+                        entityManager.getTransaction().commit();
                         successCount++;
                         logger.info("Comando #" + commandCount + " executado com sucesso. Linhas afetadas: " + affected);
                     } catch (Exception e) {
+                        // Rollback apenas deste comando
+                        if (entityManager.getTransaction().isActive()) {
+                            entityManager.getTransaction().rollback();
+                        }
                         errorCount++;
                         logger.log(Level.SEVERE, "Erro ao executar comando #" + commandCount + " de " + scriptType + ": " + logCommand, e);
                         // Detalhe completo da exceção para diagnóstico
@@ -317,16 +306,7 @@ public class DataInitializer {
             logger.info("Execução de comandos finalizada: " + successCount + " sucessos, " + 
                    errorCount + " erros de um total de " + commandCount + " comandos");
             
-            // Commit da transação
-            entityManager.getTransaction().commit();
-            logger.info("Transação commitada com sucesso para o script " + scriptName);
-            
         } catch (Exception e) {
-            // Rollback em caso de erro
-            if (entityManager.getTransaction().isActive()) {
-                entityManager.getTransaction().rollback();
-                logger.info("Transação revertida devido a erro");
-            }
             logger.log(Level.SEVERE, "Erro ao executar script de " + scriptType + ": ", e);
         }
     }
