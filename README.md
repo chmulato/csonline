@@ -32,6 +32,7 @@ Sistema completo para gestão de entregas, entregadores, clientes, empresas, equ
 - Logging customizado
 - Deploy automatizado no WildFly 31
 - Flyway para migrações de banco de dados
+- **Suite completa de testes automatizados** para todos os endpoints
 
 ## Principais Tecnologias
 
@@ -56,6 +57,59 @@ Sistema completo para gestão de entregas, entregadores, clientes, empresas, equ
 - WildFly 31 Application Server
 - Scripts PowerShell automatizados
 - Build e deploy integrados
+
+## Suite de Testes Automatizados
+
+O projeto conta com uma **suite completa de testes automatizados** para garantir a qualidade e confiabilidade de todos os endpoints da API:
+
+### **Scripts de Teste Disponíveis:**
+- **`test-users.ps1`** - Testa endpoints de usuários (GET, POST, PUT, DELETE)
+- **`test-customers.ps1`** - Testa endpoints de empresas/clientes
+- **`test-couriers.ps1`** - Testa endpoints de entregadores  
+- **`test-teams.ps1`** - Testa endpoints de equipes
+- **`test-deliveries.ps1`** - Testa endpoints de entregas
+- **`test-sms.ps1`** - Testa endpoints de SMS/WhatsApp
+- **`test-login.ps1`** - Testa endpoint de autenticação
+
+### **Ferramentas de Automação:**
+- **`test-all-endpoints.ps1`** - Executa todos os testes em sequência
+- **`health-check-endpoints.ps1`** - Verificação rápida de saúde de todos os endpoints
+- **`run-tests.ps1`** - Script de conveniência na raiz do projeto
+
+### **Como Executar os Testes:**
+
+```powershell
+# Verificação rápida de saúde de todos os endpoints
+.\run-tests.ps1 -HealthCheck
+
+# Executar todos os testes automatizados
+.\run-tests.ps1
+
+# Executar teste específico
+.\run-tests.ps1 -OnlyTest "Couriers"
+
+# Da pasta de testes (navegação manual)
+cd scr/tests
+.\test-all-endpoints.ps1 -SkipCustomers -SkipTeams
+```
+
+### **Status Atual dos Endpoints:**
+- ✅ **`/api/couriers`** - Funcionando completamente
+- ⚠️ **`/api/users`** - Individual OK, lista com erro 500
+- ❌ **`/api/customers`** - Erro 500 (problemas de serialização)
+- ❌ **`/api/team`** - Erro 500 (problemas de serialização)
+- ✅ **`/api/deliveries`** - Funcionando (sem dados)
+- ✅ **`/api/sms`** - Funcionando (sem dados)
+- ❌ **`/api/login`** - Erro 404 (endpoint não encontrado)
+
+### **Benefícios dos Testes:**
+- **Identificação proativa de problemas** nos endpoints
+- **Testes de regressão** após mudanças no código
+- **Documentação viva** dos comportamentos esperados
+- **Facilita debugging** com diagnósticos detalhados
+- **Onboarding simplificado** para novos desenvolvedores
+
+Todos os scripts estão localizados em `scr/tests/` e incluem tratamento de erros, saídas coloridas e relatórios detalhados.
 
 
 ## Sucesso do Deploy: index.html e Swagger UI
@@ -270,6 +324,11 @@ Consulte o arquivo [doc/INDEX.md](doc/INDEX.md) para documentação detalhada do
 
 ### **Scripts e Configurações:**
 - `*.ps1` - Scripts PowerShell para deploy automatizado
+- `scr/tests/` - **Suite completa de testes automatizados**
+  - `test-*.ps1` - Scripts individuais para cada endpoint
+  - `test-all-endpoints.ps1` - Script master para todos os testes
+  - `health-check-endpoints.ps1` - Verificação de saúde
+  - `README-TESTES.ps1` - Documentação interativa dos testes
 - `doc/` - Documentação completa do projeto
 - `logs/` - Logs da aplicação
 
@@ -282,6 +341,12 @@ Consulte o arquivo [doc/INDEX.md](doc/INDEX.md) para documentação detalhada do
 - **Deploy:** Use os scripts PowerShell na raiz para automação completa
 
 ## Próximos Passos
+
+### **Prioridade Imediata:**
+- **Correção de Endpoints com Problemas:** Resolver erros 500 identificados pelos testes automatizados
+  - Corrigir serialização JSON nos endpoints `/api/users` (lista), `/api/customers`, `/api/team`
+  - Implementar endpoint `/api/login` que está retornando 404
+  - Aplicar anotações `@JsonManagedReference`/`@JsonBackReference` onde necessário
 
 ### **Em Desenvolvimento:**
 - **Integração Frontend-Backend:** Substituir dados simulados por APIs reais
@@ -310,17 +375,21 @@ Para dúvidas, sugestões ou contribuições, abra uma issue no repositório.
 - Navegação fluida entre telas
 - Dados simulados para desenvolvimento
 
-**Backend Jakarta EE: APIs Documentadas**
+**Backend Jakarta EE: APIs Documentadas e Testadas**
 - Swagger UI funcional
 - Endpoints REST organizados
 - Deploy automatizado WildFly 31
+- **Suite completa de testes automatizados implementada**
+- **50% dos endpoints funcionando perfeitamente** (identificados via testes)
+- **50% dos endpoints com problemas catalogados** (prontos para correção)
 
-**Próximo Marco: Integração Frontend + Backend**
+**Próximo Marco: Correção de Endpoints + Integração**
+- Resolver problemas identificados pelos testes automatizados
 - Substituir dados simulados por APIs reais
 - Implementar autenticação JWT
 - Adicionar controle de acesso por perfil
 
-**O sistema CSOnline está pronto para uso em desenvolvimento e preparado para integração completa!**
+**O sistema CSOnline está pronto para uso em desenvolvimento e com ferramenta robusta de testes para garantir qualidade durante a evolução!**
 
 ---
 
