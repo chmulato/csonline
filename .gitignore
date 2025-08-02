@@ -31,6 +31,7 @@ Thumbs.db
 # Others
 *.swp
 *.swo
+*.docx
 
 # Environment
 .env
