@@ -4,17 +4,21 @@ Esta pasta contém scripts PowerShell para testar todos os endpoints da API CSOn
 
 ## Scripts Disponíveis
 
-| Script | Descrição | Status |
-|--------|-----------|--------|
-| `test-couriers.ps1` | Testa endpoints de Couriers (/api/couriers) | Funcionando |
-| `test-users.ps1` | Testa endpoints de Users (/api/users) | Parcial |
-| `test-customers.ps1` | Testa endpoints de Customers (/api/customers) | Erro 500 |
-| `test-teams.ps1` | Testa endpoints de Teams (/api/team) | Erro 500 |
-| `test-deliveries.ps1` | Testa endpoints de Deliveries (/api/deliveries) | Funcionando |
-| `test-sms.ps1` | Testa endpoints de SMS (/api/sms) | Funcionando |
-| `test-login.ps1` | Testa endpoint de Login (/api/login) | Erro 404 |
-| `test-all-endpoints.ps1` | Script master que executa todos os testes | Funcionando |
-| `health-check-endpoints.ps1` | Verificação rápida de saúde dos endpoints | Funcionando |
+```bash
+|------------------------------|-------------------------------------------------|-------------|
+| Script                       | Descrição                                       | Status      |
+|------------------------------|-------------------------------------------------|-------------|
+| `test-couriers.ps1`          | Testa endpoints de Couriers (/api/couriers)     | Funcionando |
+| `test-users.ps1`             | Testa endpoints de Users (/api/users)           | Parcial     |
+| `test-customers.ps1`         | Testa endpoints de Customers (/api/customers)   | Erro 500    |
+| `test-teams.ps1`             | Testa endpoints de Teams (/api/team)            | Erro 500    |
+| `test-deliveries.ps1`        | Testa endpoints de Deliveries (/api/deliveries) | Funcionando |
+| `test-sms.ps1`               | Testa endpoints de SMS (/api/sms)               | Funcionando |
+| `test-login.ps1`             | Testa endpoint de Login (/api/login)            | Erro 404    |
+| `test-all-endpoints.ps1`     | Script master que executa todos os testes       | Funcionando |
+| `health-check-endpoints.ps1` | Verificação rápida de saúde dos endpoints       | Funcionando |
+|------------------------------|-------------------------------------------------|-------------|
+```
 
 ## Como Usar
 
