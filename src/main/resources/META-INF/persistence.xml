@@ -31,8 +31,8 @@
             <property name="eclipselink.ddl-generation.output-mode" value="database"/>
             <property name="eclipselink.target-database" value="org.eclipse.persistence.platform.database.HSQLPlatform"/>
             
-            <!-- Carga de dados inicial -->
-            <property name="jakarta.persistence.sql-load-script-source" value="import.sql"/>
+            <!-- O carregamento de dados será feito manualmente pelo DataInitializer -->
+            <!-- <property name="jakarta.persistence.sql-load-script-source" value="import.sql"/> -->
         </properties>
     </persistence-unit>
 </persistence>

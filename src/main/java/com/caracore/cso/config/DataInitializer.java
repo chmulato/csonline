@@ -46,6 +46,23 @@ public class DataInitializer {
             entityManager = emf.createEntityManager();
             logger.info("EntityManager criado com sucesso");
             
+            // Verifica se já existem dados - primeiro verifica as tabelas
+            logger.info("Verificando estrutura do banco de dados...");
+            try {
+                // Lista tabelas existentes para diagnóstico
+                @SuppressWarnings("unchecked")
+                List<String> tableNames = entityManager.createNativeQuery(
+                        "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='PUBLIC'")
+                    .getResultList();
+                
+                logger.info("Tabelas encontradas no banco: " + tableNames.size());
+                for (String tableName : tableNames) {
+                    logger.info("- Tabela: " + tableName);
+                }
+            } catch (Exception e) {
+                logger.log(Level.WARNING, "Não foi possível listar tabelas: " + e.getMessage());
+            }
+            
             // Verifica se já existem dados
             logger.info("Verificando se existem usuários no banco de dados...");
             Long count = (Long) entityManager.createQuery("SELECT COUNT(u) FROM com.caracore.cso.entity.User u").getSingleResult();
@@ -54,8 +71,19 @@ public class DataInitializer {
             if (count == 0) {
                 logger.info("Nenhum usuário encontrado. Configurando banco de dados...");
                 
+                // Verifica se o JPA já tentou carregar o import.sql automaticamente
+                logger.info("Verificando se o JPA já tentou carregar o import.sql automaticamente...");
+                // Vamos forçar uma busca direta para verificar
+                try {
+                    @SuppressWarnings("unchecked")
+                    List<String> tableContents = entityManager.createNativeQuery("SELECT * FROM app_user").getResultList();
+                    logger.info("Dados encontrados na tabela APP_USER via query nativa: " + tableContents.size());
+                } catch (Exception e) {
+                    logger.log(Level.WARNING, "Erro ao consultar APP_USER diretamente: " + e.getMessage());
+                }
+                
                 // Executa o script de importação de dados
-                logger.info("Iniciando execução do script import.sql...");
+                logger.info("Iniciando execução manual do script import.sql...");
                 executeImportScript(entityManager);
                 logger.info("Script import.sql executado! Verificando se dados foram carregados...");
                 
@@ -219,6 +247,10 @@ public class DataInitializer {
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
                 sql = reader.lines().collect(Collectors.joining("\n"));
                 logger.info("Conteúdo do arquivo " + scriptName + " lido com sucesso. Tamanho: " + sql.length() + " caracteres");
+                
+                // Para debug, vamos mostrar os primeiros 500 caracteres do arquivo
+                String preview = sql.length() > 500 ? sql.substring(0, 500) + "..." : sql;
+                logger.info("Prévia do conteúdo: " + preview);
             }
             
             // Iniciamos uma transação, pois estamos usando RESOURCE_LOCAL
@@ -230,13 +262,15 @@ public class DataInitializer {
             int successCount = 0;
             int errorCount = 0;
             
-            String[] commands = sql.split(";");
+            // Melhorado o separador para lidar melhor com delimitadores SQL
+            // Isto irá melhorar a identificação correta dos comandos SQL
+            String[] commands = sql.split(";\\s*[\r\n]+");
             logger.info("Executando " + commands.length + " comandos SQL do script " + scriptName);
             
             for (String command : commands) {
-                if (!command.trim().isEmpty()) {
+                String trimmedCommand = command.trim();
+                if (!trimmedCommand.isEmpty()) {
                     commandCount++;
-                    String trimmedCommand = command.trim();
                     
                     // Log detalhado do comando (evitando comandos muito longos)
                     String logCommand = trimmedCommand.length() > 100 ? 
@@ -245,9 +279,18 @@ public class DataInitializer {
                     
                     // Log mais detalhado para entender o que está sendo executado
                     if (trimmedCommand.toUpperCase().startsWith("INSERT")) {
-                        logger.info("Comando #" + commandCount + ": INSERT na tabela: " + 
-                            trimmedCommand.substring(trimmedCommand.indexOf("INTO") + 5, 
-                            trimmedCommand.indexOf("(")).trim());
+                        try {
+                            int intoIndex = trimmedCommand.toUpperCase().indexOf("INTO");
+                            int bracketIndex = trimmedCommand.indexOf("(", intoIndex);
+                            if (intoIndex > 0 && bracketIndex > intoIndex) {
+                                String tableName = trimmedCommand.substring(intoIndex + 5, bracketIndex).trim();
+                                logger.info("Comando #" + commandCount + ": INSERT na tabela: " + tableName);
+                            } else {
+                                logger.info("Comando #" + commandCount + ": " + logCommand);
+                            }
+                        } catch (Exception e) {
+                            logger.info("Comando #" + commandCount + ": " + logCommand);
+                        }
                     } else {
                         logger.info("Executando comando #" + commandCount + ": " + logCommand);
                     }
@@ -260,6 +303,14 @@ public class DataInitializer {
                     } catch (Exception e) {
                         errorCount++;
                         logger.log(Level.SEVERE, "Erro ao executar comando #" + commandCount + " de " + scriptType + ": " + logCommand, e);
+                        // Detalhe completo da exceção para diagnóstico
+                        logger.log(Level.SEVERE, "Detalhes do erro: " + e.getMessage(), e);
+                        
+                        // Se for um erro de SQL, vamos tentar dar mais informações
+                        if (e.getMessage() != null && e.getMessage().contains("constraint")) {
+                            logger.severe("Possível violação de constraint. Verifique se as tabelas referenciadas já existem " +
+                                         "e se os dados respeitam as restrições de chave estrangeira.");
+                        }
                     }
                 }
             }
