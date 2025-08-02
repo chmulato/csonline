@@ -57,7 +57,11 @@ public class DataInitializer {
                 // Executa o script de importação de dados
                 logger.info("Iniciando execução do script import.sql...");
                 executeImportScript(entityManager);
-                logger.info("Dados iniciais carregados com sucesso!");
+                logger.info("Script import.sql executado! Verificando se dados foram carregados...");
+                
+                // Verifica novamente a contagem
+                Long newCount = (Long) entityManager.createQuery("SELECT COUNT(u) FROM com.caracore.cso.entity.User u").getSingleResult();
+                logger.info("Contagem de usuários após import.sql: " + newCount);
                 
                 // Executa o script de pós-esquema para ajustar constraints
                 logger.info("Iniciando execução do script schema-post.sql...");
@@ -233,15 +237,26 @@ public class DataInitializer {
                 if (!command.trim().isEmpty()) {
                     commandCount++;
                     String trimmedCommand = command.trim();
+                    
+                    // Log detalhado do comando (evitando comandos muito longos)
                     String logCommand = trimmedCommand.length() > 100 ? 
                         trimmedCommand.substring(0, 100) + "..." : 
                         trimmedCommand;
                     
-                    try {
+                    // Log mais detalhado para entender o que está sendo executado
+                    if (trimmedCommand.toUpperCase().startsWith("INSERT")) {
+                        logger.info("Comando #" + commandCount + ": INSERT na tabela: " + 
+                            trimmedCommand.substring(trimmedCommand.indexOf("INTO") + 5, 
+                            trimmedCommand.indexOf("(")).trim());
+                    } else {
                         logger.info("Executando comando #" + commandCount + ": " + logCommand);
+                    }
+                    
+                    try {
                         // Usar JPA nativo para executar o SQL diretamente através do EntityManager
-                        entityManager.createNativeQuery(trimmedCommand).executeUpdate();
+                        int affected = entityManager.createNativeQuery(trimmedCommand).executeUpdate();
                         successCount++;
+                        logger.info("Comando #" + commandCount + " executado com sucesso. Linhas afetadas: " + affected);
                     } catch (Exception e) {
                         errorCount++;
                         logger.log(Level.SEVERE, "Erro ao executar comando #" + commandCount + " de " + scriptType + ": " + logCommand, e);

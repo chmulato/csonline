@@ -10,4 +10,4 @@ ALTER TABLE courier DROP CONSTRAINT FK_courier_idbusiness;
 ALTER TABLE courier ADD CONSTRAINT FK_courier_idbusiness
     FOREIGN KEY (idbusiness) REFERENCES app_user(id) ON DELETE CASCADE;
 
--- Outros ALTERs podem ser adicionados aqui
+-- Fim dos ajustes de schema
