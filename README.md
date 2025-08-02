@@ -28,7 +28,7 @@ Sistema completo para gestão de entregas, entregadores, clientes, empresas, equ
 ### **Backend Jakarta EE 10:**
 - APIs REST completamente documentadas
 - Swagger UI integrado para testes
-- Banco de dados HSQLDB
+- Banco de dados HSQLDB (exclusivamente)
 - Logging customizado
 - Deploy automatizado no WildFly 31
 
@@ -45,7 +45,7 @@ Sistema completo para gestão de entregas, entregadores, clientes, empresas, equ
 - JPA (Jakarta Persistence API)
 - EclipseLink (JPA Provider)
 - Jersey (JAX-RS)
-- HSQLDB (HyperSQL Database)
+- HSQLDB (HyperSQL Database) - única solução de banco de dados utilizada
 - Log4j 2
 - Swagger/OpenAPI
 - JUnit 5, Mockito
@@ -274,8 +274,8 @@ Consulte o arquivo [doc/INDEX.md](doc/INDEX.md) para documentação detalhada do
 ## Configuração
 
 
-- **Backend:** Edite `src/main/resources/log4j2.xml` para ajustar logs e `src/main/resources/persistence.xml` para configurar JPA/EclipseLink
-- **Banco de dados:** HSQLDB em memória por padrão (configurável em `persistence.xml` e `application.properties`)
+- **Backend:** Edite `src/main/resources/log4j2.xml` para ajustar logs e `src/main/resources/META-INF/persistence.xml` para configurar JPA/EclipseLink
+- **Banco de dados:** HSQLDB em memória por padrão (configurável em `persistence.xml` e `application.properties`), sendo este o único banco de dados suportado pela aplicação
 - **Frontend:** Customize os componentes Vue em `frontend/src/components/`
 - **Deploy:** Use os scripts PowerShell na raiz para automação completa
 

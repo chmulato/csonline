@@ -52,22 +52,27 @@ _Linha do tempo, marcos e aprendizados do desenvolvimento do sistema._
 
 ### **Marco Histórico - Sistema Completo (Agosto/2025)**
 
-O projeto CSOnline atingiu um marco histórico em agosto de 2025 com a conclusão completa do sistema frontend Vue 3 SPA. Todos os 7 módulos principais estão implementados e funcionais:
+O projeto CSOnline atingiu um marco histórico em agosto de 2025 com a conclusão completa do sistema frontend Vue 3 SPA e importantes otimizações no backend. Todos os 7 módulos principais estão implementados e funcionais:
 
 - ✅ **100% dos CRUDs implementados** - Usuários, Entregadores, Empresas, Entregas, Equipes, SMS/WhatsApp, Preços
 - ✅ **Interface moderna e responsiva** - Design system consistente, dashboards interativos, filtros avançados
 - ✅ **Navegação SPA completa** - Login/logout, menu lateral, transições suaves, estado reativo
 - ✅ **Dados simulados realistas** - Preparação para integração com APIs backend
 - ✅ **Deploy automatizado** - Scripts PowerShell, build Vite, integração WildFly 31
+- ✅ **Inicialização de dados otimizada** - Sistema programático com tratamento de erros e logging detalhado
+- ✅ **Configuração de persistência flexível** - Suporte a JTA (produção) e RESOURCE_LOCAL (desenvolvimento)
+- ✅ **Documentação abrangente** - Guias atualizados para configuração, desenvolvimento e deploy
 
 ### **Impacto e Evolução**
 
-O projeto evoluiu de uma API backend simples para um **sistema completo de gestão de entregas** com frontend moderno. A arquitetura atual permite:
+O projeto evoluiu de uma API backend simples para um **sistema completo de gestão de entregas** com frontend moderno e backend robusto. A arquitetura atual permite:
 
 - **Desenvolvimento ágil** com hot-reload e debugging facilitado
 - **Escalabilidade** através de componentes modulares e reutilizáveis  
 - **Manutenibilidade** com código limpo, documentação viva e padrões consistentes
 - **Integração futura** preparada para autenticação JWT e APIs reais
+- **Flexibilidade de ambiente** com suporte a diferentes modos de transação
+- **Robustez** com tratamento adequado de erros e fechamento de recursos
 
 ### **Próxima Fase - Integração Total**
 
@@ -76,6 +81,8 @@ O sistema está **pronto para a integração backend-frontend**, marcando o iní
 - Implementação de autenticação JWT
 - Controle de acesso por perfil de usuário
 - Deploy em produção com HTTPS e SSL
+- Monitoramento e logging centralizado
+- Testes de carga e otimização de performance
 
 ## Novos Marcos (Julho/2025 a Agosto/2025)
 
@@ -142,6 +149,16 @@ O projeto está estável, com deploy automatizado, documentação viva e APIs RE
 - **Sistema de Modais Inteligentes:** Desenvolvimento de sistema dual de modais (CRUD e visualização) com validação em tempo real, feedback visual e navegação intuitiva.
 - **Responsividade Total:** Adaptação da interface para desktop, tablet e mobile com breakpoints personalizados, menu colapsável e otimização de performance.
 
+### **Desafios de Persistência e Inicialização (Agosto/2025)**
+
+**Configuração Flexível de Persistência e Carregamento de Dados**
+
+- **Configuração JPA/JTA vs. RESOURCE_LOCAL:** Resolução de incompatibilidades entre modos de transação, adaptando o código para suportar tanto desenvolvimento quanto produção.
+- **Inicialização Programática de Dados:** Substituição do carregamento automático de SQL por uma abordagem programática mais robusta, com melhor tratamento de erros e logging.
+- **Gerenciamento de Recursos:** Implementação de práticas para fechamento adequado de recursos, tratamento de exceções e operações transacionais.
+- **Compatibilidade com Jakarta EE:** Atualização de importações e anotações para usar Jakarta EE em vez de Java EE, assegurando compatibilidade com WildFly 31.
+- **Configuração CDI:** Resolução de problemas de injeção de dependências com a implementação correta de beans.xml e configuração de escaneamento.
+
 ### **Integração e DevOps**
 
 **Automação e Deploy Contínuo**
@@ -165,8 +182,9 @@ O projeto está estável, com deploy automatizado, documentação viva e APIs RE
 - **Documentação Viva:** Manutenção de documentação técnica atualizada cobrindo frontend e backend, facilitando onboarding e evolução contínua.
 - **Código Limpo:** Implementação de padrões de desenvolvimento, nomenclatura consistente, comentários explicativos e estrutura modular.
 - **Dados Realistas:** Criação de dados simulados realistas para desenvolvimento, incluindo relacionamentos complexos e cenários de uso real.
+- **Configuração Multi-Ambiente:** Documentação clara sobre como configurar o sistema para diferentes ambientes, com explicações sobre as diferenças e recomendações.
 
-Cada obstáculo trouxe aprendizados valiosos e fortaleceu a arquitetura do projeto. O resultado é um **sistema completo, resiliente e moderno**, pronto para integração com APIs backend e evolução contínua. A **implementação completa do frontend Vue 3 SPA** representa a superação de desafios técnicos complexos e a consolidação de uma base sólida para o futuro.
+Cada obstáculo trouxe aprendizados valiosos e fortaleceu a arquitetura do projeto. O resultado é um **sistema completo, resiliente e moderno**, pronto para integração com APIs backend e evolução contínua. A **implementação completa do frontend Vue 3 SPA** e as **otimizações de persistência e inicialização** representam a superação de desafios técnicos complexos e a consolidação de uma base sólida para o futuro.
 
 ---
 
@@ -193,18 +211,63 @@ Então chegou o momento da grande transformação: a implementação do frontend
 - **Terceira semana:** Adição de módulos avançados (Entregas, Equipes, SMS/WhatsApp)
 - **Quarta semana:** Finalização com gestão de preços e polimento da interface
 
-### **Capítulo IV: A Maturidade Alcançada (Agosto/2025)**
+### **Capítulo IV: A Maturidade Alcançada (Início de Agosto/2025)**
+
+Com o frontend em pleno funcionamento, a equipe voltou o olhar para otimizações no backend. O desafio agora era diferente: garantir que os alicerces do sistema fossem tão robustos quanto sua fachada. 
+
+No início de agosto, uma série de commits marcou a evolução da infraestrutura de dados:
+
+- **Um novo inicializador** nasceu para garantir a carga controlada dos dados iniciais
+- **As transações ganharam flexibilidade**, adaptando-se tanto ao ambiente de desenvolvimento quanto ao de produção
+- **Os scripts SQL foram domados**, executados em ordem precisa e com tratamento de exceções
+- **A documentação floresceu**, explicando cada escolha arquitetural com clareza e propósito
+
+### **Capítulo V: A Visão de Futuro (Agosto/2025)**
 
 Hoje, o CSOnline é um **sistema completo de gestão de entregas** com:
 - **7 módulos funcionais** com CRUDs completos
 - **Interface moderna e responsiva** 
 - **Navegação SPA fluida**
+- **Inicialização de dados robusta**
+- **Configuração flexível para múltiplos ambientes**
 - **Deploy automatizado**
 - **Documentação viva**
 - **Arquitetura escalável**
 
 O projeto segue pronto para a próxima fase: **integração total frontend-backend**, autenticação JWT e deploy em produção. Uma história de superação escrita commit a commit, onde cada desafio fortaleceu a base para o futuro.
 
+O CSOnline não é apenas um software; é uma narrativa viva de evolução técnica, onde cada linha de código conta uma história de problemas enfrentados e soluções elegantes encontradas. E como toda boa história, esta ainda tem muitos capítulos a serem escritos.
+
 ---
 
-_Histórico atualizado automaticamente com base no git log e marcos de desenvolvimento na cidade de Campo Largo, PR, sexta-feira, 01 de agosto de 2025. Última atualização: Frontend Vue 3 SPA 100% completo com 7 módulos implementados._
+_Histórico atualizado automaticamente com base no git log e marcos de desenvolvimento na cidade de Campo Largo, PR, sexta-feira, 02 de agosto de 2025. Última atualização: Otimizações de backend e configuração de persistência flexível para múltiplos ambientes._
+
+## Atualizações de Agosto 2025 - Otimizações no Backend e Configuração JPA
+
+### **2 de Agosto de 2025: Evolução do Sistema de Inicialização de Dados**
+
+O projeto CSOnline alcançou um novo marco técnico com a implementação de melhorias significativas no sistema de inicialização de dados e configuração de persistência:
+
+- **Nova abordagem para inicialização de dados**: Criação do componente `DataInitializer` que permite carregar dados iniciais de forma programática e controlada, com melhor tratamento de erros e logging detalhado.
+
+- **Múltiplos modos de transação**: Implementação de suporte tanto para transações gerenciadas pelo container (JTA) quanto para transações locais (RESOURCE_LOCAL), proporcionando flexibilidade entre ambientes de desenvolvimento e produção.
+
+- **Execução de scripts SQL controlada**: Aprimoramento do mecanismo de carregamento de scripts SQL com tratamento de recursos adequado, separação entre scripts de dados e scripts de ajuste de esquema.
+
+- **Documentação abrangente**: Atualização do guia de configuração do WildFly para incluir explicações detalhadas sobre as diferenças entre modos de transação e como configurar cada ambiente.
+
+- **Melhoria no gerenciamento de entidades**: Implementação de práticas recomendadas para gerenciamento de ciclo de vida de EntityManager, incluindo tratamento adequado de transações e fechamento de recursos.
+
+Estas melhorias tornam o sistema mais robusto, flexível e preparado para ambientes de produção, mantendo a simplicidade necessária para ambientes de desenvolvimento. A documentação atualizada facilita a configuração do ambiente e o entendimento das decisões arquiteturais.
+
+### **Impacto e Benefícios**
+
+As otimizações implementadas trazem benefícios significativos:
+
+- **Maior confiabilidade**: Melhor tratamento de erros durante a inicialização do banco de dados
+- **Flexibilidade de ambiente**: Suporte a diferentes modos de transação para diferentes cenários
+- **Melhoria no desenvolvimento**: Documentação clara sobre como configurar o ambiente
+- **Melhor diagnóstico**: Logging detalhado de operações de banco de dados
+- **Integridade de dados**: Execução de scripts em ordem correta e com tratamento de transações
+
+Estas melhorias complementam o trabalho realizado no frontend, garantindo que toda a stack da aplicação esteja preparada para evolução contínua e deployment em diferentes ambientes.

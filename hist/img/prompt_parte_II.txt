@@ -1,0 +1,9 @@
+Crie uma imagem no formato 1920x1080 para LinkedIn, destacando a evolução do projeto CSOnline com foco no backend Jakarta EE e o novo frontend em Vue.js. A imagem deve transmitir modernidade e inovação tecnológica, com elementos visuais que representem a integração entre frontend e backend. Inclua referências visuais ao Vue.js 3, Jakarta EE 10, WildFly 31, e HSQLDB.
+
+Adicione o texto:
+
+"CSOnline Evolui: Backend Jakarta EE + Frontend Vue.js
+Arquitetura moderna, deploy automatizado e APIs REST prontas para integração
+Participe da fase de integração frontend-backend!"
+
+Utilize uma paleta de cores que combine os tons do Vue.js (verde/azul) com os do Jakarta EE (azul/laranja), mantendo um aspecto profissional e atrativo. Inclua elementos sutis que representem a separação clara entre frontend e backend, mas que também mostrem a comunicação entre eles através de APIs REST. O visual deve ser sofisticado e atraente para desenvolvedores fullstack.
