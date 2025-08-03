@@ -50,13 +50,13 @@ VALUES ((SELECT id FROM app_user WHERE login = 'empresa'), (SELECT id FROM app_u
 
 -- 4. Equipes (team)
 INSERT INTO team (id, idbusiness, idcourier, factorCourier)
-VALUES (1, 2, 1, 1.2);
+VALUES (1, (SELECT id FROM app_user WHERE login = 'empresa'), (SELECT id FROM app_user WHERE login = 'joao'), 1.2);
 
 INSERT INTO team (id, idbusiness, idcourier, factorCourier)
-VALUES (2, 2, 2, 1.3);
+VALUES (2, (SELECT id FROM app_user WHERE login = 'empresa'), (SELECT id FROM app_user WHERE login = 'pedro'), 1.3);
 
 INSERT INTO team (id, idbusiness, idcourier, factorCourier)
-VALUES (3, 7, (SELECT id FROM app_user WHERE login = 'lucas'), 1.4);
+VALUES (3, (SELECT id FROM app_user WHERE login = 'empresay'), (SELECT id FROM app_user WHERE login = 'lucas'), 1.4);
 
 -- 4. Times (team) - aguardando implementação completa
 
