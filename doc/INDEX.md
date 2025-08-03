@@ -43,8 +43,8 @@ O banco de dados HSQLDB agora executa em container Docker:
 
 ### Status Atual dos Endpoints
 Através dos testes automatizados, foi identificado:
-- ✅ **50% dos endpoints funcionando** perfeitamente
-- ❌ **50% dos endpoints com problemas** catalogados e prontos para correção
+- **50% dos endpoints funcionando** perfeitamente
+- **50% dos endpoints com problemas** catalogados e prontos para correção
 - **Diagnóstico detalhado** disponível via scripts de verificação de saúde
 
  > **Observação:** Os documentos IMPORT_SQL.md e MIGRATIONS.md foram fundidos no novo arquivo [MIGRACAO_BANCO_DADOS.md](MIGRACAO_BANCO_DADOS.md) para fornecer uma documentação mais completa e unificada sobre o gerenciamento de banco de dados com Flyway e Docker. O documento [MIGRACAO_IMPORT_SQL.md](MIGRACAO_IMPORT_SQL.md) permanece ativo como referência histórica e técnica sobre o processo de migração.
