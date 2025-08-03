@@ -22,7 +22,9 @@
 ## Documentação Técnica Especializada
 
 10. [MIGRACAO_IMPORT_SQL.md](MIGRACAO_IMPORT_SQL.md) — Processo de migração do import.sql para o Flyway.
-11. [INDEX.md](INDEX.md) — Este índice de documentos.
+11. [TESTES_ENDPOINTS.md](TESTES_ENDPOINTS.md) — **Relatório detalhado dos testes de endpoints, status atual e correções implementadas**.
+12. [MODELO_DE_DADOS.md](MODELO_DE_DADOS.md) — **Diagrama e documentação detalhada das entidades, relacionamentos e boas práticas**.
+13. [INDEX.md](INDEX.md) — Este índice de documentos.
 
 ## Novidades e Funcionalidades Recentes
 
@@ -41,11 +43,14 @@ O banco de dados HSQLDB agora executa em container Docker:
 - **Configuração simplificada:** Um comando para ter o banco funcionando
 - **Documentação atualizada:** [MIGRACAO_BANCO_DADOS.md](MIGRACAO_BANCO_DADOS.md) inclui instruções Docker
 
-### Status Atual dos Endpoints
-Através dos testes automatizados, foi identificado:
-- **50% dos endpoints funcionando** perfeitamente
-- **50% dos endpoints com problemas** catalogados e prontos para correção
-- **Diagnóstico detalhado** disponível via scripts de verificação de saúde
+### Status Atual dos Endpoints (Agosto 2025)
+Através dos testes automatizados e diagnóstico detalhado, foi identificado:
+- **80% dos endpoints funcionando** perfeitamente (8/10 endpoints)
+- **20% dos endpoints com problemas** catalogados e em correção
+- **Deliveries endpoint recuperado** com implementação de DTO
+- **Problemas de serialização resolvidos** com anotações Jackson
+- **Deploy 100% funcional** no WildFly 31.0.1.Final
+- **Documentação completa** disponível em [TESTES_ENDPOINTS.md](TESTES_ENDPOINTS.md)
 
  > **Observação:** Os documentos IMPORT_SQL.md e MIGRATIONS.md foram fundidos no novo arquivo [MIGRACAO_BANCO_DADOS.md](MIGRACAO_BANCO_DADOS.md) para fornecer uma documentação mais completa e unificada sobre o gerenciamento de banco de dados com Flyway e Docker. O documento [MIGRACAO_IMPORT_SQL.md](MIGRACAO_IMPORT_SQL.md) permanece ativo como referência histórica e técnica sobre o processo de migração.
 
