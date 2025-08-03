@@ -1,6 +1,6 @@
 # CSOnline - Sistema de Gestão de Entregas
 
-Sistema completo para gestão de entregas, entregadores, clientes, empresas, equipes, preços e comunicação via SMS/WhatsApp. Desenvolvido com Jakarta EE 10 no backend e Vue 3 + Vite no frontend.
+Sistema completo para gestão de entregas, entregadores, empresas (business/centros de distribuição), equipes, preços e comunicação via SMS/WhatsApp. Desenvolvido com Jakarta EE 10 no backend e Vue 3 + Vite no frontend.
 
 ## Funcionalidades Implementadas
 
@@ -9,11 +9,11 @@ Sistema completo para gestão de entregas, entregadores, clientes, empresas, equ
 **Frontend Vue 3 SPA - 100% Funcional:**
 - **Gestão de Usuários** - CRUD completo para administradores do sistema
 - **Gestão de Entregadores** - Cadastro e controle de couriers com comissões
-- **Gestão de Empresas** - Centros de distribuição (Customers) com endereços
+- **Gestão de Empresas (Business)** - Centros de distribuição (business) com endereços
 - **Gestão de Entregas** - Sistema completo com status, filtros e rastreamento
 - **Gestão de Equipes** - Vinculação de entregadores aos centros de distribuição
 - **Gestão de SMS/WhatsApp** - Sistema de mensagens com templates para entregas
-- **Gestão de Preços** - Tabelas de preços por empresa, veículo e localização
+- **Gestão de Preços** - Tabelas de preços por empresa (business), veículo e localização
 - **Sistema de Login/Logout** - Autenticação com navegação completa
 
 ### **Recursos Técnicos:**
@@ -64,7 +64,7 @@ O projeto conta com uma **suite completa de testes automatizados** para garantir
 
 ### **Scripts de Teste Disponíveis:**
 - **`test-users.ps1`** - Testa endpoints de usuários (GET, POST, PUT, DELETE)
-- **`test-customers.ps1`** - Testa endpoints de empresas/clientes
+- **`test-customers.ps1`** - Testa endpoints de empresas (business)
 - **`test-couriers.ps1`** - Testa endpoints de entregadores  
 - **`test-teams.ps1`** - Testa endpoints de equipes
 - **`test-deliveries.ps1`** - Testa endpoints de entregas
@@ -242,7 +242,7 @@ sequenceDiagram
 - **Dashboard Principal** → Menu de navegação
 - **Usuários** → Gestão de administradores
 - **Entregadores** → Cadastro de couriers
-- **Empresas** → Centros de distribuição
+- **Empresas** → Centros de distribuição (business)
 - **Entregas** → Controle de entregas
 - **Equipes** → Times de entregadores
 - **SMS/WhatsApp** → Mensagens para entregas
@@ -279,7 +279,7 @@ Acesse a interface Swagger UI em:
 
 Os endpoints REST estão disponíveis em:  
 - `/api/users` - Gestão de usuários
-- `/api/customers` - Gestão de empresas/centros de distribuição
+- `/api/customers` - Gestão de empresas/centros de distribuição (business)
 - `/api/couriers` - Gestão de entregadores
 - `/api/deliveries` - Gestão de entregas
 - `/api/teams` - Gestão de equipes

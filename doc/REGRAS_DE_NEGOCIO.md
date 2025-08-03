@@ -1,5 +1,3 @@
-
-
 # Regras de Negócio - CSOnline
 
 ## Visão Geral
@@ -85,11 +83,11 @@ Todos os endpoints REST são documentados automaticamente via OpenAPI/Swagger, p
 - Isolamento total de dados de entregas de terceiros
 - Validação rigorosa de propriedade antes de qualquer operação
 
-## Gestão de Clientes (CustomerService)
+## Gestão de Empresas (Business)
 
 **Acesso Controlado a Entregas:**
-- Clientes visualizam apenas entregas vinculadas ao próprio perfil
-- Proteção total contra acesso a dados de outros clientes
+- Empresas (business) visualizam apenas entregas vinculadas ao próprio perfil
+- Proteção total contra acesso a dados de outras empresas
 - Auditoria de tentativas de acesso não autorizadas
 
 **Funcionalidades Disponíveis:**
@@ -100,7 +98,7 @@ Todos os endpoints REST são documentados automaticamente via OpenAPI/Swagger, p
 
 **Controles de Integridade:**
 - Validação de propriedade antes de qualquer operação
-- Isolamento de dados entre diferentes clientes
+- Isolamento de dados entre diferentes empresas
 - Impossibilidade de alteração de dados de terceiros
 
 ## Gestão de Entregas (DeliveryService)
