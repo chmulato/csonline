@@ -16,7 +16,7 @@ public class Customer {
     @JsonIgnore
     private User business;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "iduser", referencedColumnName = "id")
     private User user;
 

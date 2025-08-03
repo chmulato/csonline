@@ -34,16 +34,14 @@ public class CustomerControllerTest extends JerseyTest {
 
     @Test
     public void testNaoPermiteDuplicidadeDeUsuarioNoCustomer() {
-        // Primeiro, precisamos salvar o usuário no banco de dados
-        // Isso vai garantir que o usuário existe para verificação de duplicidade
-        userService.save(customerUser);
+        // Não precisamos salvar o usuário previamente, o controller deve fazer isso
+        // userService.save(customerUser);
         
         // Cria o primeiro customer normalmente
         Response resp1 = target("/customers").request().post(jakarta.ws.rs.client.Entity.json(customer));
-        assertEquals(201, resp1.getStatus());
+        assertEquals(201, resp1.getStatus(), "Primeiro customer deve ser criado com sucesso");
         
-        // Ao invés de usar JSON como string, vamos criar um novo objeto Customer com novo User
-        // mas com o mesmo login/email para garantir que a verificação de duplicidade funcione
+        // Cria um segundo customer com o mesmo login/email para testar a duplicidade
         com.caracore.cso.entity.User userDuplicado = new com.caracore.cso.entity.User();
         userDuplicado.setLogin(customerUser.getLogin()); // Mesmo login para gerar duplicidade
         userDuplicado.setEmail(customerUser.getEmail()); // Mesmo email para gerar duplicidade
@@ -56,10 +54,16 @@ public class CustomerControllerTest extends JerseyTest {
         customerDuplicado.setPriceTable("TabelaTeste");
         customerDuplicado.setUser(userDuplicado); // Atribuindo o usuário diretamente
         
+        // Tenta criar um customer com usuário duplicado (mesmo login/email)
         Response resp2 = target("/customers").request().post(jakarta.ws.rs.client.Entity.json(customerDuplicado));
-        assertEquals(409, resp2.getStatus()); // Esperamos 409 Conflict para duplicidade
+        
+        // O código de status deve ser 409 (Conflict) pois o login/email já existe
+        assertEquals(409, resp2.getStatus(), "Segundo customer com login/email duplicado deve retornar 409 Conflict");
+        
+        // Verifica se a mensagem contém informação sobre o erro de duplicidade
         String msg = resp2.readEntity(String.class).toLowerCase();
-        assertTrue(msg.contains("login") || msg.contains("email"));
+        assertTrue(msg.contains("login") || msg.contains("email"), 
+                   "A mensagem de erro deve mencionar login ou email duplicado");
     }
 
     @Override
