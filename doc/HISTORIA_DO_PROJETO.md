@@ -190,8 +190,6 @@ Cada obstáculo trouxe aprendizados valiosos e fortaleceu a arquitetura do proje
 
 ## Conto: A Jornada do CSOnline
 
-## Conto: A Jornada do CSOnline
-
 ### **Capítulo I: Os Primeiros Passos (2025 - Início)**
 
 No início, o CSOnline era apenas uma ideia: conectar entregadores, clientes e empresas em uma plataforma simples, mas robusta. Os primeiros commits trouxeram vida às entidades básicas e aos testes, mas logo vieram os desafios: migração para Jakarta EE, adaptação de scripts, e a busca incessante por isolamento e unicidade nos dados de teste.
