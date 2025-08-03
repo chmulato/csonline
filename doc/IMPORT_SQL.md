@@ -10,7 +10,7 @@
 
 ## Exemplos de Cenários Simulados
 - Usuário ADMIN para administração geral do sistema.
-- Empresa BUSINESS vinculada a múltiplos clientes e couriers, simulando ambiente corporativo.
+- Empresa BUSINESS (Centro de Distribuição) vinculada a múltiplos clientes e couriers, simulando ambiente corporativo.
 - Dois clientes e dois couriers para testar entregas, autorizações e interações entre perfis.
 - Entregas com diferentes status (pendente, concluída, recebida) e dados variados para validar regras de negócio.
 - Tabela de preços diferenciada para clientes e tipos de veículos, permitindo testes de cálculo de custo.
@@ -64,7 +64,7 @@ Os scripts de migração estão localizados em `src/main/resources/db/migration`
 
 ### Relação entre entidades:
 - Usuários (app_user) são vinculados a clientes, couriers e empresas.
-- Clientes e couriers pertencem a uma empresa (BUSINESS) e possuem fator/tabela de preço próprios.
+- Clientes e couriers pertencem a uma empresa (BUSINESS/Centro de Distribuição) e possuem fator/tabela de preço próprios.
 - Entregas relacionam clientes, couriers e empresas, com status e dados variados.
 - Tabela de preços define valores por cliente, veículo e localidade.
 - SMS registra o histórico de mensagens entre courier e customer, vinculado à entrega.

@@ -65,7 +65,7 @@
 - **Funcionalidades:**
   - Listagem de entregadores com dados do usuário e fator de comissão
   - Formulário modal para criar/editar entregadores
-  - Seleção de empresa (business) via dropdown
+  - Seleção de empresa (business/Centro de Distribuição) via dropdown
   - Fator de comissão configurável (0-100%)
   - Integração com entidade User (relacionamento ManyToOne)
   - Exclusão com confirmação
@@ -104,7 +104,7 @@
   - Formatação de data/hora e valores monetários
   - Exclusão com confirmação
   - Botão "Voltar" para retornar ao menu principal
-- **Estrutura:** Delivery com relacionamentos para Business, Customer e Courier
+- **Estrutura:** Delivery com relacionamentos para Business (Centro de Distribuição), Customer e Courier
 
 ### 6. Gestão de Equipes (Teams)
 
@@ -153,7 +153,7 @@
   - Formatação monetária em Reais (R$)
   - Funcionalidade de exportação de dados
   - Botão "Voltar" para retornar ao menu principal
-- **Estrutura:** Price com relacionamentos para User (business) e Customer
+- **Estrutura:** Price com relacionamentos para User (business/Centro de Distribuição) e Customer
 
 ### 9. Logout
 
@@ -205,9 +205,9 @@ const isPriceMgmt = ref(false);
 - **Endpoints REST disponíveis:** `/api/*` (ex: `/api/couriers`, `/api/customers`, `/api/deliveries`)
 - **Estruturas de dados:** Baseadas nas entidades JPA do backend
   - `User` → Usuários do sistema (admin, user, courier, customer)
-  - `Courier` → Entregadores (relacionamento com User e Business)
-  - `Customer` → Empresas/Centros de distribuição (relacionamento com User e Business)
-  - `Delivery` → Entregas (relacionamentos com Business, Customer e Courier)
+  - `Courier` → Entregadores (relacionamento com User e Business/Centro de Distribuição)
+  - `Customer` → Clientes (relacionamento com User e Business/Centro de Distribuição)
+  - `Delivery` → Entregas (relacionamentos com Business/Centro de Distribuição, Customer e Courier)
 - **Autenticação:** A ser implementada via JWT com controle de sessão
 - **Autorização:** Backend controla acesso por perfil; front-end adapta interface conforme perfil
 - **Validação:** Validações básicas no front-end, validações de negócio no backend

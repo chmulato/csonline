@@ -11,7 +11,7 @@ A interface permite operações completas de CRUD para usuários, com controle d
 
 **Perfis de Usuário:**
 - **Administrador (admin):** Acesso total ao sistema, gerenciamento completo de usuários, entregas, preços e mensagens
-- **Usuário (user):** Gestão administrativa de entregas com acesso às funcionalidades operacionais
+- **Empresa (business/Centro de Distribuição):** Gestão de Centro de Distribuição com acesso às funcionalidades operacionais
 - **Entregador (courier):** Acesso restrito às próprias entregas, histórico e mensagens
 - **Cliente (customer):** Acesso restrito às próprias entregas, histórico e comunicações
 
@@ -46,6 +46,12 @@ Todos os endpoints REST são documentados automaticamente via OpenAPI/Swagger, p
 - Gerenciamento completo de usuários, entregas, preços e mensagens
 - Visualização e modificação de dados de todos os perfis
 - Acesso a relatórios e métricas do sistema
+
+**Empresa (BUSINESS/Centro de Distribuição):**
+- Acesso limitado às entregas vinculadas ao próprio Centro de Distribuição
+- Gerenciamento de clientes e entregadores associados ao Centro de Distribuição
+- Consulta de histórico de entregas e mensagens relacionadas
+- Atualização do próprio perfil e configurações
 
 **Entregador (COURIER):**
 - Acesso limitado às entregas vinculadas ao próprio usuário
@@ -86,7 +92,7 @@ Todos os endpoints REST são documentados automaticamente via OpenAPI/Swagger, p
 ## Gestão de Empresas (Business)
 
 **Acesso Controlado a Entregas:**
-- Empresas (business) visualizam apenas entregas vinculadas ao próprio perfil
+- Empresas (Business/Centros de Distribuição) visualizam apenas entregas vinculadas ao próprio perfil
 - Proteção total contra acesso a dados de outras empresas
 - Auditoria de tentativas de acesso não autorizadas
 

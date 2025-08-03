@@ -105,7 +105,7 @@ Insere os dados iniciais para todas as tabelas, incluindo:
 
 ### Relação entre entidades:
 - Usuários (app_user) são vinculados a clientes, couriers e empresas.
-- Clientes e couriers pertencem a uma empresa (BUSINESS) e possuem fator/tabela de preço próprios.
+- Clientes e couriers pertencem a uma empresa (BUSINESS/Centro de Distribuição) e possuem fator/tabela de preço próprios.
 - Entregas relacionam clientes, couriers e empresas, com status e dados variados.
 - Tabela de preços define valores por cliente, veículo e localidade.
 - SMS registra o histórico de mensagens entre courier e customer, vinculado à entrega.

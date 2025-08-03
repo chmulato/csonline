@@ -6,10 +6,10 @@ Este documento descreve as entidades do sistema CSOnline e suas relações, forn
 
 ```mermaid
 erDiagram
-    User ||--o{ Customer : "business tem"
-    User ||--o{ Courier : "business tem"
-    User ||--o{ Team : "business tem"
-    User ||--o{ Delivery : "business tem"
+    User ||--o{ Customer : "business (CD) tem"
+    User ||--o{ Courier : "business (CD) tem"
+    User ||--o{ Team : "business (CD) tem"
+    User ||--o{ Delivery : "business (CD) tem"
     User ||--|| Customer : "é associado como"
     User ||--|| Courier : "é associado como"
     
@@ -141,21 +141,21 @@ classDiagram
 ## Entidades e Relacionamentos
 
 ### User
-A entidade central do sistema que representa usuários com diferentes funções (BUSINESS, COURIER, CUSTOMER).
+A entidade central do sistema que representa usuários com diferentes funções (BUSINESS/Centro de Distribuição, COURIER, CUSTOMER).
 
 **Campos principais:**
 - `id`: Identificador único
-- `role`: Função do usuário (BUSINESS, COURIER, CUSTOMER)
+- `role`: Função do usuário (BUSINESS/Centro de Distribuição, COURIER, CUSTOMER)
 - `name`: Nome do usuário
 - `login`: Nome de usuário único para login
 - `password`: Senha do usuário
 - `email`, `email2`, `address`, `mobile`: Informações de contato
 
 **Relacionamentos:**
-- `1:N` com Customer: Um usuário do tipo BUSINESS pode ter vários clientes
-- `1:N` com Courier: Um usuário do tipo BUSINESS pode ter vários entregadores
-- `1:N` com Team: Um usuário do tipo BUSINESS pode ter várias equipes
-- `1:N` com Delivery: Um usuário do tipo BUSINESS pode ter várias entregas
+- `1:N` com Customer: Um usuário do tipo BUSINESS (Centro de Distribuição) pode ter vários clientes
+- `1:N` com Courier: Um usuário do tipo BUSINESS (Centro de Distribuição) pode ter vários entregadores
+- `1:N` com Team: Um usuário do tipo BUSINESS (Centro de Distribuição) pode ter várias equipes
+- `1:N` com Delivery: Um usuário do tipo BUSINESS (Centro de Distribuição) pode ter várias entregas
 
 ### Courier
 Representa um entregador no sistema.
@@ -165,7 +165,7 @@ Representa um entregador no sistema.
 - `factorCourier`: Fator de remuneração do entregador
 
 **Relacionamentos:**
-- `N:1` com User (business): Um entregador pertence a um usuário de negócios
+- `N:1` com User (business/Centro de Distribuição): Um entregador pertence a um Centro de Distribuição
 - `N:1` com User (user): Um entregador está associado a um usuário
 - `1:N` com Team: Um entregador pode participar de várias equipes
 - `1:N` com Delivery: Um entregador pode realizar várias entregas
@@ -179,20 +179,20 @@ Representa um cliente no sistema.
 - `priceTable`: Tabela de preços associada ao cliente
 
 **Relacionamentos:**
-- `N:1` com User (business): Um cliente pertence a um usuário de negócios
+- `N:1` com User (business/Centro de Distribuição): Um cliente pertence a um Centro de Distribuição
 - `1:1` com User (user): Um cliente está associado a um usuário
 - `1:N` com Delivery: Um cliente pode solicitar várias entregas
 - `1:N` com Price: Um cliente pode ter várias tabelas de preço
 
 ### Team
-Representa uma equipe formada por um usuário de negócios e um entregador.
+Representa uma equipe formada por um Centro de Distribuição (BUSINESS) e um entregador.
 
 **Campos principais:**
 - `id`: Identificador único
 - `factorCourier`: Fator de remuneração específico para esta equipe
 
 **Relacionamentos:**
-- `N:1` com User (business): Uma equipe pertence a um usuário de negócios
+- `N:1` com User (business/Centro de Distribuição): Uma equipe pertence a um Centro de Distribuição
 - `N:1` com Courier: Uma equipe contém um entregador
 
 ### Delivery
@@ -210,7 +210,7 @@ Representa uma entrega realizada no sistema.
 - `datatime`: Data e hora da entrega
 
 **Relacionamentos:**
-- `N:1` com User (business): Uma entrega pertence a um usuário de negócios
+- `N:1` com User (business/Centro de Distribuição): Uma entrega pertence a um Centro de Distribuição
 - `N:1` com Customer: Uma entrega é solicitada por um cliente
 - `N:1` com Courier: Uma entrega é realizada por um entregador
 - `1:N` com SMS: Uma entrega pode ter vários SMS associados
@@ -240,18 +240,18 @@ Representa informações de preço para entregas.
 - `price`: Valor do preço
 
 **Relacionamentos:**
-- `N:1` com User (business): Um preço pertence a um usuário de negócios
+- `N:1` com User (business/Centro de Distribuição): Um preço pertence a um Centro de Distribuição
 - `N:1` com Customer: Um preço pode estar associado a um cliente específico
 
 ## Regras de Negócio Importantes
 
 1. **Hierarquia de Usuários**:
-   - Usuários com papel BUSINESS podem gerenciar clientes, entregadores e entregas
+   - Usuários com papel BUSINESS (Centro de Distribuição) podem gerenciar clientes, entregadores e entregas
    - Usuários com papel COURIER estão associados a entregadores
    - Usuários com papel CUSTOMER estão associados a clientes
 
 2. **Formação de Equipes**:
-   - Uma equipe é formada pela associação entre um usuário de negócios (BUSINESS) e um entregador (Courier)
+   - Uma equipe é formada pela associação entre um Centro de Distribuição (BUSINESS) e um entregador (Courier)
    - O fator do entregador na equipe pode ser diferente do fator padrão do entregador
 
 3. **Gestão de Entregas**:
@@ -318,7 +318,7 @@ private List<Customer> customers;
 ```
 
 Isso significa que:
-- Ao excluir um usuário business, seus clientes serão excluídos automaticamente
+- Ao excluir um usuário business (Centro de Distribuição), seus clientes serão excluídos automaticamente
 - É preciso ter cuidado ao excluir entidades para evitar exclusões não intencionais em cascata
 
 ### Carregar Relações Lazy vs Eager
@@ -338,7 +338,7 @@ User userWithCouriers = em.createQuery(
 
 Ao testar relacionamentos entre entidades, siga este fluxo:
 
-1. Criar e persistir o usuário business
+1. Criar e persistir o usuário business (Centro de Distribuição)
 2. Criar e persistir outros usuários (courier, customer)
 3. Criar entidades relacionadas (Courier, Customer) com referências aos usuários
 4. Criar entidades de operação (Team, Delivery) com referências às entidades principais
