@@ -11,7 +11,7 @@ Esta pasta contém scripts PowerShell para testar todos os endpoints da API CSOn
 | `test-couriers.ps1`          | Testa endpoints de Couriers (/api/couriers)     | Funcionando |
 | `test-users.ps1`             | Testa endpoints de Users (/api/users)           | Parcial     |
 | `test-customers.ps1`         | Testa endpoints de Customers (/api/customers)   | Erro 500    |
-| `test-teams.ps1`             | Testa endpoints de Teams (/api/team)            | Erro 500    |
+| `test-teams.ps1`             | Testa endpoints de Teams (/api/teams)            | Erro 500    |
 | `test-deliveries.ps1`        | Testa endpoints de Deliveries (/api/deliveries) | Funcionando |
 | `test-sms.ps1`               | Testa endpoints de SMS (/api/sms)               | Funcionando |
 | `test-login.ps1`             | Testa endpoint de Login (/api/login)            | Erro 404    |
@@ -56,7 +56,7 @@ cd scr/tests
 
 - **Funcionando**: /api/couriers, /api/deliveries, /api/sms
 - **Parcial**: /api/users (individual OK, lista com erro 500)
-- **Erro 500**: /api/customers, /api/team (problemas de serialização)
+- **Erro 500**: /api/customers, /api/teams (problemas de serialização)
 - **Erro 404**: /api/login (endpoint não encontrado)
 
 ## Pré-requisitos

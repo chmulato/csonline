@@ -1,14 +1,14 @@
 # Script de teste para endpoints de Teams
 # Base URL: http://localhost:8080/csonline/api
 
-$baseUrl = "http://localhost:8080/csonline/api/team"
+$baseUrl = "http://localhost:8080/csonline/api/teams"
 
 Write-Host "=======================================" -ForegroundColor Yellow
 Write-Host "TESTE DE ENDPOINTS - TEAMS" -ForegroundColor Yellow
 Write-Host "=======================================" -ForegroundColor Yellow
 
-# Test 1: GET /api/team (Listar todos os times)
-Write-Host "`n1. Listando todos os times (GET /api/team):" -ForegroundColor Green
+# Test 1: GET /api/teams (Listar todos os times)
+Write-Host "`n1. Listando todos os times (GET /api/teams):" -ForegroundColor Green
 try {
     $response = Invoke-RestMethod -Uri $baseUrl -Method GET -ContentType "application/json"
     Write-Host "Sucesso! Encontrados $($response.Count) times:" -ForegroundColor Green
@@ -17,8 +17,8 @@ try {
     Write-Host "Erro: $($_.Exception.Message)" -ForegroundColor Red
 }
 
-# Test 2: GET /api/team/{id} (Buscar time por ID)
-Write-Host "`n2. Buscando time por ID=1 (GET /api/team/1):" -ForegroundColor Green
+# Test 2: GET /api/teams/{id} (Buscar time por ID)
+Write-Host "`n2. Buscando time por ID=1 (GET /api/teams/1):" -ForegroundColor Green
 try {
     $response = Invoke-RestMethod -Uri "$baseUrl/1" -Method GET -ContentType "application/json"
     Write-Host "Sucesso! Time encontrado:" -ForegroundColor Green
@@ -27,8 +27,8 @@ try {
     Write-Host "Erro: $($_.Exception.Message)" -ForegroundColor Red
 }
 
-# Test 3: POST /api/team (Criar novo time)
-Write-Host "`n3. Criando novo time (POST /api/team):" -ForegroundColor Green
+# Test 3: POST /api/teams (Criar novo time)
+Write-Host "`n3. Criando novo time (POST /api/teams):" -ForegroundColor Green
 $newTeam = @{
     name = "Time Teste"
     description = "Time criado para teste"
@@ -45,9 +45,9 @@ try {
     $createdTeamId = $null
 }
 
-# Test 4: PUT /api/team/{id} (Atualizar time)
+# Test 4: PUT /api/teams/{id} (Atualizar time)
 if ($createdTeamId) {
-    Write-Host "`n4. Atualizando time ID=$createdTeamId (PUT /api/team/$createdTeamId):" -ForegroundColor Green
+    Write-Host "`n4. Atualizando time ID=$createdTeamId (PUT /api/teams/$createdTeamId):" -ForegroundColor Green
     $updateTeam = @{
         id = $createdTeamId
         name = "Time Teste Atualizado"
@@ -63,9 +63,9 @@ if ($createdTeamId) {
     }
 }
 
-# Test 5: DELETE /api/team/{id} (Deletar time)
+# Test 5: DELETE /api/teams/{id} (Deletar time)
 if ($createdTeamId) {
-    Write-Host "`n5. Deletando time ID=$createdTeamId (DELETE /api/team/$createdTeamId):" -ForegroundColor Green
+    Write-Host "`n5. Deletando time ID=$createdTeamId (DELETE /api/teams/$createdTeamId):" -ForegroundColor Green
     try {
         $response = Invoke-RestMethod -Uri "$baseUrl/$createdTeamId" -Method DELETE -ContentType "application/json"
         Write-Host "Sucesso! Time deletado." -ForegroundColor Green

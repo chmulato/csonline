@@ -10,8 +10,8 @@ $endpoints = @(
     @{ Name = "Users (ID=1)"; Url = "$baseUrl/users/1"; Method = "GET" },
     @{ Name = "Customers (List)"; Url = "$baseUrl/customers"; Method = "GET" },
     @{ Name = "Customers (ID=1)"; Url = "$baseUrl/customers/1"; Method = "GET" },
-    @{ Name = "Teams (List)"; Url = "$baseUrl/team"; Method = "GET" },
-    @{ Name = "Teams (ID=1)"; Url = "$baseUrl/team/1"; Method = "GET" },
+    @{ Name = "Teams (List)"; Url = "$baseUrl/teams"; Method = "GET" },
+    @{ Name = "Teams (ID=1)"; Url = "$baseUrl/teams/1"; Method = "GET" },
     @{ Name = "Deliveries (List)"; Url = "$baseUrl/deliveries"; Method = "GET" },
     @{ Name = "SMS (List)"; Url = "$baseUrl/sms"; Method = "GET" }
 )

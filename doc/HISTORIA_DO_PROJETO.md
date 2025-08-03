@@ -353,7 +353,7 @@ O dia 2 de agosto marcou um importante avanço na qualidade e testabilidade do p
 
 A implementação dos testes revelou insights importantes sobre o estado da API:
 - **Endpoints funcionando (50%)**: `/api/couriers`, `/api/users/{id}`, `/api/deliveries`, `/api/sms`
-- **Endpoints com problemas (50%)**: `/api/users` (lista), `/api/customers`, `/api/team` (erro 500 - problemas de serialização)
+- **Endpoints com problemas (50%)**: `/api/users` (lista), `/api/customers`, `/api/teams` (erro 500 - problemas de serialização)
 - **Endpoint não encontrado**: `/api/login` (erro 404)
 
 #### **Padronização e Consistência**
