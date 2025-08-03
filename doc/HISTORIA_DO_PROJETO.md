@@ -138,8 +138,6 @@ O projeto está estável, com deploy automatizado, documentação viva e APIs RE
 
 ## Dificuldades e Desafios Superados
 
-## Dificuldades e Desafios Superados
-
 ### **Desafios Técnicos do Frontend (Julho-Agosto/2025)**
 
 **Implementação Vue 3 SPA e Arquitetura Modular**
