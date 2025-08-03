@@ -1,14 +1,14 @@
 # Script de teste para endpoints de Teams
 # Base URL: http://localhost:8080/csonline/api
 
-$baseUrl = "http://localhost:8080/csonline/api/teams"
+$baseUrl = "http://localhost:8080/csonline/api/team"
 
 Write-Host "=======================================" -ForegroundColor Yellow
 Write-Host "TESTE DE ENDPOINTS - TEAMS" -ForegroundColor Yellow
 Write-Host "=======================================" -ForegroundColor Yellow
 
-# Test 1: GET /api/teams (Listar todos os times)
-Write-Host "`n1. Listando todos os times (GET /api/teams):" -ForegroundColor Green
+# Test 1: GET /api/team (Listar todos os times)
+Write-Host "`n1. Listando todos os times (GET /api/team):" -ForegroundColor Green
 try {
     $response = Invoke-RestMethod -Uri $baseUrl -Method GET -ContentType "application/json"
     Write-Host "Sucesso! Encontrados $($response.Count) times:" -ForegroundColor Green
@@ -17,8 +17,8 @@ try {
     Write-Host "Erro: $($_.Exception.Message)" -ForegroundColor Red
 }
 
-# Test 2: GET /api/teams/{id} (Buscar time por ID)
-Write-Host "`n2. Buscando time por ID=1 (GET /api/teams/1):" -ForegroundColor Green
+# Test 2: GET /api/team/{id} (Buscar time por ID)
+Write-Host "`n2. Buscando time por ID=1 (GET /api/team/1):" -ForegroundColor Green
 try {
     $response = Invoke-RestMethod -Uri "$baseUrl/1" -Method GET -ContentType "application/json"
     Write-Host "Sucesso! Time encontrado:" -ForegroundColor Green
@@ -27,8 +27,8 @@ try {
     Write-Host "Erro: $($_.Exception.Message)" -ForegroundColor Red
 }
 
-# Test 3: POST /api/teams (Criar novo time)
-Write-Host "`n3. Criando novo time (POST /api/teams):" -ForegroundColor Green
+# Test 3: POST /api/team (Criar novo time)
+Write-Host "`n3. Criando novo time (POST /api/team):" -ForegroundColor Green
 $newTeam = @{
     name = "Time Teste"
     description = "Time criado para teste"

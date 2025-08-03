@@ -97,7 +97,7 @@ cd scr/tests
 - ✅ **`/api/couriers`** - Funcionando completamente
 - ⚠️ **`/api/users`** - Individual OK, lista com erro 500
 - ❌ **`/api/customers`** - Erro 500 (problemas de serialização)
-- ❌ **`/api/teams`** - Erro 500 (problemas de serialização)
+- ❌ **`/api/team`** - Erro 500 (problemas de serialização)
 - ✅ **`/api/deliveries`** - Funcionando (sem dados)
 - ✅ **`/api/sms`** - Funcionando (sem dados)
 - ❌ **`/api/login`** - Erro 404 (endpoint não encontrado)
@@ -282,7 +282,7 @@ Os endpoints REST estão disponíveis em:
 - `/api/customers` - Gestão de empresas/centros de distribuição (business)
 - `/api/couriers` - Gestão de entregadores
 - `/api/deliveries` - Gestão de entregas
-- `/api/teams` - Gestão de equipes
+- `/api/team` - Gestão de equipes
 - `/api/prices` - Gestão de preços
 - `/api/sms` - Gestão de SMS/WhatsApp
 - `/api/login` - Autenticação
@@ -344,7 +344,7 @@ Consulte o arquivo [doc/INDEX.md](doc/INDEX.md) para documentação detalhada do
 
 ### **Prioridade Imediata:**
 - **Correção de Endpoints com Problemas:** Resolver erros 500 identificados pelos testes automatizados
-  - Corrigir serialização JSON nos endpoints `/api/users` (lista), `/api/customers`, `/api/teams`
+  - Corrigir serialização JSON nos endpoints `/api/users` (lista), `/api/customers`, `/api/team`
   - Implementar endpoint `/api/login` que está retornando 404
   - Aplicar anotações `@JsonManagedReference`/`@JsonBackReference` onde necessário
 

@@ -70,7 +70,7 @@
 - **Registros:** 3 clientes
 - **Resposta:** businessId, userId, factorCustomer, priceTable
 
-#### 4. Teams API - `/api/teams` (Lista)
+#### 4. Teams API - `/api/team` (Lista)
 - **Status:** ✅ **FUNCIONANDO**
 - **Método:** GET (Lista)
 - **Registros:** 3 equipes
@@ -116,10 +116,10 @@
 
 ### ENDPOINTS COM PROBLEMAS (2/10)
 
-#### 7. Teams API - `/api/teams/{id}` (Individual)
+#### 7. Teams API - `/api/team/{id}` (Individual)
 - **Status:** ❌ **404 NOT FOUND**
 - **Problema:** Endpoint individual retorna 404 mesmo com dados existentes
-- **Teste:** `curl http://localhost:8080/csonline/api/teams/1`
+- **Teste:** `curl http://localhost:8080/csonline/api/team/1`
 - **Resultado:** `404 - Not Found`
 - **Investigação Necessária:** Verificar método findById no TeamService
 
@@ -258,7 +258,7 @@ curl http://localhost:8080/csonline/api/couriers | ConvertFrom-Json
 curl http://localhost:8080/csonline/api/customers | ConvertFrom-Json
 
 # Equipes
-curl http://localhost:8080/csonline/api/teams | ConvertFrom-Json
+curl http://localhost:8080/csonline/api/team | ConvertFrom-Json
 
 # SMS
 curl http://localhost:8080/csonline/api/sms | ConvertFrom-Json
@@ -267,7 +267,7 @@ curl http://localhost:8080/csonline/api/sms | ConvertFrom-Json
 curl http://localhost:8080/csonline/api/deliveries | ConvertFrom-Json
 
 # Testes Individuais (PROBLEMAS)
-curl http://localhost:8080/csonline/api/teams/1 -v
+curl http://localhost:8080/csonline/api/team/1 -v
 curl http://localhost:8080/csonline/api/users/1
 ```
 
