@@ -24,7 +24,17 @@
 10. [MIGRACAO_IMPORT_SQL.md](MIGRACAO_IMPORT_SQL.md) — Processo de migração do import.sql para o Flyway.
 11. [TESTES_ENDPOINTS.md](TESTES_ENDPOINTS.md) — **Relatório detalhado dos testes de endpoints, status atual e correções implementadas**.
 12. [MODELO_DE_DADOS.md](MODELO_DE_DADOS.md) — **Diagrama e documentação detalhada das entidades, relacionamentos e boas práticas**.
-13. [INDEX.md](INDEX.md) — Este índice de documentos.
+13. [README-STANDALONE.md](../bak/README-STANDALONE.md) — **Documentação completa de configuração manual do WildFly 31 com HSQLDB**.
+14. [INDEX.md](INDEX.md) — Este índice de documentos.
+
+## Scripts e Automação
+
+### Scripts de Configuração do Servidor
+- [**config-jdbc-driver-wildfly-31.ps1**](../scr/config-jdbc-driver-wildfly-31.ps1) — **Script automatizado versão 2.0 para configuração completa do WildFly com HSQLDB**
+- [README-CONFIG-SCRIPT.md](../scr/README-CONFIG-SCRIPT.md) — **Documentação detalhada do script de configuração com troubleshooting**
+- [example-usage.ps1](../scr/example-usage.ps1) — Exemplos de uso do script de configuração
+- [start-wildfly-31.ps1](../scr/start-wildfly-31.ps1) — Script para iniciar o servidor WildFly
+- [stop-wildfly-31.ps1](../scr/stop-wildfly-31.ps1) — Script para parar o servidor WildFly
 
 ## Novidades e Funcionalidades Recentes
 
@@ -34,6 +44,17 @@ O projeto agora conta com uma **suite completa de testes automatizados** localiz
 - **Scripts individuais:** `test-users.ps1`, `test-customers.ps1`, `test-couriers.ps1`, `test-teams.ps1`, `test-deliveries.ps1`, `test-sms.ps1`, `test-login.ps1`
 - **Ferramentas de automação:** `test-all-endpoints.ps1`, `health-check-endpoints.ps1`, `run-tests.ps1`
 - **Documentação dos testes:** `README-TESTES.ps1` e `README.md` na pasta de testes
+
+### Automação de Configuração do Servidor (Agosto 2025)
+Script de configuração WildFly completamente reescrito com sistema avançado de logging:
+
+- **Script principal:** `config-jdbc-driver-wildfly-31.ps1` (versão 2.0) com 7 etapas bem definidas
+- **Sistema de logging:** Logs detalhados com timestamp salvos em `logs/wildfly-config-*.log`
+- **Parâmetros flexíveis:** `-Verbose`, `-CleanStart`, `-SkipBackup` para diferentes cenários
+- **Configuração baseada em módulos:** Evita conflitos de deployment, usa módulos WildFly nativos
+- **Download automático:** Baixa driver HSQLDB automaticamente se não encontrado
+- **Validação completa:** Testes de conectividade e verificação de cada etapa
+- **Documentação completa:** [README-CONFIG-SCRIPT.md](../scr/README-CONFIG-SCRIPT.md) com troubleshooting
 
 ### Containerização com Docker (Agosto 2025)
 O banco de dados HSQLDB agora executa em container Docker:
@@ -60,7 +81,14 @@ Através dos testes automatizados e diagnóstico detalhado, foi identificado:
 1. Comece com [ARQUITETURA.md](ARQUITETURA.md) para entender a estrutura geral
 2. Leia [MIGRACAO_BANCO_DADOS.md](MIGRACAO_BANCO_DADOS.md) para configurar Docker e banco de dados
 3. Siga [SEQUENCIA_SCRIPTS.md](SEQUENCIA_SCRIPTS.md) para setup do ambiente
-4. Use a suite de testes em `scr/tests/` para verificar se tudo está funcionando
+4. **Use o script automatizado:** Execute `pwsh .\scr\config-jdbc-driver-wildfly-31.ps1` para configurar WildFly
+5. Use a suite de testes em `scr/tests/` para verificar se tudo está funcionando
+
+### Para Configuração do Servidor
+- **Configuração automática:** Use `scr/config-jdbc-driver-wildfly-31.ps1` com logging completo
+- **Configuração manual:** Siga [README-STANDALONE.md](../bak/README-STANDALONE.md) para processo passo-a-passo
+- **Troubleshooting:** Consulte [README-CONFIG-SCRIPT.md](README-CONFIG-SCRIPT.md) para resolver problemas
+- **Logs detalhados:** Verifique `logs/wildfly-config-*.log` para diagnóstico
 
 ### Para Testes e Qualidade
 - Execute `.\run-tests.ps1 -HealthCheck` para verificação rápida
@@ -77,4 +105,4 @@ Através dos testes automatizados e diagnóstico detalhado, foi identificado:
 
 ---
 
-**Última atualização:** Agosto 2025 - Inclusão da suite de testes automatizados e containerização com Docker.
+**Última atualização:** Agosto 2025 - Inclusão da suite de testes automatizados, script de configuração WildFly 2.0 com sistema avançado de logging, e containerização com Docker.
