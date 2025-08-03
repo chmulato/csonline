@@ -49,23 +49,36 @@ public class CustomerController {
     @POST
     public Response create(Customer customer) {
         try {
+            // Log para debug
+            logger.info("Criando customer com usuário: " + (customer.getUser() != null ? 
+                        "login=" + customer.getUser().getLogin() + ", email=" + customer.getUser().getEmail() : "null"));
+            
             // Verificar duplicidade de usuário
             if (customer.getUser() != null) {
-                // Verificar se login já existe
-                if (userService.findByLogin(customer.getUser().getLogin()) != null) {
-                    return Response.status(Response.Status.CONFLICT)
-                           .entity("{\"error\": \"Login já existe: " + customer.getUser().getLogin() + "\"}")
-                           .type(MediaType.APPLICATION_JSON)
-                           .build();
+                // Verificar se login já existe - independente se o ID está definido ou não
+                if (customer.getUser().getLogin() != null) {
+                    logger.info("Verificando duplicidade de login: " + customer.getUser().getLogin());
+                    com.caracore.cso.entity.User existingUser = userService.findByLogin(customer.getUser().getLogin());
+                    if (existingUser != null) {
+                        logger.info("Login já existe: " + customer.getUser().getLogin());
+                        return Response.status(Response.Status.CONFLICT)
+                               .entity("{\"error\": \"Login já existe: " + customer.getUser().getLogin() + "\"}")
+                               .type(MediaType.APPLICATION_JSON)
+                               .build();
+                    }
                 }
-                // Verificar se email já existe
-                if (customer.getUser().getEmail() != null && 
-                    !customer.getUser().getEmail().isEmpty() && 
-                    userService.findByEmail(customer.getUser().getEmail()) != null) {
-                    return Response.status(Response.Status.CONFLICT)
-                           .entity("{\"error\": \"Email já existe: " + customer.getUser().getEmail() + "\"}")
-                           .type(MediaType.APPLICATION_JSON)
-                           .build();
+                
+                // Verificar se email já existe - independente se o ID está definido ou não
+                if (customer.getUser().getEmail() != null && !customer.getUser().getEmail().isEmpty()) {
+                    logger.info("Verificando duplicidade de email: " + customer.getUser().getEmail());
+                    com.caracore.cso.entity.User existingUser = userService.findByEmail(customer.getUser().getEmail());
+                    if (existingUser != null) {
+                        logger.info("Email já existe: " + customer.getUser().getEmail());
+                        return Response.status(Response.Status.CONFLICT)
+                               .entity("{\"error\": \"Email já existe: " + customer.getUser().getEmail() + "\"}")
+                               .type(MediaType.APPLICATION_JSON)
+                               .build();
+                    }
                 }
             }
             

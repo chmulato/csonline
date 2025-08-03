@@ -18,7 +18,6 @@ public class Customer {
 
     @OneToOne
     @JoinColumn(name = "iduser", referencedColumnName = "id")
-    @JsonIgnore
     private User user;
 
     private Double factorCustomer;

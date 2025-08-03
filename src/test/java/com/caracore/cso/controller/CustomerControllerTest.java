@@ -12,37 +12,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.caracore.cso.util.TestDatabaseUtil;
 import com.caracore.cso.util.TestDataFactory;
 import com.caracore.cso.repository.JPAUtil;
+import com.caracore.cso.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 
 public class CustomerControllerTest extends JerseyTest {
-    @Test
-    public void testNaoPermiteDuplicidadeDeUsuarioNoCustomer() {
-        // Cria o primeiro customer normalmente
-        Response resp1 = target("/customers").request().post(jakarta.ws.rs.client.Entity.json(customer));
-        assertEquals(201, resp1.getStatus());
-        
-        // Para testar a duplicidade corretamente, precisamos usar o usuário já criado
-        // Não criar um novo objeto User, mas usar os mesmos dados do existente
-        com.caracore.cso.entity.Customer customerDuplicado = new com.caracore.cso.entity.Customer();
-        customerDuplicado.setBusiness(business);
-        
-        // Cria um novo User com o mesmo login e email para testar a verificação de duplicidade
-        com.caracore.cso.entity.User userDuplicado = new com.caracore.cso.entity.User();
-        userDuplicado.setLogin(customerUser.getLogin()); // Mesmo login que já existe
-        userDuplicado.setEmail(customerUser.getEmail()); // Mesmo email que já existe
-        userDuplicado.setRole("CUSTOMER");
-        userDuplicado.setName("Outro Nome");
-        userDuplicado.setPassword("outraSenha");
-        
-        customerDuplicado.setUser(userDuplicado);
-        customerDuplicado.setFactorCustomer(1.2);
-        customerDuplicado.setPriceTable("TabelaTeste");
-        
-        Response resp2 = target("/customers").request().post(jakarta.ws.rs.client.Entity.json(customerDuplicado));
-        assertEquals(409, resp2.getStatus());
-        String msg = resp2.readEntity(String.class).toLowerCase();
-        assertTrue(msg.contains("login") || msg.contains("email"));
-    }
+    private UserService userService = new UserService();
     private com.caracore.cso.entity.User business;
     private com.caracore.cso.entity.User customerUser;
     private com.caracore.cso.entity.Customer customer;
@@ -58,14 +32,48 @@ public class CustomerControllerTest extends JerseyTest {
         customer = TestDataFactory.createCustomer(business, customerUser);
     }
 
-// ...existing code...
+    @Test
+    public void testNaoPermiteDuplicidadeDeUsuarioNoCustomer() {
+        // Primeiro, precisamos salvar o usuário no banco de dados
+        // Isso vai garantir que o usuário existe para verificação de duplicidade
+        userService.save(customerUser);
+        
+        // Cria o primeiro customer normalmente
+        Response resp1 = target("/customers").request().post(jakarta.ws.rs.client.Entity.json(customer));
+        assertEquals(201, resp1.getStatus());
+        
+        // Ao invés de usar JSON como string, vamos criar um novo objeto Customer com novo User
+        // mas com o mesmo login/email para garantir que a verificação de duplicidade funcione
+        com.caracore.cso.entity.User userDuplicado = new com.caracore.cso.entity.User();
+        userDuplicado.setLogin(customerUser.getLogin()); // Mesmo login para gerar duplicidade
+        userDuplicado.setEmail(customerUser.getEmail()); // Mesmo email para gerar duplicidade
+        userDuplicado.setRole("CUSTOMER");
+        userDuplicado.setName("Outro Nome");
+        userDuplicado.setPassword("outraSenha");
+        
+        com.caracore.cso.entity.Customer customerDuplicado = new com.caracore.cso.entity.Customer();
+        customerDuplicado.setFactorCustomer(1.2);
+        customerDuplicado.setPriceTable("TabelaTeste");
+        customerDuplicado.setUser(userDuplicado); // Atribuindo o usuário diretamente
+        
+        Response resp2 = target("/customers").request().post(jakarta.ws.rs.client.Entity.json(customerDuplicado));
+        assertEquals(409, resp2.getStatus()); // Esperamos 409 Conflict para duplicidade
+        String msg = resp2.readEntity(String.class).toLowerCase();
+        assertTrue(msg.contains("login") || msg.contains("email"));
+    }
 
     @Override
     protected Application configure() {
+        // Criamos um ResourceConfig personalizado com uma fábrica de binder
         return new ResourceConfig(CustomerController.class)
-            .register(com.caracore.cso.service.CustomerService.class)
-            .register(com.caracore.cso.controller.UserController.class)
-            .register(com.caracore.cso.service.UserService.class);
+            .register(new org.glassfish.hk2.utilities.binding.AbstractBinder() {
+                @Override
+                protected void configure() {
+                    // Vinculamos as implementações concretas aos tipos
+                    bind(new com.caracore.cso.service.CustomerService()).to(com.caracore.cso.service.CustomerService.class);
+                    bind(new com.caracore.cso.service.UserService()).to(com.caracore.cso.service.UserService.class);
+                }
+            });
     }
 
     @Test
@@ -113,3 +121,4 @@ public class CustomerControllerTest extends JerseyTest {
         assertEquals(204, deleteResp.getStatus());
     }
 }
+
