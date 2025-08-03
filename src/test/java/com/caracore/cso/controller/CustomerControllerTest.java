@@ -20,15 +20,24 @@ public class CustomerControllerTest extends JerseyTest {
         // Cria o primeiro customer normalmente
         Response resp1 = target("/customers").request().post(jakarta.ws.rs.client.Entity.json(customer));
         assertEquals(201, resp1.getStatus());
-
-        // Tenta criar outro customer com o mesmo usuário (login/email)
+        
+        // Para testar a duplicidade corretamente, precisamos usar o usuário já criado
+        // Não criar um novo objeto User, mas usar os mesmos dados do existente
+        com.caracore.cso.entity.Customer customerDuplicado = new com.caracore.cso.entity.Customer();
+        customerDuplicado.setBusiness(business);
+        
+        // Cria um novo User com o mesmo login e email para testar a verificação de duplicidade
         com.caracore.cso.entity.User userDuplicado = new com.caracore.cso.entity.User();
-        userDuplicado.setLogin(customerUser.getLogin());
-        userDuplicado.setEmail(customerUser.getEmail());
-        userDuplicado.setRole(customerUser.getRole());
+        userDuplicado.setLogin(customerUser.getLogin()); // Mesmo login que já existe
+        userDuplicado.setEmail(customerUser.getEmail()); // Mesmo email que já existe
+        userDuplicado.setRole("CUSTOMER");
         userDuplicado.setName("Outro Nome");
         userDuplicado.setPassword("outraSenha");
-        com.caracore.cso.entity.Customer customerDuplicado = TestDataFactory.createCustomer(business, userDuplicado);
+        
+        customerDuplicado.setUser(userDuplicado);
+        customerDuplicado.setFactorCustomer(1.2);
+        customerDuplicado.setPriceTable("TabelaTeste");
+        
         Response resp2 = target("/customers").request().post(jakarta.ws.rs.client.Entity.json(customerDuplicado));
         assertEquals(409, resp2.getStatus());
         String msg = resp2.readEntity(String.class).toLowerCase();

@@ -26,8 +26,19 @@ public class SMS {
     // Exposing ID for JSON serialization
     @JsonProperty("deliveryId")
     public Long getDeliveryId() {
-        return delivery != null ? delivery.getId() : null;
+        if (delivery != null) {
+            return delivery.getId();
+        }
+        return _deliveryId;
     }
+    
+    @JsonProperty("deliveryId")
+    public void setDeliveryId(Long deliveryId) {
+        this._deliveryId = deliveryId;
+    }
+    
+    @Transient
+    private Long _deliveryId;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

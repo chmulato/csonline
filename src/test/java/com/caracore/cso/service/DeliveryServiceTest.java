@@ -1,6 +1,9 @@
 package com.caracore.cso.service;
 
 import com.caracore.cso.entity.Delivery;
+import com.caracore.cso.entity.User;
+import com.caracore.cso.entity.Courier;
+import com.caracore.cso.entity.SMS;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.caracore.cso.util.TestDataFactory;
+import jakarta.persistence.EntityManager;
+import java.util.List;
 
 class DeliveryServiceTest {
     private static final Logger logger = LoggerFactory.getLogger(DeliveryServiceTest.class);
@@ -16,24 +21,24 @@ class DeliveryServiceTest {
     @Test
     void testDeleteDeliveryWithSMSReference() {
         try {
-            var userService = new UserService();
-            var business = TestDataFactory.createUser("BUSINESS");
+            UserService userService = new UserService();
+            User business = TestDataFactory.createUser("BUSINESS");
             userService.save(business);
             business = userService.findByLogin(business.getLogin());
 
-            var courierUser = TestDataFactory.createUser("COURIER");
+            User courierUser = TestDataFactory.createUser("COURIER");
             userService.save(courierUser);
             courierUser = userService.findByLogin(courierUser.getLogin());
 
-            var courier = TestDataFactory.createCourier(business, courierUser);
+            Courier courier = TestDataFactory.createCourier(business, courierUser);
             new CourierService().save(courier);
-            var couriers = new CourierService().findAllByBusiness(business.getId());
+            List<Courier> couriers = new CourierService().findAllByBusiness(business.getId());
             if (!couriers.isEmpty()) courier = couriers.get(0);
 
-            var delivery = TestDataFactory.createDelivery(business, courier);
+            Delivery delivery = TestDataFactory.createDelivery(business, courier);
             service.save(delivery);
 
-            var sms = TestDataFactory.createSMS(delivery);
+            SMS sms = TestDataFactory.createSMS(delivery);
             new SMSService().save(sms);
 
             RuntimeException ex = assertThrows(RuntimeException.class, () -> service.delete(delivery.getId()));
@@ -47,7 +52,7 @@ class DeliveryServiceTest {
 
     @BeforeEach
     void setUp() {
-        jakarta.persistence.EntityManager em = com.caracore.cso.repository.JPAUtil.getEntityManager();
+        EntityManager em = com.caracore.cso.repository.JPAUtil.getEntityManager();
         try {
             com.caracore.cso.util.TestDatabaseUtil.clearDatabase(em);
         } finally {
@@ -55,21 +60,21 @@ class DeliveryServiceTest {
         }
         try {
             service = new DeliveryService();
-            com.caracore.cso.service.UserService userService = new UserService();
-            com.caracore.cso.entity.User business = TestDataFactory.createUser("BUSINESS");
+            UserService userService = new UserService();
+            User business = TestDataFactory.createUser("BUSINESS");
             userService.save(business);
             business = userService.findByLogin(business.getLogin());
 
-            var courierUser = TestDataFactory.createUser("COURIER");
+            User courierUser = TestDataFactory.createUser("COURIER");
             userService.save(courierUser);
             courierUser = userService.findByLogin(courierUser.getLogin());
 
-            var courier = TestDataFactory.createCourier(business, courierUser);
+            Courier courier = TestDataFactory.createCourier(business, courierUser);
             new CourierService().save(courier);
-            var couriers = new CourierService().findAllByBusiness(business.getId());
+            List<Courier> couriers = new CourierService().findAllByBusiness(business.getId());
             if (!couriers.isEmpty()) courier = couriers.get(0);
 
-            var delivery = TestDataFactory.createDelivery(business, courier);
+            Delivery delivery = TestDataFactory.createDelivery(business, courier);
             service.save(delivery);
         } catch (Exception e) {
             logger.error("Erro ao preparar o teste DeliveryServiceTest", e);

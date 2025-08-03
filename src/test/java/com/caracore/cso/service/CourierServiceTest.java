@@ -2,6 +2,8 @@
 package com.caracore.cso.service;
 
 import com.caracore.cso.entity.Courier;
+import com.caracore.cso.entity.User;
+import com.caracore.cso.entity.Delivery;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,6 +15,7 @@ import com.caracore.cso.util.TestDatabaseUtil;
 import com.caracore.cso.repository.JPAUtil;
 import jakarta.persistence.EntityManager;
 import com.caracore.cso.util.TestDataFactory;
+import java.util.List;
 
 class CourierServiceTest {
     private static final Logger logger = LoggerFactory.getLogger(CourierServiceTest.class);
@@ -30,21 +33,21 @@ class CourierServiceTest {
             service = new CourierService();
             UserService userService = new UserService();
 
-            com.caracore.cso.entity.User business = TestDataFactory.createUser("BUSINESS");
+            User business = TestDataFactory.createUser("BUSINESS");
             userService.save(business);
             business = userService.findByLogin(business.getLogin());
 
-            com.caracore.cso.entity.User courierUser = TestDataFactory.createUser("COURIER");
+            User courierUser = TestDataFactory.createUser("COURIER");
             userService.save(courierUser);
             courierUser = userService.findByLogin(courierUser.getLogin());
 
-            com.caracore.cso.entity.Courier courier = TestDataFactory.createCourier(business, courierUser);
+            Courier courier = TestDataFactory.createCourier(business, courierUser);
             service.save(courier);
-            java.util.List<com.caracore.cso.entity.Courier> couriers = service.findAllByBusiness(business.getId());
+            List<Courier> couriers = service.findAllByBusiness(business.getId());
             if (!couriers.isEmpty()) courier = couriers.get(0);
 
             DeliveryService deliveryService = new DeliveryService();
-            com.caracore.cso.entity.Delivery delivery = TestDataFactory.createDelivery(business, courier);
+            Delivery delivery = TestDataFactory.createDelivery(business, courier);
             deliveryService.save(delivery);
             // Store IDs for use in tests
             System.setProperty("test.courier.id", courier.getId().toString());
@@ -57,21 +60,21 @@ class CourierServiceTest {
     @Test
     void testDeleteCourierWithDeliveryReference() {
         try {
-            var userService = new UserService();
-            var business = TestDataFactory.createUser("BUSINESS");
+            UserService userService = new UserService();
+            User business = TestDataFactory.createUser("BUSINESS");
             userService.save(business);
             business = userService.findByLogin(business.getLogin());
 
-            var courierUser = TestDataFactory.createUser("COURIER");
+            User courierUser = TestDataFactory.createUser("COURIER");
             userService.save(courierUser);
             courierUser = userService.findByLogin(courierUser.getLogin());
 
-            var courier = TestDataFactory.createCourier(business, courierUser);
+            Courier courier = TestDataFactory.createCourier(business, courierUser);
             service.save(courier);
-            var couriers = service.findAllByBusiness(business.getId());
+            List<Courier> couriers = service.findAllByBusiness(business.getId());
             final Long courierId = !couriers.isEmpty() ? couriers.get(0).getId() : null;
 
-            var delivery = TestDataFactory.createDelivery(business, courier);
+            Delivery delivery = TestDataFactory.createDelivery(business, courier);
             new DeliveryService().save(delivery);
 
             RuntimeException ex = assertThrows(RuntimeException.class, () -> service.delete(courierId));
@@ -88,13 +91,13 @@ class CourierServiceTest {
     @Test
     void debugEntities() {
         Long courierId = Long.valueOf(System.getProperty("test.courier.id", "1"));
-        var courier = service.findById(courierId);
+        Courier courier = service.findById(courierId);
         System.out.println("Courier id=" + courierId + ": " + courier);
         if (courier != null) {
             System.out.println("Courier.user: " + courier.getUser());
         }
-        var deliveryService = new DeliveryService();
-        var delivery = deliveryService.findAll().stream().findFirst().orElse(null);
+        DeliveryService deliveryService = new DeliveryService();
+        Delivery delivery = deliveryService.findAll().stream().findFirst().orElse(null);
         System.out.println("Delivery: " + delivery);
         if (delivery != null) {
             System.out.println("Delivery.courier: " + delivery.getCourier());
@@ -117,7 +120,7 @@ class CourierServiceTest {
     @Test
     void testFindAllByBusiness() {
         Long businessId = Long.valueOf(System.getProperty("test.business.id", "1"));
-        var couriers = service.findAllByBusiness(businessId);
+        List<Courier> couriers = service.findAllByBusiness(businessId);
         assertNotNull(couriers);
         assertTrue(couriers.size() >= 1);
     }
@@ -134,12 +137,12 @@ class CourierServiceTest {
 
     @Test
     void testCanAccessDelivery() {
-        var deliveryService = new DeliveryService();
-        var delivery = deliveryService.findAll().stream().findFirst().orElse(null);
+        DeliveryService deliveryService = new DeliveryService();
+        Delivery delivery = deliveryService.findAll().stream().findFirst().orElse(null);
         assertNotNull(delivery);
-        var courier = delivery.getCourier();
+        Courier courier = delivery.getCourier();
         assertNotNull(courier);
-        var courierUser = courier.getUser();
+        User courierUser = courier.getUser();
         assertNotNull(courierUser);
         boolean canAccess = service.canAccessDelivery(courierUser, delivery);
         assertTrue(canAccess);

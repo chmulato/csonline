@@ -1,6 +1,8 @@
 package com.caracore.cso.service;
 
 import com.caracore.cso.entity.Customer;
+import com.caracore.cso.entity.User;
+import com.caracore.cso.entity.Delivery;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.caracore.cso.util.TestDataFactory;
+import jakarta.persistence.EntityManager;
+import java.util.List;
 
 class CustomerServiceTest {
     private static final Logger logger = LoggerFactory.getLogger(CustomerServiceTest.class);
@@ -17,25 +21,25 @@ class CustomerServiceTest {
     @Test
     void testDeleteCustomerWithDeliveryReference() {
         try {
-            var userService = new UserService();
-            var business = TestDataFactory.createUser("BUSINESS");
+            UserService userService = new UserService();
+            User business = TestDataFactory.createUser("BUSINESS");
             userService.save(business);
             business = userService.findByLogin(business.getLogin());
 
-            var customerUser = TestDataFactory.createUser("CUSTOMER");
+            User customerUser = TestDataFactory.createUser("CUSTOMER");
             userService.save(customerUser);
             customerUser = userService.findByLogin(customerUser.getLogin());
 
 
-            var customer = TestDataFactory.createCustomer(business, customerUser);
+            Customer customer = TestDataFactory.createCustomer(business, customerUser);
             service.save(customer);
 
-            var delivery = TestDataFactory.createDelivery(business, null);
+            Delivery delivery = TestDataFactory.createDelivery(business, null);
             delivery.setCustomer(customer);
             new DeliveryService().save(delivery);
 
             // Busca o id do customer salvo
-            var customers = service.findAllByBusiness(business.getId());
+            List<Customer> customers = service.findAllByBusiness(business.getId());
             final Long customerId = !customers.isEmpty() ? customers.get(0).getId() : null;
 
             RuntimeException ex = assertThrows(RuntimeException.class, () -> service.delete(customerId));
@@ -48,7 +52,7 @@ class CustomerServiceTest {
 
     @BeforeEach
     void setUp() {
-        jakarta.persistence.EntityManager em = com.caracore.cso.repository.JPAUtil.getEntityManager();
+        EntityManager em = com.caracore.cso.repository.JPAUtil.getEntityManager();
         try {
             com.caracore.cso.util.TestDatabaseUtil.clearDatabase(em);
         } finally {
@@ -56,16 +60,16 @@ class CustomerServiceTest {
         }
         try {
             service = new CustomerService();
-            com.caracore.cso.service.UserService userService = new UserService();
-            com.caracore.cso.entity.User business = TestDataFactory.createUser("BUSINESS");
+            UserService userService = new UserService();
+            User business = TestDataFactory.createUser("BUSINESS");
             userService.save(business);
             business = userService.findByLogin(business.getLogin());
 
-            var customerUser = TestDataFactory.createUser("CUSTOMER");
+            User customerUser = TestDataFactory.createUser("CUSTOMER");
             userService.save(customerUser);
             customerUser = userService.findByLogin(customerUser.getLogin());
 
-            var customer = TestDataFactory.createCustomer(business, customerUser);
+            Customer customer = TestDataFactory.createCustomer(business, customerUser);
             service.save(customer);
         } catch (Exception e) {
             logger.error("Erro ao preparar o teste CustomerServiceTest", e);

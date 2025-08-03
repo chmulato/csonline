@@ -3,7 +3,9 @@ package com.caracore.cso.service;
 
 import com.caracore.cso.entity.Price;
 import com.caracore.cso.entity.User;
+import com.caracore.cso.entity.Customer;
 import com.caracore.cso.util.TestDataFactory;
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,7 +16,7 @@ class PriceServiceTest {
 
     @BeforeEach
     void setUp() {
-        var em = com.caracore.cso.repository.JPAUtil.getEntityManager();
+        EntityManager em = com.caracore.cso.repository.JPAUtil.getEntityManager();
         try {
             com.caracore.cso.util.TestDatabaseUtil.clearDatabase(em);
         } finally {
@@ -28,11 +30,11 @@ class PriceServiceTest {
     @Test
     void testSaveAndFindPrice() {
         // Cria um usuário CUSTOMER e um Customer entidade para associar ao preço
-        var customerUser = TestDataFactory.createUser("CUSTOMER");
+        User customerUser = TestDataFactory.createUser("CUSTOMER");
         new UserService().save(customerUser);
         customerUser = new UserService().findByLogin(customerUser.getLogin());
 
-        var customer = com.caracore.cso.util.TestDataFactory.createCustomer(business, customerUser);
+        Customer customer = com.caracore.cso.util.TestDataFactory.createCustomer(business, customerUser);
         new CustomerService().save(customer);
 
         Price price = TestDataFactory.createPrice(business, customer);

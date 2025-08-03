@@ -40,7 +40,9 @@ public class SMSControllerTest extends JerseyTest {
 
     @Override
     protected Application configure() {
-        return new ResourceConfig(SMSController.class);
+        return new ResourceConfig(SMSController.class)
+            .register(com.caracore.cso.service.SMSService.class)
+            .register(com.caracore.cso.service.DeliveryService.class);
     }
 
     @Test
@@ -62,10 +64,23 @@ public class SMSControllerTest extends JerseyTest {
 
     @Test
     public void testGetSMSByDelivery() {
+        // Primeiro verificamos se o delivery tem um ID válido
+        assertNotNull(delivery);
+        assertNotNull(delivery.getId());
+        
+        // Configuramos explicitamente o ID no SMS
+        sms.setDelivery(delivery);
+        
         Response createResp = target("/sms").request().post(jakarta.ws.rs.client.Entity.json(sms));
         assertEquals(201, createResp.getStatus());
+        
         com.caracore.cso.entity.SMS created = createResp.readEntity(com.caracore.cso.entity.SMS.class);
-        Response response = target("/sms/delivery/" + created.getDelivery().getId()).request().get();
+        
+        // Verificamos se o SMS criado tem um delivery com ID
+        assertNotNull(created);
+        assertNotNull(created.getDeliveryId());
+        
+        Response response = target("/sms/delivery/" + delivery.getId()).request().get();
         assertEquals(200, response.getStatus());
     }
 

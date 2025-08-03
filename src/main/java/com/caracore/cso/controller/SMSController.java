@@ -78,6 +78,26 @@ public class SMSController {
     @POST
     public Response create(SMS sms) {
         try {
+            // Resolver a referência de Delivery pelo ID
+            Long deliveryId = sms.getDeliveryId();
+            if (deliveryId != null) {
+                com.caracore.cso.entity.Delivery delivery = new com.caracore.cso.service.DeliveryService().findById(deliveryId);
+                if (delivery == null) {
+                    return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("{\"error\": \"Delivery com ID " + deliveryId + " não encontrado\"}")
+                        .type(MediaType.APPLICATION_JSON)
+                        .build();
+                }
+                sms.setDelivery(delivery);
+            }
+            
+            if (sms.getDelivery() == null) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("{\"error\": \"É necessário informar uma entrega válida\"}")
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+            }
+            
             smsService.save(sms);
             return Response.status(Response.Status.CREATED).entity(sms).build();
         } catch (IllegalArgumentException e) {

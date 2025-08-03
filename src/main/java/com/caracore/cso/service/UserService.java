@@ -168,6 +168,20 @@ public class UserService {
         }
     }
 
+    public User findByEmail(String email) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class);
+            query.setParameter("email", email);
+            return query.getResultStream().findFirst().orElse(null);
+        } catch (Exception e) {
+            logger.error("Erro ao buscar usuário por email: " + email, e);
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
     // Outros métodos conforme as queries do InterfaceSQL podem ser adicionados aqui
 
     public boolean isAdmin(User user) {

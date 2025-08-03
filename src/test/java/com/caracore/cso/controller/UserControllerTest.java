@@ -13,7 +13,9 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 import java.util.Map;
 import jakarta.ws.rs.core.GenericType;
+import jakarta.persistence.EntityManager;
 
+import com.caracore.cso.entity.User;
 import com.caracore.cso.service.UserService;
 import com.caracore.cso.util.TestDatabaseUtil;
 import com.caracore.cso.util.TestDataFactory;
@@ -23,14 +25,14 @@ public class UserControllerTest extends JerseyTest {
     private static final Logger logger = LogManager.getLogger(UserControllerTest.class);
 
     private String createUserJson(String role) {
-        var user = TestDataFactory.createUser(role);
+        User user = TestDataFactory.createUser(role);
         return String.format("{\"login\":\"%s\",\"password\":\"%s\",\"role\":\"%s\",\"name\":\"%s\"}",
                 user.getLogin(), user.getPassword(), user.getRole(), user.getName());
     }
 
     @BeforeEach
     public void cleanDatabase() {
-        var em = JPAUtil.getEntityManager();
+        EntityManager em = JPAUtil.getEntityManager();
         TestDatabaseUtil.clearDatabase(em);
         em.close();
     }

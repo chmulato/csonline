@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.caracore.cso.util.TestDataFactory;
+import java.util.List;
 
 class UserServiceTest {
     @Test
@@ -153,7 +154,7 @@ class UserServiceTest {
     @Test
     void testFindAll() {
         try {
-            var users = service.findAll();
+            List<User> users = service.findAll();
             assertNotNull(users);
             assertTrue(users.size() >= 6);
         } catch (Exception e) {

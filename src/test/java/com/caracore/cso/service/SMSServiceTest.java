@@ -1,6 +1,9 @@
 package com.caracore.cso.service;
 
 import com.caracore.cso.entity.SMS;
+import com.caracore.cso.entity.User;
+import com.caracore.cso.entity.Courier;
+import com.caracore.cso.entity.Delivery;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.caracore.cso.util.TestDataFactory;
+import jakarta.persistence.EntityManager;
+import java.util.List;
 
 class SMSServiceTest {
     private static final Logger logger = LoggerFactory.getLogger(SMSServiceTest.class);
@@ -16,28 +21,28 @@ class SMSServiceTest {
     @Test
     void testDeleteSMSWithDeliveryReference() {
         try {
-            var userService = new UserService();
-            var business = TestDataFactory.createUser("BUSINESS");
+            UserService userService = new UserService();
+            User business = TestDataFactory.createUser("BUSINESS");
             userService.save(business);
             business = userService.findByLogin(business.getLogin());
 
-            var courierUser = TestDataFactory.createUser("COURIER");
+            User courierUser = TestDataFactory.createUser("COURIER");
             userService.save(courierUser);
             courierUser = userService.findByLogin(courierUser.getLogin());
 
-            var courier = TestDataFactory.createCourier(business, courierUser);
+            Courier courier = TestDataFactory.createCourier(business, courierUser);
             new CourierService().save(courier);
-            var couriers = new CourierService().findAllByBusiness(business.getId());
+            List<Courier> couriers = new CourierService().findAllByBusiness(business.getId());
             if (!couriers.isEmpty()) courier = couriers.get(0);
 
-            var delivery = TestDataFactory.createDelivery(business, courier);
+            Delivery delivery = TestDataFactory.createDelivery(business, courier);
             new DeliveryService().save(delivery);
-            var deliveries = new DeliveryService().findAllByBusiness(business.getId());
+            List<Delivery> deliveries = new DeliveryService().findAllByBusiness(business.getId());
             if (!deliveries.isEmpty()) delivery = deliveries.get(0);
 
-            var sms = TestDataFactory.createSMS(delivery);
+            SMS sms = TestDataFactory.createSMS(delivery);
             service.save(sms);
-            var smsList = service.getDeliverySMSHistory(delivery.getId());
+            List<SMS> smsList = service.getDeliverySMSHistory(delivery.getId());
             final Long smsId = !smsList.isEmpty() ? smsList.get(0).getId() : null;
 
             RuntimeException ex = assertThrows(RuntimeException.class, () -> service.deleteById(smsId));
@@ -50,7 +55,7 @@ class SMSServiceTest {
 
     @BeforeEach
     void setUp() {
-        var em = com.caracore.cso.repository.JPAUtil.getEntityManager();
+        EntityManager em = com.caracore.cso.repository.JPAUtil.getEntityManager();
         try {
             com.caracore.cso.util.TestDatabaseUtil.clearDatabase(em);
         } finally {
@@ -58,21 +63,21 @@ class SMSServiceTest {
         }
         try {
             service = new SMSService();
-            var userService = new UserService();
-            var business = TestDataFactory.createUser("BUSINESS");
+            UserService userService = new UserService();
+            User business = TestDataFactory.createUser("BUSINESS");
             userService.save(business);
             business = userService.findByLogin(business.getLogin());
 
-            var courierUser = TestDataFactory.createUser("COURIER");
+            User courierUser = TestDataFactory.createUser("COURIER");
             userService.save(courierUser);
             courierUser = userService.findByLogin(courierUser.getLogin());
 
-            var courier = TestDataFactory.createCourier(business, courierUser);
+            Courier courier = TestDataFactory.createCourier(business, courierUser);
             new CourierService().save(courier);
-            var couriers = new CourierService().findAllByBusiness(business.getId());
+            List<Courier> couriers = new CourierService().findAllByBusiness(business.getId());
             if (!couriers.isEmpty()) courier = couriers.get(0);
 
-            var delivery = TestDataFactory.createDelivery(business, courier);
+            Delivery delivery = TestDataFactory.createDelivery(business, courier);
             new DeliveryService().save(delivery);
         } catch (Exception e) {
             logger.error("Erro ao preparar o teste SMSServiceTest", e);
@@ -96,23 +101,23 @@ class SMSServiceTest {
     void testSendAndGetDeliverySMS() {
         try {
             // Cria toda a cadeia de entidades necessárias
-            var userService = new UserService();
-            var business = TestDataFactory.createUser("BUSINESS");
+            UserService userService = new UserService();
+            User business = TestDataFactory.createUser("BUSINESS");
             userService.save(business);
             business = userService.findByLogin(business.getLogin());
 
-            var courierUser = TestDataFactory.createUser("COURIER");
+            User courierUser = TestDataFactory.createUser("COURIER");
             userService.save(courierUser);
             courierUser = userService.findByLogin(courierUser.getLogin());
 
-            var courier = TestDataFactory.createCourier(business, courierUser);
+            Courier courier = TestDataFactory.createCourier(business, courierUser);
             new CourierService().save(courier);
-            var couriers = new CourierService().findAllByBusiness(business.getId());
+            List<Courier> couriers = new CourierService().findAllByBusiness(business.getId());
             if (!couriers.isEmpty()) courier = couriers.get(0);
 
-            var delivery = TestDataFactory.createDelivery(business, courier);
+            Delivery delivery = TestDataFactory.createDelivery(business, courier);
             new DeliveryService().save(delivery);
-            var deliveries = new DeliveryService().findAllByBusiness(business.getId());
+            List<Delivery> deliveries = new DeliveryService().findAllByBusiness(business.getId());
             if (!deliveries.isEmpty()) delivery = deliveries.get(0);
 
             Long deliveryId = delivery.getId();
@@ -127,7 +132,7 @@ class SMSServiceTest {
             service.sendDeliverySMS(deliveryId, fromMobile, toMobile, type, message, piece, datetime);
 
             // Consulta histórico
-            var history = service.getDeliverySMSHistory(deliveryId);
+            List<SMS> history = service.getDeliverySMSHistory(deliveryId);
             assertNotNull(history);
             assertTrue(history.stream().anyMatch(sms ->
                 fromMobile.equals(sms.getMobileFrom()) &&

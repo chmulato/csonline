@@ -27,24 +27,38 @@ public class Team {
     // Exposing IDs for JSON serialization
     @JsonProperty("businessId")
     public Long getBusinessId() {
-        return business != null ? business.getId() : null;
+        if (business != null) {
+            return business.getId();
+        }
+        return _businessId;
     }
 
     @JsonProperty("courierId")
     public Long getCourierId() {
-        return courier != null ? courier.getId() : null;
+        if (courier != null) {
+            return courier.getId();
+        }
+        return _courierId;
     }
     
     // Setters for JSON deserialization
     @JsonProperty("businessId")
     public void setBusinessId(Long businessId) {
-        // Será gerenciado pelo controller/service
+        // Armazena o ID para ser usado pelo controller/service
+        this._businessId = businessId;
     }
     
     @JsonProperty("courierId")
     public void setCourierId(Long courierId) {
-        // Será gerenciado pelo controller/service
+        // Armazena o ID para ser usado pelo controller/service
+        this._courierId = courierId;
     }
+    
+    @Transient
+    private Long _businessId;
+    
+    @Transient
+    private Long _courierId;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

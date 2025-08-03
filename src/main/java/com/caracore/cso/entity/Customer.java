@@ -27,23 +27,35 @@ public class Customer {
     // Exposing IDs for JSON serialization
     @JsonProperty("businessId")
     public Long getBusinessId() {
-        return business != null ? business.getId() : null;
+        if (business != null) {
+            return business.getId();
+        }
+        return _businessId;
     }
 
     @JsonProperty("businessId")
     public void setBusinessId(Long businessId) {
-        // This is handled by the controller
+        this._businessId = businessId;
     }
 
     @JsonProperty("userId")
     public Long getUserId() {
-        return user != null ? user.getId() : null;
+        if (user != null) {
+            return user.getId();
+        }
+        return _userId;
     }
 
     @JsonProperty("userId")
     public void setUserId(Long userId) {
-        // This is handled by the controller
+        this._userId = userId;
     }
+    
+    @Transient
+    private Long _businessId;
+    
+    @Transient
+    private Long _userId;
 
     public Long getId() {
         return id;
