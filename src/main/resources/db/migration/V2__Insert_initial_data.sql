@@ -60,18 +60,18 @@ VALUES ((SELECT id FROM app_user WHERE login = 'empresa'), (SELECT id FROM app_u
 
 -- 4. Times (team) - aguardando implementação completa
 
--- 5. Tabelas de Preço (price)
+-- 5. Tabelas de Preço (price) - usando subselects para IDs dinâmicos
 INSERT INTO price (idbusiness, idcustomer, tableName, vehicle, local, price)
-VALUES (2, 1, 'TabelaA', 'Carro', 'São Paulo', 50.0);
+VALUES ((SELECT id FROM app_user WHERE login = 'empresa'), 1, 'TabelaA', 'Carro', 'São Paulo', 50.0);
 
-INSERT INTO price (idbusiness, idcustomer, tableName, vehicle, local, price)
-VALUES (2, 2, 'TabelaB', 'Moto', 'Rio de Janeiro', 30.0);
+-- INSERT INTO price (idbusiness, idcustomer, tableName, vehicle, local, price)
+-- VALUES (2, 2, 'TabelaB', 'Moto', 'Rio de Janeiro', 30.0);
 
-INSERT INTO price (idbusiness, idcustomer, tableName, vehicle, local, price)
-VALUES (7, 3, 'TabelaC', 'Van', 'Curitiba', 70.0);
+-- INSERT INTO price (idbusiness, idcustomer, tableName, vehicle, local, price)
+-- VALUES (7, 3, 'TabelaC', 'Van', 'Curitiba', 70.0);
 
-INSERT INTO price (idbusiness, idcustomer, tableName, vehicle, local, price)
-VALUES (2, 1, 'TabelaA', 'Moto', 'São Paulo', 25.0);
+-- INSERT INTO price (idbusiness, idcustomer, tableName, vehicle, local, price)
+-- VALUES (2, 1, 'TabelaA', 'Moto', 'São Paulo', 25.0);
 
 -- 6. Entregas (delivery)
 INSERT INTO delivery (idbusiness, idcustomer, idcourier, start, destination, contact, description, volume, weight, km, additionalCost, cost, received, completed, datatime)
