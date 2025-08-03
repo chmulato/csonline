@@ -28,23 +28,23 @@ class CourierServiceTest {
         }
         try {
             service = new CourierService();
-            var userService = new UserService();
+            UserService userService = new UserService();
 
-            var business = TestDataFactory.createUser("BUSINESS");
+            com.caracore.cso.entity.User business = TestDataFactory.createUser("BUSINESS");
             userService.save(business);
             business = userService.findByLogin(business.getLogin());
 
-            var courierUser = TestDataFactory.createUser("COURIER");
+            com.caracore.cso.entity.User courierUser = TestDataFactory.createUser("COURIER");
             userService.save(courierUser);
             courierUser = userService.findByLogin(courierUser.getLogin());
 
-            var courier = TestDataFactory.createCourier(business, courierUser);
+            com.caracore.cso.entity.Courier courier = TestDataFactory.createCourier(business, courierUser);
             service.save(courier);
-            var couriers = service.findAllByBusiness(business.getId());
+            java.util.List<com.caracore.cso.entity.Courier> couriers = service.findAllByBusiness(business.getId());
             if (!couriers.isEmpty()) courier = couriers.get(0);
 
-            var deliveryService = new DeliveryService();
-            var delivery = TestDataFactory.createDelivery(business, courier);
+            DeliveryService deliveryService = new DeliveryService();
+            com.caracore.cso.entity.Delivery delivery = TestDataFactory.createDelivery(business, courier);
             deliveryService.save(delivery);
             // Store IDs for use in tests
             System.setProperty("test.courier.id", courier.getId().toString());

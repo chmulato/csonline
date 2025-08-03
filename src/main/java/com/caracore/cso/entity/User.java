@@ -1,11 +1,13 @@
 package com.caracore.cso.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "app_user")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "customers", "couriers", "teams", "deliveries"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,13 +32,19 @@ public class User {
 
     // Relationships
     @OneToMany(mappedBy = "business", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonIgnore
     private List<Customer> customers;
 
     @OneToMany(mappedBy = "business", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @JsonManagedReference("user-couriers")
+    @JsonIgnore
     private List<Courier> couriers;
 
     @OneToMany(mappedBy = "business", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonIgnore
+    private List<Team> teams;
+
+    @OneToMany(mappedBy = "business", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonIgnore
     private List<Delivery> deliveries;
 
     public Long getId() {
@@ -114,6 +122,13 @@ public class User {
     }
     public void setCouriers(List<Courier> couriers) {
         this.couriers = couriers;
+    }
+
+    public List<Team> getTeams() {
+        return teams;
+    }
+    public void setTeams(List<Team> teams) {
+        this.teams = teams;
     }
 
     public List<Delivery> getDeliveries() {

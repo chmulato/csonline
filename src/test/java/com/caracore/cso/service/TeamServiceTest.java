@@ -2,6 +2,7 @@ package com.caracore.cso.service;
 
 import com.caracore.cso.entity.Team;
 import com.caracore.cso.entity.User;
+import com.caracore.cso.entity.Courier;
 import org.junit.jupiter.api.*;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,9 +23,13 @@ class TeamServiceTest {
             new UserService().save(business);
             User businessPersisted = new UserService().findByLogin(business.getLogin());
 
-            User courier = TestDataFactory.createUser("COURIER");
-            new UserService().save(courier);
-            courier = new UserService().findByLogin(courier.getLogin());
+            User courierUser = TestDataFactory.createUser("COURIER");
+            new UserService().save(courierUser);
+            courierUser = new UserService().findByLogin(courierUser.getLogin());
+            
+            // Cria um courier
+            Courier courier = TestDataFactory.createCourier(businessPersisted, courierUser);
+            new CourierService().save(courier);
 
             // Cria um time vinculado ao business
             Team team = TestDataFactory.createTeam(businessPersisted, courier);
@@ -35,25 +40,21 @@ class TeamServiceTest {
             assertTrue(ex.getMessage().contains("Não é possível excluir o time") || ex.getMessage().contains("vinculados"));
         } catch (Exception e) {
             logger.error("Erro durante o teste testDeleteBusinessWithTeamReference em TeamServiceTest", e);
-            throw e;
+            fail(e);
         }
     }
     // ...existing code...
 
     @BeforeEach
     void setUp() {
-        var em = com.caracore.cso.repository.JPAUtil.getEntityManager();
+        // --- INICIALIZAÇÃO DO BANCO E SERVIÇO ---
+        jakarta.persistence.EntityManager em = com.caracore.cso.repository.JPAUtil.getEntityManager();
         try {
             com.caracore.cso.util.TestDatabaseUtil.clearDatabase(em);
         } finally {
             em.close();
         }
-        try {
-            teamService = new TeamService();
-        } catch (Exception e) {
-            logger.error("Erro ao preparar o teste TeamServiceTest", e);
-            throw e;
-        }
+        teamService = new TeamService();
     }
 
     @Test
@@ -63,9 +64,13 @@ class TeamServiceTest {
             new UserService().save(business);
             business = new UserService().findByLogin(business.getLogin());
 
-            User courier = TestDataFactory.createUser("COURIER");
-            new UserService().save(courier);
-            courier = new UserService().findByLogin(courier.getLogin());
+            User courierUser = TestDataFactory.createUser("COURIER");
+            new UserService().save(courierUser);
+            courierUser = new UserService().findByLogin(courierUser.getLogin());
+            
+            // Cria um courier
+            Courier courier = TestDataFactory.createCourier(business, courierUser);
+            new CourierService().save(courier);
 
             Team team = TestDataFactory.createTeam(business, courier);
             teamService.save(team);
@@ -74,10 +79,11 @@ class TeamServiceTest {
             assertNotNull(found);
             assertEquals(team.getFactorCourier(), found.getFactorCourier());
             assertEquals(business.getName(), found.getBusiness().getName());
-            assertEquals(courier.getName(), found.getCourier().getName());
+            // Compara o nome do usuário do courier
+            assertEquals(courierUser.getName(), found.getCourier().getUser().getName());
         } catch (Exception e) {
             logger.error("Erro durante o teste testSaveAndFindById em TeamServiceTest", e);
-            throw e;
+            fail(e);
         }
     }
 
@@ -88,16 +94,26 @@ class TeamServiceTest {
             new UserService().save(business);
             business = new UserService().findByLogin(business.getLogin());
 
-            User courier1 = TestDataFactory.createUser("COURIER");
-            new UserService().save(courier1);
-            courier1 = new UserService().findByLogin(courier1.getLogin());
+            // Primeiro courier
+            User courierUser1 = TestDataFactory.createUser("COURIER");
+            new UserService().save(courierUser1);
+            courierUser1 = new UserService().findByLogin(courierUser1.getLogin());
+            
+            Courier courier1 = TestDataFactory.createCourier(business, courierUser1);
+            new CourierService().save(courier1);
+            
             Team team1 = TestDataFactory.createTeam(business, courier1);
             team1.setFactorCourier(1.1);
             teamService.save(team1);
 
-            User courier2 = TestDataFactory.createUser("COURIER");
-            new UserService().save(courier2);
-            courier2 = new UserService().findByLogin(courier2.getLogin());
+            // Segundo courier
+            User courierUser2 = TestDataFactory.createUser("COURIER");
+            new UserService().save(courierUser2);
+            courierUser2 = new UserService().findByLogin(courierUser2.getLogin());
+            
+            Courier courier2 = TestDataFactory.createCourier(business, courierUser2);
+            new CourierService().save(courier2);
+            
             Team team2 = TestDataFactory.createTeam(business, courier2);
             team2.setFactorCourier(2.2);
             teamService.save(team2);
@@ -106,7 +122,7 @@ class TeamServiceTest {
             assertEquals(2, all.size());
         } catch (Exception e) {
             logger.error("Erro durante o teste testFindAll em TeamServiceTest", e);
-            throw e;
+            fail(e);
         }
     }
 
@@ -117,9 +133,12 @@ class TeamServiceTest {
             new UserService().save(business);
             business = new UserService().findByLogin(business.getLogin());
 
-            User courier = TestDataFactory.createUser("COURIER");
-            new UserService().save(courier);
-            courier = new UserService().findByLogin(courier.getLogin());
+            User courierUser = TestDataFactory.createUser("COURIER");
+            new UserService().save(courierUser);
+            courierUser = new UserService().findByLogin(courierUser.getLogin());
+            
+            Courier courier = TestDataFactory.createCourier(business, courierUser);
+            new CourierService().save(courier);
 
             Team team = TestDataFactory.createTeam(business, courier);
             team.setFactorCourier(3.3);
@@ -129,7 +148,7 @@ class TeamServiceTest {
             assertNull(teamService.findById(id));
         } catch (Exception e) {
             logger.error("Erro durante o teste testDelete em TeamServiceTest", e);
-            throw e;
+            fail(e);
         }
     }
 }

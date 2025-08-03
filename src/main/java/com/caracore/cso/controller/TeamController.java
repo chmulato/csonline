@@ -3,6 +3,7 @@ package com.caracore.cso.controller;
 import com.caracore.cso.entity.Team;
 import com.caracore.cso.service.TeamService;
 import com.caracore.cso.service.UserService;
+import com.caracore.cso.service.CourierService;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -14,6 +15,7 @@ import java.util.List;
 public class TeamController {
     private final TeamService teamService = new TeamService();
     private final UserService userService = new UserService();
+    private final CourierService courierService = new CourierService();
 
     @GET
     @Path("/{id}")
@@ -32,19 +34,44 @@ public class TeamController {
 
     @POST
     public Response create(Team team) {
-        // Persistir usuários associados se necessário
-        if (team.getBusiness() != null && team.getBusiness().getId() == null) {
-            userService.save(team.getBusiness());
-        }
-        if (team.getCourier() != null && team.getCourier().getId() == null) {
-            userService.save(team.getCourier());
-        }
         try {
+            // Buscar business e courier pelos IDs recebidos do JSON
+            Long businessId = team.getBusinessId();
+            Long courierId = team.getCourierId();
+            
+            if (businessId != null) {
+                team.setBusiness(userService.findById(businessId));
+            }
+            
+            if (courierId != null) {
+                team.setCourier(courierService.findById(courierId));
+            }
+            
+            // Validações
+            if (team.getBusiness() == null) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("{\"error\": \"Business não encontrado ou não especificado\"}")
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+            }
+            
+            if (team.getCourier() == null) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("{\"error\": \"Courier não encontrado ou não especificado\"}")
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+            }
+            
             teamService.save(team);
             return Response.status(Response.Status.CREATED).entity(team).build();
         } catch (IllegalArgumentException e) {
             return Response.status(Response.Status.CONFLICT)
                 .entity("{\"error\": \"" + e.getMessage() + "\"}")
+                .type(MediaType.APPLICATION_JSON)
+                .build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                .entity("{\"error\": \"Erro ao criar team: " + e.getMessage() + "\"}")
                 .type(MediaType.APPLICATION_JSON)
                 .build();
         }
@@ -57,20 +84,50 @@ public class TeamController {
         if (existing == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        // Persistir usuários associados se necessário
-        if (team.getBusiness() != null && team.getBusiness().getId() == null) {
-            userService.save(team.getBusiness());
-        }
-        if (team.getCourier() != null && team.getCourier().getId() == null) {
-            userService.save(team.getCourier());
-        }
-        team.setId(id);
+        
         try {
+            // Buscar business e courier pelos IDs recebidos do JSON
+            Long businessId = team.getBusinessId();
+            Long courierId = team.getCourierId();
+            
+            if (businessId != null) {
+                team.setBusiness(userService.findById(businessId));
+            } else {
+                team.setBusiness(existing.getBusiness());
+            }
+            
+            if (courierId != null) {
+                team.setCourier(courierService.findById(courierId));
+            } else {
+                team.setCourier(existing.getCourier());
+            }
+            
+            // Validações
+            if (team.getBusiness() == null) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("{\"error\": \"Business não encontrado ou não especificado\"}")
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+            }
+            
+            if (team.getCourier() == null) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("{\"error\": \"Courier não encontrado ou não especificado\"}")
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+            }
+            
+            team.setId(id);
             teamService.save(team);
             return Response.ok(team).build();
         } catch (IllegalArgumentException e) {
             return Response.status(Response.Status.CONFLICT)
                 .entity("{\"error\": \"" + e.getMessage() + "\"}")
+                .type(MediaType.APPLICATION_JSON)
+                .build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                .entity("{\"error\": \"Erro ao atualizar team: " + e.getMessage() + "\"}")
                 .type(MediaType.APPLICATION_JSON)
                 .build();
         }

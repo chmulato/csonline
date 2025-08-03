@@ -18,13 +18,13 @@ public class SMSControllerTest extends JerseyTest {
 
     @BeforeEach
     void setUpTestData() {
-        var em = JPAUtil.getEntityManager();
+        jakarta.persistence.EntityManager em = JPAUtil.getEntityManager();
         TestDatabaseUtil.clearDatabase(em);
         em.close();
         // Cria dados únicos usando TestDataFactory
-        var business = TestDataFactory.createUser("BUSINESS");
-        var courierUser = TestDataFactory.createUser("COURIER");
-        var courier = TestDataFactory.createCourier(business, courierUser);
+        com.caracore.cso.entity.User business = TestDataFactory.createUser("BUSINESS");
+        com.caracore.cso.entity.User courierUser = TestDataFactory.createUser("COURIER");
+        com.caracore.cso.entity.Courier courier = TestDataFactory.createCourier(business, courierUser);
         // Persiste business e courier
         new com.caracore.cso.service.UserService().save(business);
         new com.caracore.cso.service.UserService().save(courierUser);
@@ -33,7 +33,7 @@ public class SMSControllerTest extends JerseyTest {
         delivery = TestDataFactory.createDelivery(business, courier);
         new com.caracore.cso.service.DeliveryService().save(delivery);
         // Busca delivery persistida para garantir ID
-        var deliveries = new com.caracore.cso.service.DeliveryService().findAll();
+        java.util.List<com.caracore.cso.entity.Delivery> deliveries = new com.caracore.cso.service.DeliveryService().findAll();
         if (!deliveries.isEmpty()) delivery = deliveries.get(0);
         sms = TestDataFactory.createSMS(delivery);
     }

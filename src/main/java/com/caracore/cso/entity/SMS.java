@@ -1,5 +1,7 @@
 package com.caracore.cso.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 @Entity
@@ -8,8 +10,10 @@ public class SMS {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
     @ManyToOne
     @JoinColumn(name = "iddelivery")
+    @JsonIgnore
     private Delivery delivery;
 
     private Integer piece;
@@ -18,6 +22,12 @@ public class SMS {
     private String mobileFrom;
     private String message;
     private String datetime;
+
+    // Exposing ID for JSON serialization
+    @JsonProperty("deliveryId")
+    public Long getDeliveryId() {
+        return delivery != null ? delivery.getId() : null;
+    }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

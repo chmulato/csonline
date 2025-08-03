@@ -21,10 +21,10 @@ public class DeliveryControllerTest extends JerseyTest {
         assertEquals(201, resp1.getStatus());
 
         // Tenta criar outra delivery com o mesmo courier (mesmo usuário)
-        var business = delivery.getBusiness();
-        var courierUser = delivery.getCourier().getUser();
-        var courier = delivery.getCourier();
-        var deliveryDuplicada = TestDataFactory.createDelivery(business, courier);
+        com.caracore.cso.entity.User business = delivery.getBusiness();
+        com.caracore.cso.entity.User courierUser = delivery.getCourier().getUser();
+        com.caracore.cso.entity.Courier courier = delivery.getCourier();
+        com.caracore.cso.entity.Delivery deliveryDuplicada = TestDataFactory.createDelivery(business, courier);
         Response resp2 = target("/deliveries").request().post(jakarta.ws.rs.client.Entity.json(deliveryDuplicada));
         // Espera 409 se houver violação de unicidade em qualquer entidade relacionada
         assertTrue(resp2.getStatus() == 409 || resp2.getStatus() == 201);
@@ -38,14 +38,14 @@ public class DeliveryControllerTest extends JerseyTest {
 
     @BeforeEach
     void setUpTestData() {
-        var em = JPAUtil.getEntityManager();
+        jakarta.persistence.EntityManager em = JPAUtil.getEntityManager();
         TestDatabaseUtil.clearDatabase(em);
         em.close();
         // Cria dados únicos e independentes para cada papel
-        var business = TestDataFactory.createUser("BUSINESS");
-        var courierBusiness = TestDataFactory.createUser("COURIER_BUSINESS"); // business do courier
-        var courierUser = TestDataFactory.createUser("COURIER");
-        var courier = TestDataFactory.createCourier(courierBusiness, courierUser);
+        com.caracore.cso.entity.User business = TestDataFactory.createUser("BUSINESS");
+        com.caracore.cso.entity.User courierBusiness = TestDataFactory.createUser("COURIER_BUSINESS"); // business do courier
+        com.caracore.cso.entity.User courierUser = TestDataFactory.createUser("COURIER");
+        com.caracore.cso.entity.Courier courier = TestDataFactory.createCourier(courierBusiness, courierUser);
         delivery = TestDataFactory.createDelivery(business, courier);
     }
 

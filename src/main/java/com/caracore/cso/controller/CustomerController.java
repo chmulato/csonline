@@ -49,13 +49,18 @@ public class CustomerController {
     @POST
     public Response create(Customer customer) {
         try {
-            // Persistir usuários associados se necessário
-            if (customer.getBusiness() != null && customer.getBusiness().getId() == null) {
-                userService.save(customer.getBusiness());
+            // Obter usuários pelos IDs
+            Long businessId = customer.getBusinessId();
+            Long userId = customer.getUserId();
+            
+            if (businessId != null) {
+                customer.setBusiness(userService.findById(businessId));
             }
-            if (customer.getUser() != null && customer.getUser().getId() == null) {
-                userService.save(customer.getUser());
+            
+            if (userId != null) {
+                customer.setUser(userService.findById(userId));
             }
+            
             customerService.save(customer);
             return Response.status(Response.Status.CREATED).entity(customer).build();
         } catch (IllegalArgumentException e) {
@@ -74,16 +79,35 @@ public class CustomerController {
     @Path("/{id}")
     public Response update(@PathParam("id") Long id, Customer customer) {
         try {
-            // Persistir usuários associados se necessário
-            if (customer.getBusiness() != null && customer.getBusiness().getId() == null) {
-                userService.save(customer.getBusiness());
+            // Buscar o customer existente
+            Customer existingCustomer = customerService.findById(id);
+            if (existingCustomer == null) {
+                return Response.status(Response.Status.NOT_FOUND).entity("{\"error\": \"Customer não encontrado\"}").build();
             }
-            if (customer.getUser() != null && customer.getUser().getId() == null) {
-                userService.save(customer.getUser());
+            
+            // Atualizar apenas os campos fornecidos
+            if (customer.getFactorCustomer() != null) {
+                existingCustomer.setFactorCustomer(customer.getFactorCustomer());
             }
-            customer.setId(id);
-            customerService.update(customer);
-            return Response.ok().build();
+            
+            if (customer.getPriceTable() != null) {
+                existingCustomer.setPriceTable(customer.getPriceTable());
+            }
+            
+            // Atualizar referências se IDs foram fornecidos
+            Long businessId = customer.getBusinessId();
+            Long userId = customer.getUserId();
+            
+            if (businessId != null) {
+                existingCustomer.setBusiness(userService.findById(businessId));
+            }
+            
+            if (userId != null) {
+                existingCustomer.setUser(userService.findById(userId));
+            }
+            
+            customerService.update(existingCustomer);
+            return Response.ok(existingCustomer).build();
         } catch (Exception e) {
             logger.error("Erro ao atualizar customer id: " + id, e);
             return Response.serverError().entity("Erro ao atualizar customer").build();

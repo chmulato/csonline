@@ -40,7 +40,7 @@ public class CustomerControllerTest extends JerseyTest {
 
     @BeforeEach
     void setUpTestData() {
-        var em = JPAUtil.getEntityManager();
+        jakarta.persistence.EntityManager em = JPAUtil.getEntityManager();
         TestDatabaseUtil.clearDatabase(em);
         em.close();
         // Cria dados únicos usando TestDataFactory

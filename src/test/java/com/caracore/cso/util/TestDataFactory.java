@@ -35,7 +35,7 @@ public class TestDataFactory {
         return sms;
     }
 
-    public static Team createTeam(User business, User courier) {
+    public static Team createTeam(User business, Courier courier) {
         Team team = new Team();
         team.setBusiness(business);
         team.setCourier(courier);

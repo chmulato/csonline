@@ -54,13 +54,18 @@ public class CourierController {
     @POST
     public Response create(Courier courier) {
         try {
-            // Persistir usuários associados se necessário
-            if (courier.getBusiness() != null && courier.getBusiness().getId() == null) {
-                userService.save(courier.getBusiness());
+            // Obter usuários pelos IDs
+            Long businessId = courier.getBusinessId();
+            Long userId = courier.getUserId();
+            
+            if (businessId != null) {
+                courier.setBusiness(userService.findById(businessId));
             }
-            if (courier.getUser() != null && courier.getUser().getId() == null) {
-                userService.save(courier.getUser());
+            
+            if (userId != null) {
+                courier.setUser(userService.findById(userId));
             }
+            
             courierService.save(courier);
             return Response.status(Response.Status.CREATED).entity(courier).build();
         } catch (IllegalArgumentException e) {
@@ -79,9 +84,31 @@ public class CourierController {
     @Path("/{id}")
     public Response update(@PathParam("id") Long id, Courier courier) {
         try {
-            courier.setId(id);
-            courierService.update(courier);
-            return Response.ok().build();
+            // Buscar o courier existente
+            Courier existingCourier = courierService.findById(id);
+            if (existingCourier == null) {
+                return Response.status(Response.Status.NOT_FOUND).entity("{\"error\": \"Courier não encontrado\"}").build();
+            }
+            
+            // Atualizar apenas os campos fornecidos
+            if (courier.getFactorCourier() != null) {
+                existingCourier.setFactorCourier(courier.getFactorCourier());
+            }
+            
+            // Atualizar referências se IDs foram fornecidos
+            Long businessId = courier.getBusinessId();
+            Long userId = courier.getUserId();
+            
+            if (businessId != null) {
+                existingCourier.setBusiness(userService.findById(businessId));
+            }
+            
+            if (userId != null) {
+                existingCourier.setUser(userService.findById(userId));
+            }
+            
+            courierService.update(existingCourier);
+            return Response.ok(existingCourier).build();
         } catch (Exception e) {
             logger.error("Erro ao atualizar courier id: " + id, e);
             return Response.serverError().entity("Erro ao atualizar courier").build();

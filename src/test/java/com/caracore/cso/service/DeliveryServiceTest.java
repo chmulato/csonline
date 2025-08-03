@@ -47,7 +47,7 @@ class DeliveryServiceTest {
 
     @BeforeEach
     void setUp() {
-        var em = com.caracore.cso.repository.JPAUtil.getEntityManager();
+        jakarta.persistence.EntityManager em = com.caracore.cso.repository.JPAUtil.getEntityManager();
         try {
             com.caracore.cso.util.TestDatabaseUtil.clearDatabase(em);
         } finally {
@@ -55,8 +55,8 @@ class DeliveryServiceTest {
         }
         try {
             service = new DeliveryService();
-            var userService = new UserService();
-            var business = TestDataFactory.createUser("BUSINESS");
+            com.caracore.cso.service.UserService userService = new UserService();
+            com.caracore.cso.entity.User business = TestDataFactory.createUser("BUSINESS");
             userService.save(business);
             business = userService.findByLogin(business.getLogin());
 

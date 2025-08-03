@@ -59,7 +59,7 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
-        var em = JPAUtil.getEntityManager();
+        jakarta.persistence.EntityManager em = JPAUtil.getEntityManager();
         try {
             TestDatabaseUtil.clearDatabase(em);
         } finally {

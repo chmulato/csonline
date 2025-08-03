@@ -28,13 +28,13 @@ public class TeamRepository {
                 team.setBusiness(em.find(com.caracore.cso.entity.User.class, team.getBusiness().getId()));
             }
             if (team.getCourier() != null && team.getCourier().getId() != null) {
-                team.setCourier(em.find(com.caracore.cso.entity.User.class, team.getCourier().getId()));
+                team.setCourier(em.find(com.caracore.cso.entity.Courier.class, team.getCourier().getId()));
             }
             // Validação de unicidade: não pode haver outro Team com mesmo business e courier
             if (team.getBusiness() != null && team.getCourier() != null) {
-                var queryStr = "SELECT COUNT(t) FROM Team t WHERE t.business.id = :businessId AND t.courier.id = :courierId" +
+                String queryStr = "SELECT COUNT(t) FROM Team t WHERE t.business.id = :businessId AND t.courier.id = :courierId" +
                     (team.getId() != null ? " AND t.id <> :id" : "");
-                var query = em.createQuery(queryStr, Long.class)
+                jakarta.persistence.TypedQuery<Long> query = em.createQuery(queryStr, Long.class)
                     .setParameter("businessId", team.getBusiness().getId())
                     .setParameter("courierId", team.getCourier().getId());
                 if (team.getId() != null) {

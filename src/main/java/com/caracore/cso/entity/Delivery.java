@@ -1,24 +1,32 @@
 package com.caracore.cso.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "delivery")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "business", "customer", "courier", "smsList", "datatime"})
 public class Delivery {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
     @ManyToOne
     @JoinColumn(name = "idbusiness")
+    @JsonIgnore
     private User business;
 
     @ManyToOne
     @JoinColumn(name = "idcustomer")
+    @JsonIgnore
     private Customer customer;
 
     @ManyToOne
     @JoinColumn(name = "idcourier")
+    @JsonIgnore
     private Courier courier;
 
     private String start;
@@ -32,10 +40,44 @@ public class Delivery {
     private Double cost;
     private Boolean received;
     private Boolean completed;
+    
+    @JsonIgnore
     private LocalDateTime datatime;
 
     @OneToMany(mappedBy = "delivery")
+    @JsonIgnore
     private java.util.List<SMS> smsList;
+
+    // Exposing IDs for JSON serialization
+    @JsonProperty("businessId")
+    public Long getBusinessId() {
+        return business != null ? business.getId() : null;
+    }
+
+    @JsonProperty("businessId")
+    public void setBusinessId(Long businessId) {
+        // This is handled by the controller
+    }
+
+    @JsonProperty("customerId")
+    public Long getCustomerId() {
+        return customer != null ? customer.getId() : null;
+    }
+
+    @JsonProperty("customerId")
+    public void setCustomerId(Long customerId) {
+        // This is handled by the controller
+    }
+
+    @JsonProperty("courierId")
+    public Long getCourierId() {
+        return courier != null ? courier.getId() : null;
+    }
+
+    @JsonProperty("courierId")
+    public void setCourierId(Long courierId) {
+        // This is handled by the controller
+    }
 
     public java.util.List<SMS> getSmsList() { return smsList; }
     public void setSmsList(java.util.List<SMS> smsList) { this.smsList = smsList; }

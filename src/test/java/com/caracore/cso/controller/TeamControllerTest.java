@@ -2,8 +2,10 @@ package com.caracore.cso.controller;
 
 import com.caracore.cso.entity.Team;
 import com.caracore.cso.entity.User;
+import com.caracore.cso.entity.Courier;
 import com.caracore.cso.repository.JPAUtil;
 import com.caracore.cso.service.UserServiceTestHelper;
+import com.caracore.cso.service.CourierService;
 import com.caracore.cso.util.TestDataFactory;
 import com.caracore.cso.util.TestDatabaseUtil;
 import jakarta.ws.rs.core.Application;
@@ -19,7 +21,7 @@ public class TeamControllerTest extends JerseyTest {
 
     @BeforeEach
     void cleanDatabase() {
-        var em = JPAUtil.getEntityManager();
+        jakarta.persistence.EntityManager em = JPAUtil.getEntityManager();
         TestDatabaseUtil.clearDatabase(em);
         em.close();
     }
@@ -34,9 +36,14 @@ public class TeamControllerTest extends JerseyTest {
     @Test
     void testCreateAndGetById() throws Exception {
         User business = TestDataFactory.createUser("BUSINESS");
-        User courier = TestDataFactory.createUser("COURIER");
+        User courierUser = TestDataFactory.createUser("COURIER");
         UserServiceTestHelper.persistUser(business);
-        UserServiceTestHelper.persistUser(courier);
+        UserServiceTestHelper.persistUser(courierUser);
+        
+        // Cria um courier
+        Courier courier = TestDataFactory.createCourier(business, courierUser);
+        new CourierService().save(courier);
+        
         Team team = TestDataFactory.createTeam(business, courier);
 
         Response postResponse = target("/team").request().post(jakarta.ws.rs.client.Entity.json(team));
@@ -62,9 +69,14 @@ public class TeamControllerTest extends JerseyTest {
     @Test
     void testUpdate() throws Exception {
         User business = TestDataFactory.createUser("BUSINESS");
-        User courier = TestDataFactory.createUser("COURIER");
+        User courierUser = TestDataFactory.createUser("COURIER");
         UserServiceTestHelper.persistUser(business);
-        UserServiceTestHelper.persistUser(courier);
+        UserServiceTestHelper.persistUser(courierUser);
+        
+        // Cria um courier
+        Courier courier = TestDataFactory.createCourier(business, courierUser);
+        new CourierService().save(courier);
+        
         Team team = TestDataFactory.createTeam(business, courier);
         team.setFactorCourier(2.0);
         Response postResponse = target("/team").request().post(jakarta.ws.rs.client.Entity.json(team));
@@ -82,9 +94,14 @@ public class TeamControllerTest extends JerseyTest {
     @Test
     void testDelete() throws Exception {
         User business = TestDataFactory.createUser("BUSINESS");
-        User courier = TestDataFactory.createUser("COURIER");
+        User courierUser = TestDataFactory.createUser("COURIER");
         UserServiceTestHelper.persistUser(business);
-        UserServiceTestHelper.persistUser(courier);
+        UserServiceTestHelper.persistUser(courierUser);
+        
+        // Cria um courier
+        Courier courier = TestDataFactory.createCourier(business, courierUser);
+        new CourierService().save(courier);
+        
         Team team = TestDataFactory.createTeam(business, courier);
         team.setFactorCourier(4.0);
         Response postResponse = target("/team").request().post(jakarta.ws.rs.client.Entity.json(team));
@@ -100,9 +117,14 @@ public class TeamControllerTest extends JerseyTest {
     @Test
     void testNaoPermiteDuplicidadeDeTeamPorBusinessECourier() throws Exception {
         User business2 = TestDataFactory.createUser("BUSINESS");
-        User courier2 = TestDataFactory.createUser("COURIER");
+        User courierUser2 = TestDataFactory.createUser("COURIER");
         UserServiceTestHelper.persistUser(business2);
-        UserServiceTestHelper.persistUser(courier2);
+        UserServiceTestHelper.persistUser(courierUser2);
+        
+        // Cria um courier
+        Courier courier2 = TestDataFactory.createCourier(business2, courierUser2);
+        new CourierService().save(courier2);
+        
         Team team1 = TestDataFactory.createTeam(business2, courier2);
         Team team2 = TestDataFactory.createTeam(business2, courier2);
         // Cria o primeiro normalmente
@@ -115,9 +137,14 @@ public class TeamControllerTest extends JerseyTest {
         assertEquals(Response.Status.CONFLICT.getStatusCode(), resp2.getStatus());
         assertTrue(msg.contains("team") || msg.contains("business") || msg.contains("courier") || msg.contains("existe"));
         User business = TestDataFactory.createUser("BUSINESS");
-        User courier = TestDataFactory.createUser("COURIER");
+        User courierUser = TestDataFactory.createUser("COURIER");
         UserServiceTestHelper.persistUser(business);
-        UserServiceTestHelper.persistUser(courier);
+        UserServiceTestHelper.persistUser(courierUser);
+        
+        // Cria um courier
+        Courier courier = TestDataFactory.createCourier(business, courierUser);
+        new CourierService().save(courier);
+        
         Team team = TestDataFactory.createTeam(business, courier);
         team.setFactorCourier(4.0);
         Response postResponse = target("/team").request().post(jakarta.ws.rs.client.Entity.json(team));
