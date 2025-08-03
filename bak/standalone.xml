@@ -137,7 +137,7 @@
                 </datasource>
                 <datasource jndi-name="java:/HSQLDBDatasource" pool-name="HSQLDBDatasource" enabled="true">
                     <connection-url>jdbc:hsqldb:file:csonline</connection-url>
-                    <driver>hsqldb-2.7.2.jar</driver>
+                    <driver>hsqldb</driver>
                     <pool>
                         <min-pool-size>2</min-pool-size>
                         <max-pool-size>10</max-pool-size>
@@ -147,6 +147,9 @@
                 <drivers>
                     <driver name="h2" module="com.h2database.h2">
                         <xa-datasource-class>org.h2.jdbcx.JdbcDataSource</xa-datasource-class>
+                    </driver>
+                    <driver name="hsqldb" module="org.hsqldb">
+                        <xa-datasource-class>org.hsqldb.jdbc.pool.JDBCXADataSource</xa-datasource-class>
                     </driver>
                 </drivers>
             </datasources>
@@ -528,9 +531,4 @@
             <remote-destination host="${jboss.mail.server.host:localhost}" port="${jboss.mail.server.port:25}"/>
         </outbound-socket-binding>
     </socket-binding-group>
-    <deployments>
-        <deployment name="hsqldb-2.7.2.jar" runtime-name="hsqldb-2.7.2.jar">
-            <content sha1="d92d4d2aa515714da2165c9d640d584c2896c9df"/>
-        </deployment>
-    </deployments>
 </server>
