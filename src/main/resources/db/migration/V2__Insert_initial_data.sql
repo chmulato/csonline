@@ -28,25 +28,25 @@ VALUES ('COURIER', 'Entregador Lucas', 'lucas', 'lucas789', 'lucas@cso.com', NUL
 INSERT INTO app_user (role, name, login, password, email, email2, address, mobile)
 VALUES ('CUSTOMER', 'Cliente Maria', 'maria', 'maria789', 'maria@email.com', 'maria.contato@email.com', 'Av. Santo Amaro, 900', '11111111111');
 
--- 2. Clientes (customer) - Usando IDs dos usuários recém-criados
+-- 2. Clientes (customer) - Usando logins para encontrar IDs
 INSERT INTO customer (idbusiness, iduser, factorCustomer, priceTable)
-VALUES (2, 4, 1.1, 'TabelaA');
-
-INSERT INTO customer (idbusiness, iduser, factorCustomer, priceTable)
-VALUES (2, 6, 1.2, 'TabelaB');
+VALUES ((SELECT id FROM app_user WHERE login = 'empresa'), (SELECT id FROM app_user WHERE login = 'carlos'), 1.1, 'TabelaA');
 
 INSERT INTO customer (idbusiness, iduser, factorCustomer, priceTable)
-VALUES (7, 9, 1.3, 'TabelaC');
+VALUES ((SELECT id FROM app_user WHERE login = 'empresa'), (SELECT id FROM app_user WHERE login = 'ana'), 1.2, 'TabelaB');
 
--- 3. Entregadores (courier)
+INSERT INTO customer (idbusiness, iduser, factorCustomer, priceTable)
+VALUES ((SELECT id FROM app_user WHERE login = 'empresay'), (SELECT id FROM app_user WHERE login = 'maria'), 1.3, 'TabelaC');
+
+-- 3. Entregadores (courier) - Usando logins para encontrar IDs
 INSERT INTO courier (idbusiness, idcourier, factorCourier)
-VALUES (2, 3, 1.2);
+VALUES ((SELECT id FROM app_user WHERE login = 'empresa'), (SELECT id FROM app_user WHERE login = 'joao'), 1.2);
 
 INSERT INTO courier (idbusiness, idcourier, factorCourier)
-VALUES (2, 5, 1.3);
+VALUES ((SELECT id FROM app_user WHERE login = 'empresa'), (SELECT id FROM app_user WHERE login = 'pedro'), 1.3);
 
 INSERT INTO courier (idbusiness, idcourier, factorCourier)
-VALUES (7, 8, 1.4);
+VALUES ((SELECT id FROM app_user WHERE login = 'empresay'), (SELECT id FROM app_user WHERE login = 'lucas'), 1.4);
 
 -- 4. Equipes (team)
 INSERT INTO team (id, idbusiness, idcourier, factorCourier)
