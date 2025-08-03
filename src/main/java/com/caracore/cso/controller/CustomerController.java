@@ -49,6 +49,26 @@ public class CustomerController {
     @POST
     public Response create(Customer customer) {
         try {
+            // Verificar duplicidade de usuário
+            if (customer.getUser() != null) {
+                // Verificar se login já existe
+                if (userService.findByLogin(customer.getUser().getLogin()) != null) {
+                    return Response.status(Response.Status.CONFLICT)
+                           .entity("{\"error\": \"Login já existe: " + customer.getUser().getLogin() + "\"}")
+                           .type(MediaType.APPLICATION_JSON)
+                           .build();
+                }
+                // Verificar se email já existe
+                if (customer.getUser().getEmail() != null && 
+                    !customer.getUser().getEmail().isEmpty() && 
+                    userService.findByEmail(customer.getUser().getEmail()) != null) {
+                    return Response.status(Response.Status.CONFLICT)
+                           .entity("{\"error\": \"Email já existe: " + customer.getUser().getEmail() + "\"}")
+                           .type(MediaType.APPLICATION_JSON)
+                           .build();
+                }
+            }
+            
             // Obter usuários pelos IDs
             Long businessId = customer.getBusinessId();
             Long userId = customer.getUserId();
@@ -58,26 +78,6 @@ public class CustomerController {
             }
             
             if (userId != null) {
-                // Se o User vier incluído no JSON, verificar por duplicidade
-                if (customer.getUser() != null) {
-                    // Verificar se login já existe
-                    if (userService.findByLogin(customer.getUser().getLogin()) != null) {
-                        return Response.status(Response.Status.CONFLICT)
-                               .entity("{\"error\": \"Login já existe: " + customer.getUser().getLogin() + "\"}")
-                               .type(MediaType.APPLICATION_JSON)
-                               .build();
-                    }
-                    // Verificar se email já existe
-                    if (customer.getUser().getEmail() != null && 
-                        !customer.getUser().getEmail().isEmpty() && 
-                        userService.findByEmail(customer.getUser().getEmail()) != null) {
-                        return Response.status(Response.Status.CONFLICT)
-                               .entity("{\"error\": \"Email já existe: " + customer.getUser().getEmail() + "\"}")
-                               .type(MediaType.APPLICATION_JSON)
-                               .build();
-                    }
-                }
-                
                 customer.setUser(userService.findById(userId));
             }
             
