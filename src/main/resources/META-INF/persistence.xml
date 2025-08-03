@@ -27,10 +27,13 @@
             <property name="eclipselink.logging.session" value="true"/>
             <property name="eclipselink.logging.thread" value="true"/>
             <property name="eclipselink.logging.exceptions" value="true"/>
-            <!-- Desativando geração de DDL pelo EclipseLink, pois agora é gerenciado pelo Flyway -->
-            <property name="eclipselink.ddl-generation" value="none"/>
+            <!-- Configuração para testes: permite geração de DDL se Flyway não criar as tabelas -->
+            <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
             <property name="eclipselink.ddl-generation.output-mode" value="database"/>
             <property name="eclipselink.target-database" value="org.eclipse.persistence.platform.database.HSQLPlatform"/>
+            <!-- Força recriação das tabelas para garantir IDENTITY correto -->
+            <property name="eclipselink.create-ddl-jdbc-file-name" value="target/createDDL.sql"/>
+            <property name="eclipselink.drop-ddl-jdbc-file-name" value="target/dropDDL.sql"/>
             
             <!-- O carregamento de dados será feito pelo Flyway via scripts de migração -->
             <!-- <property name="jakarta.persistence.sql-load-script-source" value="import.sql"/> -->
