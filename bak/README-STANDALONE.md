@@ -13,9 +13,9 @@ Este documento descreve como configurar o servidor WildFly 31 para a aplicação
 
 ## Pré-requisitos
 
-- **Java JDK 11** ou superior
-- **WildFly 31.0.1.Final** baixado e extraído
-- **Maven 3.6** ou superior para build da aplicação
+- Java JDK 11 ou superior
+- WildFly 31.0.1.Final baixado e extraído
+- Maven 3.6 ou superior para build da aplicação
 
 ## Estrutura do Projeto
 
@@ -199,17 +199,17 @@ INFO  [org.jboss.as] WildFly Full 31.0.1.Final started
 
 Após a inicialização bem-sucedida:
 
-- **Aplicação**: http://127.0.0.1:8080/csonline
-- **Console Admin**: http://127.0.0.1:9990
-- **Management HTTP**: http://127.0.0.1:9990/management
+- Aplicação: http://127.0.0.1:8080/csonline
+- Console Admin: http://127.0.0.1:9990
+- Management HTTP: http://127.0.0.1:9990/management
 
 ## Troubleshooting
 
 ### Erro: Deployment Duplicado
 
-**Sintoma**: `WFLYCTL0212: Duplicate resource [("deployment" => "hsqldb-2.7.2.jar")]`
+Sintoma: `WFLYCTL0212: Duplicate resource [("deployment" => "hsqldb-2.7.2.jar")]`
 
-**Solução**:
+Solução:
 1. Remover driver da pasta deployments
 2. Limpar cache do servidor
 
@@ -221,17 +221,17 @@ rm -rf server/wildfly-31.0.1.Final/standalone/tmp/*
 
 ### Erro: Conteúdo de Deployment Não Encontrado
 
-**Sintoma**: `No deployment content with hash [...] is available`
+Sintoma: `No deployment content with hash [...] is available`
 
-**Solução**:
+Solução:
 1. Remover seção de deployments do standalone.xml
 2. Usar apenas módulos para drivers
 
 ### Erro: Constraint de Chave Estrangeira
 
-**Sintoma**: `integrity constraint violation: foreign key no parent`
+Sintoma: `integrity constraint violation: foreign key no parent`
 
-**Solução**:
+Solução:
 1. Verificar ordem dos dados no import.sql
 2. Verificar dependências entre tabelas
 3. Usar Flyway para gerenciar migrações
@@ -260,9 +260,9 @@ grep "csonline.war" server/wildfly-31.0.1.Final/standalone/log/server.log
 
 Para desenvolvimento, considere:
 
-1. **Hot Deployment**: Habilitar scanning automático
-2. **Debug Mode**: Iniciar com debug habilitado
-3. **Logging**: Configurar nível de log adequado
+1. Hot Deployment: Habilitar scanning automático
+2. Debug Mode: Iniciar com debug habilitado
+3. Logging: Configurar nível de log adequado
 
 ### Habilitar Debug
 
@@ -282,10 +282,10 @@ Edite `standalone/configuration/logging.properties` para ajustar níveis de log.
 
 Para produção:
 
-1. **SSL/TLS**: Configurar certificados
-2. **Security**: Configurar autenticação
-3. **Performance**: Ajustar pools de conexão
-4. **Monitoring**: Configurar métricas
+1. SSL/TLS: Configurar certificados
+2. Security: Configurar autenticação
+3. Performance: Ajustar pools de conexão
+4. Monitoring: Configurar métricas
 
 ### Exemplo de Pool de Produção
 
@@ -299,6 +299,6 @@ Para produção:
 
 ---
 
-**Autor**: GitHub Copilot  
-**Data**: 03/08/2025  
-**Versão**: WildFly 31.0.1.Final
+Autor: GitHub Copilot  
+Data: 03/08/2025  
+Versão: WildFly 31.0.1.Final
