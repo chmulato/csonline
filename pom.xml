@@ -410,7 +410,7 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>8.5.13</version>
                 <configuration>
-                    <url>jdbc:hsqldb:hsql://localhost:9001/test</url>
+                    <url>jdbc:hsqldb:file:csonline</url>
                     <user>sa</user>
                     <password></password>
                     <locations>
