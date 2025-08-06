@@ -18,9 +18,9 @@ try {
 }
 
 # Test 2: GET /api/couriers/{id} (Buscar entregador por ID)
-Write-Host "`n2. Buscando entregador por ID=1 (GET /api/couriers/1):" -ForegroundColor Green
+Write-Host "`n2. Buscando entregador por ID=2 (GET /api/couriers/2):" -ForegroundColor Green
 try {
-    $response = Invoke-RestMethod -Uri "$baseUrl/1" -Method GET -ContentType "application/json"
+    $response = Invoke-RestMethod -Uri "$baseUrl/2" -Method GET -ContentType "application/json"
     Write-Host "Sucesso! Entregador encontrado:" -ForegroundColor Green
     $response | Format-Table -AutoSize
 } catch {

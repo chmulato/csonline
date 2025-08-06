@@ -5,13 +5,13 @@ $baseUrl = "http://localhost:8080/csonline/api"
 
 $endpoints = @(
     @{ Name = "Couriers (List)"; Url = "$baseUrl/couriers"; Method = "GET" },
-    @{ Name = "Couriers (ID=1)"; Url = "$baseUrl/couriers/1"; Method = "GET" },
+    @{ Name = "Couriers (ID=2)"; Url = "$baseUrl/couriers/2"; Method = "GET" },
     @{ Name = "Users (List)"; Url = "$baseUrl/users"; Method = "GET" },
-    @{ Name = "Users (ID=1)"; Url = "$baseUrl/users/1"; Method = "GET" },
+    @{ Name = "Users (ID=2)"; Url = "$baseUrl/users/2"; Method = "GET" },
     @{ Name = "Customers (List)"; Url = "$baseUrl/customers"; Method = "GET" },
-    @{ Name = "Customers (ID=1)"; Url = "$baseUrl/customers/1"; Method = "GET" },
+    @{ Name = "Customers (ID=2)"; Url = "$baseUrl/customers/2"; Method = "GET" },
     @{ Name = "Teams (List)"; Url = "$baseUrl/team"; Method = "GET" },
-    @{ Name = "Teams (ID=1)"; Url = "$baseUrl/team/1"; Method = "GET" },
+    @{ Name = "Teams (ID=2)"; Url = "$baseUrl/team/2"; Method = "GET" },
     @{ Name = "Deliveries (List)"; Url = "$baseUrl/deliveries"; Method = "GET" },
     @{ Name = "SMS (List)"; Url = "$baseUrl/sms"; Method = "GET" }
 )

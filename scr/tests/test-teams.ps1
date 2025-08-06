@@ -18,9 +18,9 @@ try {
 }
 
 # Test 2: GET /api/team/{id} (Buscar time por ID)
-Write-Host "`n2. Buscando time por ID=1 (GET /api/team/1):" -ForegroundColor Green
+Write-Host "`n2. Buscando time por ID=2 (GET /api/team/2):" -ForegroundColor Green
 try {
-    $response = Invoke-RestMethod -Uri "$baseUrl/1" -Method GET -ContentType "application/json"
+    $response = Invoke-RestMethod -Uri "$baseUrl/2" -Method GET -ContentType "application/json"
     Write-Host "Sucesso! Time encontrado:" -ForegroundColor Green
     $response | Format-Table -AutoSize
 } catch {
