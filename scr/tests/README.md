@@ -62,7 +62,7 @@ cd scr/tests
 - **Taxa de Sucesso**: 100% (6/6 endpoints principais)
 - **Endpoints de Lista**: Todos operacionais
 - **Endpoints Individuais**: Todos validados com IDs corretos (ID=2)
-- **PENDENTE**: /api/login (endpoint não implementado ainda)
+- **✅ FUNCIONANDO**: /api/login (endpoint de autenticação implementado)
 
 ### Correções Implementadas (6 de Agosto/2025)
 - **Problema identificado**: Scripts testavam ID=1 (inexistente), dados começam com ID=2

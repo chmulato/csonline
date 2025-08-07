@@ -12,6 +12,7 @@ import com.caracore.cso.controller.CustomerController;
 import com.caracore.cso.controller.DeliveryController;
 import com.caracore.cso.controller.UserController;
 import com.caracore.cso.controller.SMSController;
+import com.caracore.cso.controller.LoginController;
 
 /**
  * Configuração de recursos da API REST
@@ -30,6 +31,7 @@ public class OpenApiResourceConfig extends ResourceConfig {
         register(DeliveryController.class);
         register(UserController.class);
         register(SMSController.class);
+        register(LoginController.class);
         // Registra o recurso do Swagger/OpenAPI
         register(OpenApiResource.class);
     }

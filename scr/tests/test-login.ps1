@@ -10,8 +10,8 @@ Write-Host "=======================================" -ForegroundColor Yellow
 # Test 1: POST /api/login (Fazer login - credenciais válidas)
 Write-Host "`n1. Fazendo login com credenciais válidas (POST /api/login):" -ForegroundColor Green
 $loginRequest = @{
-    email = "admin@csonline.com"
-    password = "admin123"
+    login = "empresa"
+    password = "empresa123"
 } | ConvertTo-Json
 
 try {
@@ -25,7 +25,7 @@ try {
 # Test 2: POST /api/login (Fazer login - credenciais inválidas)
 Write-Host "`n2. Fazendo login com credenciais inválidas (POST /api/login):" -ForegroundColor Green
 $invalidLoginRequest = @{
-    email = "invalid@example.com"
+    login = "invalid@example.com"
     password = "wrongpassword"
 } | ConvertTo-Json
 
@@ -38,10 +38,10 @@ try {
 }
 
 # Test 3: POST /api/login (Teste com email vazio)
-Write-Host "`n3. Fazendo login com email vazio (POST /api/login):" -ForegroundColor Green
+Write-Host "`n3. Fazendo login com login vazio (POST /api/login):" -ForegroundColor Green
 $emptyEmailRequest = @{
-    email = ""
-    password = "admin123"
+    login = ""
+    password = "empresa123"
 } | ConvertTo-Json
 
 try {
@@ -49,13 +49,13 @@ try {
     Write-Host "Inesperado! Login realizado com email vazio:" -ForegroundColor Yellow
     $response | Format-Table -AutoSize
 } catch {
-    Write-Host "Esperado! Login negado para email vazio: $($_.Exception.Message)" -ForegroundColor Green
+    Write-Host "Esperado! Login negado para login vazio: $($_.Exception.Message)" -ForegroundColor Green
 }
 
 # Test 4: POST /api/login (Teste com password vazio)
 Write-Host "`n4. Fazendo login com password vazio (POST /api/login):" -ForegroundColor Green
 $emptyPasswordRequest = @{
-    email = "admin@csonline.com"
+    login = "empresa"
     password = ""
 } | ConvertTo-Json
 
@@ -69,7 +69,7 @@ try {
 
 # Test 5: POST /api/login (Teste com JSON malformado)
 Write-Host "`n5. Fazendo login com JSON malformado (POST /api/login):" -ForegroundColor Green
-$malformedJson = '{"email": "admin@csonline.com", "password": "admin123"'  # JSON incompleto
+$malformedJson = '{"login": "empresa", "password": "empresa123"'  # JSON incompleto
 
 try {
     $response = Invoke-RestMethod -Uri $baseUrl -Method POST -Body $malformedJson -ContentType "application/json"
