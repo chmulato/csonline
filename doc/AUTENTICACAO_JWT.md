@@ -156,7 +156,7 @@ Componente de interface para autenticação.
 - Estados de loading e erro
 - Integração com auth store
 
-## 🛡️ Segurança
+## Segurança
 
 ### Endpoints Protegidos
 
@@ -240,7 +240,7 @@ Todas as requisições para endpoints protegidos devem incluir o header:
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9...
 ```
 
-## 🧪 Testes
+## Testes
 
 ### Teste Manual via cURL
 
