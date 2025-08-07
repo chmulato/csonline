@@ -1,22 +1,22 @@
-# CSOnline JWT 2.0 - Sistema de Gestão de Entregas Enterprise
+# CSOnline - Gestão CD (Centro de Distribuição) JWT 2.0
 
-Sistema completo para gestão de entregas, entregadores, empresas (business/centros de distribuição), equipes, preços e comunicação via SMS/WhatsApp. Desenvolvido com Jakarta EE 10 no backend, Vue 3 + Vite no frontend e **autenticação JWT enterprise**.
+Sistema completo para gestão de centros de distribuição, entregas, entregadores, equipes, preços e comunicação via SMS/WhatsApp. Desenvolvido com Jakarta EE 10 no backend, Vue 3 + Vite no frontend e **autenticação JWT enterprise**.
 
 **MARCO HISTÓRICO ALCANÇADO: SEGURANÇA JWT 2.0 ENTERPRISE IMPLEMENTADA** (7 de Agosto/2025)
 
 ## Funcionalidades Implementadas
 
-### **Sistema Completo de Gestão**
+### **Sistema Completo de Gestão de Centros de Distribuição**
 
 **Frontend Vue 3 SPA - 100% Funcional com Autenticação JWT:**
 - **Sistema de Login JWT** - Autenticação Bearer Token com Pinia store
 - **Gestão de Usuários** - CRUD completo para administradores do sistema (protegido)
 - **Gestão de Entregadores** - Cadastro e controle de couriers com comissões (protegido)
-- **Gestão de Empresas (Business)** - Centros de distribuição (business) com endereços (protegido)
+- **Gestão de Centros de Distribuição** - Cadastro e controle de CDs com endereços (protegido)
 - **Gestão de Entregas** - Sistema completo com status, filtros e rastreamento (protegido)
 - **Gestão de Equipes** - Vinculação de entregadores aos centros de distribuição (protegido)
 - **Gestão de SMS/WhatsApp** - Sistema de mensagens com templates para entregas (protegido)
-- **Gestão de Preços** - Tabelas de preços por empresa (business), veículo e localização (protegido)
+- **Gestão de Preços** - Tabelas de preços por centro de distribuição, veículo e localização (protegido)
 - **Interceptors HTTP** - Injeção automática de Bearer Token em todas as requisições
 
 ### **Recursos Técnicos JWT 2.0:**
@@ -78,7 +78,7 @@ O projeto conta com uma **suite completa de testes de segurança JWT** para gara
 ### **Scripts de Teste JWT Disponíveis:**
 
 - **`test-users.ps1`** - Testa endpoints de usuários com autenticação JWT (GET, POST, PUT, DELETE)
-- **`test-customers.ps1`** - Testa endpoints de empresas com Bearer Token
+- **`test-customers.ps1`** - Testa endpoints de centros de distribuição com Bearer Token
 - **`test-couriers.ps1`** - Testa endpoints de entregadores com JWT
 - **`test-teams.ps1`** - Testa endpoints de equipes com autenticação
 - **`test-deliveries.ps1`** - Testa endpoints de entregas protegidas
@@ -115,13 +115,13 @@ O projeto conta com uma **suite completa de testes de segurança JWT** para gara
 ### **Credenciais de Teste Disponíveis:**
 
 - **admin/admin123** - Perfil administrativo
-- **empresa/empresa123** - Perfil business
+- **empresa/empresa123** - Perfil centro de distribuição
 
 ### **Status Atual dos Endpoints JWT 2.0 - 100% SEGUROS E FUNCIONAIS:**
 - **`/api/login`** - Autenticação JWT - PÚBLICO (200)
 - **`/api/health`** - Health Check - PÚBLICO (200)
 - **`/api/users`** - Gestão de usuários - PROTEGIDO JWT (200)
-- **`/api/customers`** - Gestão de empresas (business) - PROTEGIDO JWT (200)
+- **`/api/customers`** - Gestão de centros de distribuição - PROTEGIDO JWT (200)
 - **`/api/couriers`** - Gestão de entregadores - PROTEGIDO JWT (200)
 - **`/api/teams`** - Gestão de equipes - PROTEGIDO JWT (200)
 - **`/api/deliveries`** - Gestão de entregas - PROTEGIDO JWT (200)
@@ -308,7 +308,7 @@ sequenceDiagram
 - **Dashboard Principal** → Menu de navegação protegido
 - **Usuários** → Gestão de administradores (JWT)
 - **Entregadores** → Cadastro de couriers (JWT)
-- **Empresas** → Centros de distribuição (JWT)
+- **Centros de Distribuição** → Gestão de CDs (JWT)
 - **Entregas** → Controle de entregas (JWT)
 - **Equipes** → Times de entregadores (JWT)
 - **SMS/WhatsApp** → Mensagens para entregas (JWT)
@@ -318,7 +318,7 @@ sequenceDiagram
 ### **Credenciais de Teste JWT:**
 
 - **admin/admin123** - Perfil administrativo completo
-- **empresa/empresa123** - Perfil business/empresa
+- **empresa/empresa123** - Perfil centro de distribuição
 
 ## Logging e Monitoramento
 
@@ -350,7 +350,7 @@ Acesse a interface Swagger UI em:
 - **`/api/login`** - Autenticação JWT (PÚBLICO - 200)
 - **`/api/health`** - Health check do sistema (PÚBLICO - 200)
 - **`/api/users`** - Gestão de usuários (PROTEGIDO JWT - 200)
-- **`/api/customers`** - Gestão de empresas/centros de distribuição (PROTEGIDO JWT - 200)
+- **`/api/customers`** - Gestão de centros de distribuição (PROTEGIDO JWT - 200)
 - **`/api/couriers`** - Gestão de entregadores (PROTEGIDO JWT - 200)
 - **`/api/deliveries`** - Gestão de entregas (PROTEGIDO JWT - 200)
 - **`/api/teams`** - Gestão de equipes (PROTEGIDO JWT - 200)
@@ -392,7 +392,7 @@ Consulte o arquivo [doc/INDEX.md](doc/INDEX.md) para documentação detalhada do
   - `MainLayout.vue` - Layout principal com menu
   - `UserManagement.vue` - Gestão de usuários
   - `CourierManagement.vue` - Gestão de entregadores
-  - `CustomerManagement.vue` - Gestão de empresas
+  - `CustomerManagement.vue` - Gestão de centros de distribuição
   - `DeliveryManagement.vue` - Gestão de entregas
   - `TeamManagement.vue` - Gestão de equipes
   - `SMSManagement.vue` - Gestão de SMS/WhatsApp
