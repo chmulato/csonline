@@ -1,7 +1,7 @@
 
-# História do Projeto CSOnline - JWT 2.0 Enterprise
+# História do Projeto CSOnline - Gestão CD (Centro de Distribuição) JWT 2.0
 
-_Da concepção à perfeição técnica com segurança enterprise: jornada de desenvolvimento de um sistema completo e seguro._
+**Da concepção à perfeição técnica com segurança enterprise: jornada de desenvolvimento de um sistema completo e seguro para gestão de centros de distribuição.**
 
 ## I. Fundação e Arquitetura (Janeiro - Junho 2025)
 
@@ -26,7 +26,7 @@ _Da concepção à perfeição técnica com segurança enterprise: jornada de de
 
 ### **Vue 3 SPA - Sistema Completo**
 - **Arquitetura Moderna**: Single Page Application com Vite, navegação reativa e componentes modulares
-- **7 Módulos CRUD**: Usuários, Entregadores, Empresas, Entregas, Equipes, SMS/WhatsApp, Preços
+- **7 Módulos CRUD**: Usuários, Entregadores, Centros de Distribuição, Entregas, Equipes, SMS/WhatsApp, Preços
 - **Design System**: Interface responsiva com gradientes modernos, tipografia consistente e iconografia FontAwesome
 - **Experiência Avançada**: Dashboards dinâmicos, filtros múltiplos, modais inteligentes e busca textual
 
@@ -115,9 +115,9 @@ _Da concepção à perfeição técnica com segurança enterprise: jornada de de
 3. **Transações JTA vs RESOURCE_LOCAL**: Configuração flexível para múltiplos ambientes
 4. **Migrações Flyway**: Implementação de controle de versão do banco de dados
 5. **IDs de Teste Inválidos**: Alinhamento entre dados reais e scripts de validação
-6. **🔐 Endpoint Teams 404**: Correção do path `/team` para `/teams` no controller
-7. **🔐 Implementação JWT**: Integração completa de autenticação em frontend e backend
-8. **🔐 Filtro de Segurança**: Proteção automática de endpoints com configuração flexível
+5. **Endpoint Teams 404**: Correção do path `/team` para `/teams` no controller
+6. **Implementação JWT**: Integração completa de autenticação em frontend e backend
+7. **Filtro de Segurança**: Proteção automática de endpoints com configuração flexível
 
 ### **Evolução da Arquitetura de Segurança**
 - **Autenticação Centralizada**: Sistema JWT com Pinia store e interceptors HTTP
@@ -154,20 +154,20 @@ _Da concepção à perfeição técnica com segurança enterprise: jornada de de
 
 ### **Credenciais de Teste Disponíveis**
 - **Admin**: admin/admin123 (perfil administrativo)
-- **Empresa**: empresa/empresa123 (perfil business)
+- **Centro de Distribuição**: empresa/empresa123 (perfil centro de distribuição)
 - **Tokens**: Expiração de 24 horas com renovação automática
 
 ## VIII. Visão de Futuro
 
 ### **Próximas Fases de Evolução**
-1. **🔐 ~~Autenticação JWT~~**: ✅ **CONCLUÍDO** - Sistema completo implementado e testado
+1. **Autenticação JWT**: CONCLUÍDO - Sistema completo implementado e testado
 2. **Integração Frontend-Backend**: Substituição de dados simulados por APIs reais autenticadas
 3. **Autorização por Perfis**: Extensão do JWT para controle granular de permissões
 4. **Operações Avançadas**: Implementação completa de operações complexas com validação JWT
 5. **Deploy Produção**: HTTPS, SSL, certificados e monitoramento avançado com segurança JWT
 
 ### **Capacidades Estratégicas Alcançadas**
-- **🔐 Segurança Enterprise**: Sistema JWT completo com proteção automática
+- **Segurança Enterprise**: Sistema JWT completo com proteção automática
 - **Escalabilidade**: Arquitetura modular preparada para crescimento com autenticação
 - **Manutenibilidade**: Código limpo, documentação viva, padrões de segurança consistentes
 - **Flexibilidade**: Suporte a múltiplos ambientes com configuração de segurança flexível
@@ -177,14 +177,14 @@ _Da concepção à perfeição técnica com segurança enterprise: jornada de de
 
 ## A Jornada Técnica: Uma Narrativa de Evolução Segura
 
-O CSOnline representa mais que um projeto de software - é uma **jornada de evolução técnica contínua com segurança enterprise**. De uma ideia inicial a um sistema enterprise robusto e seguro, cada desafio superado fortaleceu a arquitetura e consolidou as bases para o futuro.
+O CSOnline - Gestão CD representa mais que um projeto de software - é uma **jornada de evolução técnica contínua com segurança enterprise para gestão de centros de distribuição**. De uma ideia inicial a um sistema enterprise robusto e seguro, cada desafio superado fortaleceu a arquitetura e consolidou as bases para o futuro.
 
 **Janeiro-Junho 2025**: Fundação sólida com Jakarta EE, entidades bem definidas e testes rigorosos
 **Julho 2025**: Revolução da experiência do usuário com Vue 3 SPA moderno e responsivo  
 **Agosto 2025**: Maturidade enterprise com WildFly, Flyway, testes automatizados e **100% de funcionalidade**
-**🔐 7 de Agosto 2025**: **Marco de Segurança Enterprise** - JWT 2.0 implementado com 100% de proteção
+**7 de Agosto 2025**: **Marco de Segurança Enterprise** - JWT 2.0 implementado com 100% de proteção
 
-Hoje, o CSOnline é um **sistema completo de gestão de entregas com segurança JWT enterprise** pronto para produção, testado, documentado, seguro e escalável. Uma história de excelência técnica escrita commit a commit, onde cada linha de código conta uma história de problemas enfrentados, soluções elegantes encontradas e **segurança implementada sem comprometer a usabilidade**.
+Hoje, o CSOnline é um **sistema completo de gestão de centros de distribuição com segurança JWT enterprise** pronto para produção, testado, documentado, seguro e escalável. Uma história de excelência técnica escrita commit a commit, onde cada linha de código conta uma história de problemas enfrentados, soluções elegantes encontradas e **segurança implementada sem comprometer a usabilidade**.
 
 ### **O Marco JWT 2.0: Uma Conquista Técnica**
 
@@ -195,8 +195,8 @@ A implementação da autenticação JWT representa um **marco na evolução do p
 - **Arquitetura flexível** permitindo endpoints públicos e protegidos
 - **Padrões enterprise** com tokens HMAC SHA-512 e expiração controlada
 
-O CSOnline agora combina **funcionalidade completa com segurança enterprise**, estabelecendo um novo padrão de qualidade para projetos de gestão de entregas.
+O CSOnline agora combina **funcionalidade completa com segurança enterprise**, estabelecendo um novo padrão de qualidade para projetos de gestão de centros de distribuição.
 
 ---
 
-_Sistema CSOnline: Da Visão à Realidade Enterprise Segura - Atualizado em 7 de agosto de 2025_
+**Sistema CSOnline - Gestão CD: Da Visão à Realidade Enterprise Segura - Atualizado em 7 de agosto de 2025**
