@@ -1,14 +1,14 @@
 
 # Índice de Documentos - CSOnline JWT 2.0 Enterprise
 
-> **🔐 Sistema com Segurança JWT Implementada**  
+> **Sistema com Segurança JWT Implementada**  
 > CSOnline agora opera com autenticação JWT Bearer Token, proteção de endpoints e testes de segurança completos.
 
 ## Documentação Principal
 
 1. [REGRAS_DE_NEGOCIO.md](REGRAS_DE_NEGOCIO.md) — Regras de negócio da camada de serviços, exemplos práticos.
 2. [ARQUITETURA.md](ARQUITETURA.md) — Estrutura e arquitetura do sistema backend.
-3. [**AUTENTICACAO_JWT.md**](AUTENTICACAO_JWT.md) — **🔐 Sistema de autenticação JWT: implementação, segurança e uso**.
+3. [**AUTENTICACAO_JWT.md**](AUTENTICACAO_JWT.md) — **Sistema de autenticação JWT: implementação, segurança e uso**.
 4. [MIGRACAO_BANCO_DADOS.md](MIGRACAO_BANCO_DADOS.md) — **Documentação completa sobre migrações e gerenciamento de dados com Flyway e Docker**.
 5. [CONFIG_WILDFLY.md](CONFIG_WILDFLY.md) — Guia de configuração do WildFly 31 para o projeto.
 6. [SEQUENCIA_SCRIPTS.md](SEQUENCIA_SCRIPTS.md) — Ordem recomendada de execução dos scripts do projeto.
@@ -16,7 +16,7 @@
 ## Documentação Frontend
 
 7. [ARQUITETURA_VUE.md](ARQUITETURA_VUE.md) — Introdução à arquitetura do front-end Vue.js, manutenção e controle de versões.
-8. [**FRONTEND_VUE.md**](FRONTEND_VUE.md) — **🔐 Documentação das páginas, navegação, integração JWT e segurança do SPA Vue**.
+8. [**FRONTEND_VUE.md**](FRONTEND_VUE.md) — **Documentação das páginas, navegação, integração JWT e segurança do SPA Vue**.
 
 ## Gestão e Administração
 
@@ -26,7 +26,7 @@
 ## Documentação Técnica Especializada
 
 11. [MIGRACAO_IMPORT_SQL.md](MIGRACAO_IMPORT_SQL.md) — Processo de migração do import.sql para o Flyway.
-12. [**TESTES_ENDPOINTS.md**](TESTES_ENDPOINTS.md) — **🧪 Relatório detalhado dos testes de endpoints JWT, segurança e status atual**.
+12. [**TESTES_ENDPOINTS.md**](TESTES_ENDPOINTS.md) — **Relatório detalhado dos testes de endpoints JWT, segurança e status atual**.
 13. [MODELO_DE_DADOS.md](MODELO_DE_DADOS.md) — **Diagrama e documentação detalhada das entidades, relacionamentos e boas práticas**.
 14. [README-STANDALONE.md](../bak/README-STANDALONE.md) — **Documentação completa de configuração manual do WildFly 31 com HSQLDB**.
 15. [INDEX.md](INDEX.md) — Este índice de documentos.
@@ -122,14 +122,14 @@ O banco de dados HSQLDB agora executa tanto em modo arquivo quanto container Doc
   - Health Check: http://localhost:8080/csonline/api/health (endpoint público)
 
 **Resultados dos Endpoints JWT 2.0 - 100% SEGUROS E FUNCIONAIS:**
-- **Endpoint `/login`** - Autenticação JWT - ✅ PÚBLICO (200)
-- **Endpoint `/health`** - Health Check - ✅ PÚBLICO (200)
-- **Endpoint `/users`** - Gestão de Usuários - ✅ PROTEGIDO JWT (200)
-- **Endpoint `/couriers`** - Gestão de Entregadores - ✅ PROTEGIDO JWT (200)
-- **Endpoint `/customers`** - Gestão de Clientes - ✅ PROTEGIDO JWT (200)
-- **Endpoint `/teams`** - Gestão de Equipas - ✅ PROTEGIDO JWT (200)
-- **Endpoint `/deliveries`** - Gestão de Entregas - ✅ PROTEGIDO JWT (200)
-- **Endpoint `/sms`** - Sistema de SMS - ✅ PROTEGIDO JWT (200)
+- **Endpoint `/login`** - Autenticação JWT - PÚBLICO (200)
+- **Endpoint `/health`** - Health Check - PÚBLICO (200)
+- **Endpoint `/users`** - Gestão de Usuários - PROTEGIDO JWT (200)
+- **Endpoint `/couriers`** - Gestão de Entregadores - PROTEGIDO JWT (200)
+- **Endpoint `/customers`** - Gestão de Clientes - PROTEGIDO JWT (200)
+- **Endpoint `/teams`** - Gestão de Equipas - PROTEGIDO JWT (200)
+- **Endpoint `/deliveries`** - Gestão de Entregas - PROTEGIDO JWT (200)
+- **Endpoint `/sms`** - Sistema de SMS - PROTEGIDO JWT (200)
 
 **Métricas de Segurança JWT Alcançadas:**
 - **Taxa de Segurança Total:** 100% (20/20 testes de segurança aprovados)
