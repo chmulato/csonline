@@ -40,7 +40,8 @@ Write-Host "Login: $Login" -ForegroundColor Cyan
 # Verificar se a aplicação está rodando
 Write-Host "`nVerificando se a aplicação está rodando..." -ForegroundColor Yellow
 try {
-    $healthCheck = Invoke-RestMethod -Uri "http://localhost:8080/csonline/api/couriers" -Method GET -TimeoutSec 5
+    # Testar endpoint público (HTML da aplicação) ao invés de endpoint protegido
+    $healthCheck = Invoke-RestMethod -Uri "http://localhost:8080/csonline" -Method GET -TimeoutSec 5
     Write-Host "✓ Aplicação está rodando!" -ForegroundColor Green
 } catch {
     Write-Host "✗ ERRO: Aplicação não está rodando ou não está acessível!" -ForegroundColor Red

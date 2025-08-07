@@ -16,7 +16,7 @@ param(
 
 $testsPath = Join-Path $PSScriptRoot "scr\tests"
 
-if ($Help -or $TestType -eq "help") {
+if ($Help -or ($TestType -eq "help" -and -not $JWTSecurity -and -not $HealthCheck -and -not $AllTests -and $OnlyTest -eq "")) {
     Write-Host "============================================================" -ForegroundColor Cyan
     Write-Host "SCRIPT DE CONVENIÊNCIA - TESTES CSONLINE JWT 2.0" -ForegroundColor Cyan
     Write-Host "============================================================" -ForegroundColor Cyan
