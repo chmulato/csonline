@@ -1,11 +1,33 @@
-# Script de teste para endpoints de Couriers
+# Script de teste para endpoints de Couriers com JWT
+# Versão: 2.0 - Suporte completo a JWT
 # Base URL: http://localhost:8080/csonline/api
+
+# Importar utilitário JWT
+. "$PSScriptRoot\jwt-utility.ps1"
 
 $baseUrl = "http://localhost:8080/csonline/api/couriers"
 
 Write-Host "=======================================" -ForegroundColor Yellow
-Write-Host "TESTE DE ENDPOINTS - COURIERS" -ForegroundColor Yellow
+Write-Host "TESTE DE ENDPOINTS - COURIERS JWT" -ForegroundColor Yellow
 Write-Host "=======================================" -ForegroundColor Yellow
+
+# Obter token JWT
+Write-Host "🔑 Obtendo token JWT..." -ForegroundColor Yellow
+$token = Get-JWTToken -Login "empresa" -Password "empresa123" -BaseUrl "http://localhost:8080/csonline" -Verbose
+
+if (-not $token) {
+    Write-Host "❌ Falha ao obter token JWT. Abortando testes." -ForegroundColor Red
+    exit 1
+}
+
+# Test 0: Teste de segurança - acesso sem JWT
+Write-Host "`n0. Teste de segurança - tentativa de acesso sem JWT:" -ForegroundColor Yellow
+$securityResult = Test-EndpointWithoutJWT -Url $baseUrl -Description "Couriers endpoint"
+if ($securityResult) {
+    Write-Host "✅ Segurança OK: Endpoint protegido corretamente" -ForegroundColor Green
+} else {
+    Write-Host "❌ FALHA DE SEGURANÇA: Endpoint permite acesso sem JWT!" -ForegroundColor Red
+}
 
 # Test 1: GET /api/couriers (Listar todos os entregadores)
 Write-Host "`n1. Listando todos os entregadores (GET /api/couriers):" -ForegroundColor Green

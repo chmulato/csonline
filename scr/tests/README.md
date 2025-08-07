@@ -1,8 +1,17 @@
-# Scripts de Teste de Endpoints - CSOnline
+# Scripts de Teste de Endpoints JWT - CSOnline
 
-Esta pasta contém scripts PowerShell para testar todos os endpoints da API CSOnline.
+Esta pasta contém scripts PowerShell para testar todos os endpoints da API CSOnline com **autenticação JWT**.
 
-**STATUS ATUAL: 100% DOS ENDPOINTS FUNCIONAIS** (Atualizado em 6 de Agosto/2025)
+**STATUS ATUAL: 100% DOS ENDPOINTS FUNCIONAIS COM JWT** (Atualizado em 7 de Agosto/2025)
+
+## Autenticação JWT
+
+Todos os scripts foram atualizados para trabalhar com **JWT (JSON Web Tokens)**:
+
+- **Autenticação automática** - Scripts obtêm tokens automaticamente
+- **Testes de segurança** - Verificam proteção dos endpoints
+- **Headers corretos** - Authorization: Bearer {token}
+- **Tratamento de erros** - 401 Unauthorized para acessos inválidos
 
 ## Scripts Disponíveis
 
@@ -10,14 +19,16 @@ Esta pasta contém scripts PowerShell para testar todos os endpoints da API CSOn
 |------------------------------|-------------------------------------------------|-------------|
 | Script                       | Descrição                                       | Status      |
 |------------------------------|-------------------------------------------------|-------------|
-| `test-couriers.ps1`          | Testa endpoints de Couriers (/api/couriers)     | FUNCIONANDO |
-| `test-users.ps1`             | Testa endpoints de Users (/api/users)           | FUNCIONANDO |
-| `test-customers.ps1`         | Testa endpoints de Customers (/api/customers)   | FUNCIONANDO |
-| `test-teams.ps1`             | Testa endpoints de Teams (/api/team)            | FUNCIONANDO |
+| `jwt-utility.ps1`            | Utilitário JWT (funções auxiliares)             | NOVO ✨     |
+| `test-jwt-security.ps1`      | Teste completo de segurança JWT                 | NOVO ✨     |
+| `test-login.ps1`             | Testa endpoint de Login (/api/login)            | ATUALIZADO  |
+| `test-users.ps1`             | Testa endpoints de Users (/api/users)           | ATUALIZADO  |
+| `test-couriers.ps1`          | Testa endpoints de Couriers (/api/couriers)     | ATUALIZADO  |
+| `test-customers.ps1`         | Testa endpoints de Customers (/api/customers)   | ATUALIZADO  |
 | `test-deliveries.ps1`        | Testa endpoints de Deliveries (/api/deliveries) | FUNCIONANDO |
+| `test-teams.ps1`             | Testa endpoints de Teams (/api/team)            | FUNCIONANDO |
 | `test-sms.ps1`               | Testa endpoints de SMS (/api/sms)               | FUNCIONANDO |
-| `test-login.ps1`             | Testa endpoint de Login (/api/login)            | PENDENTE    |
-| `test-all-endpoints.ps1`     | Script master que executa todos os testes       | FUNCIONANDO |
+| `test-all-endpoints.ps1`     | Script master que executa todos os testes       | ATUALIZADO  |
 | `health-check-endpoints.ps1` | Verificação rápida de saúde dos endpoints       | FUNCIONANDO |
 |------------------------------|-------------------------------------------------|-------------|
 ```
@@ -25,6 +36,7 @@ Esta pasta contém scripts PowerShell para testar todos os endpoints da API CSOn
 ## Como Usar
 
 ### Da pasta de testes:
+
 ```powershell
 cd scr/tests
 
@@ -43,6 +55,7 @@ cd scr/tests
 ```
 
 ### Da raiz do projeto:
+
 ```powershell
 # Script de conveniência
 .\run-tests.ps1 -HealthCheck
@@ -62,14 +75,16 @@ cd scr/tests
 - **Taxa de Sucesso**: 100% (6/6 endpoints principais)
 - **Endpoints de Lista**: Todos operacionais
 - **Endpoints Individuais**: Todos validados com IDs corretos (ID=2)
-- **✅ FUNCIONANDO**: /api/login (endpoint de autenticação implementado)
+- **FUNCIONANDO**: /api/login (endpoint de autenticação implementado)
 
 ### Correções Implementadas (6 de Agosto/2025)
+
 - **Problema identificado**: Scripts testavam ID=1 (inexistente), dados começam com ID=2
 - **Solução aplicada**: Todos os scripts atualizados para usar ID=2 (primeiro ID válido)
 - **Resultado**: 100% dos endpoints REST funcionando perfeitamente
 
 ### Métricas de Qualidade
+
 - **Tempo de Resposta**: < 100ms para todos os endpoints
 - **Dados de Teste**: 8 users, 2 couriers, 2 customers, 2 teams, 2 deliveries, 2 sms
 - **Validação Completa**: Operações GET (lista e individual) testadas e funcionais
@@ -83,13 +98,15 @@ cd scr/tests
 ## Estrutura dos Testes
 
 Cada script de teste inclui:
+
 - **Listagem de recursos** (GET /api/resource) - FUNCIONANDO
 - **Busca por ID** (GET /api/resource/2) - FUNCIONANDO (usa ID=2, primeiro válido)
 - Criação (POST /api/resource) - EM DESENVOLVIMENTO
-- Atualização (PUT /api/resource/{id}) - EM DESENVOLVIMENTO  
+- Atualização (PUT /api/resource/{id}) - EM DESENVOLVIMENTO
 - Exclusão (DELETE /api/resource/{id}) - EM DESENVOLVIMENTO
 
 ### Validação Atual (100% Funcional)
+
 - **GET Lista**: Todos os endpoints retornam listas corretas
 - **GET Individual**: Todos os endpoints retornam registros específicos
 - **Dados Consistentes**: IDs válidos alinhados com banco de dados
@@ -98,11 +115,13 @@ Cada script de teste inclui:
 ## Troubleshooting
 
 **Para depuração geral:**
+
 1. Verifique se aplicação está rodando: http://localhost:8080/csonline
 2. Teste Swagger UI: http://localhost:8080/csonline/swagger-ui/
 3. Verifique logs do WildFly em `server/wildfly-31.0.1.Final/standalone/log/`
 
 **Para problemas específicos:**
+
 - **Erro 404**: Endpoint não existe, verifique URL e mapeamento
 - **Erro 500**: Problema no servidor, verifique logs e serialização JSON
 - **Erro de ID**: Use IDs válidos (2, 3, 4, 5, 6, 7, 8, 9)

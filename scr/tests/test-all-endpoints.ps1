@@ -1,5 +1,6 @@
-# Script Master - Executa todos os testes de endpoints da aplicação CSOnline
-# Este script executa todos os testes dos endpoints em sequência
+# Script Master - Executa todos os testes de endpoints da aplicação CSOnline com JWT
+# Versão: 2.0 - Suporte completo a JWT
+# Este script executa todos os testes dos endpoints em sequência com autenticação JWT
 
 param(
     [switch]$SkipCouriers,
@@ -9,24 +10,32 @@ param(
     [switch]$SkipDeliveries,
     [switch]$SkipSMS,
     [switch]$SkipLogin,
-    [string]$OnlyTest = ""
+    [string]$OnlyTest = "",
+    [switch]$Verbose,
+    [string]$Login = "empresa",
+    [string]$Password = "empresa123"
 )
 
+# Importar utilitário JWT
+. "$PSScriptRoot\jwt-utility.ps1"
+
 $testScripts = @(
-    @{ Name = "Couriers"; Script = "test-couriers.ps1"; Skip = $SkipCouriers },
-    @{ Name = "Users"; Script = "test-users.ps1"; Skip = $SkipUsers },
-    @{ Name = "Customers"; Script = "test-customers.ps1"; Skip = $SkipCustomers },
-    @{ Name = "Teams"; Script = "test-teams.ps1"; Skip = $SkipTeams },
-    @{ Name = "Deliveries"; Script = "test-deliveries.ps1"; Skip = $SkipDeliveries },
-    @{ Name = "SMS"; Script = "test-sms.ps1"; Skip = $SkipSMS },
-    @{ Name = "Login"; Script = "test-login.ps1"; Skip = $SkipLogin }
+    @{ Name = "Login"; Script = "test-login.ps1"; Skip = $SkipLogin; RequiresJWT = $false },
+    @{ Name = "Users"; Script = "test-users.ps1"; Skip = $SkipUsers; RequiresJWT = $true },
+    @{ Name = "Couriers"; Script = "test-couriers.ps1"; Skip = $SkipCouriers; RequiresJWT = $true },
+    @{ Name = "Customers"; Script = "test-customers.ps1"; Skip = $SkipCustomers; RequiresJWT = $true },
+    @{ Name = "Deliveries"; Script = "test-deliveries.ps1"; Skip = $SkipDeliveries; RequiresJWT = $true },
+    @{ Name = "Teams"; Script = "test-teams.ps1"; Skip = $SkipTeams; RequiresJWT = $true },
+    @{ Name = "SMS"; Script = "test-sms.ps1"; Skip = $SkipSMS; RequiresJWT = $true }
 )
 
 Write-Host "============================================================" -ForegroundColor Cyan
-Write-Host "TESTE COMPLETO DE ENDPOINTS - CSONLINE API" -ForegroundColor Cyan
+Write-Host "TESTE COMPLETO DE ENDPOINTS - CSONLINE API JWT" -ForegroundColor Cyan
 Write-Host "============================================================" -ForegroundColor Cyan
 Write-Host "Data/Hora: $(Get-Date)" -ForegroundColor Cyan
 Write-Host "Base URL: http://localhost:8080/csonline/api" -ForegroundColor Cyan
+Write-Host "Autenticação: JWT Bearer Token" -ForegroundColor Cyan
+Write-Host "Login: $Login" -ForegroundColor Cyan
 
 # Verificar se a aplicação está rodando
 Write-Host "`nVerificando se a aplicação está rodando..." -ForegroundColor Yellow

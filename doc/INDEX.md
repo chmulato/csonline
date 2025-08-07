@@ -5,27 +5,28 @@
 
 1. [REGRAS_DE_NEGOCIO.md](REGRAS_DE_NEGOCIO.md) — Regras de negócio da camada de serviços, exemplos práticos.
 2. [ARQUITETURA.md](ARQUITETURA.md) — Estrutura e arquitetura do sistema backend.
-3. [MIGRACAO_BANCO_DADOS.md](MIGRACAO_BANCO_DADOS.md) — **Documentação completa sobre migrações e gerenciamento de dados com Flyway e Docker**.
-4. [CONFIG_WILDFLY.md](CONFIG_WILDFLY.md) — Guia de configuração do WildFly 31 para o projeto.
-5. [SEQUENCIA_SCRIPTS.md](SEQUENCIA_SCRIPTS.md) — Ordem recomendada de execução dos scripts do projeto.
+3. [AUTENTICACAO_JWT.md](AUTENTICACAO_JWT.md) — **Sistema de autenticação JWT: implementação, segurança e uso**.
+4. [MIGRACAO_BANCO_DADOS.md](MIGRACAO_BANCO_DADOS.md) — **Documentação completa sobre migrações e gerenciamento de dados com Flyway e Docker**.
+5. [CONFIG_WILDFLY.md](CONFIG_WILDFLY.md) — Guia de configuração do WildFly 31 para o projeto.
+6. [SEQUENCIA_SCRIPTS.md](SEQUENCIA_SCRIPTS.md) — Ordem recomendada de execução dos scripts do projeto.
 
 ## Documentação Frontend
 
-6. [ARQUITETURA_VUE.md](ARQUITETURA_VUE.md) — Introdução à arquitetura do front-end Vue.js, manutenção e controle de versões.
-7. [FRONTEND_VUE.md](FRONTEND_VUE.md) — Documentação das páginas, navegação, integração e segurança do SPA Vue.
+7. [ARQUITETURA_VUE.md](ARQUITETURA_VUE.md) — Introdução à arquitetura do front-end Vue.js, manutenção e controle de versões.
+8. [FRONTEND_VUE.md](FRONTEND_VUE.md) — Documentação das páginas, navegação, integração e segurança do SPA Vue.
 
 ## Gestão e Administração
 
-8. [HISTORIA_DO_PROJETO.md](HISTORIA_DO_PROJETO.md) — Linha do tempo, decisões e evolução do projeto.
-9. [WILDFLY_USO.md](WILDFLY_USO.md) — Guia de uso, administração e boas práticas do servidor WildFly 31.
+9. [HISTORIA_DO_PROJETO.md](HISTORIA_DO_PROJETO.md) — Linha do tempo, decisões e evolução do projeto.
+10. [WILDFLY_USO.md](WILDFLY_USO.md) — Guia de uso, administração e boas práticas do servidor WildFly 31.
 
 ## Documentação Técnica Especializada
 
-10. [MIGRACAO_IMPORT_SQL.md](MIGRACAO_IMPORT_SQL.md) — Processo de migração do import.sql para o Flyway.
-11. [TESTES_ENDPOINTS.md](TESTES_ENDPOINTS.md) — **Relatório detalhado dos testes de endpoints, status atual e correções implementadas**.
-12. [MODELO_DE_DADOS.md](MODELO_DE_DADOS.md) — **Diagrama e documentação detalhada das entidades, relacionamentos e boas práticas**.
-13. [README-STANDALONE.md](../bak/README-STANDALONE.md) — **Documentação completa de configuração manual do WildFly 31 com HSQLDB**.
-14. [INDEX.md](INDEX.md) — Este índice de documentos.
+11. [MIGRACAO_IMPORT_SQL.md](MIGRACAO_IMPORT_SQL.md) — Processo de migração do import.sql para o Flyway.
+12. [TESTES_ENDPOINTS.md](TESTES_ENDPOINTS.md) — **Relatório detalhado dos testes de endpoints, status atual e correções implementadas**.
+13. [MODELO_DE_DADOS.md](MODELO_DE_DADOS.md) — **Diagrama e documentação detalhada das entidades, relacionamentos e boas práticas**.
+14. [README-STANDALONE.md](../bak/README-STANDALONE.md) — **Documentação completa de configuração manual do WildFly 31 com HSQLDB**.
+15. [INDEX.md](INDEX.md) — Este índice de documentos.
 
 ## Scripts e Automação
 

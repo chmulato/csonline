@@ -1,10 +1,14 @@
-# Script de teste para endpoint de Login
+# Script de teste para endpoint de Login com JWT
+# Versão: 2.0 - Suporte completo a JWT
 # Base URL: http://localhost:8080/csonline/api
+
+# Importar utilitário JWT
+. "$PSScriptRoot\jwt-utility.ps1"
 
 $baseUrl = "http://localhost:8080/csonline/api/login"
 
 Write-Host "=======================================" -ForegroundColor Yellow
-Write-Host "TESTE DE ENDPOINTS - LOGIN" -ForegroundColor Yellow
+Write-Host "TESTE DE ENDPOINTS - LOGIN JWT" -ForegroundColor Yellow
 Write-Host "=======================================" -ForegroundColor Yellow
 
 # Test 1: POST /api/login (Fazer login - credenciais válidas)
@@ -16,10 +20,19 @@ $loginRequest = @{
 
 try {
     $response = Invoke-RestMethod -Uri $baseUrl -Method POST -Body $loginRequest -ContentType "application/json"
-    Write-Host "Sucesso! Login realizado:" -ForegroundColor Green
-    $response | Format-Table -AutoSize
+    Write-Host "✅ Sucesso! Login realizado com JWT:" -ForegroundColor Green
+    Write-Host "Token: $($response.token.Substring(0,50))..." -ForegroundColor Cyan
+    Write-Host "Tipo: $($response.tokenType)" -ForegroundColor Cyan
+    Write-Host "Usuario ID: $($response.user.id)" -ForegroundColor Cyan
+    Write-Host "Nome: $($response.user.name)" -ForegroundColor Cyan
+    Write-Host "Login: $($response.user.login)" -ForegroundColor Cyan
+    Write-Host "Role: $($response.user.role)" -ForegroundColor Cyan
+    Write-Host "Expira em: $($response.expiresIn) segundos" -ForegroundColor Cyan
+    
+    # Salvar token para outros testes
+    $global:JWTToken = $response.token
 } catch {
-    Write-Host "Erro: $($_.Exception.Message)" -ForegroundColor Red
+    Write-Host "❌ Erro: $($_.Exception.Message)" -ForegroundColor Red
 }
 
 # Test 2: POST /api/login (Fazer login - credenciais inválidas)

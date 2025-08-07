@@ -1,9 +1,10 @@
 package com.caracore.cso.controller;
 
 import com.caracore.cso.dto.LoginDTO;
-import com.caracore.cso.dto.UserDTO;
+import com.caracore.cso.dto.LoginResponseDTO;
 import com.caracore.cso.entity.User;
 import com.caracore.cso.service.LoginService;
+import com.caracore.cso.util.JwtUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -34,18 +35,32 @@ public class LoginController {
     public Response login(LoginDTO loginDTO) {
         try {
             User user = loginService.authenticate(loginDTO.getLogin(), loginDTO.getPassword());
-            UserDTO userDTO = new UserDTO();
-            userDTO.setId(user.getId());
-            userDTO.setName(user.getName());
-            userDTO.setLogin(user.getLogin());
-            userDTO.setRole(user.getRole());
-            return Response.ok(userDTO).build();
+            
+            // Gerar JWT token
+            String token = JwtUtil.generateToken(user.getLogin(), user.getRole(), user.getId());
+            
+            // Criar resposta com token
+            LoginResponseDTO response = new LoginResponseDTO(
+                token, 
+                user.getId(), 
+                user.getName(), 
+                user.getLogin(), 
+                user.getRole()
+            );
+            
+            logger.info("Login bem-sucedido para usuário: {}", loginDTO.getLogin());
+            return Response.ok(response).build();
+            
         } catch (SecurityException e) {
             logger.warn("Login inválido para usuário: {}", loginDTO.getLogin());
-            return Response.status(Response.Status.UNAUTHORIZED).entity("Login ou senha inválidos").build();
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("{\"error\":\"Login ou senha inválidos\"}")
+                    .build();
         } catch (Exception e) {
             logger.error("Erro ao autenticar login", e);
-            return Response.serverError().entity("Erro ao autenticar login").build();
+            return Response.serverError()
+                    .entity("{\"error\":\"Erro interno do servidor\"}")
+                    .build();
         }
     }
 }
