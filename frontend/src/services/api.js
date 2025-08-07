@@ -4,7 +4,7 @@ import { useAuthStore } from '../stores/auth'
  * Interceptor HTTP para adicionar JWT token automaticamente
  */
 export class ApiClient {
-  constructor(baseURL = '/csonline/api') {
+  constructor(baseURL = import.meta.env.DEV ? 'http://localhost:8080/csonline/api' : '/csonline/api') {
     this.baseURL = baseURL
   }
 
