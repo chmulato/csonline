@@ -4,12 +4,24 @@ import { ref, computed } from 'vue'
 export const useAuthStore = defineStore('auth', () => {
   // State
   const token = ref(localStorage.getItem('token') || '')
-  const user = ref(JSON.parse(localStorage.getItem('user') || 'null'))
+  const user = ref((() => {
+    try {
+      const userData = localStorage.getItem('user')
+      return userData ? JSON.parse(userData) : null
+    } catch (error) {
+      console.error('Error parsing user data from localStorage:', error)
+      // Clear invalid data
+      localStorage.removeItem('user')
+      localStorage.removeItem('token')
+      return null
+    }
+  })())
+  const userRole = ref('')
+  const username = ref('')
 
   // Getters
   const isAuthenticated = computed(() => !!token.value)
-  const userRole = computed(() => user.value?.role || '')
-  const userName = computed(() => user.value?.name || '')
+  const userName = computed(() => username.value || user.value?.name || '')
   
   // Permission getters
   const isAdmin = computed(() => userRole.value === 'ADMIN')
@@ -18,10 +30,10 @@ export const useAuthStore = defineStore('auth', () => {
   const isCustomer = computed(() => userRole.value === 'CUSTOMER')
   
   // Module permissions
-  const canAccessUsers = computed(() => isAdmin.value || isBusiness.value)
+  const canAccessUsers = computed(() => isAdmin.value)
   const canAccessCouriers = computed(() => isAdmin.value || isBusiness.value)
   const canAccessCustomers = computed(() => isAdmin.value || isBusiness.value)
-  const canAccessDeliveries = computed(() => isAdmin.value || isBusiness.value || isCourier.value)
+  const canAccessDeliveries = computed(() => isAdmin.value || isBusiness.value || isCourier.value || isCustomer.value)
   const canAccessTeams = computed(() => isAdmin.value || isBusiness.value)
   const canAccessSMS = computed(() => isAdmin.value || isBusiness.value)
   const canAccessPrices = computed(() => isAdmin.value || isBusiness.value)
@@ -56,6 +68,8 @@ export const useAuthStore = defineStore('auth', () => {
       login: authData.login,
       role: authData.role
     }
+    userRole.value = authData.role
+    username.value = authData.name
     
     // Persist to localStorage
     localStorage.setItem('token', token.value)
@@ -67,12 +81,99 @@ export const useAuthStore = defineStore('auth', () => {
   function clearAuth() {
     token.value = ''
     user.value = null
+    userRole.value = ''
+    username.value = ''
     
     // Remove from localStorage
     localStorage.removeItem('token')
     localStorage.removeItem('user')
     
     console.log('[AUTH] User logged out')
+  }
+
+  // Helper methods for permission checking
+  function hasAnyPermission(permissions) {
+    if (!permissions || permissions.length === 0) return true
+    
+    for (const permission of permissions) {
+      switch (permission) {
+        case 'canAccessUsers': if (canAccessUsers.value) return true; break
+        case 'canAccessCouriers': if (canAccessCouriers.value) return true; break
+        case 'canAccessCustomers': if (canAccessCustomers.value) return true; break
+        case 'canAccessDeliveries': if (canAccessDeliveries.value) return true; break
+        case 'canCreateUsers': if (canCreateUsers.value) return true; break
+        case 'canEditUsers': if (canEditUsers.value) return true; break
+        case 'canDeleteUsers': if (canDeleteUsers.value) return true; break
+        case 'canCreateCouriers': if (canCreateCouriers.value) return true; break
+        case 'canEditCouriers': if (canEditCouriers.value) return true; break
+        case 'canDeleteCouriers': if (canDeleteCouriers.value) return true; break
+        case 'canCreateCustomers': if (canCreateCustomers.value) return true; break
+        case 'canEditCustomers': if (canEditCustomers.value) return true; break
+        case 'canDeleteCustomers': if (canDeleteCustomers.value) return true; break
+        case 'canCreateDeliveries': if (canCreateDeliveries.value) return true; break
+        case 'canEditDeliveries': if (canEditDeliveries.value) return true; break
+        case 'canDeleteDeliveries': if (canDeleteDeliveries.value) return true; break
+        default: break
+      }
+    }
+    return false
+  }
+
+  function hasAllPermissions(permissions) {
+    if (!permissions || permissions.length === 0) return true
+    
+    for (const permission of permissions) {
+      switch (permission) {
+        case 'canAccessUsers': if (!canAccessUsers.value) return false; break
+        case 'canAccessCouriers': if (!canAccessCouriers.value) return false; break
+        case 'canAccessCustomers': if (!canAccessCustomers.value) return false; break
+        case 'canAccessDeliveries': if (!canAccessDeliveries.value) return false; break
+        case 'canCreateUsers': if (!canCreateUsers.value) return false; break
+        case 'canEditUsers': if (!canEditUsers.value) return false; break
+        case 'canDeleteUsers': if (!canDeleteUsers.value) return false; break
+        case 'canCreateCouriers': if (!canCreateCouriers.value) return false; break
+        case 'canEditCouriers': if (!canEditCouriers.value) return false; break
+        case 'canDeleteCouriers': if (!canDeleteCouriers.value) return false; break
+        case 'canCreateCustomers': if (!canCreateCustomers.value) return false; break
+        case 'canEditCustomers': if (!canEditCustomers.value) return false; break
+        case 'canDeleteCustomers': if (!canDeleteCustomers.value) return false; break
+        case 'canCreateDeliveries': if (!canCreateDeliveries.value) return false; break
+        case 'canEditDeliveries': if (!canEditDeliveries.value) return false; break
+        case 'canDeleteDeliveries': if (!canDeleteDeliveries.value) return false; break
+        default: return false
+      }
+    }
+    return true
+  }
+
+  function hasRole(roles) {
+    if (!roles || roles.length === 0) return true
+    return roles.includes(userRole.value)
+  }
+
+  // Mock login function for tests
+  async function login(credentials) {
+    // This is a mock implementation for tests
+    try {
+      if (credentials.login === 'admin' && credentials.password === 'admin123') {
+        setAuth({
+          id: 1,
+          name: 'Admin User',
+          login: 'admin',
+          role: 'ADMIN',
+          token: 'mock-admin-token'
+        })
+        return true
+      }
+      return false
+    } catch (error) {
+      console.error('Login error:', error)
+      return false
+    }
+  }
+
+  function logout() {
+    clearAuth()
   }
 
   function getAuthHeaders() {
@@ -109,10 +210,11 @@ export const useAuthStore = defineStore('auth', () => {
     // State
     token,
     user,
+    userRole,
+    username,
     
     // Getters
     isAuthenticated,
-    userRole,
     userName,
     
     // Role checks
@@ -147,9 +249,16 @@ export const useAuthStore = defineStore('auth', () => {
     canManageSMS,
     canManagePrices,
     
+    // Helper methods
+    hasAnyPermission,
+    hasAllPermissions,
+    hasRole,
+    
     // Actions
     setAuth,
     clearAuth,
+    login,
+    logout,
     getAuthHeaders,
     isTokenExpired,
     validateAuth

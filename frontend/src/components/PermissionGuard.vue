@@ -1,12 +1,14 @@
 <template>
-  <div v-if="hasPermission">
-    <slot />
-  </div>
-  <div v-else-if="showDenied" class="permission-denied">
-    <h3>Acesso Negado</h3>
-    <p>Você não tem permissão para acessar esta funcionalidade.</p>
-    <p><strong>Seu perfil:</strong> {{ authStore.userRole }}</p>
-    <p><strong>Permissão necessária:</strong> {{ requiredRole || requiredPermission }}</p>
+  <div>
+    <div v-if="hasPermission">
+      <slot />
+    </div>
+    <div v-else-if="showDenied" class="permission-denied">
+      <h3>Acesso Negado</h3>
+      <p>{{ deniedMessage || 'Você não tem permissão para acessar esta funcionalidade.' }}</p>
+      <p><strong>Seu perfil:</strong> {{ authStore.userRole }}</p>
+      <p><strong>Permissão necessária:</strong> {{ requiredRole || requiredPermission }}</p>
+    </div>
   </div>
 </template>
 
@@ -30,12 +32,21 @@ const props = defineProps({
   showDenied: {
     type: Boolean,
     default: true
+  },
+  deniedMessage: {
+    type: String,
+    default: null
   }
 });
 
 const authStore = useAuthStore();
 
 const hasPermission = computed(() => {
+  // Se não está autenticado, negar acesso
+  if (!authStore.isAuthenticated) {
+    return false;
+  }
+
   // Se não há requisitos, sempre permite
   if (!props.requiredRole && !props.requiredPermission && props.requireAny.length === 0) {
     return true;
