@@ -14,14 +14,21 @@ import org.slf4j.LoggerFactory;
 import com.caracore.cso.util.TestDataFactory;
 import jakarta.persistence.EntityManager;
 import java.util.List;
+import com.caracore.cso.service.TestableUserService;
+import com.caracore.cso.service.TestableTeamService;
+import com.caracore.cso.service.TestableCourierService;
+import com.caracore.cso.service.TestableCustomerService;
+import com.caracore.cso.service.TestableDeliveryService;
+import com.caracore.cso.service.TestablePriceService;
+import com.caracore.cso.service.TestableSMSService;
 
 class SMSServiceTest {
     private static final Logger logger = LoggerFactory.getLogger(SMSServiceTest.class);
-    private SMSService service;
+    private TestableSMSService service;
     @Test
     void testDeleteSMSWithDeliveryReference() {
         try {
-            UserService userService = new UserService();
+            TestableUserService userService = new TestableUserService(true);
             User business = TestDataFactory.createUser("BUSINESS");
             userService.save(business);
             business = userService.findByLogin(business.getLogin());
@@ -31,13 +38,13 @@ class SMSServiceTest {
             courierUser = userService.findByLogin(courierUser.getLogin());
 
             Courier courier = TestDataFactory.createCourier(business, courierUser);
-            new CourierService().save(courier);
-            List<Courier> couriers = new CourierService().findAllByBusiness(business.getId());
+            new TestableCourierService(true).save(courier);
+            List<Courier> couriers = new TestableCourierService(true).findByBusiness(business.getId());
             if (!couriers.isEmpty()) courier = couriers.get(0);
 
             Delivery delivery = TestDataFactory.createDelivery(business, courier);
-            new DeliveryService().save(delivery);
-            List<Delivery> deliveries = new DeliveryService().findAllByBusiness(business.getId());
+            new TestableDeliveryService(true).save(delivery);
+            List<Delivery> deliveries = new TestableDeliveryService(true).findByBusiness(business.getId());
             if (!deliveries.isEmpty()) delivery = deliveries.get(0);
 
             SMS sms = TestDataFactory.createSMS(delivery);
@@ -55,15 +62,15 @@ class SMSServiceTest {
 
     @BeforeEach
     void setUp() {
-        EntityManager em = com.caracore.cso.repository.JPAUtil.getEntityManager();
+        EntityManager em = com.caracore.cso.repository.TestJPAUtil.getEntityManager();
         try {
             com.caracore.cso.util.TestDatabaseUtil.clearDatabase(em);
         } finally {
             em.close();
         }
         try {
-            service = new SMSService();
-            UserService userService = new UserService();
+            service = new TestableSMSService(true);
+            TestableUserService userService = new TestableUserService(true);
             User business = TestDataFactory.createUser("BUSINESS");
             userService.save(business);
             business = userService.findByLogin(business.getLogin());
@@ -73,12 +80,12 @@ class SMSServiceTest {
             courierUser = userService.findByLogin(courierUser.getLogin());
 
             Courier courier = TestDataFactory.createCourier(business, courierUser);
-            new CourierService().save(courier);
-            List<Courier> couriers = new CourierService().findAllByBusiness(business.getId());
+            new TestableCourierService(true).save(courier);
+            List<Courier> couriers = new TestableCourierService(true).findByBusiness(business.getId());
             if (!couriers.isEmpty()) courier = couriers.get(0);
 
             Delivery delivery = TestDataFactory.createDelivery(business, courier);
-            new DeliveryService().save(delivery);
+            new TestableDeliveryService(true).save(delivery);
         } catch (Exception e) {
             logger.error("Erro ao preparar o teste SMSServiceTest", e);
             throw e;
@@ -101,7 +108,7 @@ class SMSServiceTest {
     void testSendAndGetDeliverySMS() {
         try {
             // Cria toda a cadeia de entidades necessárias
-            UserService userService = new UserService();
+            TestableUserService userService = new TestableUserService(true);
             User business = TestDataFactory.createUser("BUSINESS");
             userService.save(business);
             business = userService.findByLogin(business.getLogin());
@@ -111,13 +118,13 @@ class SMSServiceTest {
             courierUser = userService.findByLogin(courierUser.getLogin());
 
             Courier courier = TestDataFactory.createCourier(business, courierUser);
-            new CourierService().save(courier);
-            List<Courier> couriers = new CourierService().findAllByBusiness(business.getId());
+            new TestableCourierService(true).save(courier);
+            List<Courier> couriers = new TestableCourierService(true).findByBusiness(business.getId());
             if (!couriers.isEmpty()) courier = couriers.get(0);
 
             Delivery delivery = TestDataFactory.createDelivery(business, courier);
-            new DeliveryService().save(delivery);
-            List<Delivery> deliveries = new DeliveryService().findAllByBusiness(business.getId());
+            new TestableDeliveryService(true).save(delivery);
+            List<Delivery> deliveries = new TestableDeliveryService(true).findByBusiness(business.getId());
             if (!deliveries.isEmpty()) delivery = deliveries.get(0);
 
             Long deliveryId = delivery.getId();
@@ -150,3 +157,8 @@ class SMSServiceTest {
 
     // Outros testes podem ser criados para findAllByDelivery, updateDeliveryId, etc.
 }
+
+
+
+
+

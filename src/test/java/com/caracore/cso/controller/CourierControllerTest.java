@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.caracore.cso.util.TestDatabaseUtil;
 import com.caracore.cso.util.TestDataFactory;
-import com.caracore.cso.repository.JPAUtil;
+import com.caracore.cso.repository.TestJPAUtil;
 import org.junit.jupiter.api.BeforeEach;
 
 public class CourierControllerTest extends JerseyTest {
@@ -19,7 +19,7 @@ public class CourierControllerTest extends JerseyTest {
 
     @BeforeEach
     void cleanDatabase() {
-        jakarta.persistence.EntityManager em = JPAUtil.getEntityManager();
+        jakarta.persistence.EntityManager em = TestJPAUtil.getEntityManager();
         TestDatabaseUtil.clearDatabase(em);
         em.close();
     }
@@ -113,3 +113,7 @@ public class CourierControllerTest extends JerseyTest {
         }
     }
 }
+
+
+
+

@@ -3,7 +3,7 @@ package com.caracore.cso.controller;
 import com.caracore.cso.entity.Team;
 import com.caracore.cso.entity.User;
 import com.caracore.cso.entity.Courier;
-import com.caracore.cso.repository.JPAUtil;
+import com.caracore.cso.repository.TestJPAUtil;
 import com.caracore.cso.service.UserServiceTestHelper;
 import com.caracore.cso.service.CourierService;
 import com.caracore.cso.util.TestDataFactory;
@@ -16,12 +16,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import com.caracore.cso.service.TestableUserService;
+import com.caracore.cso.service.TestableTeamService;
+import com.caracore.cso.service.TestableCourierService;
+import com.caracore.cso.service.TestableCustomerService;
+import com.caracore.cso.service.TestableDeliveryService;
+import com.caracore.cso.service.TestablePriceService;
+import com.caracore.cso.service.TestableSMSService;
 
 public class TeamControllerTest extends JerseyTest {
 
     @BeforeEach
     void cleanDatabase() {
-        jakarta.persistence.EntityManager em = JPAUtil.getEntityManager();
+        jakarta.persistence.EntityManager em = TestJPAUtil.getEntityManager();
         TestDatabaseUtil.clearDatabase(em);
         em.close();
     }
@@ -42,7 +49,7 @@ public class TeamControllerTest extends JerseyTest {
         
         // Cria um courier
         Courier courier = TestDataFactory.createCourier(business, courierUser);
-        new CourierService().save(courier);
+        new TestableCourierService(true).save(courier);
         
         Team team = TestDataFactory.createTeam(business, courier);
 
@@ -75,7 +82,7 @@ public class TeamControllerTest extends JerseyTest {
         
         // Cria um courier
         Courier courier = TestDataFactory.createCourier(business, courierUser);
-        new CourierService().save(courier);
+        new TestableCourierService(true).save(courier);
         
         Team team = TestDataFactory.createTeam(business, courier);
         team.setFactorCourier(2.0);
@@ -100,7 +107,7 @@ public class TeamControllerTest extends JerseyTest {
         
         // Cria um courier
         Courier courier = TestDataFactory.createCourier(business, courierUser);
-        new CourierService().save(courier);
+        new TestableCourierService(true).save(courier);
         
         Team team = TestDataFactory.createTeam(business, courier);
         team.setFactorCourier(4.0);
@@ -123,7 +130,7 @@ public class TeamControllerTest extends JerseyTest {
         
         // Cria um courier
         Courier courier2 = TestDataFactory.createCourier(business2, courierUser2);
-        new CourierService().save(courier2);
+        new TestableCourierService(true).save(courier2);
         
         Team team1 = TestDataFactory.createTeam(business2, courier2);
         Team team2 = TestDataFactory.createTeam(business2, courier2);
@@ -143,7 +150,7 @@ public class TeamControllerTest extends JerseyTest {
         
         // Cria um courier
         Courier courier = TestDataFactory.createCourier(business, courierUser);
-        new CourierService().save(courier);
+        new TestableCourierService(true).save(courier);
         
         Team team = TestDataFactory.createTeam(business, courier);
         team.setFactorCourier(4.0);
@@ -157,3 +164,7 @@ public class TeamControllerTest extends JerseyTest {
         assertEquals(Response.Status.NOT_FOUND.getStatusCode(), getResponse.getStatus());
     }
 }
+
+
+
+

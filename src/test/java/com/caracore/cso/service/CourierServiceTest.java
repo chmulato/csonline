@@ -12,26 +12,33 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.caracore.cso.util.TestDatabaseUtil;
-import com.caracore.cso.repository.JPAUtil;
+import com.caracore.cso.repository.TestJPAUtil;
 import jakarta.persistence.EntityManager;
 import com.caracore.cso.util.TestDataFactory;
 import java.util.List;
+import com.caracore.cso.service.TestableUserService;
+import com.caracore.cso.service.TestableTeamService;
+import com.caracore.cso.service.TestableCourierService;
+import com.caracore.cso.service.TestableCustomerService;
+import com.caracore.cso.service.TestableDeliveryService;
+import com.caracore.cso.service.TestablePriceService;
+import com.caracore.cso.service.TestableSMSService;
 
 class CourierServiceTest {
     private static final Logger logger = LoggerFactory.getLogger(CourierServiceTest.class);
-    private CourierService service;
+    private TestableCourierService service;
 
     @BeforeEach
     void setUp() {
-        EntityManager em = JPAUtil.getEntityManager();
+        EntityManager em = TestJPAUtil.getEntityManager();
         try {
             TestDatabaseUtil.clearDatabase(em);
         } finally {
             em.close();
         }
         try {
-            service = new CourierService();
-            UserService userService = new UserService();
+            service = new TestableCourierService(true);
+            TestableUserService userService = new TestableUserService(true);
 
             User business = TestDataFactory.createUser("BUSINESS");
             userService.save(business);
@@ -43,10 +50,10 @@ class CourierServiceTest {
 
             Courier courier = TestDataFactory.createCourier(business, courierUser);
             service.save(courier);
-            List<Courier> couriers = service.findAllByBusiness(business.getId());
+            List<Courier> couriers = service.findByBusiness(business.getId());
             if (!couriers.isEmpty()) courier = couriers.get(0);
 
-            DeliveryService deliveryService = new DeliveryService();
+            TestableDeliveryService deliveryService = new TestableDeliveryService(true);
             Delivery delivery = TestDataFactory.createDelivery(business, courier);
             deliveryService.save(delivery);
             // Store IDs for use in tests
@@ -60,7 +67,7 @@ class CourierServiceTest {
     @Test
     void testDeleteCourierWithDeliveryReference() {
         try {
-            UserService userService = new UserService();
+            TestableUserService userService = new TestableUserService(true);
             User business = TestDataFactory.createUser("BUSINESS");
             userService.save(business);
             business = userService.findByLogin(business.getLogin());
@@ -71,13 +78,13 @@ class CourierServiceTest {
 
             Courier courier = TestDataFactory.createCourier(business, courierUser);
             service.save(courier);
-            List<Courier> couriers = service.findAllByBusiness(business.getId());
+            List<Courier> couriers = service.findByBusiness(business.getId());
             final Long courierId = !couriers.isEmpty() ? couriers.get(0).getId() : null;
 
             Delivery delivery = TestDataFactory.createDelivery(business, courier);
-            new DeliveryService().save(delivery);
+            new TestableDeliveryService(true).save(delivery);
 
-            RuntimeException ex = assertThrows(RuntimeException.class, () -> service.delete(courierId));
+            RuntimeException ex = assertThrows(RuntimeException.class, () -> service.deleteById(courierId));
             assertTrue(ex.getMessage().contains("Não foi possível deletar o entregador") || ex.getMessage().contains("vínculos"));
         } catch (Exception e) {
             logger.error("Erro durante o teste testDeleteCourierWithDeliveryReference", e);
@@ -96,7 +103,7 @@ class CourierServiceTest {
         if (courier != null) {
             System.out.println("Courier.user: " + courier.getUser());
         }
-        DeliveryService deliveryService = new DeliveryService();
+        TestableDeliveryService deliveryService = new TestableDeliveryService(true);
         Delivery delivery = deliveryService.findAll().stream().findFirst().orElse(null);
         System.out.println("Delivery: " + delivery);
         if (delivery != null) {
@@ -118,9 +125,9 @@ class CourierServiceTest {
     }
 
     @Test
-    void testFindAllByBusiness() {
+    void testfindByBusiness() {
         Long businessId = Long.valueOf(System.getProperty("test.business.id", "1"));
-        List<Courier> couriers = service.findAllByBusiness(businessId);
+        List<Courier> couriers = service.findByBusiness(businessId);
         assertNotNull(couriers);
         assertTrue(couriers.size() >= 1);
     }
@@ -137,7 +144,7 @@ class CourierServiceTest {
 
     @Test
     void testCanAccessDelivery() {
-        DeliveryService deliveryService = new DeliveryService();
+        TestableDeliveryService deliveryService = new TestableDeliveryService(true);
         Delivery delivery = deliveryService.findAll().stream().findFirst().orElse(null);
         assertNotNull(delivery);
         Courier courier = delivery.getCourier();
@@ -148,3 +155,8 @@ class CourierServiceTest {
         assertTrue(canAccess);
     }
 }
+
+
+
+
+

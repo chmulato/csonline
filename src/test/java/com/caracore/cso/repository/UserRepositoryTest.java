@@ -18,7 +18,7 @@ class UserRepositoryTest {
     @BeforeEach
     void setUp() {
         try {
-            em = JPAUtil.getEntityManager();
+            em = TestJPAUtil.getEntityManager();
             em.getTransaction().begin();
             // Limpa a tabela antes de cada teste para garantir isolamento
             em.createQuery("DELETE FROM User").executeUpdate();
@@ -69,3 +69,5 @@ class UserRepositoryTest {
         }
     }
 }
+
+

@@ -20,7 +20,7 @@ public class TeamRepositoryTest {
     @BeforeEach
     void setUp() {
         try {
-            em = com.caracore.cso.repository.JPAUtil.getEntityManager();
+            em = com.caracore.cso.repository.TestJPAUtil.getEntityManager();
             teamRepository = new TeamRepository(em);
             em.getTransaction().begin();
             em.createQuery("DELETE FROM Team").executeUpdate();
@@ -155,3 +155,6 @@ public class TeamRepositoryTest {
         }
     }
 }
+
+
+

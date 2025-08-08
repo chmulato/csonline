@@ -1,7 +1,7 @@
 package com.caracore.cso.service;
 
 import com.caracore.cso.entity.User;
-import com.caracore.cso.repository.JPAUtil;
+import com.caracore.cso.repository.TestJPAUtil;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.*;
 
@@ -20,7 +20,7 @@ class LoginServiceTest {
     @BeforeEach
     void setUp() {
         try {
-            em = JPAUtil.getEntityManager();
+            em = TestJPAUtil.getEntityManager();
             em.getTransaction().begin();
             loginService = new LoginService();
             User user = TestDataFactory.createUser("ADMIN");
@@ -75,3 +75,5 @@ class LoginServiceTest {
         }
     }
 }
+
+

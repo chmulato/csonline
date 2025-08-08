@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.caracore.cso.util.TestDatabaseUtil;
 import com.caracore.cso.util.TestDataFactory;
-import com.caracore.cso.repository.JPAUtil;
+import com.caracore.cso.repository.TestJPAUtil;
 import org.junit.jupiter.api.BeforeEach;
 
 public class DeliveryControllerTest extends JerseyTest {
@@ -38,7 +38,7 @@ public class DeliveryControllerTest extends JerseyTest {
 
     @BeforeEach
     void setUpTestData() {
-        jakarta.persistence.EntityManager em = JPAUtil.getEntityManager();
+        jakarta.persistence.EntityManager em = TestJPAUtil.getEntityManager();
         TestDatabaseUtil.clearDatabase(em);
         em.close();
         // Cria dados únicos e independentes para cada papel
@@ -97,3 +97,7 @@ public class DeliveryControllerTest extends JerseyTest {
         assertEquals(204, deleteResp.getStatus());
     }
 }
+
+
+
+

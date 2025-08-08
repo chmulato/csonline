@@ -19,7 +19,7 @@ import com.caracore.cso.entity.User;
 import com.caracore.cso.service.UserService;
 import com.caracore.cso.util.TestDatabaseUtil;
 import com.caracore.cso.util.TestDataFactory;
-import com.caracore.cso.repository.JPAUtil;
+import com.caracore.cso.repository.TestJPAUtil;
 
 public class UserControllerTest extends JerseyTest {
     private static final Logger logger = LogManager.getLogger(UserControllerTest.class);
@@ -32,7 +32,7 @@ public class UserControllerTest extends JerseyTest {
 
     @BeforeEach
     public void cleanDatabase() {
-        EntityManager em = JPAUtil.getEntityManager();
+        EntityManager em = TestJPAUtil.getEntityManager();
         TestDatabaseUtil.clearDatabase(em);
         em.close();
     }
@@ -109,3 +109,4 @@ public class UserControllerTest extends JerseyTest {
         }
     }
 }
+

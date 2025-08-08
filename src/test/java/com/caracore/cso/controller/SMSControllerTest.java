@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.caracore.cso.util.TestDatabaseUtil;
 import com.caracore.cso.util.TestDataFactory;
-import com.caracore.cso.repository.JPAUtil;
+import com.caracore.cso.repository.TestJPAUtil;
 import org.junit.jupiter.api.BeforeEach;
 
 public class SMSControllerTest extends JerseyTest {
@@ -18,7 +18,7 @@ public class SMSControllerTest extends JerseyTest {
 
     @BeforeEach
     void setUpTestData() {
-        jakarta.persistence.EntityManager em = JPAUtil.getEntityManager();
+        jakarta.persistence.EntityManager em = TestJPAUtil.getEntityManager();
         TestDatabaseUtil.clearDatabase(em);
         em.close();
         // Cria dados únicos usando TestDataFactory
@@ -104,3 +104,5 @@ public class SMSControllerTest extends JerseyTest {
         assertTrue(msg.contains("entrega") || msg.contains("piece") || msg.contains("tipo") || msg.contains("existe"));
     }
 }
+
+

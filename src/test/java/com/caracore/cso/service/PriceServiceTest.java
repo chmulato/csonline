@@ -8,34 +8,41 @@ import com.caracore.cso.util.TestDataFactory;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
+import com.caracore.cso.service.TestableUserService;
+import com.caracore.cso.service.TestableTeamService;
+import com.caracore.cso.service.TestableCourierService;
+import com.caracore.cso.service.TestableCustomerService;
+import com.caracore.cso.service.TestableDeliveryService;
+import com.caracore.cso.service.TestablePriceService;
+import com.caracore.cso.service.TestableSMSService;
 
 class PriceServiceTest {
 
-    private PriceService priceService;
+    private TestablePriceService priceService;
     private User business;
 
     @BeforeEach
     void setUp() {
-        EntityManager em = com.caracore.cso.repository.JPAUtil.getEntityManager();
+        EntityManager em = com.caracore.cso.repository.TestJPAUtil.getEntityManager();
         try {
             com.caracore.cso.util.TestDatabaseUtil.clearDatabase(em);
         } finally {
             em.close();
         }
-        priceService = new PriceService();
+        priceService = new TestablePriceService(true);
         business = TestDataFactory.createUser("BUSINESS");
-        new UserService().save(business);
+        new TestableUserService(true).save(business);
     }
 
     @Test
     void testSaveAndFindPrice() {
         // Cria um usuário CUSTOMER e um Customer entidade para associar ao preço
         User customerUser = TestDataFactory.createUser("CUSTOMER");
-        new UserService().save(customerUser);
-        customerUser = new UserService().findByLogin(customerUser.getLogin());
+        new TestableUserService(true).save(customerUser);
+        customerUser = new TestableUserService(true).findByLogin(customerUser.getLogin());
 
         Customer customer = com.caracore.cso.util.TestDataFactory.createCustomer(business, customerUser);
-        new CustomerService().save(customer);
+        new TestableCustomerService(true).save(customer);
 
         Price price = TestDataFactory.createPrice(business, customer);
         priceService.save(price);
@@ -46,3 +53,6 @@ class PriceServiceTest {
 
     // Outros testes podem ser adicionados aqui usando TestDataFactory
 }
+
+
+

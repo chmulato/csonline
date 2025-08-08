@@ -2,7 +2,7 @@ package com.caracore.cso.service;
 
 import com.caracore.cso.entity.User;
 import com.caracore.cso.util.TestDatabaseUtil;
-import com.caracore.cso.repository.JPAUtil;
+import com.caracore.cso.repository.TestJPAUtil;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,6 +12,13 @@ import org.slf4j.LoggerFactory;
 
 import com.caracore.cso.util.TestDataFactory;
 import java.util.List;
+import com.caracore.cso.service.TestableUserService;
+import com.caracore.cso.service.TestableTeamService;
+import com.caracore.cso.service.TestableCourierService;
+import com.caracore.cso.service.TestableCustomerService;
+import com.caracore.cso.service.TestableDeliveryService;
+import com.caracore.cso.service.TestablePriceService;
+import com.caracore.cso.service.TestableSMSService;
 
 class UserServiceTest {
     @Test
@@ -33,7 +40,7 @@ class UserServiceTest {
         assertTrue(ex2.getMessage().toLowerCase().contains("email"));
     }
     private static final Logger logger = LoggerFactory.getLogger(UserServiceTest.class);
-    private UserService service;
+    private TestableUserService service;
     @Test
     void testDeleteUserWithCustomerReference() {
         try {
@@ -49,7 +56,7 @@ class UserServiceTest {
             new com.caracore.cso.service.CustomerService().save(customer);
 
             final Long businessId = business.getId();
-            RuntimeException ex = assertThrows(RuntimeException.class, () -> service.delete(businessId));
+            RuntimeException ex = assertThrows(RuntimeException.class, () -> service.deleteById(businessId));
             assertTrue(ex.getMessage().contains("Não foi possível deletar o usuário") || ex.getMessage().contains("vínculos"));
         } catch (Exception e) {
             logger.error("Erro durante o teste testDeleteUserWithCustomerReference em UserServiceTest", e);
@@ -60,14 +67,14 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
-        jakarta.persistence.EntityManager em = JPAUtil.getEntityManager();
+        jakarta.persistence.EntityManager em = TestJPAUtil.getEntityManager();
         try {
             TestDatabaseUtil.clearDatabase(em);
         } finally {
             em.close();
         }
         try {
-            service = new UserService();
+            service = new TestableUserService(true);
             // Cria usuários de teste com dados únicos
             User admin = TestDataFactory.createUser("ADMIN");
             service.save(admin);
@@ -163,3 +170,7 @@ class UserServiceTest {
         }
     }
 }
+
+
+
+
