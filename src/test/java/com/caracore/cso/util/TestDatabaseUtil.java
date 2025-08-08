@@ -12,11 +12,8 @@ public class TestDatabaseUtil {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            // Tentar desabilitar integridade (H2 / HSQL variantes)
-            try { em.createNativeQuery("SET REFERENTIAL_INTEGRITY FALSE").executeUpdate(); } catch (Exception ignored) { }
-            try { em.createNativeQuery("SET DATABASE REFERENTIAL INTEGRITY FALSE").executeUpdate(); } catch (Exception ignored) { }
-
-            // Delete em ordem (filhos -> pais)
+            // Limpeza estritamente ordenada sem comandos de integridade (HSQL não suporta SET REFERENTIAL_INTEGRITY)
+            logger.debug("[DB-CLEAN] Iniciando limpeza ordenada das tabelas de teste");
             em.createQuery("DELETE FROM SMS").executeUpdate();
             em.createQuery("DELETE FROM Delivery").executeUpdate();
             em.createQuery("DELETE FROM Price").executeUpdate();
@@ -24,12 +21,9 @@ public class TestDatabaseUtil {
             em.createQuery("DELETE FROM Customer").executeUpdate();
             em.createQuery("DELETE FROM Courier").executeUpdate();
             em.createQuery("DELETE FROM User").executeUpdate();
-
-            // Reabilitar integridade
-            try { em.createNativeQuery("SET REFERENTIAL_INTEGRITY TRUE").executeUpdate(); } catch (Exception ignored) { }
-            try { em.createNativeQuery("SET DATABASE REFERENTIAL INTEGRITY TRUE").executeUpdate(); } catch (Exception ignored) { }
-
+            em.flush(); // garante aplicação antes de commit
             tx.commit();
+            logger.debug("[DB-CLEAN] Limpeza concluída");
         } catch (Exception e) {
             logger.error("Erro ao limpar o banco de dados de teste", e);
             if (tx.isActive()) tx.rollback();
