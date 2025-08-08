@@ -1,7 +1,6 @@
 
 package com.caracore.cso.controller;
 
-import org.glassfish.jersey.test.JerseyTest;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,16 +12,14 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 import java.util.Map;
 import jakarta.ws.rs.core.GenericType;
-import jakarta.persistence.EntityManager;
 
 import com.caracore.cso.entity.User;
 import com.caracore.cso.service.UserService;
-import com.caracore.cso.util.TestDatabaseUtil;
 import com.caracore.cso.util.TestDataFactory;
-import com.caracore.cso.repository.TestJPAUtil;
 
-public class UserControllerTest extends JerseyTest {
+public class UserControllerTest extends BaseControllerJerseyTest {
     private static final Logger logger = LogManager.getLogger(UserControllerTest.class);
+
 
     private String createUserJson(String role) {
         User user = TestDataFactory.createUser(role);
@@ -31,11 +28,7 @@ public class UserControllerTest extends JerseyTest {
     }
 
     @BeforeEach
-    public void cleanDatabase() {
-        EntityManager em = TestJPAUtil.getEntityManager();
-        TestDatabaseUtil.clearDatabase(em);
-        em.close();
-    }
+    public void setup() { /* limpeza feita na base */ }
 
     @Override
     protected Application configure() {

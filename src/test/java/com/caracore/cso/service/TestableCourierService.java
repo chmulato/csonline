@@ -33,6 +33,12 @@ public class TestableCourierService {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
+            if (courier.getBusiness() != null) {
+                courier.setBusiness(em.merge(courier.getBusiness()));
+            }
+            if (courier.getUser() != null) {
+                courier.setUser(em.merge(courier.getUser()));
+            }
             
             if (courier.getId() == null) {
                 em.persist(courier);
@@ -92,12 +98,24 @@ public class TestableCourierService {
             em.getTransaction().begin();
             Courier courier = em.find(Courier.class, id);
             if (courier != null) {
-                em.remove(courier);
+                try {
+                    em.remove(courier);
+                } catch (Exception e) {
+                    String msg = e.getMessage();
+                    if (msg != null && msg.toLowerCase().contains("constraint")) {
+                        throw new RuntimeException("Não foi possível deletar o entregador. Existem registros vinculados.");
+                    }
+                    throw e;
+                }
             }
             em.getTransaction().commit();
         } catch (Exception e) {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
+            }
+            String full = (e.getMessage() + " " + (e.getCause()!=null? e.getCause().getMessage():""));
+            if (full != null && full.toLowerCase().contains("constraint")) {
+                throw new RuntimeException("Não foi possível deletar o entregador. Existem registros vinculados.", e);
             }
             throw e;
         } finally {
@@ -106,8 +124,21 @@ public class TestableCourierService {
     }
 
     public void updateFactor(Long courierId, double factor) {
-        // Método placeholder - implementar quando a entidade Courier tiver o campo factor
-        logger.warn("updateFactor não implementado - entidade Courier não possui campo factor");
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            Courier courier = em.find(Courier.class, courierId);
+            if (courier != null) {
+                courier.setFactorCourier(factor);
+                em.merge(courier);
+            }
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
     }
 
     public boolean canAccessDelivery(User courierUser, com.caracore.cso.entity.Delivery delivery) {

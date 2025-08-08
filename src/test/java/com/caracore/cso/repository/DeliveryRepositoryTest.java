@@ -12,9 +12,7 @@ import com.caracore.cso.entity.Courier;
 import org.junit.jupiter.api.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Persistence;
 
-import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,10 +27,9 @@ class DeliveryRepositoryTest {
     @BeforeEach
     void setUp() {
         try {
-            em = Persistence.createEntityManagerFactory("csonlinePU").createEntityManager();
+            em = TestJPAUtil.getEntityManager();
             tx = em.getTransaction();
             tx.begin();
-            // Limpa tabelas relevantes para garantir isolamento
             em.createQuery("DELETE FROM Delivery").executeUpdate();
             em.createQuery("DELETE FROM Team").executeUpdate();
             em.createQuery("DELETE FROM Courier").executeUpdate();

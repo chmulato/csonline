@@ -8,7 +8,6 @@ import com.caracore.cso.entity.User;
 import org.junit.jupiter.api.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Persistence;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,15 +22,14 @@ class CourierRepositoryTest {
     @BeforeEach
     void setUp() {
         try {
-            em = Persistence.createEntityManagerFactory("csonlinePU").createEntityManager();
+            em = TestJPAUtil.getEntityManager();
             tx = em.getTransaction();
             tx.begin();
-            // Limpa tabelas relevantes para garantir isolamento
             em.createQuery("DELETE FROM Team").executeUpdate();
             em.createQuery("DELETE FROM Courier").executeUpdate();
             em.createQuery("DELETE FROM User").executeUpdate();
             tx.commit();
-            tx.begin();
+            tx.begin(); // deixa transação ativa para o teste como no padrão original
         } catch (Exception e) {
             logger.error("Erro ao iniciar EntityManager ou transação", e);
             throw e;

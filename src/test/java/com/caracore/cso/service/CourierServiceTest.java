@@ -11,31 +11,18 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.caracore.cso.util.TestDatabaseUtil;
-import com.caracore.cso.repository.TestJPAUtil;
-import jakarta.persistence.EntityManager;
 import com.caracore.cso.util.TestDataFactory;
 import java.util.List;
 import com.caracore.cso.service.TestableUserService;
-import com.caracore.cso.service.TestableTeamService;
 import com.caracore.cso.service.TestableCourierService;
-import com.caracore.cso.service.TestableCustomerService;
 import com.caracore.cso.service.TestableDeliveryService;
-import com.caracore.cso.service.TestablePriceService;
-import com.caracore.cso.service.TestableSMSService;
 
-class CourierServiceTest {
+class CourierServiceTest extends BaseServiceTest {
     private static final Logger logger = LoggerFactory.getLogger(CourierServiceTest.class);
     private TestableCourierService service;
 
     @BeforeEach
     void setUp() {
-        EntityManager em = TestJPAUtil.getEntityManager();
-        try {
-            TestDatabaseUtil.clearDatabase(em);
-        } finally {
-            em.close();
-        }
         try {
             service = new TestableCourierService(true);
             TestableUserService userService = new TestableUserService(true);
@@ -59,7 +46,7 @@ class CourierServiceTest {
             // Store IDs for use in tests
             System.setProperty("test.courier.id", courier.getId().toString());
             System.setProperty("test.business.id", business.getId().toString());
-        } catch (Exception e) {
+    } catch (Exception e) {
             logger.error("Erro ao preparar o teste CourierServiceTest", e);
             throw e;
         }

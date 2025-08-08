@@ -32,6 +32,13 @@ public class TestableCustomerService {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
+            // Garante que entidades já persistidas não sejam repersistidas por cascade
+            if (customer.getBusiness() != null) {
+                customer.setBusiness(em.merge(customer.getBusiness()));
+            }
+            if (customer.getUser() != null) {
+                customer.setUser(em.merge(customer.getUser()));
+            }
             
             if (customer.getId() == null) {
                 em.persist(customer);
@@ -87,12 +94,24 @@ public class TestableCustomerService {
             em.getTransaction().begin();
             Customer customer = em.find(Customer.class, id);
             if (customer != null) {
-                em.remove(customer);
+                try {
+                    em.remove(customer);
+                } catch (Exception e) {
+                    String msg = e.getMessage();
+                    if (msg != null && msg.toLowerCase().contains("constraint")) {
+                        throw new RuntimeException("Não foi possível deletar o cliente. Existem registros vinculados.");
+                    }
+                    throw e;
+                }
             }
             em.getTransaction().commit();
         } catch (Exception e) {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
+            }
+            String msg = e.getMessage();
+            if (msg != null && msg.toLowerCase().contains("constraint")) {
+                throw new RuntimeException("Não foi possível deletar o cliente. Existem registros vinculados.", e);
             }
             throw e;
         } finally {

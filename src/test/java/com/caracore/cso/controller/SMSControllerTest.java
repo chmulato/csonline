@@ -1,6 +1,5 @@
 package com.caracore.cso.controller;
 
-import org.glassfish.jersey.test.JerseyTest;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.jupiter.api.Test;
 import jakarta.ws.rs.core.Application;
@@ -12,7 +11,7 @@ import com.caracore.cso.util.TestDataFactory;
 import com.caracore.cso.repository.TestJPAUtil;
 import org.junit.jupiter.api.BeforeEach;
 
-public class SMSControllerTest extends JerseyTest {
+public class SMSControllerTest extends BaseControllerJerseyTest {
     private com.caracore.cso.entity.Delivery delivery;
     private com.caracore.cso.entity.SMS sms;
 

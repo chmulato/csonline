@@ -12,24 +12,19 @@ import org.slf4j.LoggerFactory;
 
 import com.caracore.cso.util.TestDataFactory;
 
-class LoginServiceTest {
+class LoginServiceTest extends BaseServiceTest {
     private static final Logger logger = LoggerFactory.getLogger(LoginServiceTest.class);
     private EntityManager em;
-    private LoginService loginService;
+    private TestableLoginService loginService;
 
     @BeforeEach
     void setUp() {
-        try {
-            em = TestJPAUtil.getEntityManager();
-            em.getTransaction().begin();
-            loginService = new LoginService();
-            User user = TestDataFactory.createUser("ADMIN");
-            em.persist(user);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            logger.error("Erro ao preparar o teste LoginServiceTest", e);
-            throw e;
-        }
+        em = TestJPAUtil.getEntityManager();
+        em.getTransaction().begin();
+        loginService = new TestableLoginService(true);
+        User user = TestDataFactory.createUser("ADMIN");
+        em.persist(user);
+        em.getTransaction().commit();
     }
 
     @AfterEach

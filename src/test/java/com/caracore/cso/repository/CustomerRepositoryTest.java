@@ -8,7 +8,6 @@ import com.caracore.cso.entity.User;
 import org.junit.jupiter.api.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Persistence;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,10 +22,9 @@ class CustomerRepositoryTest {
     @BeforeEach
     void setUp() {
         try {
-            em = Persistence.createEntityManagerFactory("csonlinePU").createEntityManager();
+            em = TestJPAUtil.getEntityManager();
             tx = em.getTransaction();
             tx.begin();
-            // Limpa tabelas relevantes para garantir isolamento
             em.createQuery("DELETE FROM Team").executeUpdate();
             em.createQuery("DELETE FROM Customer").executeUpdate();
             em.createQuery("DELETE FROM User").executeUpdate();

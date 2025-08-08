@@ -28,7 +28,7 @@ public class TestableUserService {
     public void save(User user) {
         EntityManager em = getEntityManager();
         try {
-            logger.info("[DEBUG] Salvando usuário com ID: {}", user.getId());
+            logger.info("[DEBUG] Salvando usuário (id={}, login={}, email={})", user.getId(), user.getLogin(), user.getEmail());
             em.getTransaction().begin();
             // Validação de unicidade de login
             if (user.getId() == null) {
@@ -45,7 +45,7 @@ public class TestableUserService {
                     }
                 }
                 em.persist(user);
-                logger.info("[DEBUG] Usuário criado com ID: {}", user.getId());
+                logger.info("[DEBUG] Usuário criado com ID: {} (login={})", user.getId(), user.getLogin());
             } else {
                 em.merge(user);
                 logger.info("[DEBUG] Usuário atualizado com ID: {}", user.getId());
@@ -55,7 +55,12 @@ public class TestableUserService {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
-            logger.error("Erro ao salvar usuário", e);
+            String msgLower = (e.getMessage() == null ? "" : e.getMessage().toLowerCase());
+            if (msgLower.contains("constraint") || msgLower.contains("unique") || msgLower.contains("integrity")) {
+                logger.error("Violação de unicidade ao salvar usuário login={}, email={}: {}", user.getLogin(), user.getEmail(), e.getMessage());
+                throw new IllegalStateException("Violação de unicidade ao salvar usuário (login ou email já existente): " + user.getLogin(), e);
+            }
+            logger.error("Erro ao salvar usuário login=" + user.getLogin(), e);
             throw e;
         } finally {
             em.close();

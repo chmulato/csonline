@@ -5,30 +5,16 @@ import com.caracore.cso.entity.Price;
 import com.caracore.cso.entity.User;
 import com.caracore.cso.entity.Customer;
 import com.caracore.cso.util.TestDataFactory;
-import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
-import com.caracore.cso.service.TestableUserService;
-import com.caracore.cso.service.TestableTeamService;
-import com.caracore.cso.service.TestableCourierService;
-import com.caracore.cso.service.TestableCustomerService;
-import com.caracore.cso.service.TestableDeliveryService;
-import com.caracore.cso.service.TestablePriceService;
-import com.caracore.cso.service.TestableSMSService;
 
-class PriceServiceTest {
+class PriceServiceTest extends BaseServiceTest {
 
     private TestablePriceService priceService;
     private User business;
 
     @BeforeEach
     void setUp() {
-        EntityManager em = com.caracore.cso.repository.TestJPAUtil.getEntityManager();
-        try {
-            com.caracore.cso.util.TestDatabaseUtil.clearDatabase(em);
-        } finally {
-            em.close();
-        }
         priceService = new TestablePriceService(true);
         business = TestDataFactory.createUser("BUSINESS");
         new TestableUserService(true).save(business);

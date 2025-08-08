@@ -32,6 +32,15 @@ public class TestableDeliveryService {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
+            if (delivery.getBusiness() != null) {
+                delivery.setBusiness(em.merge(delivery.getBusiness()));
+            }
+            if (delivery.getCourier() != null) {
+                delivery.setCourier(em.merge(delivery.getCourier()));
+            }
+            if (delivery.getCustomer() != null) {
+                delivery.setCustomer(em.merge(delivery.getCustomer()));
+            }
             
             if (delivery.getId() == null) {
                 em.persist(delivery);
@@ -113,12 +122,24 @@ public class TestableDeliveryService {
             em.getTransaction().begin();
             Delivery delivery = em.find(Delivery.class, id);
             if (delivery != null) {
-                em.remove(delivery);
+                try {
+                    em.remove(delivery);
+                } catch (Exception e) {
+                    String msg = e.getMessage();
+                    if (msg != null && msg.toLowerCase().contains("constraint")) {
+                        throw new RuntimeException("Não foi possível deletar a entrega. Existem registros vinculados.");
+                    }
+                    throw e;
+                }
             }
             em.getTransaction().commit();
         } catch (Exception e) {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
+            }
+            String full = (e.getMessage() + " " + (e.getCause()!=null? e.getCause().getMessage():"")).toLowerCase();
+            if (full.contains("constraint") || full.contains("foreign key")) {
+                throw new RuntimeException("Não foi possível deletar a entrega. Existem registros vinculados.", e);
             }
             throw e;
         } finally {

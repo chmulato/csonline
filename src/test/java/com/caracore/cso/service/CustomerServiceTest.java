@@ -11,17 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.caracore.cso.util.TestDataFactory;
-import jakarta.persistence.EntityManager;
 import java.util.List;
-import com.caracore.cso.service.TestableUserService;
-import com.caracore.cso.service.TestableTeamService;
-import com.caracore.cso.service.TestableCourierService;
-import com.caracore.cso.service.TestableCustomerService;
-import com.caracore.cso.service.TestableDeliveryService;
-import com.caracore.cso.service.TestablePriceService;
-import com.caracore.cso.service.TestableSMSService;
 
-class CustomerServiceTest {
+class CustomerServiceTest extends BaseServiceTest {
     private static final Logger logger = LoggerFactory.getLogger(CustomerServiceTest.class);
     private TestableCustomerService service;
 
@@ -59,12 +51,6 @@ class CustomerServiceTest {
 
     @BeforeEach
     void setUp() {
-        EntityManager em = com.caracore.cso.repository.TestJPAUtil.getEntityManager();
-        try {
-            com.caracore.cso.util.TestDatabaseUtil.clearDatabase(em);
-        } finally {
-            em.close();
-        }
         try {
             service = new TestableCustomerService(true);
             TestableUserService userService = new TestableUserService(true);
@@ -87,7 +73,7 @@ class CustomerServiceTest {
     @Test
     void testFindById() {
         try {
-            Customer customer = service.findById(1L);
+            service.findById(1L);
             // O teste real depende do banco estar populado
             // assertNull(customer);
         } catch (Exception e) {

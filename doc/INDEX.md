@@ -24,7 +24,7 @@
 
 11. [**IMPLEMENTACAO_TECNICA_PERMISSOES.md**](IMPLEMENTACAO_TECNICA_PERMISSOES.md) — **Implementação técnica detalhada do sistema de permissões frontend e backend**.
 12. [MIGRACAO_IMPORT_SQL.md](MIGRACAO_IMPORT_SQL.md) — Processo de migração do import.sql para o Flyway.
-13. [**TESTES_ENDPOINTS.md**](TESTES_ENDPOINTS.md) — **Relatório detalhado dos testes de endpoints JWT, segurança e status atual**.
+13. [TESTES.md](TESTES.md) — Relatório unificado de testes (unitários, repositórios, segurança JWT e endpoints) substituindo documentos anteriores.
 14. [MODELO_DE_DADOS.md](MODELO_DE_DADOS.md) — **Diagrama e documentação detalhada das entidades, relacionamentos e boas práticas**.
 15. [README-STANDALONE.md](../bak/README-STANDALONE.md) — **Documentação completa de configuração manual do WildFly 31 com HSQLDB**.
 
@@ -65,8 +65,9 @@ O projeto agora conta com uma **suite completa de testes de segurança JWT** loc
 - **`run-tests.ps1`** - **Script principal JWT 2.0** com opções de segurança
 
 #### Documentação dos Testes JWT:
-- **`README-TESTES.ps1`** - Interface visual moderna com JWT 2.0
-- **`README.md`** - Documentação técnica completa dos testes
+- **`README-TESTES.ps1`** - Interface visual dos scripts JWT 2.0
+- **`README.md`** - Documentação técnica dos scripts
+- **`TESTES.md`** - Documento unificado de estado e qualidade de testes
 
 #### Características dos Testes JWT:
 - **Autenticação automática** com credenciais configuráveis

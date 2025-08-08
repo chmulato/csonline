@@ -1,6 +1,5 @@
 package com.caracore.cso.controller;
 
-import org.glassfish.jersey.test.JerseyTest;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.jupiter.api.Test;
 // ...existing code...
@@ -9,30 +8,16 @@ import jakarta.ws.rs.core.Response;
 // ...existing code...
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.caracore.cso.util.TestDatabaseUtil;
 import com.caracore.cso.util.TestDataFactory;
-import com.caracore.cso.repository.TestJPAUtil;
-import com.caracore.cso.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
-import com.caracore.cso.service.TestableUserService;
-import com.caracore.cso.service.TestableTeamService;
-import com.caracore.cso.service.TestableCourierService;
-import com.caracore.cso.service.TestableCustomerService;
-import com.caracore.cso.service.TestableDeliveryService;
-import com.caracore.cso.service.TestablePriceService;
-import com.caracore.cso.service.TestableSMSService;
 
-public class CustomerControllerTest extends JerseyTest {
-    private TestableUserService userService = new TestableUserService(true);
+public class CustomerControllerTest extends BaseControllerJerseyTest {
     private com.caracore.cso.entity.User business;
     private com.caracore.cso.entity.User customerUser;
     private com.caracore.cso.entity.Customer customer;
 
     @BeforeEach
     void setUpTestData() {
-        jakarta.persistence.EntityManager em = TestJPAUtil.getEntityManager();
-        TestDatabaseUtil.clearDatabase(em);
-        em.close();
         // Cria dados únicos usando TestDataFactory
         business = TestDataFactory.createUser("BUSINESS");
         customerUser = TestDataFactory.createUser("CUSTOMER");

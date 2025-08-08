@@ -19,7 +19,7 @@ import com.caracore.cso.service.TestableDeliveryService;
 import com.caracore.cso.service.TestablePriceService;
 import com.caracore.cso.service.TestableSMSService;
 
-class TeamServiceTest {
+class TeamServiceTest extends BaseServiceTest {
     private static final Logger logger = LoggerFactory.getLogger(TeamServiceTest.class);
     private TestableTeamService teamService;
     @Test
@@ -54,13 +54,6 @@ class TeamServiceTest {
 
     @BeforeEach
     void setUp() {
-        // --- INICIALIZAÇÃO DO BANCO E SERVIÇO ---
-        jakarta.persistence.EntityManager em = com.caracore.cso.repository.TestJPAUtil.getEntityManager();
-        try {
-            com.caracore.cso.util.TestDatabaseUtil.clearDatabase(em);
-        } finally {
-            em.close();
-        }
         teamService = new TestableTeamService(true);
     }
 

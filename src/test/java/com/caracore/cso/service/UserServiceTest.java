@@ -1,8 +1,6 @@
 package com.caracore.cso.service;
 
 import com.caracore.cso.entity.User;
-import com.caracore.cso.util.TestDatabaseUtil;
-import com.caracore.cso.repository.TestJPAUtil;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,15 +10,8 @@ import org.slf4j.LoggerFactory;
 
 import com.caracore.cso.util.TestDataFactory;
 import java.util.List;
-import com.caracore.cso.service.TestableUserService;
-import com.caracore.cso.service.TestableTeamService;
-import com.caracore.cso.service.TestableCourierService;
-import com.caracore.cso.service.TestableCustomerService;
-import com.caracore.cso.service.TestableDeliveryService;
-import com.caracore.cso.service.TestablePriceService;
-import com.caracore.cso.service.TestableSMSService;
 
-class UserServiceTest {
+class UserServiceTest extends BaseServiceTest {
     @Test
     void testNaoPermiteDuplicidadeDeLoginOuEmail() {
         User user1 = TestDataFactory.createUser("ADMIN");
@@ -80,12 +71,6 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
-        jakarta.persistence.EntityManager em = TestJPAUtil.getEntityManager();
-        try {
-            TestDatabaseUtil.clearDatabase(em);
-        } finally {
-            em.close();
-        }
         try {
             service = new TestableUserService(true);
             // Cria usuários de teste com dados únicos
@@ -103,7 +88,7 @@ class UserServiceTest {
                 User u = TestDataFactory.createUser("USER");
                 service.save(u);
             }
-        } catch (Exception e) {
+    } catch (Exception e) {
             logger.error("Erro ao preparar o teste UserServiceTest", e);
             throw e;
         }

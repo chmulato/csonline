@@ -1,6 +1,5 @@
 package com.caracore.cso.controller;
 
-import org.glassfish.jersey.test.JerseyTest;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.jupiter.api.Test;
 import jakarta.ws.rs.core.Application;
@@ -13,7 +12,7 @@ import com.caracore.cso.util.TestDataFactory;
 import com.caracore.cso.repository.TestJPAUtil;
 import org.junit.jupiter.api.BeforeEach;
 
-public class DeliveryControllerTest extends JerseyTest {
+public class DeliveryControllerTest extends BaseControllerJerseyTest {
     @Test
     public void testNaoPermiteDuplicidadeDeUsuarioNoDelivery() {
         // Cria a primeira delivery normalmente
@@ -22,7 +21,6 @@ public class DeliveryControllerTest extends JerseyTest {
 
         // Tenta criar outra delivery com o mesmo courier (mesmo usuário)
         com.caracore.cso.entity.User business = delivery.getBusiness();
-        com.caracore.cso.entity.User courierUser = delivery.getCourier().getUser();
         com.caracore.cso.entity.Courier courier = delivery.getCourier();
         com.caracore.cso.entity.Delivery deliveryDuplicada = TestDataFactory.createDelivery(business, courier);
         Response resp2 = target("/deliveries").request().post(jakarta.ws.rs.client.Entity.json(deliveryDuplicada));
