@@ -14,10 +14,11 @@ public class TestDatabaseUtil {
             tx.begin();
             // Limpeza estritamente ordenada sem comandos de integridade (HSQL não suporta SET REFERENTIAL_INTEGRITY)
             logger.debug("[DB-CLEAN] Iniciando limpeza ordenada das tabelas de teste");
+            // Ordem FK: SMS -> Delivery -> Team -> Price -> Customer -> Courier -> User
             em.createQuery("DELETE FROM SMS").executeUpdate();
             em.createQuery("DELETE FROM Delivery").executeUpdate();
-            em.createQuery("DELETE FROM Price").executeUpdate();
             em.createQuery("DELETE FROM Team").executeUpdate();
+            em.createQuery("DELETE FROM Price").executeUpdate();
             em.createQuery("DELETE FROM Customer").executeUpdate();
             em.createQuery("DELETE FROM Courier").executeUpdate();
             em.createQuery("DELETE FROM User").executeUpdate();
