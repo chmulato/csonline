@@ -55,10 +55,14 @@ public class TestableUserService {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
+            // Se já for uma IllegalArgumentException de validação prévia, apenas propaga
+            if (e instanceof IllegalArgumentException && e.getMessage() != null && e.getMessage().toLowerCase().contains("já existe")) {
+                throw e; // Mantém exatamente o tipo esperado pelo teste
+            }
             String msgLower = (e.getMessage() == null ? "" : e.getMessage().toLowerCase());
             if (msgLower.contains("constraint") || msgLower.contains("unique") || msgLower.contains("integrity")) {
                 logger.error("Violação de unicidade ao salvar usuário login={}, email={}: {}", user.getLogin(), user.getEmail(), e.getMessage());
-                throw new IllegalStateException("Violação de unicidade ao salvar usuário (login ou email já existente): " + user.getLogin(), e);
+                throw new IllegalArgumentException("Violação de unicidade ao salvar usuário (login ou email já existente): " + user.getLogin(), e);
             }
             logger.error("Erro ao salvar usuário login=" + user.getLogin(), e);
             throw e;
