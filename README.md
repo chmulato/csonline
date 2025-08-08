@@ -2,7 +2,7 @@
 
 Sistema completo para gestão de centros de distribuição, entregas, entregadores, equipes, preços e comunicação via SMS/WhatsApp. Desenvolvido com Jakarta EE 10 no backend, Vue 3 + Vite no frontend e **autenticação JWT enterprise**.
 
-**MARCO HISTÓRICO ALCANÇADO: SEGURANÇA JWT 2.0 ENTERPRISE IMPLEMENTADA** (7 de Agosto/2025)
+**MARCO HISTÓRICO ALCANÇADO: SEGURANÇA JWT 2.0 ENTERPRISE IMPLEMENTADA** (8 de Agosto/2025)
 
 ## Funcionalidades Implementadas
 
@@ -501,7 +501,7 @@ O sistema está **tecnicamente perfeito** e pronto para a fase final:
 
 ---
 
-**Observação:** O sistema CSOnline atingiu em 6 de agosto de 2025 o **marco histórico de 100% dos endpoints REST funcionais**. A documentação técnica completa está disponível em `doc/` e reflete este estado de perfeição técnica. O projeto está pronto para a fase final de integração frontend-backend e deploy em produção.
+**Observação:** O sistema CSOnline atingiu em 8 de agosto de 2025 o **marco histórico de 100% dos endpoints REST funcionais com segurança JWT enterprise implementada**. A documentação técnica completa está disponível em `doc/` e reflete este estado de maturidade enterprise. O projeto está em produção com autenticação JWT 2.0 e todos os testes de segurança aprovados.
 
 ## Licença
 

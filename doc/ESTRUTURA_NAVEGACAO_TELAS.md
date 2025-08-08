@@ -18,39 +18,39 @@ O CSOnline utiliza uma arquitetura de Single Page Application (SPA) com navegaç
 
 **Menu para ADMIN**
 ```
-📊 Dashboard
-👥 Gestão de Usuários
-🏢 Gestão de Empresas  
-🚚 Gestão de Entregadores
-👤 Gestão de Clientes
-📦 Gestão de Entregas
-📈 Relatórios
-⚙️ Configurações
+Dashboard
+Gestão de Usuários
+Gestão de Empresas  
+Gestão de Entregadores
+Gestão de Clientes
+Gestão de Entregas
+Relatórios
+Configurações
 ```
 
 **Menu para BUSINESS**
 ```
-📊 Dashboard
-🚚 Gestão de Entregadores
-👤 Gestão de Clientes  
-📦 Gestão de Entregas
-📈 Relatórios Empresariais
+Dashboard
+Gestão de Entregadores
+Gestão de Clientes  
+Gestão de Entregas
+Relatórios Empresariais
 ```
 
 **Menu para COURIER**
 ```
-📊 Dashboard
-📦 Minhas Entregas
-🗺️ Rotas
-👤 Meu Perfil
+Dashboard
+Minhas Entregas
+Rotas
+Meu Perfil
 ```
 
 **Menu para CUSTOMER**
 ```
-📊 Dashboard
-📦 Meus Pedidos
-📜 Histórico
-👤 Meu Perfil
+Dashboard
+Meus Pedidos
+Histórico
+Meu Perfil
 ```
 
 ## Telas por Perfil

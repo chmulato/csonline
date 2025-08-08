@@ -19,8 +19,8 @@ Todos os scripts foram atualizados para trabalhar com **JWT (JSON Web Tokens)**:
 |------------------------------|-------------------------------------------------|-------------|
 | Script                       | Descrição                                       | Status      |
 |------------------------------|-------------------------------------------------|-------------|
-| `jwt-utility.ps1`            | Utilitário JWT (funções auxiliares)             | NOVO ✨     |
-| `test-jwt-security.ps1`      | Teste completo de segurança JWT                 | NOVO ✨     |
+| `jwt-utility.ps1`            | Utilitário JWT (funções auxiliares)             | NOVO        |
+| `test-jwt-security.ps1`      | Teste completo de segurança JWT                 | NOVO        |
 | `test-login.ps1`             | Testa endpoint de Login (/api/login)            | ATUALIZADO  |
 | `test-users.ps1`             | Testa endpoints de Users (/api/users)           | ATUALIZADO  |
 | `test-couriers.ps1`          | Testa endpoints de Couriers (/api/couriers)     | ATUALIZADO  |

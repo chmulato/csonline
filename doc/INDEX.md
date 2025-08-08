@@ -73,7 +73,7 @@ O projeto agora conta com uma **suite completa de testes de segurança JWT** loc
 - **Autenticação automática** com credenciais configuráveis
 - **Validação de segurança** com testes de autorização
 - **Logs detalhados** com opção `-Verbose`
-- **Interface moderna** com emojis e cores
+- **Interface profissional** com relatórios estruturados
 - **Taxa de sucesso** de 100% nos testes de segurança
 
 ### Configuração Enterprise Completa (3 de Agosto/2025)
@@ -106,7 +106,7 @@ O banco de dados HSQLDB agora executa tanto em modo arquivo quanto container Doc
 - **Configuração flexível:** Suporte tanto para desenvolvimento quanto produção
 - **Documentação atualizada:** [MIGRACAO_BANCO_DADOS.md](MIGRACAO_BANCO_DADOS.md) inclui instruções completas
 
-### Status Atual do Sistema (7 de Agosto/2025)
+### Status Atual do Sistema (8 de Agosto/2025)
 **Sistema CSOnline 100% Operacional com JWT 2.0 - MARCO HISTÓRICO: Segurança Enterprise Implementada**
 
 **EVOLUÇÃO PARA PRODUÇÃO ENTERPRISE COM SEGURANÇA JWT:**
@@ -141,9 +141,7 @@ O banco de dados HSQLDB agora executa tanto em modo arquivo quanto container Doc
 - **Validação de tokens:** Rejeição de tokens inválidos ou expirados
 - **Autenticação automática:** Frontend com interceptors HTTP automáticos
 - **Persistência de sessão:** LocalStorage com validação de expiração
-- **Data do Marco JWT:** 7 de Agosto/2025
-  - Swagger UI: http://localhost:8080/csonline/swagger-ui/
-  - Console WildFly: http://localhost:9990
+- **Data do Marco JWT:** 8 de Agosto/2025
 
 ### Endpoints Testados e Funcionais (3 de Agosto/2025)
 Através dos testes automatizados e deploy enterprise, foi confirmado:
@@ -152,6 +150,10 @@ Através dos testes automatizados e deploy enterprise, foi confirmado:
 - **Migrações Flyway executadas** com dados iniciais carregados
 - **Configuração JTA completa** para transações enterprise
 - **Deploy enterprise finalizado** sem erros ou conflitos
+
+### URLs de Acesso do Sistema
+- **Swagger UI:** http://localhost:8080/csonline/swagger-ui/
+- **Console WildFly:** http://localhost:9990
 
  > **Observação:** Os documentos IMPORT_SQL.md e MIGRATIONS.md foram fundidos no novo arquivo [MIGRACAO_BANCO_DADOS.md](MIGRACAO_BANCO_DADOS.md) para fornecer uma documentação mais completa e unificada sobre o gerenciamento de banco de dados com Flyway e Docker. O documento [MIGRACAO_IMPORT_SQL.md](MIGRACAO_IMPORT_SQL.md) permanece ativo como referência histórica e técnica sobre o processo de migração.
 
@@ -196,4 +198,4 @@ Através dos testes automatizados e deploy enterprise, foi confirmado:
 
 ---
 
-**Última atualização:** 7 de Agosto de 2025 - Sistema CSOnline com **JWT 2.0 Enterprise Security** implementado. Sistema 100% operacional com autenticação JWT, 20 testes de segurança aprovados, frontend Vue 3 com autenticação integrada, e todos os endpoints protegidos por Bearer Token. Marco histórico: **Segurança Enterprise Completa**.
+**Última atualização:** 8 de Agosto de 2025 - Sistema CSOnline com **JWT 2.0 Enterprise Security** implementado. Sistema 100% operacional com autenticação JWT, 20 testes de segurança aprovados, frontend Vue 3 com autenticação integrada, e todos os endpoints protegidos por Bearer Token. Marco histórico: **Segurança Enterprise Completa**.
