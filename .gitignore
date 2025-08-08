@@ -9,6 +9,8 @@
 /frontend/.env
 /frontend/.DS_Store
 /frontend/.vscode/
+/frontend/coverage/
+/frontend/.nyc_output/
 
 # VS Code
 .vscode/

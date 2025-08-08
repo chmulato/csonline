@@ -35,6 +35,31 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: ['./src/test/setup.js']
+    setupFiles: ['./src/test/setup.js'],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
+      exclude: [
+        'node_modules/',
+        'src/test/',
+        '**/*.test.js',
+        '**/*.spec.js',
+        '**/coverage/**',
+        '**/dist/**',
+        '**/build/**'
+      ],
+      include: [
+        'src/**/*.{js,vue}',
+        '!src/main.js' // Excluir o arquivo main.js
+      ],
+      thresholds: {
+        global: {
+          branches: 70,
+          functions: 70,
+          lines: 70,
+          statements: 70
+        }
+      }
+    }
   }
 });
