@@ -124,8 +124,15 @@ public class TestableUserService {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
-            logger.error("Erro ao deletar usuário", e);
-            throw e;
+            String msg = e.getMessage();
+            if ((msg != null && msg.contains("integrity constraint violation")) ||
+                (e.getCause() != null && e.getCause().getMessage() != null && e.getCause().getMessage().contains("integrity constraint violation"))) {
+                logger.warn("Não foi possível deletar o usuário id: " + id + ". Existem clientes ou registros vinculados a este usuário.");
+                throw new RuntimeException("Não foi possível deletar o usuário. Existem clientes ou registros vinculados a este usuário.", e);
+            } else {
+                logger.error("Erro ao deletar usuário", e);
+                throw e;
+            }
         } finally {
             em.close();
         }

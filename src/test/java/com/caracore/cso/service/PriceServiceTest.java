@@ -42,7 +42,20 @@ class PriceServiceTest {
         customerUser = new TestableUserService(true).findByLogin(customerUser.getLogin());
 
         Customer customer = com.caracore.cso.util.TestDataFactory.createCustomer(business, customerUser);
-        new TestableCustomerService(true).save(customer);
+        
+        // Para evitar cascade PERSIST, vamos fazer merge dos usuários
+        jakarta.persistence.EntityManager em = com.caracore.cso.repository.TestJPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            business = em.merge(business);
+            customerUser = em.merge(customerUser);
+            customer.setBusiness(business);
+            customer.setUser(customerUser);
+            em.persist(customer);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
 
         Price price = TestDataFactory.createPrice(business, customer);
         priceService.save(price);
