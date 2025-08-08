@@ -1,35 +1,38 @@
 
 # Índice de Documentos - CSOnline JWT 2.0 Enterprise
 
-> **Sistema com Segurança JWT Implementada**  
-> CSOnline agora opera com autenticação JWT Bearer Token, proteção de endpoints e testes de segurança completos.
+> **Sistema com Segurança JWT e Controle de Acesso Baseado em Perfis**  
+> CSOnline agora opera com autenticação JWT Bearer Token, sistema completo de permissões, proteção de endpoints e controle granular de acesso.
 
 ## Documentação Principal
 
 1. [REGRAS_DE_NEGOCIO.md](REGRAS_DE_NEGOCIO.md) — Regras de negócio da camada de serviços, exemplos práticos.
 2. [ARQUITETURA.md](ARQUITETURA.md) — Estrutura e arquitetura do sistema backend.
 3. [**AUTENTICACAO_JWT.md**](AUTENTICACAO_JWT.md) — **Sistema de autenticação JWT: implementação, segurança e uso**.
-4. [MIGRACAO_BANCO_DADOS.md](MIGRACAO_BANCO_DADOS.md) — **Documentação completa sobre migrações e gerenciamento de dados com Flyway e Docker**.
-5. [CONFIG_WILDFLY.md](CONFIG_WILDFLY.md) — Guia de configuração do WildFly 31 para o projeto.
-6. [SEQUENCIA_SCRIPTS.md](SEQUENCIA_SCRIPTS.md) — Ordem recomendada de execução dos scripts do projeto.
+4. [**PERFIS_E_CONTROLE_ACESSO.md**](PERFIS_E_CONTROLE_ACESSO.md) — **Sistema completo de perfis de usuário e controle de permissões**.
+5. [MIGRACAO_BANCO_DADOS.md](MIGRACAO_BANCO_DADOS.md) — **Documentação completa sobre migrações e gerenciamento de dados com Flyway e Docker**.
+6. [CONFIG_WILDFLY.md](CONFIG_WILDFLY.md) — Guia de configuração do WildFly 31 para o projeto.
+7. [SEQUENCIA_SCRIPTS.md](SEQUENCIA_SCRIPTS.md) — Ordem recomendada de execução dos scripts do projeto.
 
-## Documentação Frontend
+## Documentação Frontend e Interface
 
-7. [ARQUITETURA_VUE.md](ARQUITETURA_VUE.md) — Introdução à arquitetura do front-end Vue.js, manutenção e controle de versões.
-8. [**FRONTEND_VUE.md**](FRONTEND_VUE.md) — **Documentação das páginas, navegação, integração JWT e segurança do SPA Vue**.
-
-## Gestão e Administração
-
-9. [HISTORIA_DO_PROJETO.md](HISTORIA_DO_PROJETO.md) — Linha do tempo, decisões e evolução do projeto.
-10. [WILDFLY_USO.md](WILDFLY_USO.md) — Guia de uso, administração e boas práticas do servidor WildFly 31.
+8. [ARQUITETURA_VUE.md](ARQUITETURA_VUE.md) — Introdução à arquitetura do front-end Vue.js, manutenção e controle de versões.
+9. [**FRONTEND_VUE.md**](FRONTEND_VUE.md) — **Documentação das páginas, navegação, integração JWT e segurança do SPA Vue**.
+10. [**ESTRUTURA_NAVEGACAO_TELAS.md**](ESTRUTURA_NAVEGACAO_TELAS.md) — **Estrutura completa de navegação, telas e interface baseada em perfis**.
 
 ## Documentação Técnica Especializada
 
-11. [MIGRACAO_IMPORT_SQL.md](MIGRACAO_IMPORT_SQL.md) — Processo de migração do import.sql para o Flyway.
-12. [**TESTES_ENDPOINTS.md**](TESTES_ENDPOINTS.md) — **Relatório detalhado dos testes de endpoints JWT, segurança e status atual**.
-13. [MODELO_DE_DADOS.md](MODELO_DE_DADOS.md) — **Diagrama e documentação detalhada das entidades, relacionamentos e boas práticas**.
-14. [README-STANDALONE.md](../bak/README-STANDALONE.md) — **Documentação completa de configuração manual do WildFly 31 com HSQLDB**.
-15. [INDEX.md](INDEX.md) — Este índice de documentos.
+11. [**IMPLEMENTACAO_TECNICA_PERMISSOES.md**](IMPLEMENTACAO_TECNICA_PERMISSOES.md) — **Implementação técnica detalhada do sistema de permissões frontend e backend**.
+12. [MIGRACAO_IMPORT_SQL.md](MIGRACAO_IMPORT_SQL.md) — Processo de migração do import.sql para o Flyway.
+13. [**TESTES_ENDPOINTS.md**](TESTES_ENDPOINTS.md) — **Relatório detalhado dos testes de endpoints JWT, segurança e status atual**.
+14. [MODELO_DE_DADOS.md](MODELO_DE_DADOS.md) — **Diagrama e documentação detalhada das entidades, relacionamentos e boas práticas**.
+15. [README-STANDALONE.md](../bak/README-STANDALONE.md) — **Documentação completa de configuração manual do WildFly 31 com HSQLDB**.
+
+## Gestão e Administração
+
+16. [HISTORIA_DO_PROJETO.md](HISTORIA_DO_PROJETO.md) — Linha do tempo, decisões e evolução do projeto.
+17. [WILDFLY_USO.md](WILDFLY_USO.md) — Guia de uso, administração e boas práticas do servidor WildFly 31.
+18. [INDEX.md](INDEX.md) — Este índice de documentos.
 
 ## Scripts e Automação
 

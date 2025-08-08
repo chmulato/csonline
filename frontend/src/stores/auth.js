@@ -10,6 +10,42 @@ export const useAuthStore = defineStore('auth', () => {
   const isAuthenticated = computed(() => !!token.value)
   const userRole = computed(() => user.value?.role || '')
   const userName = computed(() => user.value?.name || '')
+  
+  // Permission getters
+  const isAdmin = computed(() => userRole.value === 'ADMIN')
+  const isBusiness = computed(() => userRole.value === 'BUSINESS')
+  const isCourier = computed(() => userRole.value === 'COURIER')
+  const isCustomer = computed(() => userRole.value === 'CUSTOMER')
+  
+  // Module permissions
+  const canAccessUsers = computed(() => isAdmin.value || isBusiness.value)
+  const canAccessCouriers = computed(() => isAdmin.value || isBusiness.value)
+  const canAccessCustomers = computed(() => isAdmin.value || isBusiness.value)
+  const canAccessDeliveries = computed(() => isAdmin.value || isBusiness.value || isCourier.value)
+  const canAccessTeams = computed(() => isAdmin.value || isBusiness.value)
+  const canAccessSMS = computed(() => isAdmin.value || isBusiness.value)
+  const canAccessPrices = computed(() => isAdmin.value || isBusiness.value)
+  
+  // CRUD permissions
+  const canCreateUsers = computed(() => isAdmin.value)
+  const canEditUsers = computed(() => isAdmin.value)
+  const canDeleteUsers = computed(() => isAdmin.value)
+  
+  const canCreateCouriers = computed(() => isAdmin.value || isBusiness.value)
+  const canEditCouriers = computed(() => isAdmin.value || isBusiness.value)
+  const canDeleteCouriers = computed(() => isAdmin.value)
+  
+  const canCreateCustomers = computed(() => isAdmin.value || isBusiness.value)
+  const canEditCustomers = computed(() => isAdmin.value || isBusiness.value)
+  const canDeleteCustomers = computed(() => isAdmin.value)
+  
+  const canCreateDeliveries = computed(() => isAdmin.value || isBusiness.value)
+  const canEditDeliveries = computed(() => isAdmin.value || isBusiness.value || isCourier.value)
+  const canDeleteDeliveries = computed(() => isAdmin.value || isBusiness.value)
+  
+  const canManageTeams = computed(() => isAdmin.value || isBusiness.value)
+  const canManageSMS = computed(() => isAdmin.value || isBusiness.value)
+  const canManagePrices = computed(() => isAdmin.value || isBusiness.value)
 
   // Actions
   function setAuth(authData) {
@@ -78,6 +114,38 @@ export const useAuthStore = defineStore('auth', () => {
     isAuthenticated,
     userRole,
     userName,
+    
+    // Role checks
+    isAdmin,
+    isBusiness,
+    isCourier,
+    isCustomer,
+    
+    // Module permissions
+    canAccessUsers,
+    canAccessCouriers,
+    canAccessCustomers,
+    canAccessDeliveries,
+    canAccessTeams,
+    canAccessSMS,
+    canAccessPrices,
+    
+    // CRUD permissions
+    canCreateUsers,
+    canEditUsers,
+    canDeleteUsers,
+    canCreateCouriers,
+    canEditCouriers,
+    canDeleteCouriers,
+    canCreateCustomers,
+    canEditCustomers,
+    canDeleteCustomers,
+    canCreateDeliveries,
+    canEditDeliveries,
+    canDeleteDeliveries,
+    canManageTeams,
+    canManageSMS,
+    canManagePrices,
     
     // Actions
     setAuth,
