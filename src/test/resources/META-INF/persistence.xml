@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
+             version="3.0">
+    <!-- Unidade de persistência para testes unitários -->
+    <persistence-unit name="csonlineTestPU" transaction-type="RESOURCE_LOCAL">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <class>com.caracore.cso.entity.User</class>
+        <class>com.caracore.cso.entity.Customer</class>
+        <class>com.caracore.cso.entity.Courier</class>
+        <class>com.caracore.cso.entity.Delivery</class>
+        <class>com.caracore.cso.entity.Price</class>
+        <class>com.caracore.cso.entity.SMS</class>
+        <class>com.caracore.cso.entity.Team</class>
+        <properties>
+            <!-- Configuração para HSQLDB em memória -->
+            <property name="jakarta.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:hsqldb:mem:testdb"/>
+            <property name="jakarta.persistence.jdbc.user" value="sa"/>
+            <property name="jakarta.persistence.jdbc.password" value=""/>
+            
+            <!-- Auto-criação do schema para testes -->
+            <property name="eclipselink.ddl-generation" value="create-tables"/>
+            <property name="eclipselink.ddl-generation.output-mode" value="database"/>
+            
+            <!-- Configurações de logging mais simples para testes -->
+            <property name="eclipselink.logging.level" value="WARNING"/>
+            <property name="eclipselink.target-database" value="org.eclipse.persistence.platform.database.HSQLPlatform"/>
+            
+            <!-- Carregar dados de teste -->
+            <property name="jakarta.persistence.sql-load-script-source" value="test-data.sql"/>
+        </properties>
+    </persistence-unit>
+</persistence>
