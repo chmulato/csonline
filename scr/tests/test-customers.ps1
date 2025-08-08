@@ -1,16 +1,39 @@
-# Script de teste para endpoints de Customers
+# Script de teste para endpoints de Customers com JWT
+# Versão: 2.0 - Suporte completo a JWT
 # Base URL: http://localhost:8080/csonline/api
+
+# Importar utilitário JWT
+. "$PSScriptRoot\jwt-utility.ps1"
 
 $baseUrl = "http://localhost:8080/csonline/api/customers"
 
 Write-Host "=======================================" -ForegroundColor Yellow
-Write-Host "TESTE DE ENDPOINTS - CUSTOMERS" -ForegroundColor Yellow
+Write-Host "TESTE DE ENDPOINTS - CUSTOMERS JWT" -ForegroundColor Yellow
 Write-Host "=======================================" -ForegroundColor Yellow
+
+# Obter token JWT
+Write-Host "🔑 Obtendo token JWT..." -ForegroundColor Yellow
+$token = Get-JWTToken -Login "empresa" -Password "empresa123" -BaseUrl "http://localhost:8080/csonline" -Verbose
+
+if (-not $token) {
+    Write-Host "❌ Falha ao obter token JWT. Abortando testes." -ForegroundColor Red
+    exit 1
+}
+
+# Test 0: Teste de segurança - acesso sem JWT
+Write-Host "`n0. Teste de segurança - tentativa de acesso sem JWT:" -ForegroundColor Yellow
+$securityResult = Test-EndpointWithoutJWT -Url $baseUrl -Description "Customers endpoint"
+if ($securityResult) {
+    Write-Host "✅ Segurança OK: Endpoint protegido corretamente" -ForegroundColor Green
+} else {
+    Write-Host "❌ FALHA DE SEGURANÇA: Endpoint permite acesso sem JWT!" -ForegroundColor Red
+}
 
 # Test 1: GET /api/customers (Listar todos os clientes)
 Write-Host "`n1. Listando todos os clientes (GET /api/customers):" -ForegroundColor Green
 try {
-    $response = Invoke-RestMethod -Uri $baseUrl -Method GET -ContentType "application/json"
+    $headers = @{ "Authorization" = "Bearer $token" }
+    $response = Invoke-RestMethod -Uri $baseUrl -Method GET -Headers $headers -ContentType "application/json"
     Write-Host "Sucesso! Encontrados $($response.Count) clientes:" -ForegroundColor Green
     $response | Format-Table -AutoSize
 } catch {
@@ -20,7 +43,8 @@ try {
 # Test 2: GET /api/customers/{id} (Buscar cliente por ID)
 Write-Host "`n2. Buscando cliente por ID=2 (GET /api/customers/2):" -ForegroundColor Green
 try {
-    $response = Invoke-RestMethod -Uri "$baseUrl/2" -Method GET -ContentType "application/json"
+    $headers = @{ "Authorization" = "Bearer $token" }
+    $response = Invoke-RestMethod -Uri "$baseUrl/2" -Method GET -Headers $headers -ContentType "application/json"
     Write-Host "Sucesso! Cliente encontrado:" -ForegroundColor Green
     $response | Format-Table -AutoSize
 } catch {
@@ -42,7 +66,8 @@ $newCustomer = @{
 } | ConvertTo-Json
 
 try {
-    $response = Invoke-RestMethod -Uri $baseUrl -Method POST -Body $newCustomer -ContentType "application/json"
+    $headers = @{ "Authorization" = "Bearer $token" }
+    $response = Invoke-RestMethod -Uri $baseUrl -Method POST -Body $newCustomer -Headers $headers -ContentType "application/json"
     Write-Host "Sucesso! Cliente criado:" -ForegroundColor Green
     $response | Format-Table -AutoSize
     $createdCustomerId = $response.id
@@ -68,7 +93,8 @@ if ($createdCustomerId) {
     } | ConvertTo-Json
 
     try {
-        $response = Invoke-RestMethod -Uri "$baseUrl/$createdCustomerId" -Method PUT -Body $updateCustomer -ContentType "application/json"
+        $headers = @{ "Authorization" = "Bearer $token" }
+        $response = Invoke-RestMethod -Uri "$baseUrl/$createdCustomerId" -Method PUT -Body $updateCustomer -Headers $headers -ContentType "application/json"
         Write-Host "Sucesso! Cliente atualizado." -ForegroundColor Green
     } catch {
         Write-Host "Erro: $($_.Exception.Message)" -ForegroundColor Red
@@ -79,7 +105,8 @@ if ($createdCustomerId) {
 if ($createdCustomerId) {
     Write-Host "`n5. Deletando cliente ID=$createdCustomerId (DELETE /api/customers/$createdCustomerId):" -ForegroundColor Green
     try {
-        $response = Invoke-RestMethod -Uri "$baseUrl/$createdCustomerId" -Method DELETE -ContentType "application/json"
+        $headers = @{ "Authorization" = "Bearer $token" }
+        $response = Invoke-RestMethod -Uri "$baseUrl/$createdCustomerId" -Method DELETE -Headers $headers -ContentType "application/json"
         Write-Host "Sucesso! Cliente deletado." -ForegroundColor Green
     } catch {
         Write-Host "Erro: $($_.Exception.Message)" -ForegroundColor Red

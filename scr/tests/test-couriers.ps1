@@ -32,7 +32,8 @@ if ($securityResult) {
 # Test 1: GET /api/couriers (Listar todos os entregadores)
 Write-Host "`n1. Listando todos os entregadores (GET /api/couriers):" -ForegroundColor Green
 try {
-    $response = Invoke-RestMethod -Uri $baseUrl -Method GET -ContentType "application/json"
+    $headers = @{ "Authorization" = "Bearer $token" }
+    $response = Invoke-RestMethod -Uri $baseUrl -Method GET -Headers $headers -ContentType "application/json"
     Write-Host "Sucesso! Encontrados $($response.Count) entregadores:" -ForegroundColor Green
     $response | Format-Table -AutoSize
 } catch {
@@ -42,7 +43,8 @@ try {
 # Test 2: GET /api/couriers/{id} (Buscar entregador por ID)
 Write-Host "`n2. Buscando entregador por ID=2 (GET /api/couriers/2):" -ForegroundColor Green
 try {
-    $response = Invoke-RestMethod -Uri "$baseUrl/2" -Method GET -ContentType "application/json"
+    $headers = @{ "Authorization" = "Bearer $token" }
+    $response = Invoke-RestMethod -Uri "$baseUrl/2" -Method GET -Headers $headers -ContentType "application/json"
     Write-Host "Sucesso! Entregador encontrado:" -ForegroundColor Green
     $response | Format-Table -AutoSize
 } catch {
@@ -65,7 +67,8 @@ $newCourier = @{
 } | ConvertTo-Json -Depth 3
 
 try {
-    $response = Invoke-RestMethod -Uri $baseUrl -Method POST -Body $newCourier -ContentType "application/json"
+    $headers = @{ "Authorization" = "Bearer $token" }
+    $response = Invoke-RestMethod -Uri $baseUrl -Method POST -Body $newCourier -Headers $headers -ContentType "application/json"
     Write-Host "Sucesso! Entregador criado:" -ForegroundColor Green
     $response | Format-Table -AutoSize
     $createdCourierId = $response.id
@@ -92,7 +95,8 @@ if ($createdCourierId) {
     } | ConvertTo-Json -Depth 3
 
     try {
-        $response = Invoke-RestMethod -Uri "$baseUrl/$createdCourierId" -Method PUT -Body $updateCourier -ContentType "application/json"
+        $headers = @{ "Authorization" = "Bearer $token" }
+        $response = Invoke-RestMethod -Uri "$baseUrl/$createdCourierId" -Method PUT -Body $updateCourier -Headers $headers -ContentType "application/json"
         Write-Host "Sucesso! Entregador atualizado." -ForegroundColor Green
     } catch {
         Write-Host "Erro: $($_.Exception.Message)" -ForegroundColor Red
@@ -103,7 +107,8 @@ if ($createdCourierId) {
 if ($createdCourierId) {
     Write-Host "`n5. Deletando entregador ID=$createdCourierId (DELETE /api/couriers/$createdCourierId):" -ForegroundColor Green
     try {
-        $response = Invoke-RestMethod -Uri "$baseUrl/$createdCourierId" -Method DELETE -ContentType "application/json"
+        $headers = @{ "Authorization" = "Bearer $token" }
+        $response = Invoke-RestMethod -Uri "$baseUrl/$createdCourierId" -Method DELETE -Headers $headers -ContentType "application/json"
         Write-Host "Sucesso! Entregador deletado." -ForegroundColor Green
     } catch {
         Write-Host "Erro: $($_.Exception.Message)" -ForegroundColor Red
