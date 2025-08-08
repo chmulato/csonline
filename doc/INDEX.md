@@ -155,6 +155,8 @@ Através dos testes automatizados e deploy enterprise, foi confirmado:
 
  > **Observação:** Os documentos IMPORT_SQL.md e MIGRATIONS.md foram fundidos no novo arquivo [MIGRACAO_BANCO_DADOS.md](MIGRACAO_BANCO_DADOS.md) para fornecer uma documentação mais completa e unificada sobre o gerenciamento de banco de dados com Flyway e Docker. O documento [MIGRACAO_IMPORT_SQL.md](MIGRACAO_IMPORT_SQL.md) permanece ativo como referência histórica e técnica sobre o processo de migração.
 
+> Relatórios antigos de testes (RELATORIO_TESTES_COMPLETO.md e TESTES_ENDPOINTS.md) foram removidos. Use apenas o documento unificado: [TESTES.md](TESTES.md).
+
 ## Como Usar Esta Documentação
 
 ### Para Novos Desenvolvedores

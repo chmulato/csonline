@@ -1,42 +1,10 @@
-# Relatório Final: Correção Completa dos Testes Unitários Java - CSOnline
+> Documento legado (RELATORIO_TESTES_COMPLETO.md) descontinuado. Todo o conteúdo foi incorporado ao relatório unificado [TESTES.md](TESTES.md). Utilize apenas o arquivo unificado para referências atuais sobre cobertura e estado dos testes.
 
-## STATUS ATUAL: GRANDES AVANÇOS - 24 TESTES FUNCIONANDO! 
+# RELATORIO_TESTES_COMPLETO (Deprecated)
 
-### Progresso Excepcional Alcançado
+Este arquivo permanece apenas como marcador histórico mínimo.
 
-**RESULTADO**: Saltamos de 9 para 24 testes funcionando em uma única sessão de desenvolvimento! Implementamos com sucesso a correção de problemas complexos de cascade persistence, tratamento de exceções e métodos não implementados.
-
----
-
-## Resultados Conquistados
-
-### Branch de Desenvolvimento Ativa
-
-- **Branch**: `fix/backend-unit-tests`
-- **Finalidade**: Desenvolvimento isolado das correções de testes
-- **Status**: Desenvolvimento ativo com commits frequentes
-
-### Testes Funcionais Validados 
-
-#### Infraestrutura Base (Mantidos)
-
-- **JpaInfrastructureTest**: 3/3 testes passando
-- **SimpleUserServiceTest**: 2/2 testes passando
-- **TeamServiceTestFixed**: 4/4 testes passando
-
-#### Novos Testes Corrigidos Hoje 
-
-- **UserServiceTest**: 7/7 testes passando (Correção de cascade persistence + exceções integridade)
-- **PriceServiceTest**: 1/1 testes passando (Correção de cascade Customer)
-- **SMSServiceTest**: 3/3 testes passando (Implementação getDeliverySMSHistory + sendDeliverySMS + deleteById)
-- **TeamServiceTest**: 4/4 testes passando (Funciona com infraestrutura existente!)
-
-#### Testes de Repositório (Novos!) 
-
-- **TeamRepositoryTest**: 3/3 testes passando
-- **UserRepositoryTest**: 1/1 testes passando
-
-### **TOTAL FUNCIONAL**: 24 testes (+15 novos testes funcionando!)
+Consulte: [TESTES.md](TESTES.md)
 
 ---
 

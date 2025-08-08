@@ -1,51 +1,10 @@
-# RELATÓRIO DE TESTES DE ENDPOINTS - CSONLINE API
+> Documento legado (TESTES_ENDPOINTS.md) descontinuado. O conteúdo foi incorporado ao relatório unificado [TESTES.md](TESTES.md). Utilize apenas o arquivo unificado para referências atuais sobre estado dos endpoints e cobertura de testes.
 
-**Data:** 03 de Agosto de 2025  
-**Versão:** v1.0  
-**Servidor:** WildFly 31.0.1.Final  
-**Base URL:** http://localhost:8080/csonline/api  
+# TESTES_ENDPOINTS (Deprecated)
 
----
+Este arquivo permanece apenas como marcador histórico mínimo.
 
-## RESUMO EXECUTIVO
-
-### Status Geral
-- **Taxa de Sucesso:** 80% (8/10 endpoints funcionando)
-- **Aplicação:** Deployada e funcional
-- **Banco de Dados:** Carregado com dados de teste
-- **Serialização JSON:** Problemas resolvidos com @JsonIgnore e DTOs
-
-### Principais Conquistas
-1. **Flyway Migration:** Resolvido com repair programático
-2. **Deploy WildFly:** 479/705 serviços ativos
-3. **Circular References:** Corrigido com anotações Jackson
-4. **Deliveries Endpoint:** Implementado DTO para resolver serialização
-
----
-
-## DETALHAMENTO POR ENDPOINT
-
-### ENDPOINTS FUNCIONANDO (8/10)
-
-#### 1. Users API - `/api/users`
-- **Status:** **FUNCIONANDO**
-- **Método:** GET (Lista)
-- **Registros:** 8 usuários
-- **Tipos:** ADMIN, BUSINESS, COURIER, CUSTOMER
-- **Resposta:** JSON com id, name, role, login, email, address, mobile
-- **Observação:** Anotações @JsonIgnore aplicadas para evitar loops
-
-```json
-[
-  {
-    "id": 2,
-    "name": "Empresa X",
-    "role": "BUSINESS",
-    "login": "empresa",
-    "email": "empresa@cso.com"
-  }
-]
-```
+Consulte: [TESTES.md](TESTES.md)
 
 #### 2. Couriers API - `/api/couriers`
 - **Status:** **FUNCIONANDO**
