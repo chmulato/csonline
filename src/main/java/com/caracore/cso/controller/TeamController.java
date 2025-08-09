@@ -83,6 +83,7 @@ public class TeamController {
 
     @PUT
     @Path("/{id}")
+    @RolesAllowed("ADMIN")
     public Response update(@PathParam("id") Long id, Team team) {
         Team existing = teamService.findById(id);
         if (existing == null) {
@@ -139,6 +140,7 @@ public class TeamController {
 
     @DELETE
     @Path("/{id}")
+    @RolesAllowed("ADMIN")
     public Response delete(@PathParam("id") Long id) {
         Team existing = teamService.findById(id);
         if (existing == null) {

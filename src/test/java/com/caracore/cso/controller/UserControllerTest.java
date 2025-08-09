@@ -16,6 +16,9 @@ import jakarta.ws.rs.core.GenericType;
 import com.caracore.cso.entity.User;
 import com.caracore.cso.service.UserService;
 import com.caracore.cso.util.TestDataFactory;
+import com.caracore.cso.security.AuthorizationFilter;
+import com.caracore.cso.security.JwtAuthenticationFilter;
+import com.caracore.cso.util.JwtUtil;
 
 public class UserControllerTest extends BaseControllerJerseyTest {
     private static final Logger logger = LogManager.getLogger(UserControllerTest.class);
@@ -36,6 +39,8 @@ public class UserControllerTest extends BaseControllerJerseyTest {
         UserController userController = new UserController(userService);
         return new ResourceConfig()
             .register(userController)
+            .register(JwtAuthenticationFilter.class)  // Registra filtro de autenticação
+            .register(AuthorizationFilter.class)      // Registra filtro de autorização
             .register(com.caracore.cso.controller.CustomerController.class)
             .register(com.caracore.cso.service.CustomerService.class);
     }
@@ -44,8 +49,13 @@ public class UserControllerTest extends BaseControllerJerseyTest {
     public void testGetAllUsers() {
         try {
             String json = createUserJson("CUSTOMER");
-            target("/users").request().post(jakarta.ws.rs.client.Entity.json(json));
-            Response response = target("/users").request().get();
+            String adminToken = JwtUtil.generateToken("admin_test", "ADMIN", 1L);
+            target("/users").request()
+                .header("Authorization", "Bearer " + adminToken)
+                .post(jakarta.ws.rs.client.Entity.json(json));
+            Response response = target("/users").request()
+                .header("Authorization", "Bearer " + adminToken)
+                .get();
             assertEquals(200, response.getStatus());
         } catch (Exception e) {
             logger.error("Erro em testGetAllUsers", e);
@@ -57,13 +67,20 @@ public class UserControllerTest extends BaseControllerJerseyTest {
     public void testGetUserById() {
         try {
             String json = createUserJson("CUSTOMER");
-            Response createResp = target("/users").request().post(jakarta.ws.rs.client.Entity.json(json));
+            String adminToken = JwtUtil.generateToken("admin_test", "ADMIN", 1L);
+            Response createResp = target("/users").request()
+                .header("Authorization", "Bearer " + adminToken)
+                .post(jakarta.ws.rs.client.Entity.json(json));
             assertEquals(201, createResp.getStatus());
             // Recupera todos e pega o último ID
-            Response allResp = target("/users").request().get();
+            Response allResp = target("/users").request()
+                .header("Authorization", "Bearer " + adminToken)
+                .get();
             List<Map<String, Object>> users = allResp.readEntity(new GenericType<List<Map<String, Object>>>() {});
             int lastId = ((Number) users.get(users.size() - 1).get("id")).intValue();
-            Response response = target("/users/" + lastId).request().get();
+            Response response = target("/users/" + lastId).request()
+                .header("Authorization", "Bearer " + adminToken)
+                .get();
             assertEquals(200, response.getStatus());
         } catch (Exception e) {
             logger.error("Erro em testGetUserById", e);
@@ -75,7 +92,10 @@ public class UserControllerTest extends BaseControllerJerseyTest {
     public void testCreateUser() {
         try {
             String json = createUserJson("CUSTOMER");
-            Response response = target("/users").request().post(jakarta.ws.rs.client.Entity.json(json));
+            String adminToken = JwtUtil.generateToken("admin_test", "ADMIN", 1L);
+            Response response = target("/users").request()
+                .header("Authorization", "Bearer " + adminToken)
+                .post(jakarta.ws.rs.client.Entity.json(json));
             assertEquals(201, response.getStatus());
         } catch (Exception e) {
             logger.error("Erro em testCreateUser", e);
@@ -87,19 +107,155 @@ public class UserControllerTest extends BaseControllerJerseyTest {
     public void testUpdateUser() {
         try {
             String json = createUserJson("CUSTOMER");
-            Response createResp = target("/users").request().post(jakarta.ws.rs.client.Entity.json(json));
+            String adminToken = JwtUtil.generateToken("admin_test", "ADMIN", 1L);
+            Response createResp = target("/users").request()
+                .header("Authorization", "Bearer " + adminToken)
+                .post(jakarta.ws.rs.client.Entity.json(json));
             assertEquals(201, createResp.getStatus());
             // Recupera todos e pega o último ID
-            Response allResp = target("/users").request().get();
+            Response allResp = target("/users").request()
+                .header("Authorization", "Bearer " + adminToken)
+                .get();
             List<Map<String, Object>> users = allResp.readEntity(new GenericType<List<Map<String, Object>>>() {});
             int lastId = ((Number) users.get(users.size() - 1).get("id")).intValue();
             String updateJson = String.format("{\"login\":\"updateduser_%d\",\"password\":\"updatedpass\",\"role\":\"COURIER\",\"name\":\"Updated User\"}", lastId);
-            Response response = target("/users/" + lastId).request().put(jakarta.ws.rs.client.Entity.json(updateJson));
+            Response response = target("/users/" + lastId).request()
+                .header("Authorization", "Bearer " + adminToken)
+                .put(jakarta.ws.rs.client.Entity.json(updateJson));
             assertEquals(200, response.getStatus());
         } catch (Exception e) {
             logger.error("Erro em testUpdateUser", e);
             throw e;
         }
+    }
+
+    // ========== TESTES DE AUTORIZAÇÃO ==========
+
+    @Test
+    public void testGetAllUsersWithoutToken() {
+        Response response = target("/users").request().get();
+        assertEquals(401, response.getStatus(), "Acesso sem token deve retornar 401 Unauthorized");
+    }
+
+    @Test
+    public void testGetAllUsersWithAdminToken() {
+        String adminToken = JwtUtil.generateToken("admin_test", "ADMIN", 1L);
+        Response response = target("/users")
+            .request()
+            .header("Authorization", "Bearer " + adminToken)
+            .get();
+        assertEquals(200, response.getStatus(), "ADMIN deve conseguir listar users");
+    }
+
+    @Test
+    public void testGetAllUsersWithBusinessToken() {
+        String businessToken = JwtUtil.generateToken("business_test", "BUSINESS", 2L);
+        Response response = target("/users")
+            .request()
+            .header("Authorization", "Bearer " + businessToken)
+            .get();
+        assertEquals(200, response.getStatus(), "BUSINESS deve conseguir listar users");
+    }
+
+    @Test
+    public void testGetAllUsersWithCourierToken() {
+        String courierToken = JwtUtil.generateToken("courier_test", "COURIER", 3L);
+        Response response = target("/users")
+            .request()
+            .header("Authorization", "Bearer " + courierToken)
+            .get();
+        assertEquals(403, response.getStatus(), "COURIER não deve conseguir listar users (só ADMIN/BUSINESS)");
+    }
+
+    @Test
+    public void testCreateUserWithBusinessToken() {
+    String businessToken = JwtUtil.generateToken("business_test", "BUSINESS", 2L);
+        String json = createUserJson("CUSTOMER");
+        Response response = target("/users")
+            .request()
+            .header("Authorization", "Bearer " + businessToken)
+            .post(jakarta.ws.rs.client.Entity.json(json));
+    assertEquals(403, response.getStatus(), "Apenas ADMIN pode criar users");
+    }
+
+    @Test
+    public void testCreateUserWithCourierToken() {
+        String courierToken = JwtUtil.generateToken("courier_test", "COURIER", 3L);
+        String json = createUserJson("CUSTOMER");
+        Response response = target("/users")
+            .request()
+            .header("Authorization", "Bearer " + courierToken)
+            .post(jakarta.ws.rs.client.Entity.json(json));
+        assertEquals(403, response.getStatus(), "COURIER não deve conseguir criar users (só ADMIN/BUSINESS)");
+    }
+
+    @Test
+    public void testCreateUserOnlyAdminAllowed() {
+        // Apenas ADMIN pode criar outros ADMINs
+        String businessToken = JwtUtil.generateToken("business_test", "BUSINESS", 2L);
+        String json = createUserJson("ADMIN");
+        Response response = target("/users")
+            .request()
+            .header("Authorization", "Bearer " + businessToken)
+            .post(jakarta.ws.rs.client.Entity.json(json));
+        assertEquals(403, response.getStatus(), "Apenas ADMIN pode criar outros ADMINs");
+    }
+
+    @Test
+    public void testUpdateUserOnlyAdminAllowed() {
+        // Primeiro cria um user como ADMIN
+    String adminToken = JwtUtil.generateToken("admin_test", "ADMIN", 1L);
+        String json = createUserJson("CUSTOMER");
+        Response createResp = target("/users")
+            .request()
+            .header("Authorization", "Bearer " + adminToken)
+            .post(jakarta.ws.rs.client.Entity.json(json));
+    assertEquals(201, createResp.getStatus());
+        
+        // Recupera todos para pegar o ID
+        Response allResp = target("/users")
+            .request()
+            .header("Authorization", "Bearer " + adminToken)
+            .get();
+        List<Map<String, Object>> users = allResp.readEntity(new GenericType<List<Map<String, Object>>>() {});
+        int lastId = ((Number) users.get(users.size() - 1).get("id")).intValue();
+        
+        // Tenta atualizar como BUSINESS - não deve conseguir
+        String businessToken = JwtUtil.generateToken("business_test", "BUSINESS", 2L);
+        String updateJson = String.format("{\"login\":\"updateduser_%d\",\"password\":\"updatedpass\",\"role\":\"COURIER\",\"name\":\"Updated User\"}", lastId);
+        Response response = target("/users/" + lastId)
+            .request()
+            .header("Authorization", "Bearer " + businessToken)
+            .put(jakarta.ws.rs.client.Entity.json(updateJson));
+        assertEquals(403, response.getStatus(), "Apenas ADMIN pode atualizar users");
+    }
+
+    @Test
+    public void testDeleteUserOnlyAdminAllowed() {
+        // Primeiro cria um user como ADMIN
+    String adminToken = JwtUtil.generateToken("admin_test", "ADMIN", 1L);
+        String json = createUserJson("CUSTOMER");
+        Response createResp = target("/users")
+            .request()
+            .header("Authorization", "Bearer " + adminToken)
+            .post(jakarta.ws.rs.client.Entity.json(json));
+    assertEquals(201, createResp.getStatus());
+        
+        // Recupera todos para pegar o ID
+        Response allResp = target("/users")
+            .request()
+            .header("Authorization", "Bearer " + adminToken)
+            .get();
+        List<Map<String, Object>> users = allResp.readEntity(new GenericType<List<Map<String, Object>>>() {});
+        int lastId = ((Number) users.get(users.size() - 1).get("id")).intValue();
+        
+        // Tenta deletar como BUSINESS - não deve conseguir
+        String businessToken = JwtUtil.generateToken("business_test", "BUSINESS", 2L);
+    Response response = target("/users/" + lastId)
+            .request()
+            .header("Authorization", "Bearer " + businessToken)
+            .delete();
+        assertEquals(403, response.getStatus(), "Apenas ADMIN pode deletar users");
     }
 }
 

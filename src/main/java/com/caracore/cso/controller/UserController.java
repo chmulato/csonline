@@ -74,7 +74,7 @@ public class UserController {
 
     @PUT
     @Path("/{id}")
-    @RolesAllowed({"ADMIN", "BUSINESS"})
+    @RolesAllowed("ADMIN")
     public Response update(@PathParam("id") Long id, User user) {
         try {
             user.setId(id);

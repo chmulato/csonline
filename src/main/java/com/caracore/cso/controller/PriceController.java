@@ -187,6 +187,7 @@ public class PriceController {
 
     @GET
     @Path("/business/{businessId}")
+    @RolesAllowed({"ADMIN", "BUSINESS"})
     public Response getByBusinessId(@PathParam("businessId") Long businessId) {
         try {
             logger.info("Buscando preços por businessId: {}", businessId);
