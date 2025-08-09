@@ -1,13 +1,7 @@
 
 # História do Projeto CSOnline - Gestão CD (Centro de Distribuição) JWT 2.0
 
-**Da concepção à perfeição técnica com segurança enterprise: jo5. **IDs de Teste Inválidos**: Alinhamento entre dados reais e scripts de validação
-6. **Endpoint Teams 404**: Correção do path `/team` para `/teams` no controller
-7. **Implementação JWT**: Integração completa de autenticação em frontend e backend
-8. **Filtro de Segurança**: Proteção automática de endpoints com configuração flexível
-9. **Correção Scripts JWT**: Atualização de 5 scripts de teste para incluir Bearer Token nos cabeçalhos
-10. **Consolidação Branch Main**: Merge completo da branch de testes para main com 64 arquivos atualizados
-11. **Headers Authorization**: Resolução de erro 401 através da implementação correta de cabeçalhos JWTde desenvolvimento de um sistema completo e seguro para gestão de centros de distribuição.**
+**Da concepção à operação segura em produção**: um relato técnico da evolução e consolidação do CSOnline, sistema completo para gestão de centros de distribuição com segurança JWT enterprise.
 
 ## I. Fundação e Arquitetura (Janeiro - Junho 2025)
 
@@ -245,6 +239,20 @@ O dia 8 de agosto marcou a **consolidação final do sistema**:
 
 O CSOnline agora combina **funcionalidade completa com segurança enterprise**, estabelecendo um novo padrão de qualidade para projetos de gestão de centros de distribuição.
 
+### **9 de Agosto: Pós-merge e Testes E2E**
+
+No dia 9 de agosto, consolidamos a integração e validamos ponta a ponta:
+- **Merge para main**: `feature/frontend-backend-integration` integrada e enviada para a origem
+- **Segurança registrada**: `JwtAuthenticationFilter`, `AuthorizationFilter` e `CorsFilter` agora registrados no `ResourceConfig`
+- **Autorização alinhada**: `UserController` GETs restritos a `ADMIN`; correspondência de endpoints públicos corrigida no filtro JWT
+- **Testes PowerShell**: `scr/tests/test-all-profiles.ps1` corrigido (coleção sem `+=` e escopo do token), cabeçalho Authorization aplicado
+- **Build & Deploy**: WAR empacotado e publicado no WildFly; suítes de saúde, JWT e perfis executadas
+- **Resultados**: Segurança JWT ~90% (403 esperados em endpoints ADMIN-only); all-profiles 45 testes → 35 PASS, 10 FAIL
+	- Falhas remanescentes: IDs inexistentes em GET-by-id, criação de usuário duplicado (409), payloads de courier/price exigindo IDs válidos
+- **Próximos passos**: ajustar IDs válidos nos testes, gerar usernames únicos, alinhar payloads/contratos dos POSTs e atualizar a documentação
+
+O CSOnline agora combina **funcionalidade completa com segurança enterprise**, estabelecendo um novo padrão de qualidade para projetos de gestão de centros de distribuição.
+
 ---
 
-**Sistema CSOnline - Gestão CD: Da Visão à Realidade Enterprise Segura - Atualizado em 8 de agosto de 2025**
+**Sistema CSOnline - Gestão CD: Da Visão à Realidade Enterprise Segura - Atualizado em 9 de agosto de 2025**
