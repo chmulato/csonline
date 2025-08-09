@@ -170,28 +170,6 @@ O CSOnline atingiu em 7 de agosto de 2025 a **segurança enterprise completa** c
 
 Todos os scripts estão localizados em `scr/tests/` e incluem autenticação JWT, tratamento de erros, saídas coloridas e relatórios detalhados de segurança.
 
-## Sucesso Completo do Deploy Enterprise com Segurança JWT
-
-O deploy no WildFly 31 foi realizado com **sucesso total incluindo segurança JWT enterprise**. O sistema agora conta com:
-
-- **Frontend Vue 3 SPA** com autenticação JWT integrada
-- **100% dos endpoints REST** protegidos por Bearer Token
-- **Sistema de segurança automático** com filtro JWT para `/api/*`
-- **Infraestrutura enterprise** consolidada e testada com segurança
-- **Migrações Flyway** para controle de versão do banco de dados e usuários
-- **Suite de 20 testes de segurança** validando toda a proteção JWT
-
-### **URLs de Produção Seguras:**
-- **Sistema Completo**: [http://localhost:8080/csonline/](http://localhost:8080/csonline/) *(requer login JWT)*
-- **Login JWT**: [http://localhost:8080/csonline/api/login](http://localhost:8080/csonline/api/login) *(endpoint público)*
-- **Swagger UI**: [http://localhost:8080/csonline/swagger-ui/](http://localhost:8080/csonline/swagger-ui/)
-- **APIs Protegidas**: `http://localhost:8080/csonline/api/*` *(Bearer Token obrigatório)*
-- **Console Admin**: [http://localhost:9990](http://localhost:9990)
-
-### **Confirmação Visual da Qualidade:**
-
-![Swagger UI](img/swagger-ui.png)
-
 ## Como Executar
 
 ### **Front-end Vue SPA (Desenvolvimento)**
@@ -348,32 +326,6 @@ Além disso, o log padrão do servidor WildFly está em:
 
 Você pode ajustar o formato e destino do log customizado editando o script ou via console administrativo do WildFly.
 
-## Documentação da API REST JWT 2.0 - 100% Segura e Funcional
-
-**Todas as APIs REST estão funcionando perfeitamente com proteção JWT enterprise**.
-
-Acesse a interface Swagger UI em:
-`http://localhost:8080/csonline/swagger-ui/`
-
-### **Endpoints Validados e Operacionais com JWT:**
-
-- **`/api/login`** - Autenticação JWT (PÚBLICO - 200)
-- **`/api/health`** - Health check do sistema (PÚBLICO - 200)
-- **`/api/users`** - Gestão de usuários (PROTEGIDO JWT - 200)
-- **`/api/customers`** - Gestão de centros de distribuição (PROTEGIDO JWT - 200)
-- **`/api/couriers`** - Gestão de entregadores (PROTEGIDO JWT - 200)
-- **`/api/deliveries`** - Gestão de entregas (PROTEGIDO JWT - 200)
-- **`/api/teams`** - Gestão de equipes (PROTEGIDO JWT - 200)
-- **`/api/sms`** - Gestão de SMS/WhatsApp (PROTEGIDO JWT - 200)
-- **`/api/openapi.json`** - Especificação OpenAPI completa
-
-### **Operações Testadas e Funcionais com Segurança:**
-- **GET Lista com JWT**: Todos os endpoints retornam listas corretas com Bearer Token
-- **GET Individual com JWT**: Todos os endpoints retornam registros específicos autenticados
-- **Proteção Automática**: Endpoints protegidos retornam 401 sem token válido
-- **Swagger UI**: Interface interativa para teste de todos os endpoints
-- **Documentação**: Especificação OpenAPI 3.0 completa com segurança JWT
-
 ## Documentação Completa
 
 Consulte o arquivo [doc/INDEX.md](doc/INDEX.md) para documentação detalhada do projeto, incluindo:
@@ -462,56 +414,6 @@ Consulte o arquivo [doc/INDEX.md](doc/INDEX.md) para documentação detalhada do
 Para dúvidas, sugestões ou contribuições, abra uma issue no repositório.
 
 ---
-
-## **Estado Atual do Projeto - SISTEMA ENTERPRISE COMPLETO**
-
-### **Marco Histórico Alcançado em 6 de Agosto/2025:**
-
-**Frontend Vue 3 SPA: 100% Completo**
-
-- Todos os 7 módulos principais implementados e funcionais
-- Interface moderna, responsiva e navegação SPA fluida
-- Dados simulados estruturados para desenvolvimento
-- Design system consistente e experiência de usuário otimizada
-
-**Backend Jakarta EE: 100% dos Endpoints Funcionais**
-
-- **PERFEIÇÃO TÉCNICA ALCANÇADA**: 100% dos endpoints REST operacionais
-- Swagger UI completamente funcional com documentação interativa
-- Deploy enterprise automatizado no WildFly 31.0.1.Final
-- Suite de testes automatizados com 100% de validação
-- Migrações Flyway para controle de versão do banco de dados
-- Infraestrutura robusta e escalável
-
-**Infraestrutura de Produção: Consolidada**
-
-- WildFly 31.0.1.Final + HSQLDB 2.7 + Jakarta EE 10
-- Scripts PowerShell para automação completa
-- Logging estruturado e monitoramento
-- Configuração SSL/TLS preparada
-
-### **Métricas de Qualidade do Sistema:**
-
-- **Taxa de Sucesso de Endpoints**: 100% (6/6 principais)
-- **Tempo de Resposta Médio**: < 100ms
-- **Disponibilidade**: 99.9%
-- **Cobertura de Testes**: 100% dos endpoints validados
-- **Documentação**: Swagger UI + guias técnicos completos
-
-### **Próximo Marco: Integração Total Frontend-Backend**
-
-O sistema está **tecnicamente perfeito** e pronto para a fase final:
-
-- Conectar Vue 3 SPA às APIs REST funcionais
-- Implementar autenticação JWT robusta
-- Substituir dados simulados por operações reais
-- Adicionar operações CRUD completas (POST/PUT/DELETE)
-
-**O CSOnline atingiu maturidade enterprise e está pronto para produção!**
-
----
-
-**Observação:** O sistema CSOnline atingiu em 8 de agosto de 2025 o **marco histórico de 100% dos endpoints REST funcionais com segurança JWT enterprise implementada**. A documentação técnica completa está disponível em `doc/` e reflete este estado de maturidade enterprise. O projeto está em produção com autenticação JWT 2.0 e todos os testes de segurança aprovados.
 
 ## Licença
 
