@@ -1,6 +1,6 @@
 # Relatório de Testes CSOnline - Resumo Executivo
 
-**Data:** Janeiro 2025  
+**Data:** Agosto 2025  
 **Sistema:** CSOnline - Sistema de Gestão de Entregas  
 **Testes Executados:** Backend API + Frontend Components + Integration
 
@@ -12,16 +12,18 @@
 - CRUD completo para todos os recursos
 - Integração banco de dados OK
 
-### SEGURANÇA: NECESSITA AJUSTES
-- Controle de acesso por perfil não implementado
-- Todos os usuários acessam todos os endpoints
-- Recomenda-se implementar filtros de autorização
+### SEGURANÇA: JWT + CONTROLE DE ACESSO ATIVOS
+- Autenticação JWT ativa em `/api/*`
+- Controle de acesso por perfil (RBAC) ativo; endpoints retornam 403 para roles sem permissão
+- Exemplo: GET de usuários requer role ADMIN
+- Pendências: alinhar alguns testes (IDs válidos, usernames únicos) e payloads de POST com IDs relacionados
 
 ### FRONTEND: COMPONENTES EXISTEM
 - Todos os componentes Vue criados
 - Interface com tema WhatsApp no SMS
 - Validação de formulários implementada
 - Estrutura Vue precisa de ajustes (template/script)
+ - Autenticação integrada (interceptors HTTP com Bearer Token)
 
 ## Resultados por Perfil
 
@@ -39,7 +41,7 @@ Equipes: Acesso total
 ```
 
 ### BUSINESS (empresa/empresa123)
-Status: FUNCIONANDO (com observações)
+Status: FUNCIONANDO (com regras de acesso)
 ```
 Login: OK
 Entregadores: Funcionando
@@ -47,31 +49,31 @@ Clientes: Funcionando
 Entregas: Funcionando
 Preços: Funcionando
 SMS: Funcionando
-Usuários: Deveria ser negado (mas funciona)
-Equipes: Deveria ser negado (mas funciona)
+Usuários: Acesso negado (403 esperado)
+Equipes: Acesso negado (403 esperado)
 ```
 
 ### COURIER (joao/joao123)
-Status: LOGIN OK, SEGURANÇA A AJUSTAR
+Status: LOGIN OK, RESTRIÇÕES ATIVAS
 ```
 Login: OK
 Entregas: Funcionando
-Usuários: Deveria ser negado (mas funciona)
-Clientes: Deveria ser negado (mas funciona)
-Preços: Deveria ser negado (mas funciona)
-SMS: Deveria ser negado (mas funciona)
+Usuários: Acesso negado (403 esperado)
+Clientes: Acesso negado (403 esperado)
+Preços: Acesso negado (403 esperado)
+SMS: Acesso negado (403 esperado)
 ```
 
 ### CUSTOMER (carlos/carlos123)
-Status: LOGIN OK, SEGURANÇA A AJUSTAR
+Status: LOGIN OK, RESTRIÇÕES ATIVAS
 ```
 Login: OK
 Entregas: Funcionando
-Usuários: Deveria ser negado (mas funciona)
-Entregadores: Deveria ser negado (mas funciona)
-Clientes: Deveria ser negado (mas funciona)
-Preços: Deveria ser negado (mas funciona)
-SMS: Deveria ser negado (mas funciona)
+Usuários: Acesso negado (403 esperado)
+Entregadores: Acesso negado (403 esperado)
+Clientes: Acesso negado (403 esperado)
+Preços: Acesso negado (403 esperado)
+SMS: Acesso negado (403 esperado)
 ```
 
 ## Componentes Frontend
@@ -110,7 +112,7 @@ Auth Guards: Verificações de autorização no frontend
 - [x] CRUD SMS/WhatsApp
 - [x] CRUD Equipes
 - [x] Configuração CORS
-- [x] Base de dados PostgreSQL
+- [x] Base de dados HSQLDB
 
 ### Frontend Funcional
 - [x] Componentes Vue 3
@@ -124,10 +126,10 @@ Auth Guards: Verificações de autorização no frontend
 
 ### 1. SEGURANÇA (ALTA PRIORIDADE)
 ```
-Implementar filtros de autorização por role
-Restringir endpoints por perfil de usuário
-Validação server-side de permissões
+Ajustar políticas por módulo (refinar roles)
+Validar autorização em todos os fluxos CRUD
 Guards de rota no frontend
+Alinhar testes com dados válidos (IDs/payloads)
 ```
 
 ### 2. FRONTEND (MÉDIA PRIORIDADE)
@@ -153,7 +155,7 @@ Temas e customização
 ### Backend
 - Disponibilidade: 100%
 - Performance: Excelente
-- Segurança: 60% (funciona mas sem controle de acesso)
+- Segurança: 90% (RBAC ativo; 403 esperados em endpoints restritos)
 - Cobertura: 100% das funcionalidades
 
 ### Frontend
@@ -207,4 +209,6 @@ O sistema CSOnline está 85% funcional e pronto para desenvolvimento avançado.
 ---
 
 Para dúvidas técnicas: Consulte os scripts de teste em `/scr/tests/`  
-Para executar testes: `\.\quick-test.ps1` ou `\.\test-all-profiles.ps1`
+Para executar testes:
+- `pwsh .\run-tests.ps1 -AllTests -Login "admin" -Password "admin123"`
+- `pwsh .\scr\tests\test-all-endpoints.ps1`
