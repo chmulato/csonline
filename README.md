@@ -4,6 +4,13 @@ Sistema completo para gestão de centros de distribuição, entregas, entregador
 
 **MARCO HISTÓRICO ALCANÇADO: SEGURANÇA JWT 2.0 ENTERPRISE IMPLEMENTADA** (8 de Agosto/2025)
 
+### Atualização — 9 de Agosto/2025
+- Merge para main concluído; filtros de segurança (`JwtAuthenticationFilter`, `AuthorizationFilter`, `CorsFilter`) registrados no `ResourceConfig`.
+- GET de usuários agora ADMIN-only; 403 esperado para perfis não-admin (por design).
+- Scripts de testes ajustados para enviar `Authorization: Bearer` e consolidar resultados corretamente.
+- WAR recompilado e publicado no WildFly; suítes de saúde, JWT e endpoints executadas end-to-end.
+- Resultado atual: Segurança ~90% com token não-admin (403 esperados em endpoints ADMIN-only); ajustes pendentes nos testes de endpoints (IDs válidos, usernames únicos, payloads com IDs).
+
 ## Funcionalidades Implementadas
 
 ### **Sistema Completo de Gestão de Centros de Distribuição**
@@ -117,23 +124,26 @@ O projeto conta com uma **suite completa de testes de segurança JWT** para gara
 - **admin/admin123** - Perfil administrativo
 - **empresa/empresa123** - Perfil centro de distribuição
 
-### **Status Atual dos Endpoints JWT 2.0 - 100% SEGUROS E FUNCIONAIS:**
+### **Status Atual dos Endpoints JWT 2.0:**
 - **`/api/login`** - Autenticação JWT - PÚBLICO (200)
 - **`/api/health`** - Health Check - PÚBLICO (200)
-- **`/api/users`** - Gestão de usuários - PROTEGIDO JWT (200)
+- **`/api/users`** - Gestão de usuários - PROTEGIDO JWT (GET requer ADMIN; outros perfis 403)
 - **`/api/customers`** - Gestão de centros de distribuição - PROTEGIDO JWT (200)
 - **`/api/couriers`** - Gestão de entregadores - PROTEGIDO JWT (200)
 - **`/api/teams`** - Gestão de equipes - PROTEGIDO JWT (200)
 - **`/api/deliveries`** - Gestão de entregas - PROTEGIDO JWT (200)
 - **`/api/sms`** - Sistema de SMS/WhatsApp - PROTEGIDO JWT (200)
 
+Observação: Endpoints com autorização por perfil retornarão 403 quando acessados sem a role adequada (por exemplo, `ADMIN`).
+
 ### **Métricas de Segurança JWT Alcançadas:**
-- **Taxa de Segurança Total**: 100% (20/20 testes de segurança aprovados)
+- **Cobertura de Segurança Validada**: ~90% com token não-admin (403 esperados em endpoints ADMIN-only)
+- **Com token ADMIN**: 100% dos cenários cobertos (20/20)
 - **Proteção contra acesso não autorizado**: 401 Unauthorized para endpoints protegidos
 - **Validação de tokens**: Rejeição de tokens inválidos ou expirados
 - **Autenticação automática**: Frontend com interceptors HTTP automáticos
 - **Tempo de Resposta com JWT**: < 100ms incluindo validação de token
-- **Dados de Teste**: 8 users, 2 couriers, 2 customers, 2 teams, 2 deliveries, 2 sms
+- **Dados de Teste**: 9 users, 2 couriers, 2 customers, 2 teams, 2 deliveries, 2 sms
 - **Tokens JWT**: HMAC SHA-512 com expiração de 24 horas
 
 ### **Marco de Segurança Enterprise Implementado (7 de Agosto/2025):**
