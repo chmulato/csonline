@@ -315,6 +315,31 @@ export class BackendService {
   }
 
   /**
+   * Prices
+   */
+  async getPrices() {
+    return this.get(API_CONFIG.ENDPOINTS.PRICES)
+  }
+
+  async getPriceById(id) {
+    return this.get(API_CONFIG.ENDPOINTS.PRICE_BY_ID(id))
+  }
+
+  async createPrice(priceData) {
+    const data = formatDataForBackend(priceData)
+    return this.post(API_CONFIG.ENDPOINTS.PRICES, data)
+  }
+
+  async updatePrice(id, priceData) {
+    const data = formatDataForBackend(priceData)
+    return this.put(API_CONFIG.ENDPOINTS.PRICE_BY_ID(id), data)
+  }
+
+  async deletePrice(id) {
+    return this.delete(API_CONFIG.ENDPOINTS.PRICE_BY_ID(id))
+  }
+
+  /**
    * Health check
    */
   async healthCheck() {

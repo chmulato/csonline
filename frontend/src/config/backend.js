@@ -30,6 +30,10 @@ export const API_CONFIG = {
     DELIVERIES: '/deliveries',
     DELIVERY_BY_ID: (id) => `/deliveries/${id}`,
     
+    // Prices
+    PRICES: '/prices',
+    PRICE_BY_ID: (id) => `/prices/${id}`,
+    
     // SMS
     SMS: '/sms'
   }
