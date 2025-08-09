@@ -2,87 +2,34 @@
 
 Sistema completo para gestão de centros de distribuição, entregas, entregadores, equipes, preços e comunicação via SMS/WhatsApp. Desenvolvido com Jakarta EE 10 no backend, Vue 3 + Vite no frontend e **autenticação JWT enterprise**.
 
-**MARCO HISTÓRICO ALCANÇADO: SEGURANÇA JWT 2.0 ENTERPRISE IMPLEMENTADA** (8 de Agosto/2025)
+ 
 
-### Atualização — 9 de Agosto/2025
-- Merge para main concluído; filtros de segurança (`JwtAuthenticationFilter`, `AuthorizationFilter`, `CorsFilter`) registrados no `ResourceConfig`.
-- GET de usuários agora ADMIN-only; 403 esperado para perfis não-admin (por design).
-- Scripts de testes ajustados para enviar `Authorization: Bearer` e consolidar resultados corretamente.
-- WAR recompilado e publicado no WildFly; suítes de saúde, JWT e endpoints executadas end-to-end.
-- Resultado atual: Segurança ~90% com token não-admin (403 esperados em endpoints ADMIN-only); ajustes pendentes nos testes de endpoints (IDs válidos, usernames únicos, payloads com IDs).
+## Pré-requisitos
 
-## Funcionalidades Implementadas
+- Java 17+ e Maven 3.9+
+- Node.js 18+ e npm
+- PowerShell 7+ (pwsh)
+- WildFly 31 (já incluso em `server/`)
+- Banco de dados HSQLDB (incluso; sem dependências externas)
 
-### **Sistema Completo de Gestão de Centros de Distribuição**
+## Configuração
 
-**Frontend Vue 3 SPA - 100% Funcional com Autenticação JWT:**
-- **Sistema de Login JWT** - Autenticação Bearer Token com Pinia store
-- **Gestão de Usuários** - CRUD completo para administradores do sistema (protegido)
-- **Gestão de Entregadores** - Cadastro e controle de couriers com comissões (protegido)
-- **Gestão de Centros de Distribuição** - Cadastro e controle de CDs com endereços (protegido)
-- **Gestão de Entregas** - Sistema completo com status, filtros e rastreamento (protegido)
-- **Gestão de Equipes** - Vinculação de entregadores aos centros de distribuição (protegido)
-- **Gestão de SMS/WhatsApp** - Sistema de mensagens com templates para entregas (protegido)
-- **Gestão de Preços** - Tabelas de preços por centro de distribuição, veículo e localização (protegido)
-- **Interceptors HTTP** - Injeção automática de Bearer Token em todas as requisições
+- Backend (Jakarta EE 10):
+   - Persistência HSQLDB já configurada em `src/main/resources/META-INF/persistence.xml` e `target/application.properties`.
+   - Logs ajustáveis em `src/main/resources/log4j2.xml`.
+   - Segurança JWT ativa em `/api/*`. Credenciais de teste: `admin/admin123`, `empresa/empresa123`.
+- Frontend (Vue 3 + Vite):
+   - Desenvolvimento: pasta `frontend/` (proxy configurado no `vite.config.js`).
+   - Integração com backend: use `src/build-frontend.ps1` para copiar `dist/` para `src/main/webapp/`.
+- Scripts de automação (PowerShell):
+   - Deploy e operações em `./scr/*.ps1` e scripts raiz (start/stop/config/deploy/prepare).
+   - Testes automatizados em `scr/tests/`.
 
-### **Recursos Técnicos JWT 2.0:**
-- **Autenticação JWT Enterprise** com HMAC SHA-512
-- **Proteção automática de endpoints** via filtro de segurança
-- **Gerenciamento de sessão** com localStorage e validação de expiração
-- **Interface responsiva e moderna** com login obrigatório
-- **Dashboard com estatísticas** em cada módulo protegido
-- **Sistema de filtros e busca avançada** com autorização
-- **Modais para criação/edição/visualização** protegidos por token
-- **Validação de formulários** com verificação de autenticação
-- **Navegação SPA sem reload** com controle de acesso
-- **API client integrado** com interceptors automáticos
+## Testes Automatizados
 
-### **Backend Jakarta EE 10 com Segurança JWT:**
+O projeto inclui scripts de teste para validar autenticação JWT e endpoints da API:
 
-- **Sistema de autenticação JWT** completo e seguro
-- **Filtro de segurança automático** protegendo endpoints `/api/*`
-- **APIs REST completamente documentadas** e protegidas
-- **Swagger UI integrado** para testes com autenticação
-- **Banco de dados HSQLDB** com usuários de teste
-- **Logging customizado** incluindo eventos de autenticação
-- **Deploy automatizado no WildFly 31** com segurança
-- **Flyway para migrações** de banco de dados e usuários
-- **Suite completa de testes de segurança** para todos os endpoints
-
-## Principais Tecnologias
-
-### **Frontend:**
-
-- Vue 3 + Composition API
-- Vite (build tool)
-- CSS3 moderno e responsivo
-- FontAwesome (ícones)
-
-### **Backend:**
-
-- Jakarta EE 10
-- **JWT Authentication** (JJWT 0.12.3)
-- JPA (Jakarta Persistence API)
-- EclipseLink (JPA Provider)
-- Jersey (JAX-RS)
-- HSQLDB (HyperSQL Database) - única solução de banco de dados utilizada
-- Flyway (Migrações de banco de dados)
-- Log4j 2
-- Swagger/OpenAPI
-- JUnit 5, Mockito
-
-### **Deploy:**
-
-- WildFly 31 Application Server
-- Scripts PowerShell automatizados
-- Build e deploy integrados
-
-## Suite de Testes de Segurança JWT 2.0
-
-O projeto conta com uma **suite completa de testes de segurança JWT** para garantir a proteção e confiabilidade de todos os endpoints da API:
-
-### **Scripts de Teste JWT Disponíveis:**
+### Scripts de Teste
 
 - **`test-users.ps1`** - Testa endpoints de usuários com autenticação JWT (GET, POST, PUT, DELETE)
 - **`test-customers.ps1`** - Testa endpoints de centros de distribuição com Bearer Token
@@ -92,7 +39,7 @@ O projeto conta com uma **suite completa de testes de segurança JWT** para gara
 - **`test-sms.ps1`** - Testa endpoints de SMS/WhatsApp com JWT
 - **`test-login.ps1`** - Testa endpoint de autenticação JWT
 
-### **Ferramentas de Segurança:**
+### Ferramentas de Suporte
 
 - **`test-jwt-security.ps1`** - **Suite completa com 20 testes de segurança JWT**
 - **`jwt-utility.ps1`** - Funções utilitárias para operações JWT em PowerShell
@@ -100,7 +47,7 @@ O projeto conta com uma **suite completa de testes de segurança JWT** para gara
 - **`health-check-endpoints.ps1`** - Verificação de saúde sem autenticação
 - **`run-tests.ps1`** - **Script principal JWT 2.0** com opções de segurança
 
-### **Como Executar os Testes JWT:**
+### Como Executar os Testes
 
 ```powershell
 # Teste completo de segurança JWT (recomendado)
@@ -119,12 +66,12 @@ O projeto conta com uma **suite completa de testes de segurança JWT** para gara
 .\run-tests.ps1 -JWTSecurity -Verbose -Login "admin" -Password "admin123"
 ```
 
-### **Credenciais de Teste Disponíveis:**
+### Credenciais de Teste
 
 - **admin/admin123** - Perfil administrativo
 - **empresa/empresa123** - Perfil centro de distribuição
 
-### **Status Atual dos Endpoints JWT 2.0:**
+### Endpoints e Regras de Acesso
 - **`/api/login`** - Autenticação JWT - PÚBLICO (200)
 - **`/api/health`** - Health Check - PÚBLICO (200)
 - **`/api/users`** - Gestão de usuários - PROTEGIDO JWT (GET requer ADMIN; outros perfis 403)
@@ -134,41 +81,9 @@ O projeto conta com uma **suite completa de testes de segurança JWT** para gara
 - **`/api/deliveries`** - Gestão de entregas - PROTEGIDO JWT (200)
 - **`/api/sms`** - Sistema de SMS/WhatsApp - PROTEGIDO JWT (200)
 
-Observação: Endpoints com autorização por perfil retornarão 403 quando acessados sem a role adequada (por exemplo, `ADMIN`).
+Observação: Endpoints retornarão 403 quando acessados sem a role adequada (por exemplo, `ADMIN`).
 
-### **Métricas de Segurança JWT Alcançadas:**
-- **Cobertura de Segurança Validada**: ~90% com token não-admin (403 esperados em endpoints ADMIN-only)
-- **Com token ADMIN**: 100% dos cenários cobertos (20/20)
-- **Proteção contra acesso não autorizado**: 401 Unauthorized para endpoints protegidos
-- **Validação de tokens**: Rejeição de tokens inválidos ou expirados
-- **Autenticação automática**: Frontend com interceptors HTTP automáticos
-- **Tempo de Resposta com JWT**: < 100ms incluindo validação de token
-- **Dados de Teste**: 9 users, 2 couriers, 2 customers, 2 teams, 2 deliveries, 2 sms
-- **Tokens JWT**: HMAC SHA-512 com expiração de 24 horas
-
-### **Marco de Segurança Enterprise Implementado (7 de Agosto/2025):**
-
-- **Sistema JWT completo**: Autenticação, autorização e proteção automática
-- **20 testes de segurança**: Validação de todos os cenários de proteção
-- **Integração frontend-backend**: Vue 3 + Jakarta EE com JWT seamless
-- **Resultado**: **Segurança Enterprise** alcançada - 100% dos endpoints protegidos
-
-### **Benefícios dos Testes de Segurança JWT:**
-- **Validação completa de segurança** com 20 cenários de teste
-- **Proteção contra acesso não autorizado** - endpoints retornam 401 sem JWT
-- **Validação de tokens JWT** - rejeição de tokens inválidos ou expirados
-- **Testes de endpoints públicos** - login e health funcionam sem autenticação
-- **Identificação proativa de vulnerabilidades** e correção sistemática
-- **Testes de regressão de segurança** após mudanças no código
-- **Documentação viva** dos comportamentos de segurança esperados
-- **Facilita debugging** de problemas de autenticação com diagnósticos detalhados
-- **Onboarding simplificado** para novos desenvolvedores com exemplos JWT
-- **Garantia de segurança** em produção com validação automática
-
-### **Marco Histórico de Segurança Enterprise:**
-O CSOnline atingiu em 7 de agosto de 2025 a **segurança enterprise completa** com 100% dos endpoints protegidos por JWT e 20 testes de segurança aprovados. Esta conquista representa a consolidação de um sistema enterprise robusto, seguro, testado e pronto para produção com autenticação de nível corporativo.
-
-Todos os scripts estão localizados em `scr/tests/` e incluem autenticação JWT, tratamento de erros, saídas coloridas e relatórios detalhados de segurança.
+Todos os scripts estão localizados em `scr/tests/`.
 
 ## Como Executar
 
