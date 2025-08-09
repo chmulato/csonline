@@ -244,13 +244,15 @@ function Test-AdminProfile {
     Write-TestSection "Operações de Criação (Admin)"
     # Criar usuário com login único e guardar ID para criação de courier no perfil Business
     $uniqueLogin = "test_admin_courier_$([DateTime]::UtcNow.Ticks)"
+    $uniqueEmail = "test_$([DateTime]::UtcNow.Ticks)@cso.test"
+    $uniqueMobile = "11$((Get-Random -Minimum 100000000 -Maximum 999999999))"
     $newUser = @{
         role = "COURIER"
         name = "Teste Admin Courier"
         login = $uniqueLogin
         password = "test123"
-        email = "test@admin.com"
-        mobile = "11000000000"
+        email = $uniqueEmail
+        mobile = $uniqueMobile
     }
     $createUserResp = Test-Endpoint "Criar usuário" "/users" "POST" $newUser -Profile "ADMIN"
     # Buscar ID do usuário criado
