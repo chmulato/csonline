@@ -30,7 +30,8 @@ $Cyan = "Cyan"
 $Magenta = "Magenta"
 
 # Variáveis globais
-$TestResults = @()
+# Use uma lista mutável em escopo de script para evitar erros de op_Addition e conflitos de escopo
+$script:TestResults = New-Object System.Collections.ArrayList
 $CurrentUser = $null
 $AuthToken = $null
 
@@ -68,14 +69,15 @@ function Write-TestResult {
         Write-Host "    └─ $Details" -ForegroundColor Gray
     }
     
-    # Armazenar resultado
-    $global:TestResults += [PSCustomObject]@{
+    # Armazenar resultado (sempre como lista mutável no escopo do script)
+    $entry = [PSCustomObject]@{
         Profile = $Profile
         Test = $Test
         Success = $Success
         Details = $Details
-        Timestamp = Get-Date
+        Timestamp = (Get-Date)
     }
+    [void]$script:TestResults.Add($entry)
 }
 
 function Invoke-ApiRequest {

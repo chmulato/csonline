@@ -14,6 +14,9 @@ import com.caracore.cso.controller.UserController;
 import com.caracore.cso.controller.SMSController;
 import com.caracore.cso.controller.LoginController;
 import com.caracore.cso.controller.PriceController;
+import com.caracore.cso.security.AuthorizationFilter;
+import com.caracore.cso.security.JwtAuthenticationFilter;
+import com.caracore.cso.security.CorsFilter;
 
 /**
  * Configuração de recursos da API REST
@@ -34,6 +37,10 @@ public class OpenApiResourceConfig extends ResourceConfig {
         register(SMSController.class);
         register(LoginController.class);
         register(PriceController.class);
+    // Registra filtros de segurança (JWT + Autorização + CORS)
+    register(JwtAuthenticationFilter.class);
+    register(AuthorizationFilter.class);
+    register(CorsFilter.class);
         // Registra o recurso do Swagger/OpenAPI
         register(OpenApiResource.class);
     }
