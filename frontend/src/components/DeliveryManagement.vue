@@ -1,125 +1,207 @@
 <template>
   <div class="delivery-management">
     <h2>Gestão de Entregas</h2>
-    <div class="actions">
-      <button @click="showForm = true">Nova Entrega</button>
-      <button class="back-btn" @click="goBack">Voltar</button>
+    
+    <!-- Loading state -->
+    <div v-if="loading" class="loading">
+      <p>Carregando entregas...</p>
     </div>
     
-    <div class="filters">
-      <select v-model="statusFilter" @change="filterDeliveries">
-        <option value="">Todos os Status</option>
-        <option value="pending">Pendente</option>
-        <option value="received">Recebida</option>
-        <option value="completed">Finalizada</option>
-      </select>
+    <!-- Error state -->
+    <div v-else-if="error" class="error">
+      <p>Erro ao carregar entregas: {{ error }}</p>
+      <button @click="loadDeliveries">Tentar novamente</button>
+    </div>
+    
+    <!-- Main content -->
+    <div v-else>
+      <div class="actions">
+        <button @click="showForm = true" class="primary-btn">Nova Entrega</button>
+        <button class="back-btn" @click="goBack">Voltar</button>
+      </div>
+      
+      <div class="filters">
+        <div class="filter-group">
+          <select v-model="statusFilter" @change="filterDeliveries">
+            <option value="">Todos os Status</option>
+            <option value="pending">Pendente</option>
+            <option value="received">Recebida</option>
+            <option value="completed">Finalizada</option>
+          </select>
+          
+          <input 
+            v-model="searchText" 
+            type="text" 
+            placeholder="Buscar por cliente, entregador..."
+            @input="filterDeliveries"
+            class="search-input"
+          />
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Empresa</th>
+              <th>Cliente</th>
+              <th>Entregador</th>
+              <th>Origem</th>
+              <th>Destino</th>
+              <th>Contato</th>
+              <th>Volume</th>
+              <th>Peso</th>
+              <th>KM</th>
+              <th>Custo</th>
+              <th>Status</th>
+              <th>Data</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="delivery in filteredDeliveries" :key="delivery.id">
+              <td>{{ delivery.id }}</td>
+              <td>{{ getBusinessName(delivery) }}</td>
+              <td>{{ getCustomerName(delivery) }}</td>
+              <td>{{ getCourierName(delivery) }}</td>
+              <td>{{ delivery.start }}</td>
+              <td>{{ delivery.destination }}</td>
+              <td>{{ delivery.contact }}</td>
+              <td>{{ delivery.volume }}</td>
+              <td>{{ delivery.weight }}</td>
+              <td>{{ delivery.km }}km</td>
+              <td>R$ {{ delivery.cost?.toFixed(2) }}</td>
+              <td>
+                <span :class="getStatusClass(delivery)">{{ getStatusText(delivery) }}</span>
+              </td>
+              <td>{{ formatDate(delivery.datatime) }}</td>
+              <td>
+                <button @click="editDelivery(delivery)" class="edit-btn">Editar</button>
+                <button @click="deleteDelivery(delivery.id)" class="delete-btn">Excluir</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <div v-if="filteredDeliveries.length === 0" class="empty-state">
+          <p>Nenhuma entrega encontrada.</p>
+        </div>
+      </div>
     </div>
 
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Empresa</th>
-          <th>Cliente</th>
-          <th>Entregador</th>
-          <th>Origem</th>
-          <th>Destino</th>
-          <th>Contato</th>
-          <th>Volume</th>
-          <th>Peso</th>
-          <th>KM</th>
-          <th>Custo</th>
-          <th>Status</th>
-          <th>Data</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="delivery in filteredDeliveries" :key="delivery.id">
-          <td>{{ delivery.id }}</td>
-          <td>{{ delivery.business.name }}</td>
-          <td>{{ delivery.customer.user.name }}</td>
-          <td>{{ delivery.courier.user.name }}</td>
-          <td>{{ delivery.start }}</td>
-          <td>{{ delivery.destination }}</td>
-          <td>{{ delivery.contact }}</td>
-          <td>{{ delivery.volume }}</td>
-          <td>{{ delivery.weight }}</td>
-          <td>{{ delivery.km }}km</td>
-          <td>R$ {{ delivery.cost?.toFixed(2) }}</td>
-          <td>
-            <span :class="getStatusClass(delivery)">{{ getStatusText(delivery) }}</span>
-          </td>
-          <td>{{ formatDate(delivery.datatime) }}</td>
-          <td>
-            <button @click="editDelivery(delivery)">Editar</button>
-            <button @click="deleteDelivery(delivery.id)">Excluir</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
+    <!-- Modal Form -->
     <div v-if="showForm" class="modal">
       <div class="modal-content">
         <h3>{{ editingDelivery ? 'Editar Entrega' : 'Nova Entrega' }}</h3>
-        <form @submit.prevent="saveDelivery">
+        
+        <div v-if="formLoading" class="form-loading">
+          <p>Carregando dados...</p>
+        </div>
+        
+        <form v-else @submit.prevent="saveDelivery">
           <div class="form-row">
-            <select v-model="form.business.id" required>
-              <option value="">Selecione a Empresa</option>
-              <option v-for="business in businesses" :key="business.id" :value="business.id">
-                {{ business.name }}
-              </option>
-            </select>
-            <select v-model="form.customer.id" required>
-              <option value="">Selecione o Cliente</option>
-              <option v-for="customer in customers" :key="customer.id" :value="customer.id">
-                {{ customer.user.name }}
-              </option>
-            </select>
+            <div class="form-group">
+              <label>Empresa *</label>
+              <select v-model="form.businessId" required>
+                <option value="">Selecione a Empresa</option>
+                <option v-for="business in businesses" :key="business.id" :value="business.id">
+                  {{ business.name }}
+                </option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label>Cliente *</label>
+              <select v-model="form.customerId" required>
+                <option value="">Selecione o Cliente</option>
+                <option v-for="customer in customers" :key="customer.id" :value="customer.id">
+                  {{ customer.user?.name || customer.name }}
+                </option>
+              </select>
+            </div>
           </div>
           
           <div class="form-row">
-            <select v-model="form.courier.id" required>
-              <option value="">Selecione o Entregador</option>
-              <option v-for="courier in couriers" :key="courier.id" :value="courier.id">
-                {{ courier.user.name }}
-              </option>
-            </select>
-            <input v-model="form.contact" type="tel" placeholder="Contato WhatsApp" required />
+            <div class="form-group">
+              <label>Entregador *</label>
+              <select v-model="form.courierId" required>
+                <option value="">Selecione o Entregador</option>
+                <option v-for="courier in couriers" :key="courier.id" :value="courier.id">
+                  {{ courier.user?.name || courier.name }}
+                </option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label>Contato WhatsApp *</label>
+              <input v-model="form.contact" type="tel" placeholder="(11) 99999-9999" required />
+            </div>
           </div>
 
           <div class="form-row">
-            <input v-model="form.start" type="text" placeholder="Endereço de Origem" required />
-            <input v-model="form.destination" type="text" placeholder="Endereço de Destino" required />
+            <div class="form-group">
+              <label>Endereço de Origem *</label>
+              <input v-model="form.start" type="text" placeholder="Endereço completo de origem" required />
+            </div>
+            
+            <div class="form-group">
+              <label>Endereço de Destino *</label>
+              <input v-model="form.destination" type="text" placeholder="Endereço completo de destino" required />
+            </div>
           </div>
 
-          <textarea v-model="form.description" placeholder="Descrição da Entrega" rows="3"></textarea>
-
-          <div class="form-row">
-            <input v-model="form.volume" type="text" placeholder="Volume (ex: 2m³)" />
-            <input v-model="form.weight" type="text" placeholder="Peso (ex: 50kg)" />
-            <input v-model="form.km" type="text" placeholder="Distância (km)" />
+          <div class="form-group">
+            <label>Descrição da Entrega</label>
+            <textarea v-model="form.description" placeholder="Descrição detalhada da entrega..." rows="3"></textarea>
           </div>
 
           <div class="form-row">
-            <input v-model="form.additionalCost" type="number" step="0.01" min="0" placeholder="Custo Adicional (R$)" />
-            <input v-model="form.cost" type="number" step="0.01" min="0" placeholder="Custo Total (R$)" required />
+            <div class="form-group">
+              <label>Volume</label>
+              <input v-model="form.volume" type="text" placeholder="ex: 2m³, 10 caixas" />
+            </div>
+            
+            <div class="form-group">
+              <label>Peso</label>
+              <input v-model="form.weight" type="text" placeholder="ex: 50kg, 100kg" />
+            </div>
+            
+            <div class="form-group">
+              <label>Distância (km)</label>
+              <input v-model="form.km" type="number" step="0.1" min="0" placeholder="0.0" />
+            </div>
           </div>
 
           <div class="form-row">
-            <label>
+            <div class="form-group">
+              <label>Custo Adicional (R$)</label>
+              <input v-model="form.additionalCost" type="number" step="0.01" min="0" placeholder="0.00" />
+            </div>
+            
+            <div class="form-group">
+              <label>Custo Total (R$) *</label>
+              <input v-model="form.cost" type="number" step="0.01" min="0" placeholder="0.00" required />
+            </div>
+          </div>
+
+          <div class="form-row checkbox-row">
+            <label class="checkbox-label">
               <input v-model="form.received" type="checkbox" />
               Entrega Recebida
             </label>
-            <label>
+            
+            <label class="checkbox-label">
               <input v-model="form.completed" type="checkbox" />
               Entrega Finalizada
             </label>
           </div>
 
           <div class="form-actions">
-            <button type="submit">Salvar</button>
-            <button type="button" @click="cancel">Cancelar</button>
+            <button type="submit" :disabled="saving" class="save-btn">
+              {{ saving ? 'Salvando...' : 'Salvar' }}
+            </button>
+            <button type="button" @click="cancel" class="cancel-btn">Cancelar</button>
           </div>
         </form>
       </div>
@@ -128,26 +210,294 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue'
+import { backendService } from '../services/backend.js'
 
-const emit = defineEmits(['back']);
+const emit = defineEmits(['back'])
 
+// Reactive state
+const deliveries = ref([])
+const businesses = ref([])
+const customers = ref([])
+const couriers = ref([])
+const loading = ref(false)
+const error = ref(null)
+const formLoading = ref(false)
+const saving = ref(false)
+
+// Form state
+const showForm = ref(false)
+const editingDelivery = ref(null)
+
+// Filters
+const statusFilter = ref('')
+const searchText = ref('')
+
+// Form data
+const form = ref({
+  businessId: '',
+  customerId: '',
+  courierId: '',
+  start: '',
+  destination: '',
+  contact: '',
+  description: '',
+  volume: '',
+  weight: '',
+  km: '',
+  additionalCost: '',
+  cost: '',
+  received: false,
+  completed: false
+})
+
+// Computed
+const filteredDeliveries = computed(() => {
+  let filtered = deliveries.value
+
+  // Filter by status
+  if (statusFilter.value) {
+    filtered = filtered.filter(delivery => {
+      const status = getDeliveryStatus(delivery)
+      return status === statusFilter.value
+    })
+  }
+
+  // Filter by search text
+  if (searchText.value) {
+    const search = searchText.value.toLowerCase()
+    filtered = filtered.filter(delivery => {
+      return getCustomerName(delivery).toLowerCase().includes(search) ||
+             getCourierName(delivery).toLowerCase().includes(search) ||
+             getBusinessName(delivery).toLowerCase().includes(search) ||
+             delivery.start?.toLowerCase().includes(search) ||
+             delivery.destination?.toLowerCase().includes(search)
+    })
+  }
+
+  return filtered
+})
+
+// Methods
 function goBack() {
-  emit('back');
+  emit('back')
 }
 
-// Dados simulados
-const businesses = ref([
-  { id: 1, name: 'CSOnline Delivery' },
-  { id: 4, name: 'Gestão Empresarial' }
-]);
+async function loadDeliveries() {
+  loading.value = true
+  error.value = null
+  
+  try {
+    const [deliveriesData, businessesData, customersData, couriersData] = await Promise.all([
+      backendService.getDeliveries(),
+      backendService.getUsers(), // Buscar usuários para obter empresas
+      backendService.getCustomers(),
+      backendService.getCouriers()
+    ])
+    
+    deliveries.value = deliveriesData || []
+    
+    // Filtrar apenas usuários do tipo BUSINESS para dropdown
+    businesses.value = (businessesData || []).filter(user => user.profile === 'BUSINESS')
+    customers.value = customersData || []
+    couriers.value = couriersData || []
+    
+    console.log('Entregas carregadas:', deliveries.value.length)
+    console.log('Empresas disponíveis:', businesses.value.length)
+    console.log('Clientes disponíveis:', customers.value.length)
+    console.log('Entregadores disponíveis:', couriers.value.length)
+    
+  } catch (err) {
+    console.error('Erro ao carregar entregas:', err)
+    error.value = err.message || 'Erro ao conectar com o servidor'
+  } finally {
+    loading.value = false
+  }
+}
 
-const customers = ref([
-  {
-    id: 1,
-    user: { id: 3, name: 'Distribuidora Norte' },
-    business: { id: 1 }
-  },
+function getDeliveryStatus(delivery) {
+  if (delivery.completed) return 'completed'
+  if (delivery.received) return 'received' 
+  return 'pending'
+}
+
+function getBusinessName(delivery) {
+  return delivery.business?.name || delivery.business?.user?.name || 'N/A'
+}
+
+function getCustomerName(delivery) {
+  return delivery.customer?.user?.name || delivery.customer?.name || 'N/A'
+}
+
+function getCourierName(delivery) {
+  return delivery.courier?.user?.name || delivery.courier?.name || 'N/A'
+}
+
+function getStatusClass(delivery) {
+  const status = getDeliveryStatus(delivery)
+  return `status-${status}`
+}
+
+function getStatusText(delivery) {
+  const status = getDeliveryStatus(delivery)
+  const statusMap = {
+    pending: 'Pendente',
+    received: 'Recebida',
+    completed: 'Finalizada'
+  }
+  return statusMap[status] || 'Desconhecido'
+}
+
+function formatDate(dateStr) {
+  if (!dateStr) return 'N/A'
+  
+  try {
+    const date = new Date(dateStr)
+    return date.toLocaleDateString('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    })
+  } catch {
+    return 'Data inválida'
+  }
+}
+
+async function editDelivery(delivery) {
+  editingDelivery.value = delivery
+  
+  // Mapear os dados para o formulário
+  form.value = {
+    businessId: delivery.business?.id || '',
+    customerId: delivery.customer?.id || '',
+    courierId: delivery.courier?.id || '',
+    start: delivery.start || '',
+    destination: delivery.destination || '',
+    contact: delivery.contact || '',
+    description: delivery.description || '',
+    volume: delivery.volume || '',
+    weight: delivery.weight || '',
+    km: delivery.km || '',
+    additionalCost: delivery.additionalCost || '',
+    cost: delivery.cost || '',
+    received: delivery.received || false,
+    completed: delivery.completed || false
+  }
+  
+  showForm.value = true
+}
+
+async function deleteDelivery(id) {
+  if (!confirm('Tem certeza que deseja excluir esta entrega?')) {
+    return
+  }
+  
+  try {
+    await backendService.deleteDelivery(id)
+    
+    // Remover da lista local
+    deliveries.value = deliveries.value.filter(d => d.id !== id)
+    
+    console.log('Entrega excluída com sucesso')
+  } catch (err) {
+    console.error('Erro ao excluir entrega:', err)
+    alert('Erro ao excluir entrega: ' + (err.message || 'Erro desconhecido'))
+  }
+}
+
+async function saveDelivery() {
+  saving.value = true
+  
+  try {
+    // Preparar dados para envio
+    const deliveryData = {
+      business: { id: parseInt(form.value.businessId) },
+      customer: { id: parseInt(form.value.customerId) },
+      courier: { id: parseInt(form.value.courierId) },
+      start: form.value.start,
+      destination: form.value.destination,
+      contact: form.value.contact,
+      description: form.value.description,
+      volume: form.value.volume,
+      weight: form.value.weight,
+      km: parseFloat(form.value.km) || 0,
+      additionalCost: parseFloat(form.value.additionalCost) || 0,
+      cost: parseFloat(form.value.cost),
+      received: form.value.received,
+      completed: form.value.completed
+    }
+    
+    let savedDelivery
+    
+    if (editingDelivery.value) {
+      // Editar entrega existente
+      savedDelivery = await backendService.updateDelivery(editingDelivery.value.id, deliveryData)
+      
+      // Atualizar na lista local
+      const index = deliveries.value.findIndex(d => d.id === editingDelivery.value.id)
+      if (index !== -1) {
+        deliveries.value[index] = { ...editingDelivery.value, ...savedDelivery }
+      }
+      
+      console.log('Entrega atualizada com sucesso')
+    } else {
+      // Criar nova entrega
+      savedDelivery = await backendService.createDelivery(deliveryData)
+      
+      // Adicionar à lista local
+      deliveries.value.push(savedDelivery)
+      
+      console.log('Entrega criada com sucesso')
+    }
+    
+    showForm.value = false
+    resetForm()
+    
+  } catch (err) {
+    console.error('Erro ao salvar entrega:', err)
+    alert('Erro ao salvar entrega: ' + (err.message || 'Erro desconhecido'))
+  } finally {
+    saving.value = false
+  }
+}
+
+function cancel() {
+  showForm.value = false
+  editingDelivery.value = null
+  resetForm()
+}
+
+function resetForm() {
+  form.value = {
+    businessId: '',
+    customerId: '',
+    courierId: '',
+    start: '',
+    destination: '',
+    contact: '',
+    description: '',
+    volume: '',
+    weight: '',
+    km: '',
+    additionalCost: '',
+    cost: '',
+    received: false,
+    completed: false
+  }
+}
+
+function filterDeliveries() {
+  // Esta função é chamada automaticamente pelo computed filteredDeliveries
+  // Não precisa fazer nada aqui
+}
+
+// Lifecycle
+onMounted(() => {
+  loadDeliveries()
+})
+</script>
   {
     id: 2,
     user: { id: 6, name: 'Logística Sul' },
@@ -297,101 +647,6 @@ function editDelivery(delivery) {
     volume: delivery.volume,
     weight: delivery.weight,
     km: delivery.km,
-    additionalCost: delivery.additionalCost,
-    cost: delivery.cost,
-    received: delivery.received,
-    completed: delivery.completed
-  };
-  showForm.value = true;
-}
-
-function deleteDelivery(id) {
-  if (confirm('Tem certeza que deseja excluir esta entrega?')) {
-    deliveries.value = deliveries.value.filter(d => d.id !== id);
-  }
-}
-
-function saveDelivery() {
-  const selectedBusiness = businesses.value.find(b => b.id == form.value.business.id);
-  const selectedCustomer = customers.value.find(c => c.id == form.value.customer.id);
-  const selectedCourier = couriers.value.find(c => c.id == form.value.courier.id);
-  
-  if (editingDelivery.value) {
-    // Editar entrega existente
-    Object.assign(editingDelivery.value, {
-      business: selectedBusiness,
-      customer: selectedCustomer,
-      courier: selectedCourier,
-      start: form.value.start,
-      destination: form.value.destination,
-      contact: form.value.contact,
-      description: form.value.description,
-      volume: form.value.volume,
-      weight: form.value.weight,
-      km: form.value.km,
-      additionalCost: parseFloat(form.value.additionalCost) || 0,
-      cost: parseFloat(form.value.cost),
-      received: form.value.received,
-      completed: form.value.completed
-    });
-    editingDelivery.value = null;
-  } else {
-    // Criar nova entrega
-    const newDelivery = {
-      id: Date.now(),
-      business: selectedBusiness,
-      customer: selectedCustomer,
-      courier: selectedCourier,
-      start: form.value.start,
-      destination: form.value.destination,
-      contact: form.value.contact,
-      description: form.value.description,
-      volume: form.value.volume,
-      weight: form.value.weight,
-      km: form.value.km,
-      additionalCost: parseFloat(form.value.additionalCost) || 0,
-      cost: parseFloat(form.value.cost),
-      received: form.value.received,
-      completed: form.value.completed,
-      datatime: new Date()
-    };
-    deliveries.value.push(newDelivery);
-  }
-  
-  showForm.value = false;
-  resetForm();
-}
-
-function cancel() {
-  showForm.value = false;
-  editingDelivery.value = null;
-  resetForm();
-}
-
-function resetForm() {
-  form.value = {
-    business: { id: '' },
-    customer: { id: '' },
-    courier: { id: '' },
-    start: '',
-    destination: '',
-    contact: '',
-    description: '',
-    volume: '',
-    weight: '',
-    km: '',
-    additionalCost: '',
-    cost: '',
-    received: false,
-    completed: false
-  };
-}
-
-function filterDeliveries() {
-  // Função é chamada automaticamente pelo computed filteredDeliveries
-}
-</script>
-
 <style scoped>
 .delivery-management {
   background: #fff;
@@ -404,6 +659,17 @@ function filterDeliveries() {
 
 .delivery-management h2 {
   margin-bottom: 24px;
+  color: #1976d2;
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 40px;
+}
+
+.error p {
+  color: #d32f2f;
+  margin-bottom: 16px;
 }
 
 .actions {
@@ -412,12 +678,22 @@ function filterDeliveries() {
   gap: 8px;
 }
 
-.filters {
-  margin-bottom: 16px;
+.primary-btn {
+  padding: 10px 20px;
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.primary-btn:hover {
+  background: #1565c0;
 }
 
 .back-btn {
-  padding: 8px 18px;
+  padding: 10px 20px;
   background: #888;
   color: #fff;
   border: none;
@@ -430,6 +706,28 @@ function filterDeliveries() {
   background: #555;
 }
 
+.filters {
+  margin-bottom: 20px;
+}
+
+.filter-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.search-input {
+  flex: 1;
+  max-width: 300px;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -438,7 +736,7 @@ table {
 }
 
 th, td {
-  padding: 8px;
+  padding: 12px 8px;
   border-bottom: 1px solid #eee;
   text-align: left;
 }
@@ -465,25 +763,43 @@ th {
   font-weight: bold;
 }
 
-button {
+.edit-btn, .delete-btn {
   margin-right: 8px;
   padding: 6px 12px;
   border: none;
   border-radius: 4px;
-  background: #1976d2;
-  color: #fff;
   cursor: pointer;
   font-size: 12px;
 }
 
-button:hover {
+.edit-btn {
+  background: #1976d2;
+  color: #fff;
+}
+
+.edit-btn:hover {
   background: #1565c0;
+}
+
+.delete-btn {
+  background: #d32f2f;
+  color: #fff;
+}
+
+.delete-btn:hover {
+  background: #c62828;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: #666;
 }
 
 .modal {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.2);
+  background: rgba(0,0,0,0.3);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -495,66 +811,157 @@ button:hover {
   background: #fff;
   padding: 32px;
   border-radius: 8px;
-  min-width: 600px;
+  min-width: 700px;
   max-width: 800px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
   margin: 20px;
+}
+
+.modal-content h3 {
+  margin-bottom: 24px;
+  color: #1976d2;
+}
+
+.form-loading {
+  text-align: center;
+  padding: 40px;
 }
 
 .form-row {
   display: flex;
-  gap: 12px;
-  margin-bottom: 12px;
+  gap: 16px;
+  margin-bottom: 16px;
 }
 
 .form-row > * {
   flex: 1;
 }
 
-.form-actions {
-  margin-top: 16px;
+.form-group {
   display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #333;
+}
+
+.checkbox-row {
+  align-items: center;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
   gap: 8px;
+  margin-bottom: 0;
+  font-weight: normal;
+}
+
+.form-actions {
+  margin-top: 24px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.save-btn {
+  padding: 10px 24px;
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.save-btn:hover:not(:disabled) {
+  background: #1565c0;
+}
+
+.save-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.cancel-btn {
+  padding: 10px 24px;
+  background: #666;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.cancel-btn:hover {
+  background: #555;
 }
 
 select, input[type="text"], input[type="tel"], input[type="number"], textarea {
   width: 100%;
-  margin-bottom: 12px;
-  padding: 8px;
+  padding: 10px;
   border-radius: 4px;
-  border: 1px solid #ccc;
+  border: 1px solid #ddd;
+  font-size: 14px;
 }
 
 select:focus, input:focus, textarea:focus {
   outline: none;
   border-color: #1976d2;
-}
-
-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
+  box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.1);
 }
 
 input[type="checkbox"] {
   width: auto;
-  margin-bottom: 0;
+  margin: 0;
 }
 
 textarea {
   resize: vertical;
-  min-height: 60px;
+  min-height: 80px;
+  font-family: inherit;
 }
 
-/* Responsividade para tabela */
+/* Responsividade */
 @media (max-width: 1200px) {
+  .delivery-management {
+    padding: 20px;
+    margin: 20px auto;
+  }
+  
   table {
     font-size: 12px;
   }
   
   th, td {
-    padding: 6px;
+    padding: 8px 6px;
+  }
+}
+
+@media (max-width: 768px) {
+  .modal-content {
+    min-width: auto;
+    width: 95vw;
+    padding: 20px;
+  }
+  
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .filter-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .search-input {
+    max-width: none;
   }
 }
 </style>

@@ -300,6 +300,20 @@ export class BackendService {
     return this.get(API_CONFIG.ENDPOINTS.DELIVERY_BY_ID(id))
   }
 
+  async createDelivery(deliveryData) {
+    const data = formatDataForBackend(deliveryData)
+    return this.post(API_CONFIG.ENDPOINTS.DELIVERIES, data)
+  }
+
+  async updateDelivery(id, deliveryData) {
+    const data = formatDataForBackend(deliveryData)
+    return this.put(API_CONFIG.ENDPOINTS.DELIVERY_BY_ID(id), data)
+  }
+
+  async deleteDelivery(id) {
+    return this.delete(API_CONFIG.ENDPOINTS.DELIVERY_BY_ID(id))
+  }
+
   /**
    * Health check
    */
