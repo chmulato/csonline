@@ -20,11 +20,15 @@ import java.util.List;
 public class JwtAuthenticationFilter implements ContainerRequestFilter {
     
     // Endpoints que NÃO precisam de autenticação JWT
+    // Observação: requestContext.getUriInfo().getPath() retorna o path RELATIVO ao @ApplicationPath
+    // Ex.: com @ApplicationPath("/api"), o path de "/api/login" será apenas "login" aqui
     private static final List<String> PUBLIC_ENDPOINTS = Arrays.asList(
-        "/api/login",
-        "/api/health",
-        "/api/docs",
-        "/api/swagger-ui"
+        "login",
+        "health",
+        "docs",
+        "swagger-ui",
+        "swagger",
+        "openapi"
     );
 
     @Override
@@ -104,7 +108,17 @@ public class JwtAuthenticationFilter implements ContainerRequestFilter {
      * Verifica se o endpoint é público (não precisa de autenticação)
      */
     private boolean isPublicEndpoint(String path) {
-        return PUBLIC_ENDPOINTS.stream()
-                .anyMatch(publicPath -> path.startsWith(publicPath) || path.contains(publicPath));
+        if (path == null) return false;
+        String normalized = path;
+        // Remove barra inicial se houver
+        if (normalized.startsWith("/")) {
+            normalized = normalized.substring(1);
+        }
+        // Remove prefixos comuns acidentais
+        if (normalized.startsWith("api/")) {
+            normalized = normalized.substring(4);
+        }
+        final String p = normalized;
+        return PUBLIC_ENDPOINTS.stream().anyMatch(pub -> p.equals(pub) || p.startsWith(pub + "/") || p.startsWith(pub));
     }
 }
