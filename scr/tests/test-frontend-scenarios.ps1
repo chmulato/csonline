@@ -24,6 +24,18 @@ $Yellow = "Yellow"
 $Cyan = "Cyan"
 $Magenta = "Magenta"
 
+# Detectar raiz do repositório para resolver caminhos do frontend
+$RepoRoot = Split-Path -Path $PSScriptRoot -Parent  # scr/tests -> scr
+$RepoRoot = Split-Path -Path $RepoRoot -Parent      # scr -> repo root
+$FrontendDir = Join-Path $RepoRoot "frontend"
+
+if (-not (Test-Path $FrontendDir)) {
+    Write-Host "❌ Diretório frontend não encontrado!" -ForegroundColor Red
+    Write-Host "   Caminho esperado: $FrontendDir" -ForegroundColor Gray
+    Write-Host "   Dica: verifique se você está na raiz do repositório." -ForegroundColor Yellow
+    return
+}
+
 # Cenários de teste por perfil
 $TestScenarios = @{
     "ADMIN" = @{
@@ -152,14 +164,14 @@ function Write-TestResult {
 function Test-ComponentExists {
     param([string]$ComponentName)
     
-    $componentPath = "frontend/src/components/$ComponentName.vue"
+    $componentPath = Join-Path $FrontendDir "src/components/$ComponentName.vue"
     return Test-Path $componentPath
 }
 
 function Test-ComponentStructure {
     param([string]$ComponentName)
     
-    $componentPath = "frontend/src/components/$ComponentName.vue"
+    $componentPath = Join-Path $FrontendDir "src/components/$ComponentName.vue"
     
     if (-not (Test-Path $componentPath)) {
         return $false
@@ -186,7 +198,7 @@ function Test-ComponentAuthentication {
         [string]$UserRole
     )
     
-    $componentPath = "frontend/src/components/$ComponentName.vue"
+    $componentPath = Join-Path $FrontendDir "src/components/$ComponentName.vue"
     
     if (-not (Test-Path $componentPath)) {
         return @{ HasAuth = $false; Details = "Componente não encontrado" }
@@ -293,7 +305,7 @@ function Test-RoutingAndNavigation {
     Write-TestSection "Verificação de Arquivos de Roteamento"
     
     # Verificar se existe sistema de roteamento
-    $routerFile = "frontend/src/router/index.js"
+    $routerFile = Join-Path $FrontendDir "src/router/index.js"
     if (Test-Path $routerFile) {
         Write-TestResult "Arquivo de router existe" $true $routerFile
         
@@ -329,7 +341,7 @@ function Test-RoutingAndNavigation {
     
     Write-TestSection "Verificação de App Principal"
     
-    $appFile = "frontend/src/App.vue"
+    $appFile = Join-Path $FrontendDir "src/App.vue"
     if (Test-Path $appFile) {
         Write-TestResult "App.vue existe" $true
         
@@ -358,9 +370,9 @@ function Test-UIAndResponsiveness {
     
     # Verificar se existem arquivos de estilo
     $styleFiles = @(
-        "frontend/src/style.css",
-        "frontend/src/assets/styles.css",
-        "frontend/src/assets/main.css"
+        (Join-Path $FrontendDir "src/style.css"),
+        (Join-Path $FrontendDir "src/assets/styles.css"),
+        (Join-Path $FrontendDir "src/assets/main.css")
     )
     
     $hasStyles = $false
@@ -377,7 +389,7 @@ function Test-UIAndResponsiveness {
     
     Write-TestSection "Verificação de Bibliotecas UI"
     
-    $packageFile = "frontend/package.json"
+    $packageFile = Join-Path $FrontendDir "package.json"
     if (Test-Path $packageFile) {
         try {
             $packageContent = Get-Content $packageFile -Raw | ConvertFrom-Json

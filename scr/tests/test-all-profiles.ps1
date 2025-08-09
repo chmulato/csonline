@@ -472,12 +472,19 @@ function Main {
     
     # Verificar conectividade básica
     try {
-        $healthCheck = Invoke-ApiRequest -Endpoint "/users" -Method "GET"
-        Write-Host "✅ Backend está acessível" -ForegroundColor $Green
+        # Utilizar página pública da aplicação para checagem (evita 401 em endpoint protegido)
+        $baseAppUrl = if ($BaseUrl -match "/api$") { $BaseUrl -replace "/api$", "" } else { $BaseUrl }
+        $response = Invoke-WebRequest -Uri $baseAppUrl -Method GET -TimeoutSec 5 -UseBasicParsing
+        if ($response.StatusCode -ge 200 -and $response.StatusCode -lt 400) {
+            Write-Host "✅ Backend está acessível" -ForegroundColor $Green
+        } else {
+            Write-Host "❌ Backend respondeu com status: $($response.StatusCode)" -ForegroundColor $Red
+            return
+        }
     }
     catch {
         Write-Host "❌ Backend não está acessível: $($_.Exception.Message)" -ForegroundColor $Red
-        Write-Host "   Certifique-se que o WildFly está rodando em $BaseUrl" -ForegroundColor Yellow
+        Write-Host "   Certifique-se que o WildFly está rodando em $baseAppUrl" -ForegroundColor Yellow
         return
     }
     
