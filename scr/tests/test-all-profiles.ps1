@@ -32,8 +32,8 @@ $Magenta = "Magenta"
 # Variáveis globais
 # Use uma lista mutável em escopo de script para evitar erros de op_Addition e conflitos de escopo
 $script:TestResults = New-Object System.Collections.ArrayList
-$CurrentUser = $null
-$AuthToken = $null
+$script:CurrentUser = $null
+$script:AuthToken = $null
 
 # ============================================================================
 # FUNÇÕES AUXILIARES
@@ -92,8 +92,8 @@ function Invoke-ApiRequest {
         $uri = "$BaseUrl$Endpoint"
         $requestHeaders = @{ "Accept" = "application/json" }
         
-        if ($AuthToken) {
-            $requestHeaders["Authorization"] = "Bearer $AuthToken"
+        if ($script:AuthToken) {
+            $requestHeaders["Authorization"] = "Bearer $script:AuthToken"
         }
         
         foreach ($key in $Headers.Keys) {
@@ -141,8 +141,8 @@ function Test-Login {
         $response = Invoke-ApiRequest -Endpoint "/login" -Method "POST" -Body $loginData
         
         if ($response.token -and $response.role -eq $ExpectedRole) {
-            $global:AuthToken = $response.token
-            $global:CurrentUser = $response
+            $script:AuthToken = $response.token
+            $script:CurrentUser = $response
             Write-TestResult "Login como $Username ($ExpectedRole)" $true "Token obtido, role validado" $ExpectedRole
             return $true
         } else {
@@ -290,7 +290,7 @@ function Test-CourierProfile {
     
     Write-TestSection "Visualização Permitida (Courier)"
     Test-Endpoint "Listar entregas atribuídas" "/deliveries" -Profile "COURIER"
-    Test-Endpoint "Visualizar perfil próprio" "/users/$($CurrentUser.id)" -Profile "COURIER"
+    Test-Endpoint "Visualizar perfil próprio" "/users/$($script:CurrentUser.id)" -Profile "COURIER"
     
     Write-TestSection "Operações Permitidas (Courier)"
     # Teste de atualização de status de entrega (se entrega existir)
@@ -320,7 +320,7 @@ function Test-CustomerProfile {
     
     Write-TestSection "Visualização Permitida (Customer)"
     Test-Endpoint "Listar próprias entregas" "/deliveries" -Profile "CUSTOMER"
-    Test-Endpoint "Visualizar perfil próprio" "/users/$($CurrentUser.id)" -Profile "CUSTOMER"
+    Test-Endpoint "Visualizar perfil próprio" "/users/$($script:CurrentUser.id)" -Profile "CUSTOMER"
     
     Write-TestSection "Acessos Restritos (Customer)"
     Test-Endpoint "Listar usuários" "/users" -ShouldSucceed $false -Profile "CUSTOMER"
