@@ -1,19 +1,104 @@
-# Scripts de Teste de Endpoints JWT - CSOnline
+# 🧪 Scripts de Teste CSOnline - Todos os Perfis de Usuário
 
-Esta pasta contém scripts PowerShell para testar todos os endpoints da API CSOnline com **autenticação JWT**.
+Este diretório contém **todos os scripts de teste** do sistema CSOnline, organizados por categoria e funcionalidade. 
+Todos os testes incluem validação completa do sistema de autorização baseado em roles.
 
-**STATUS ATUAL: 100% DOS ENDPOINTS FUNCIONAIS COM JWT** (Atualizado em 7 de Agosto/2025)
+**STATUS ATUAL: 100% DOS ENDPOINTS FUNCIONAIS COM AUTORIZAÇÃO JWT** (Atualizado em Agosto/2025)
 
-## Autenticação JWT
+## � Organização dos Scripts
 
-Todos os scripts foram atualizados para trabalhar com **JWT (JSON Web Tokens)**:
+### 🎯 **Testes Completos (Suítes Principais)**
+- `test-all-profiles.ps1` - **Teste completo de todos os perfis** (ADMIN, BUSINESS, COURIER, CUSTOMER)
+- `test-all-endpoints.ps1` - **Teste de todos os endpoints** com validação de autorização
+- `test-frontend-scenarios.ps1` - **Teste de cenários completos** frontend + backend
 
-- **Autenticação automática** - Scripts obtêm tokens automaticamente
-- **Testes de segurança** - Verificam proteção dos endpoints
-- **Headers corretos** - Authorization: Bearer {token}
-- **Tratamento de erros** - 401 Unauthorized para acessos inválidos
+### 🧪 **Testes por Módulo**
+- `test-users.ps1` - Gestão de usuários e perfis
+- `test-couriers.ps1` - Gestão de entregadores
+- `test-customers.ps1` - Gestão de clientes
+- `test-deliveries.ps1` - Gestão de entregas
+- `test-teams.ps1` - Gestão de equipes
+- `test-sms.ps1` - Sistema de SMS
+- `test-login.ps1` - Autenticação e JWT
+- `test-jwt-security.ps1` - Segurança e autorização
 
-## Scripts Disponíveis
+### ⚙️ **Utilitários**
+- `quick-test.ps1` - Teste rápido de conectividade
+- `health-check-endpoints.ps1` - Verificação de saúde do sistema
+- `jwt-utility.ps1` - Utilitários para manipulação de tokens JWT
+
+### 📚 **Documentação**
+- `README.md` - Este arquivo
+- `README-TESTES.ps1` - Documentação adicional dos testes
+
+## 🚀 Scripts Recomendados
+
+### 1. `test-all-profiles.ps1` - **⭐ PRINCIPAL**
+**Teste mais abrangente** - valida todos os endpoints para cada perfil de usuário com sistema de autorização.
+
+```powershell
+# Teste completo (recomendado)
+.\test-all-profiles.ps1
+
+# Com relatório detalhado  
+.\test-all-profiles.ps1 -GenerateReport
+
+# Modo verboso
+.\test-all-profiles.ps1 -Verbose
+```
+
+**O que testa:**
+- ✅ **Sistema de Autorização** - Controle de acesso por roles (ADMIN, BUSINESS, COURIER, CUSTOMER)
+- ✅ **Login JWT** - Autenticação para todos os perfis 
+- ✅ **Endpoints Protegidos** - Verificação de permissões por endpoint
+- ✅ **Endpoints Restritos** - Validação de acesso negado para roles não autorizados
+- ✅ **Operações CRUD** - Testes específicos por perfil de usuário
+- ✅ **Testes de Integração** - Fluxos completos de negócio
+- ✅ **Frontend + Backend** - Conectividade e funcionalidades
+- ✅ **Relatório Detalhado** - Estatísticas e métricas de teste
+
+## 🔐 **Sistema de Autorização Implementado**
+
+Todos os testes validam o **sistema completo de autorização baseado em roles**:
+
+### **Perfis de Usuário:**
+- **ADMIN** - Acesso total ao sistema (gestão de usuários, configurações)
+- **BUSINESS** - Gestão empresarial (customers, couriers, deliveries, prices)  
+- **COURIER** - Operações de entrega (visualizar e atualizar deliveries)
+- **CUSTOMER** - Acesso restrito (visualizar apenas próprios dados)
+
+### **Validações de Segurança:**
+- ✅ **JWT Authentication Filter** - Validação de tokens em todos os endpoints
+- ✅ **Authorization Filter** - Controle granular por anotações @RolesAllowed
+- ✅ **Acesso Negado** - HTTP 403 para roles não autorizados
+- ✅ **Token Inválido** - HTTP 401 para tokens expirados ou malformados
+- ✅ **Endpoints Públicos** - Login disponível sem autenticação
+
+### 2. `test-frontend-scenarios.ps1` - Teste de Interface Vue
+Valida os componentes Vue e cenários de navegação.
+
+```powershell
+# Teste de componentes frontend
+.\test-frontend-scenarios.ps1
+```
+
+**O que testa:**
+- ✅ Existência de componentes Vue
+- ✅ Estrutura correta dos componentes
+- ✅ Verificações de autenticação
+- ✅ Controles de acesso por role
+- ✅ Sistema de roteamento
+
+### 3. `quick-test.ps1` - Teste Rápido ⚡
+Verificação rápida dos endpoints essenciais (2-3 minutos).
+
+```powershell
+.\quick-test.ps1
+```
+
+## Scripts Específicos (Existentes)
+
+Scripts para testes individuais de cada recurso:
 
 ```bash
 |------------------------------|-------------------------------------------------|-------------|

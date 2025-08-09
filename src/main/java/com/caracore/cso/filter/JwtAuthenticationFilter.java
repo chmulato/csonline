@@ -1,19 +1,31 @@
 package com.caracore.cso.filter;
 
 import com.caracore.cso.util.JwtUtil;
+import com.caracore.cso.service.UserService;
+import com.caracore.cso.entity.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import jakarta.annotation.Priority;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.ws.rs.Priorities;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
+import jakarta.ws.rs.container.ResourceInfo;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.Provider;
 import java.io.IOException;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Filtro JWT para autenticação de requests
  */
 @Provider
+@Priority(Priorities.AUTHENTICATION)
 public class JwtAuthenticationFilter implements ContainerRequestFilter {
     
     private static final Logger logger = LogManager.getLogger(JwtAuthenticationFilter.class);
@@ -81,8 +93,12 @@ public class JwtAuthenticationFilter implements ContainerRequestFilter {
             return true;
         }
         
-        // Por enquanto, manter outros endpoints públicos para facilitar testes
-        // Em produção, remover esta linha para proteger todos os endpoints
-        return true;
+        // Endpoints de saúde e métricas podem ser públicos
+        if (path.startsWith("health") || path.startsWith("metrics")) {
+            return true;
+        }
+        
+        // Todos os outros endpoints requerem autenticação
+        return false;
     }
 }

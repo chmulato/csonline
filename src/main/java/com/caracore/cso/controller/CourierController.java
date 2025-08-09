@@ -6,6 +6,7 @@ import com.caracore.cso.service.UserService;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.annotation.security.RolesAllowed;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,6 +32,7 @@ public class CourierController {
     }
 
     @GET
+    @RolesAllowed({"ADMIN", "BUSINESS"})
     public List<Courier> getAll() {
         try {
             return courierService.findAll();
@@ -42,6 +44,7 @@ public class CourierController {
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({"ADMIN", "BUSINESS", "COURIER"})
     public Courier getById(@PathParam("id") Long id) {
         try {
             return courierService.findById(id);
@@ -52,6 +55,7 @@ public class CourierController {
     }
 
     @POST
+    @RolesAllowed({"ADMIN", "BUSINESS"})
     public Response create(Courier courier) {
         try {
             // Obter usuários pelos IDs
@@ -82,6 +86,7 @@ public class CourierController {
 
     @PUT
     @Path("/{id}")
+    @RolesAllowed({"ADMIN", "BUSINESS"})
     public Response update(@PathParam("id") Long id, Courier courier) {
         try {
             // Buscar o courier existente
@@ -117,6 +122,7 @@ public class CourierController {
 
     @DELETE
     @Path("/{id}")
+    @RolesAllowed({"ADMIN", "BUSINESS"})
     public Response delete(@PathParam("id") Long id) {
         try {
             courierService.delete(id);

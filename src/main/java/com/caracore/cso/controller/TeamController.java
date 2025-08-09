@@ -7,6 +7,7 @@ import com.caracore.cso.service.CourierService;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.annotation.security.RolesAllowed;
 import java.util.List;
 
 @Path("/teams")
@@ -18,7 +19,14 @@ public class TeamController {
     private final CourierService courierService = new CourierService();
 
     @GET
+    @RolesAllowed("ADMIN")
+    public List<Team> getAll() {
+        return teamService.findAll();
+    }
+
+    @GET
     @Path("/{id}")
+    @RolesAllowed("ADMIN")
     public Response getById(@PathParam("id") Long id) {
         Team team = teamService.findById(id);
         if (team == null) {
@@ -27,12 +35,8 @@ public class TeamController {
         return Response.ok(team).build();
     }
 
-    @GET
-    public List<Team> getAll() {
-        return teamService.findAll();
-    }
-
     @POST
+    @RolesAllowed("ADMIN")
     public Response create(Team team) {
         try {
             // Buscar business e courier pelos IDs recebidos do JSON
@@ -79,6 +83,7 @@ public class TeamController {
 
     @PUT
     @Path("/{id}")
+    @RolesAllowed("ADMIN")
     public Response update(@PathParam("id") Long id, Team team) {
         Team existing = teamService.findById(id);
         if (existing == null) {
@@ -135,6 +140,7 @@ public class TeamController {
 
     @DELETE
     @Path("/{id}")
+    @RolesAllowed("ADMIN")
     public Response delete(@PathParam("id") Long id) {
         Team existing = teamService.findById(id);
         if (existing == null) {

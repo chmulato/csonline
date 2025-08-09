@@ -3,6 +3,7 @@ package com.caracore.cso.controller;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.annotation.security.RolesAllowed;
 import com.caracore.cso.service.UserService;
 import com.caracore.cso.entity.User;
 import java.util.List;
@@ -28,6 +29,7 @@ public class UserController {
     }
 
     @GET
+    @RolesAllowed({"ADMIN", "BUSINESS"})
     public List<User> getAll() {
         try {
             return userService.findAll();
@@ -39,6 +41,7 @@ public class UserController {
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({"ADMIN", "BUSINESS"})
     public User getById(@PathParam("id") Long id) {
         try {
             return userService.findById(id);
@@ -49,6 +52,7 @@ public class UserController {
     }
 
     @POST
+    @RolesAllowed("ADMIN")
     public Response create(User user) {
         try {
             userService.save(user);
@@ -70,6 +74,7 @@ public class UserController {
 
     @PUT
     @Path("/{id}")
+    @RolesAllowed("ADMIN")
     public Response update(@PathParam("id") Long id, User user) {
         try {
             user.setId(id);
@@ -83,6 +88,7 @@ public class UserController {
 
     @DELETE
     @Path("/{id}")
+    @RolesAllowed("ADMIN")
     public Response delete(@PathParam("id") Long id) {
         try {
             userService.delete(id);

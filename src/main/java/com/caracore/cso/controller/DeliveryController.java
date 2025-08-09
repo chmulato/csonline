@@ -6,6 +6,7 @@ import com.caracore.cso.service.DeliveryService;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.annotation.security.RolesAllowed;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
@@ -20,6 +21,7 @@ public class DeliveryController {
     private DeliveryService deliveryService = new DeliveryService();
 
     @GET
+    @RolesAllowed({"ADMIN", "BUSINESS", "COURIER", "CUSTOMER"})
     public Response getAll() {
         try {
             List<Delivery> deliveries = deliveryService.findAll();
@@ -65,6 +67,7 @@ public class DeliveryController {
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({"ADMIN", "BUSINESS", "COURIER", "CUSTOMER"})
     public Response getById(@PathParam("id") Long id) {
         try {
             Delivery delivery = deliveryService.findById(id);
@@ -81,6 +84,7 @@ public class DeliveryController {
     }
 
     @POST
+    @RolesAllowed({"ADMIN", "BUSINESS"})
     public Response create(Delivery delivery) {
         try {
             // Verificar se temos IDs para buscar as entidades relacionadas
@@ -113,6 +117,7 @@ public class DeliveryController {
 
     @PUT
     @Path("/{id}")
+    @RolesAllowed({"ADMIN", "BUSINESS", "COURIER"})
     public Response update(@PathParam("id") Long id, Delivery delivery) {
         try {
             // Buscar a entrega existente
@@ -164,6 +169,7 @@ public class DeliveryController {
 
     @DELETE
     @Path("/{id}")
+    @RolesAllowed({"ADMIN", "BUSINESS"})
     public Response delete(@PathParam("id") Long id) {
         try {
             deliveryService.delete(id);

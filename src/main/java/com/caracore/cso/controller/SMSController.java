@@ -3,6 +3,7 @@ package com.caracore.cso.controller;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.annotation.security.RolesAllowed;
 import com.caracore.cso.service.SMSService;
 import com.caracore.cso.entity.SMS;
 import java.util.List;
@@ -15,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 public class SMSController {
     @DELETE
     @Path("/{id}")
+    @RolesAllowed({"ADMIN", "BUSINESS"})
     public Response delete(@PathParam("id") Long id) {
         try {
             smsService.deleteById(id);
@@ -44,6 +46,7 @@ public class SMSController {
     }
 
     @GET
+    @RolesAllowed({"ADMIN", "BUSINESS"})
     public List<SMS> getAll() {
         try {
             return smsService.findAll();
@@ -55,6 +58,7 @@ public class SMSController {
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({"ADMIN", "BUSINESS"})
     public SMS getById(@PathParam("id") Long id) {
         try {
             return smsService.findById(id);
@@ -66,6 +70,7 @@ public class SMSController {
 
     @GET
     @Path("/delivery/{deliveryId}")
+    @RolesAllowed({"ADMIN", "BUSINESS"})
     public List<SMS> getByDelivery(@PathParam("deliveryId") Long deliveryId) {
         try {
             return smsService.getDeliverySMSHistory(deliveryId);
@@ -76,6 +81,7 @@ public class SMSController {
     }
 
     @POST
+    @RolesAllowed({"ADMIN", "BUSINESS"})
     public Response create(SMS sms) {
         try {
             // Resolver a referência de Delivery pelo ID
@@ -109,6 +115,25 @@ public class SMSController {
         } catch (Exception e) {
             logger.error("Erro ao criar SMS", e);
             return Response.serverError().entity("Erro ao criar SMS").build();
+        }
+    }
+
+    @POST
+    @Path("/{id}/send")
+    @RolesAllowed({"ADMIN", "BUSINESS"})
+    @Consumes(MediaType.WILDCARD)
+    public Response send(@PathParam("id") Long id) {
+        try {
+            SMS sms = smsService.findById(id);
+            if (sms == null) {
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
+            // Simulação de envio real; registra no log
+            logger.info("Enviando SMS id={} para {}", id, sms.getMobileTo());
+            return Response.ok().build();
+        } catch (Exception e) {
+            logger.error("Erro ao enviar SMS id=" + id, e);
+            return Response.serverError().build();
         }
     }
 }
