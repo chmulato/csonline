@@ -61,22 +61,157 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '../stores/auth.js'
+import { backendService } from '../services/backend.js'
 
-const emit = defineEmits(['back']);
+const router = useRouter()
+const authStore = useAuthStore()
 
-function goBack() {
-  emit('back');
+const emit = defineEmits(['back'])
+
+// State
+const customers = ref([])
+const businesses = ref([])
+const showModal = ref(false)
+const editingCustomer = ref(null)
+const isLoading = ref(false)
+
+// Form data
+const form = ref({
+  user: {
+    name: '',
+    email: '',
+    phone: '',
+    address: ''
+  },
+  factorCustomer: '',
+  businessId: ''
+})
+
+// Load data from backend
+const loadCustomers = async () => {
+  try {
+    console.log('[CUSTOMER] Loading customers from backend...')
+    isLoading.value = true
+    customers.value = await backendService.getCustomers()
+    console.log('[CUSTOMER] Loaded customers:', customers.value.length)
+  } catch (error) {
+    console.error('[CUSTOMER] Error loading customers:', error.message)
+    alert('Erro ao carregar clientes: ' + error.message)
+  } finally {
+    isLoading.value = false
+  }
 }
 
-// Dados simulados de empresas controladoras (usuários com role 'admin' ou 'user')
-const businesses = ref([
-  { id: 1, name: 'CSOnline Delivery', role: 'admin' },
-  { id: 4, name: 'Gestão Empresarial', role: 'user' }
-]);
+const loadBusinesses = async () => {
+  try {
+    console.log('[CUSTOMER] Loading businesses from backend...')
+    const users = await backendService.getUsers()
+    businesses.value = users.filter(user => user.role === 'BUSINESS')
+    console.log('[CUSTOMER] Loaded businesses:', businesses.value.length)
+  } catch (error) {
+    console.error('[CUSTOMER] Error loading businesses:', error.message)
+  }
+}
 
-// Dados simulados de empresas (customers/centros de distribuição)
-const customers = ref([
+// CRUD operations
+const saveCustomer = async () => {
+  try {
+    console.log('[CUSTOMER] Saving customer...')
+    
+    const customerData = {
+      factorCustomer: parseFloat(form.value.factorCustomer),
+      user: {
+        name: form.value.user.name,
+        email: form.value.user.email,
+        phone: form.value.user.phone,
+        address: form.value.user.address,
+        role: 'CUSTOMER'
+      }
+    }
+
+    if (editingCustomer.value) {
+      await backendService.updateCustomer(editingCustomer.value.id, customerData)
+      console.log('[CUSTOMER] Customer updated successfully')
+      alert('Cliente atualizado com sucesso!')
+    } else {
+      await backendService.createCustomer(customerData)
+      console.log('[CUSTOMER] Customer created successfully')
+      alert('Cliente criado com sucesso!')
+    }
+    
+    await loadCustomers()
+    closeModal()
+    
+  } catch (error) {
+    console.error('[CUSTOMER] Error saving customer:', error.message)
+    alert('Erro ao salvar cliente: ' + error.message)
+  }
+}
+
+const editCustomer = (customer) => {
+  editingCustomer.value = customer
+  form.value = {
+    user: {
+      name: customer.user?.name || '',
+      email: customer.user?.email || '',
+      phone: customer.user?.phone || '',
+      address: customer.user?.address || ''
+    },
+    factorCustomer: customer.factorCustomer || '',
+    businessId: customer.businessId || ''
+  }
+  showModal.value = true
+}
+
+const deleteCustomer = async (customerId) => {
+  if (!confirm('Tem certeza que deseja excluir este cliente?')) {
+    return
+  }
+
+  try {
+    console.log('[CUSTOMER] Deleting customer:', customerId)
+    await backendService.deleteCustomer(customerId)
+    await loadCustomers()
+    console.log('[CUSTOMER] Customer deleted successfully')
+    alert('Cliente excluído com sucesso!')
+  } catch (error) {
+    console.error('[CUSTOMER] Error deleting customer:', error.message)
+    alert('Erro ao excluir cliente: ' + error.message)
+  }
+}
+
+const openNewCustomerModal = () => {
+  editingCustomer.value = null
+  form.value = {
+    user: {
+      name: '',
+      email: '',
+      phone: '',
+      address: ''
+    },
+    factorCustomer: '',
+    businessId: ''
+  }
+  showModal.value = true
+}
+
+const closeModal = () => {
+  showModal.value = false
+  editingCustomer.value = null
+}
+
+function goBack() {
+  router.push('/dashboard')
+}
+
+// Load data on mount
+onMounted(() => {
+  loadCustomers()
+  loadBusinesses()
+})
   {
     id: 1,
     user: {
