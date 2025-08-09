@@ -24,12 +24,20 @@ Esta branch implementa a integração completa do frontend Vue.js com o backend 
 - **Integração com autenticação** JWT
 - **Dados dinâmicos** do backend (não mais mock)
 
-### 4. TeamManagement Integrado (Commit atual)
+### 4. TeamManagement Integrado (Commit 1d8ce6e)
 - **CRUD completo** via API backend (`/api/teams`)
 - **Integração com CustomerManagement** para listar empresas (CDs)
 - **Integração com CourierManagement** para listar entregadores
 - **Loading states** e error handling implementados
 - **BackendService** expandido com métodos teams (create/update/delete)
+
+### 5. UserManagement Integrado (Commit atual)
+- **CRUD completo** via API backend (`/api/users`)
+- **Interface simplificada** para gestão de usuários do sistema
+- **Filtros** por nome/login/email e por perfil (role)
+- **Roles suportados**: ADMIN, BUSINESS, COURIER, CUSTOMER
+- **Loading states** e error handling implementados
+- **BackendService** expandido com métodos users (create/update/delete)
 
 ## 🔧 Arquitetura Implementada
 
@@ -42,14 +50,15 @@ Frontend (Vue.js)
     ├── Login.vue             → ✅ Integrado com backend
     ├── CustomerManagement.vue → ✅ Integrado com backend
     ├── CourierManagement.vue  → ✅ Integrado com backend
-    └── TeamManagement.vue     → ✅ Integrado com backend (NOVO!)
+    ├── TeamManagement.vue     → ✅ Integrado com backend
+    └── UserManagement.vue     → ✅ Integrado com backend (NOVO!)
 
 Backend (JAX-RS + WildFly)
 ├── /api/login                → Autenticação JWT
 ├── /api/customers            → CRUD de clientes
 ├── /api/couriers            → CRUD de entregadores  
-├── /api/users               → Listagem de usuários
-└── /api/teams               → Gestão de equipes (TeamController) ✅ INTEGRADO
+├── /api/users               → CRUD de usuários ✅ INTEGRADO
+└── /api/teams               → Gestão de equipes ✅ INTEGRADO
 ```
 
 ## 🧪 Como Testar a Integração
@@ -90,15 +99,15 @@ npm run dev
 | CustomerManagement | ✅ Completo | ✅ /api/customers | ✅ 39 testes |
 | CourierManagement | ✅ Completo | ✅ /api/couriers | ✅ 32 testes |
 | TeamManagement | ✅ Completo | ✅ /api/teams | ⚪ Pendente testes |
-| UserManagement | ⚪ Pendente | ⚪ Pendente | ⚪ Não existe |
+| UserManagement | ✅ Completo | ✅ /api/users | ⚪ Pendente testes |
 | DeliveryManagement | ⚪ Pendente | ⚪ Pendente | ⚪ Não existe |
 
 ## 🔄 Próximos Passos
 
 ### Integração Pendente
-1. **UserManagement**: Criar componente e integração com /api/users
-2. **DeliveryManagement**: Implementar gestão de entregas com /api/deliveries
-3. **Testes**: Criar testes unitários para TeamManagement
+1. **DeliveryManagement**: Implementar gestão de entregas com /api/deliveries
+2. **Testes**: Criar testes unitários para TeamManagement e UserManagement
+3. **Performance**: Otimizações e melhorias de UX
 
 ### Componentes Recém Integrados ✅
 - **TeamManagement.vue**: Interface completa integrada com backend
@@ -106,7 +115,14 @@ npm run dev
   - ✅ Carregamento dinâmico de empresas e entregadores
   - ✅ Loading states e error handling
   - ✅ Validações de formulário
-  - Acesso: MainLayout → Card "Times"
+
+- **UserManagement.vue**: Interface completa integrada com backend
+  - ✅ CRUD completo via /api/users
+  - ✅ Filtros por nome, login, email e perfil
+  - ✅ Suporte a roles: ADMIN, BUSINESS, COURIER, CUSTOMER
+  - ✅ Loading states e error handling
+  - ✅ Gestão de senhas (opcional na edição)
+  - Acesso: MainLayout → Card "Usuários"
 
 ### Melhorias
 1. **Loading Skeletons**: UI mais polida
@@ -162,18 +178,18 @@ Validar JSON schema
 
 ## 📈 Métricas da Branch
 
-- **Commits**: 5+ commits bem estruturados
-- **Files Changed**: 21+ arquivos
-- **Lines Added**: 4,200+ linhas
-- **Lines Removed**: 350+ linhas
+- **Commits**: 6+ commits bem estruturados
+- **Files Changed**: 23+ arquivos
+- **Lines Added**: 4,800+ linhas
+- **Lines Removed**: 400+ linhas
 - **Tests**: +104 novos testes
-- **Components**: 4 componentes totalmente integrados
+- **Components**: 5 componentes totalmente integrados
 - **Services**: 1 serviço backend completo (expandido)
-- **Telas Funcionais**: 5 telas (Login, Logout, Customer, Courier, Team)
-- **API Endpoints**: 4 endpoints integrados (/login, /customers, /couriers, /teams)
+- **Telas Funcionais**: 6 telas (Login, Logout, Customer, Courier, Team, User)
+- **API Endpoints**: 5 endpoints integrados (/login, /customers, /couriers, /teams, /users)
 
 ---
 
 **Branch criada em**: 8 de Agosto de 2025  
-**Status**: 🟢 TeamManagement integrado - Pronta para review e teste  
+**Status**: 🟢 UserManagement integrado - 5 componentes completos!  
 **Próxima release**: Integração completa frontend-backend
