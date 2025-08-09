@@ -1,10 +1,12 @@
 package com.caracore.cso.security;
 
 import com.caracore.cso.util.JwtUtil;
-import jakarta.servlet.*;
-import jakarta.servlet.annotation.WebFilter;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.annotation.Priority;
+import jakarta.ws.rs.Priorities;
+import jakarta.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.container.ContainerRequestFilter;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.ext.Provider;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -13,8 +15,9 @@ import java.util.List;
  * Filtro JWT para proteger endpoints da aplicação
  * Aplica autenticação JWT em todos os endpoints exceto os públicos
  */
-@WebFilter(urlPatterns = "/api/*")
-public class JwtAuthenticationFilter implements Filter {
+@Provider
+@Priority(Priorities.AUTHENTICATION)
+public class JwtAuthenticationFilter implements ContainerRequestFilter {
     
     // Endpoints que NÃO precisam de autenticação JWT
     private static final List<String> PUBLIC_ENDPOINTS = Arrays.asList(
@@ -25,69 +28,83 @@ public class JwtAuthenticationFilter implements Filter {
     );
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
+    public void filter(ContainerRequestContext requestContext) throws IOException {
+        String path = requestContext.getUriInfo().getPath();
+        String method = requestContext.getMethod();
         
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
-        
-        String requestURI = httpRequest.getRequestURI();
-        String method = httpRequest.getMethod();
+        System.out.println("JwtAuthenticationFilter - Path: " + path + ", Method: " + method);
         
         // Permite OPTIONS para CORS
         if ("OPTIONS".equals(method)) {
-            chain.doFilter(request, response);
+            System.out.println("JwtAuthenticationFilter - Método OPTIONS, permitindo acesso");
             return;
         }
         
         // Verifica se é um endpoint público
-        boolean isPublicEndpoint = PUBLIC_ENDPOINTS.stream()
-            .anyMatch(endpoint -> requestURI.contains(endpoint));
-            
-        if (isPublicEndpoint) {
-            chain.doFilter(request, response);
-            return;
+        if (isPublicEndpoint(path)) {
+            System.out.println("JwtAuthenticationFilter - Endpoint público, permitindo acesso");
+            return; // Permite acesso sem token
         }
         
-        // Extrai o token JWT do header Authorization
-        String authHeader = httpRequest.getHeader("Authorization");
+        // Extrai o token do header Authorization
+        String authHeader = requestContext.getHeaderString("Authorization");
+        String token = null;
         
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            sendUnauthorizedResponse(httpResponse, "Token JWT não fornecido");
-            return;
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
         }
         
-        String token = authHeader.substring(7); // Remove "Bearer "
+        System.out.println("JwtAuthenticationFilter - Token encontrado: " + (token != null ? "SIM" : "NÃO"));
+        
+        if (token == null) {
+            System.out.println("JwtAuthenticationFilter - Token não encontrado, retornando 401");
+            requestContext.abortWith(
+                Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("{\"error\":\"Token JWT requerido\"}")
+                    .build()
+            );
+            return;
+        }
         
         try {
             // Valida o token JWT
             if (!JwtUtil.validateToken(token)) {
-                sendUnauthorizedResponse(httpResponse, "Token JWT inválido");
+                System.out.println("JwtAuthenticationFilter - Token inválido");
+                requestContext.abortWith(
+                    Response.status(Response.Status.UNAUTHORIZED)
+                        .entity("{\"error\":\"Token JWT inválido\"}")
+                        .build()
+                );
                 return;
             }
             
-            // Adiciona informações do usuário ao request para uso nos controllers
+            // Extrai informações do usuário do token
             String username = JwtUtil.getLoginFromToken(token);
             String role = JwtUtil.getRoleFromToken(token);
             Long userId = JwtUtil.getUserIdFromToken(token);
             
-            httpRequest.setAttribute("username", username);
-            httpRequest.setAttribute("userRole", role);
-            httpRequest.setAttribute("userId", userId);
+            System.out.println("JwtAuthenticationFilter - Token válido para usuário: " + username + ", role: " + role);
             
-            // Continua a execução
-            chain.doFilter(request, response);
+            // Armazena as informações do usuário no contexto da requisição para uso posterior
+            requestContext.setProperty("username", username);
+            requestContext.setProperty("userRole", role);
+            requestContext.setProperty("userId", userId);
             
         } catch (Exception e) {
-            sendUnauthorizedResponse(httpResponse, "Erro ao validar token JWT: " + e.getMessage());
+            System.out.println("JwtAuthenticationFilter - Erro ao validar token: " + e.getMessage());
+            requestContext.abortWith(
+                Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("{\"error\":\"Erro ao validar token JWT: " + e.getMessage() + "\"}")
+                    .build()
+            );
         }
     }
     
-    private void sendUnauthorizedResponse(HttpServletResponse response, String message) throws IOException {
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.setContentType("application/json");
-        response.getWriter().write(String.format(
-            "{\"error\": \"Unauthorized\", \"message\": \"%s\"}", message
-        ));
+    /**
+     * Verifica se o endpoint é público (não precisa de autenticação)
+     */
+    private boolean isPublicEndpoint(String path) {
+        return PUBLIC_ENDPOINTS.stream()
+                .anyMatch(publicPath -> path.startsWith(publicPath) || path.contains(publicPath));
     }
 }

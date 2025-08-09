@@ -5,6 +5,7 @@ import com.caracore.cso.service.PriceService;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.annotation.security.RolesAllowed;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,6 +28,7 @@ public class PriceController {
     }
 
     @GET
+    @RolesAllowed({"ADMIN", "BUSINESS"})
     public List<Price> getAll() {
         try {
             logger.info("Buscando todos os preços");
@@ -41,6 +43,7 @@ public class PriceController {
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({"ADMIN", "BUSINESS"})
     public Response getById(@PathParam("id") Long id) {
         try {
             logger.info("Buscando preço por id: {}", id);
@@ -64,6 +67,7 @@ public class PriceController {
     }
 
     @POST
+    @RolesAllowed({"ADMIN", "BUSINESS"})
     public Response create(Price price) {
         try {
             logger.info("Criando novo preço para tabela: {}", price.getTableName());
@@ -107,6 +111,7 @@ public class PriceController {
 
     @PUT
     @Path("/{id}")
+    @RolesAllowed({"ADMIN", "BUSINESS"})
     public Response update(@PathParam("id") Long id, Price price) {
         try {
             logger.info("Atualizando preço id: {}", id);
@@ -149,6 +154,7 @@ public class PriceController {
 
     @DELETE
     @Path("/{id}")
+    @RolesAllowed({"ADMIN", "BUSINESS"})
     public Response delete(@PathParam("id") Long id) {
         try {
             logger.info("Deletando preço id: {}", id);

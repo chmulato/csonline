@@ -3,6 +3,7 @@ package com.caracore.cso.controller;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.annotation.security.RolesAllowed;
 import com.caracore.cso.service.SMSService;
 import com.caracore.cso.entity.SMS;
 import java.util.List;
@@ -44,6 +45,7 @@ public class SMSController {
     }
 
     @GET
+    @RolesAllowed({"ADMIN", "BUSINESS"})
     public List<SMS> getAll() {
         try {
             return smsService.findAll();
@@ -55,6 +57,7 @@ public class SMSController {
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({"ADMIN", "BUSINESS"})
     public SMS getById(@PathParam("id") Long id) {
         try {
             return smsService.findById(id);
@@ -76,6 +79,7 @@ public class SMSController {
     }
 
     @POST
+    @RolesAllowed({"ADMIN", "BUSINESS"})
     public Response create(SMS sms) {
         try {
             // Resolver a referência de Delivery pelo ID

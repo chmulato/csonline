@@ -3,6 +3,7 @@ package com.caracore.cso.controller;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.annotation.security.RolesAllowed;
 import com.caracore.cso.service.CustomerService;
 import com.caracore.cso.entity.Customer;
 import com.caracore.cso.service.UserService;
@@ -21,6 +22,7 @@ public class CustomerController {
     private UserService userService = new UserService();
 
     @GET
+    @RolesAllowed({"ADMIN", "BUSINESS"})
     public List<Customer> getAll() {
         try {
             return customerService.findAll();
@@ -32,6 +34,7 @@ public class CustomerController {
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({"ADMIN", "BUSINESS", "CUSTOMER"})
     public Response getById(@PathParam("id") Long id) {
         try {
             Customer customer = customerService.findById(id);
@@ -47,6 +50,7 @@ public class CustomerController {
     }
 
     @POST
+    @RolesAllowed({"ADMIN", "BUSINESS"})
     public Response create(Customer customer) {
         try {
             // Log para debug
@@ -110,6 +114,7 @@ public class CustomerController {
 
     @PUT
     @Path("/{id}")
+    @RolesAllowed({"ADMIN", "BUSINESS"})
     public Response update(@PathParam("id") Long id, Customer customer) {
         try {
             // Buscar o customer existente
@@ -149,6 +154,7 @@ public class CustomerController {
 
     @DELETE
     @Path("/{id}")
+    @RolesAllowed({"ADMIN", "BUSINESS"})
     public Response delete(@PathParam("id") Long id) {
         try {
             customerService.delete(id);

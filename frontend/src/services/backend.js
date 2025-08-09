@@ -340,6 +340,27 @@ export class BackendService {
   }
 
   /**
+   * Métodos para SMS/WhatsApp
+   */
+  async getSMS() {
+    return this.get(API_CONFIG.ENDPOINTS.SMS)
+  }
+
+  async createSMS(smsData) {
+    const data = formatDataForBackend(smsData)
+    return this.post(API_CONFIG.ENDPOINTS.SMS, data)
+  }
+
+  async updateSMS(id, smsData) {
+    const data = formatDataForBackend(smsData)
+    return this.put(`${API_CONFIG.ENDPOINTS.SMS}/${id}`, data)
+  }
+
+  async deleteSMS(id) {
+    return this.delete(`${API_CONFIG.ENDPOINTS.SMS}/${id}`)
+  }
+
+  /**
    * Health check
    */
   async healthCheck() {

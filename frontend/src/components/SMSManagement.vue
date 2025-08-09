@@ -1,10 +1,38 @@
 <template>
   <div class="sms-management">
-    <h2>Gestão de Mensagens WhatsApp</h2>
-    <div class="actions">
-      <button @click="showForm = true">Nova Mensagem</button>
-      <button class="back-btn" @click="goBack">Voltar</button>
+    <!-- Header -->
+    <div class="page-header">
+      <div class="header-left">
+        <button @click="goBack" class="btn-back">
+          <i class="fas fa-arrow-left"></i> Voltar
+        </button>
+        <h2><i class="fab fa-whatsapp"></i> Gestão de Mensagens WhatsApp</h2>
+      </div>
+      <button @click="showForm = true" class="btn-primary" :disabled="loading">
+        <i class="fas fa-plus"></i> Nova Mensagem
+      </button>
     </div>
+
+    <!-- Loading state -->
+    <div v-if="loading" class="loading-state">
+      <div class="loading-spinner"></div>
+      <p>Carregando mensagens...</p>
+    </div>
+
+    <!-- Error state -->
+    <div v-else-if="error" class="error-state">
+      <div class="error-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <h3>Erro ao carregar mensagens</h3>
+      <p>{{ error }}</p>
+      <button @click="loadData" class="btn-primary">
+        <i class="fas fa-redo"></i> Tentar novamente
+      </button>
+    </div>
+
+    <!-- Main content -->
+    <div v-else>
     
     <div class="filters">
       <select v-model="deliveryFilter" @change="filterSMS">
@@ -24,18 +52,43 @@
       <input v-model="dateFilter" type="date" @change="filterSMS" placeholder="Filtrar por data" />
     </div>
 
-    <div class="stats">
+    <!-- Statistics Cards -->
+    <div class="stats-grid">
       <div class="stat-card">
-        <h4>Total de Mensagens</h4>
-        <span class="stat-number">{{ filteredSMS.length }}</span>
+        <div class="stat-icon">
+          <i class="fab fa-whatsapp"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">{{ filteredSMS.length }}</div>
+          <div class="stat-label">Total de Mensagens</div>
+        </div>
       </div>
       <div class="stat-card">
-        <h4>Mensagens Hoje</h4>
-        <span class="stat-number">{{ getTodayMessages() }}</span>
+        <div class="stat-icon">
+          <i class="fas fa-calendar-day"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">{{ getTodayMessages() }}</div>
+          <div class="stat-label">Mensagens Hoje</div>
+        </div>
       </div>
       <div class="stat-card">
-        <h4>Entregas Ativas</h4>
-        <span class="stat-number">{{ getActiveDeliveries() }}</span>
+        <div class="stat-icon">
+          <i class="fas fa-truck"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">{{ getActiveDeliveries() }}</div>
+          <div class="stat-label">Entregas Ativas</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-paper-plane"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">{{ getDeliveredMessages() }}</div>
+          <div class="stat-label">Mensagens Enviadas</div>
+        </div>
       </div>
     </div>
 
@@ -66,7 +119,10 @@
           </td>
           <td>{{ sms.delivery.customer.user.name }}</td>
           <td>
-            <span :class="getTypeClass(sms.type)">{{ getTypeText(sms.type) }}</span>
+            <span class="message-type" :class="getTypeClass(sms.type)">
+              <i :class="getTypeIcon(sms.type)"></i>
+              {{ getTypeText(sms.type) }}
+            </span>
           </td>
           <td>{{ sms.piece }}/{{ sms.delivery.totalPieces || 1 }}</td>
           <td>
@@ -98,6 +154,7 @@
         </tr>
       </tbody>
     </table>
+    </div>
 
     <!-- Modal para Nova/Editar Mensagem -->
     <div v-if="showForm" class="modal">
@@ -150,8 +207,14 @@
           <small class="char-count">{{ form.message.length }}/500 caracteres</small>
 
           <div class="form-actions">
-            <button type="submit">{{ editingSMS ? 'Atualizar' : 'Enviar Mensagem' }}</button>
-            <button type="button" @click="cancel">Cancelar</button>
+            <button type="submit" class="btn-whatsapp">
+              <i class="fab fa-whatsapp"></i>
+              {{ editingSMS ? 'Atualizar' : 'Enviar Mensagem' }}
+            </button>
+            <button type="button" @click="cancel" class="btn-cancel">
+              <i class="fas fa-times"></i>
+              Cancelar
+            </button>
           </div>
         </form>
       </div>
@@ -197,96 +260,30 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue'
+import { backendService } from '../services/backend.js'
 
-const emit = defineEmits(['back']);
+const emit = defineEmits(['back'])
 
-function goBack() {
-  emit('back');
-}
+// Reactive state
+const smsMessages = ref([])
+const deliveries = ref([])
+const loading = ref(false)
+const error = ref(null)
+const saving = ref(false)
 
-// Dados simulados de entregas
-const deliveries = ref([
-  {
-    id: 1,
-    customer: { user: { name: 'Distribuidora Norte' } },
-    courier: { user: { name: 'João Silva' } },
-    start: 'Rua das Flores, 123 - Centro, Curitiba/PR',
-    destination: 'Av. Brasil, 456 - Batel, Curitiba/PR',
-    contact: '41987654321',
-    totalPieces: 2
-  },
-  {
-    id: 2,
-    customer: { user: { name: 'Logística Sul' } },
-    courier: { user: { name: 'Carlos Santos' } },
-    start: 'Av. Industrial, 789 - CIC, Curitiba/PR',
-    destination: 'Rua Comercial, 321 - Centro, São José dos Pinhais/PR',
-    contact: '41976543210',
-    totalPieces: 1
-  },
-  {
-    id: 3,
-    customer: { user: { name: 'Centro de Distribuição ABC' } },
-    courier: { user: { name: 'Maria Oliveira' } },
-    start: 'Rua Logística, 555 - Araucária/PR',
-    destination: 'Av. das Indústrias, 888 - Fazenda Rio Grande/PR',
-    contact: '41965432109',
-    totalPieces: 3
-  }
-]);
+// Modal state
+const showForm = ref(false)
+const showViewModal = ref(false)
+const editingSMS = ref(null)
+const viewingSMS = ref(null)
 
-// Dados simulados de SMS
-const smsMessages = ref([
-  {
-    id: 1,
-    delivery: deliveries.value[0],
-    piece: 1,
-    type: 'pickup',
-    mobileFrom: '41988776655',
-    mobileTo: '41987654321',
-    message: 'Olá! Sou o João, entregador da CSOnline. Estou a caminho para coletar sua encomenda. Previsão: 15 minutos.',
-    datetime: new Date().toISOString()
-  },
-  {
-    id: 2,
-    delivery: deliveries.value[0],
-    piece: 1,
-    type: 'delivery',
-    mobileFrom: '41988776655',
-    mobileTo: '41987654321',
-    message: 'Sua encomenda foi coletada com sucesso! Agora seguimos para o destino. Acompanhe pelo link: bit.ly/track123',
-    datetime: new Date(Date.now() - 30 * 60000).toISOString()
-  },
-  {
-    id: 3,
-    delivery: deliveries.value[1],
-    piece: 1,
-    type: 'completion',
-    mobileFrom: '41977665544',
-    mobileTo: '41976543210',
-    message: 'Entrega realizada com sucesso! Recebido por: Maria Silva às 14:30. Obrigado por escolher a CSOnline!',
-    datetime: new Date(Date.now() - 2 * 60 * 60000).toISOString()
-  },
-  {
-    id: 4,
-    delivery: deliveries.value[2],
-    piece: 2,
-    type: 'problem',
-    mobileFrom: '41966554433',
-    mobileTo: '41965432109',
-    message: 'Atenção: Endereço não localizado. Por favor, confirme o endereço de entrega ou entre em contato.',
-    datetime: new Date(Date.now() - 60 * 60000).toISOString()
-  }
-]);
+// Filters
+const deliveryFilter = ref('')
+const typeFilter = ref('')
+const dateFilter = ref('')
 
-const deliveryFilter = ref('');
-const typeFilter = ref('');
-const dateFilter = ref('');
-const showForm = ref(false);
-const showViewModal = ref(false);
-const editingSMS = ref(null);
-const viewingSMS = ref(null);
+// Form data
 const form = ref({
   delivery: { id: '' },
   piece: 1,
@@ -294,7 +291,36 @@ const form = ref({
   mobileFrom: '',
   mobileTo: '',
   message: ''
-});
+})
+
+function goBack() {
+  emit('back')
+}
+
+// Load data from backend
+async function loadData() {
+  loading.value = true
+  error.value = null
+  
+  try {
+    const [smsData, deliveriesData] = await Promise.all([
+      backendService.getSMS(),
+      backendService.getDeliveries()
+    ])
+    
+    smsMessages.value = smsData || []
+    deliveries.value = deliveriesData || []
+    
+    console.log('SMS carregadas:', smsMessages.value.length)
+    console.log('Entregas carregadas:', deliveries.value.length)
+    
+  } catch (err) {
+    console.error('Erro ao carregar dados:', err)
+    error.value = err.message || 'Erro ao conectar com o servidor'
+  } finally {
+    loading.value = false
+  }
+}
 
 const filteredSMS = computed(() => {
   let filtered = smsMessages.value;
@@ -375,6 +401,21 @@ function getTypeText(type) {
   }
 }
 
+function getTypeIcon(type) {
+  switch (type) {
+    case 'pickup': return 'fas fa-hand-paper';
+    case 'delivery': return 'fas fa-shipping-fast';
+    case 'update': return 'fas fa-info-circle';
+    case 'problem': return 'fas fa-exclamation-triangle';
+    case 'completion': return 'fas fa-check-circle';
+    default: return 'fab fa-whatsapp';
+  }
+}
+
+function getDeliveredMessages() {
+  return filteredSMS.value.filter(sms => sms.delivered).length;
+}
+
 function getStatusClass(sms) {
   const now = new Date();
   const smsDate = new Date(sms.datetime);
@@ -445,55 +486,83 @@ function closeViewModal() {
 }
 
 function editSMS(sms) {
-  editingSMS.value = sms;
+  editingSMS.value = sms
   form.value = {
-    delivery: { id: sms.delivery.id },
+    delivery: { id: sms.deliveryId || sms.delivery?.id },
     piece: sms.piece,
     type: sms.type,
     mobileFrom: sms.mobileFrom,
     mobileTo: sms.mobileTo,
     message: sms.message
-  };
-  showForm.value = true;
+  }
+  showForm.value = true
 }
 
-function deleteSMS(id) {
-  if (confirm('Tem certeza que deseja excluir esta mensagem?')) {
-    smsMessages.value = smsMessages.value.filter(s => s.id !== id);
+async function deleteSMS(id) {
+  if (!confirm('Tem certeza que deseja excluir esta mensagem?')) {
+    return
+  }
+  
+  try {
+    await backendService.deleteSMS(id)
+    
+    // Remover da lista local
+    smsMessages.value = smsMessages.value.filter(s => s.id !== id)
+    
+    console.log('SMS excluída com sucesso')
+  } catch (err) {
+    console.error('Erro ao excluir SMS:', err)
+    alert('Erro ao excluir SMS: ' + (err.message || 'Erro desconhecido'))
   }
 }
 
-function saveSMS() {
-  const selectedDeliveryData = deliveries.value.find(d => d.id == form.value.delivery.id);
+async function saveSMS() {
+  saving.value = true
   
-  if (editingSMS.value) {
-    // Editar SMS existente
-    Object.assign(editingSMS.value, {
-      delivery: selectedDeliveryData,
+  try {
+    // Preparar dados para envio
+    const smsData = {
+      deliveryId: parseInt(form.value.delivery.id),
       piece: parseInt(form.value.piece),
       type: form.value.type,
       mobileFrom: form.value.mobileFrom,
       mobileTo: form.value.mobileTo,
       message: form.value.message
-    });
-    editingSMS.value = null;
-  } else {
-    // Criar nova SMS
-    const newSMS = {
-      id: Date.now(),
-      delivery: selectedDeliveryData,
-      piece: parseInt(form.value.piece),
-      type: form.value.type,
-      mobileFrom: form.value.mobileFrom,
-      mobileTo: form.value.mobileTo,
-      message: form.value.message,
-      datetime: new Date().toISOString()
-    };
-    smsMessages.value.push(newSMS);
+    }
+    
+    let savedSMS
+    
+    if (editingSMS.value) {
+      // Editar SMS existente
+      savedSMS = await backendService.updateSMS(editingSMS.value.id, smsData)
+      
+      // Atualizar na lista local
+      const index = smsMessages.value.findIndex(s => s.id === editingSMS.value.id)
+      if (index !== -1) {
+        smsMessages.value[index] = { ...smsMessages.value[index], ...savedSMS }
+      }
+      
+      console.log('SMS atualizada com sucesso')
+      editingSMS.value = null
+    } else {
+      // Criar nova SMS
+      savedSMS = await backendService.createSMS(smsData)
+      
+      // Adicionar à lista local
+      smsMessages.value.push(savedSMS)
+      
+      console.log('SMS criada com sucesso')
+    }
+    
+    showForm.value = false
+    resetForm()
+    
+  } catch (err) {
+    console.error('Erro ao salvar SMS:', err)
+    alert('Erro ao salvar SMS: ' + (err.message || 'Erro desconhecido'))
+  } finally {
+    saving.value = false
   }
-  
-  showForm.value = false;
-  resetForm();
 }
 
 function cancel() {
@@ -510,12 +579,17 @@ function resetForm() {
     mobileFrom: '',
     mobileTo: '',
     message: ''
-  };
+  }
 }
 
 function filterSMS() {
   // Função é chamada automaticamente pelo computed filteredSMS
 }
+
+// Lifecycle
+onMounted(() => {
+  loadData()
+})
 </script>
 
 <style scoped>
@@ -530,6 +604,56 @@ function filterSMS() {
 
 .sms-management h2 {
   margin-bottom: 24px;
+}
+
+.loading-state, .error-state {
+  text-align: center;
+  padding: 60px 32px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #1976d2;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-state {
+  color: #d32f2f;
+}
+
+.error-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.btn-primary {
+  padding: 10px 20px;
+  background: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #1565c0;
+  transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 .actions {
@@ -806,6 +930,151 @@ button:hover {
   background: #1565c0;
 }
 
+/* WhatsApp Specific Styles */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 32px;
+  background: linear-gradient(135deg, #25d366 0%, #20b358 100%);
+  color: white;
+  margin: -32px -32px 32px -32px;
+  border-radius: 8px 8px 0 0;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-left h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.header-left h2 i {
+  margin-right: 8px;
+  font-size: 28px;
+}
+
+.btn-back {
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-back:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.btn-whatsapp {
+  background: #25d366 !important;
+  color: white !important;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-whatsapp:hover {
+  background: #20b358 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+}
+
+.btn-cancel {
+  background: #666 !important;
+  color: white !important;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.message-type {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 32px;
+  background: #f8f9fa;
+  margin: -32px -32px 32px -32px;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  padding: 24px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.stat-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-right: 16px;
+}
+
+.stat-card:nth-child(1) .stat-icon {
+  background: linear-gradient(135deg, #25d366, #20b358);
+  color: white;
+}
+
+.stat-card:nth-child(2) .stat-icon {
+  background: linear-gradient(135deg, #ff9800, #f57c00);
+  color: white;
+}
+
+.stat-card:nth-child(3) .stat-icon {
+  background: linear-gradient(135deg, #2196f3, #1976d2);
+  color: white;
+}
+
+.stat-card:nth-child(4) .stat-icon {
+  background: linear-gradient(135deg, #9c27b0, #7b1fa2);
+  color: white;
+}
+
+.stat-number {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+}
+
+.stat-label {
+  color: #666;
+  font-size: 14px;
+}
+
+/* Type badges */
+.type-pickup { background: #e3f2fd; color: #1976d2; }
+.type-delivery { background: #e8f5e8; color: #388e3c; }
+.type-update { background: #fff3e0; color: #f57c00; }
+.type-problem { background: #ffebee; color: #d32f2f; }
+.type-completion { background: #f3e5f5; color: #7b1fa2; }
+
 /* Responsividade */
 @media (max-width: 1400px) {
   table { font-size: 12px; }
@@ -813,8 +1082,13 @@ button:hover {
 }
 
 @media (max-width: 768px) {
-  .stats { flex-direction: column; }
+  .stats-grid { grid-template-columns: 1fr; }
   .filters { flex-direction: column; }
   .modal-content { min-width: 95vw; margin: 10px; }
+  .page-header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
 }
 </style>
