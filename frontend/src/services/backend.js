@@ -250,6 +250,20 @@ export class BackendService {
     return this.get(API_CONFIG.ENDPOINTS.USER_BY_ID(id))
   }
 
+  async createUser(userData) {
+    const data = formatDataForBackend(userData)
+    return this.post(API_CONFIG.ENDPOINTS.USERS, data)
+  }
+
+  async updateUser(id, userData) {
+    const data = formatDataForBackend(userData)
+    return this.put(API_CONFIG.ENDPOINTS.USER_BY_ID(id), data)
+  }
+
+  async deleteUser(id) {
+    return this.delete(API_CONFIG.ENDPOINTS.USER_BY_ID(id))
+  }
+
   /**
    * Teams
    */

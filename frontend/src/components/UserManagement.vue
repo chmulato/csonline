@@ -100,36 +100,35 @@
   </div>
 </template>
 
-<script>
-import { reactive, ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { useAuthStore } from '../stores/auth'
-import PermissionGuard from './PermissionGuard.vue'
+<script setup>
+import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '../stores/auth.js';
+import { backendService } from '../services/backend.js';
+import PermissionGuard from './PermissionGuard.vue';
 
-export default {
-  name: 'UserManagement',
-  components: {
-    PermissionGuard
-  },
-  setup() {
-    const router = useRouter()
-    const authStore = useAuthStore()
-    
-    const users = ref([])
-    const showForm = ref(false)
-    const editingUser = ref(null)
-    const searchTerm = ref('')
-    const roleFilter = ref('')
-    
-    const form = reactive({
-      name: '',
-      login: '',
-      email: '',
-      address: '',
-      mobile: '',
-      role: '',
-      password: ''
-    })
+const router = useRouter();
+const authStore = useAuthStore();
+
+// Estado reativo
+const users = ref([]);
+const showForm = ref(false);
+const editingUser = ref(null);
+const searchTerm = ref('');
+const roleFilter = ref('');
+const loading = ref(false);
+const error = ref(null);
+
+// Formulário
+const form = ref({
+  name: '',
+  login: '',
+  email: '',
+  address: '',
+  mobile: '',
+  role: '',
+  password: ''
+});
 
     const filteredUsers = computed(() => {
       let filtered = users.value
