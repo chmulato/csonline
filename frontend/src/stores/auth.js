@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import { backendService } from '../services/backend.js'
 
 export const useAuthStore = defineStore('auth', () => {
   // State
@@ -151,24 +152,34 @@ export const useAuthStore = defineStore('auth', () => {
     return roles.includes(userRole.value)
   }
 
-  // Mock login function for tests
+  // Backend login function
   async function login(credentials) {
-    // This is a mock implementation for tests
     try {
-      if (credentials.login === 'admin' && credentials.password === 'admin123') {
-        setAuth({
-          id: 1,
-          name: 'Admin User',
-          login: 'admin',
-          role: 'ADMIN',
-          token: 'mock-admin-token'
-        })
-        return true
-      }
-      return false
+      console.log('[AUTH] Attempting login with backend...')
+      
+      // Fazer login no backend real
+      const response = await backendService.login(credentials)
+      
+      // Response esperado: { token, id, name, login, role }
+      setAuth({
+        id: response.id,
+        name: response.name,
+        login: response.login,
+        role: response.role,
+        token: response.token
+      })
+      
+      console.log('[AUTH] User authenticated:', {
+        name: response.name,
+        role: response.role,
+        login: response.login
+      })
+      
+      return true
     } catch (error) {
-      console.error('Login error:', error)
-      return false
+      console.error('[AUTH] Login failed:', error.message)
+      clearAuth()
+      throw error
     }
   }
 
