@@ -1,8 +1,7 @@
 
-# Índice de Documentos - CSOnline JWT 2.0 Enterprise
+# Índice de Documentos - CSOnline
 
-> **Sistema com Segurança JWT e Controle de Acesso Baseado em Perfis**  
-> CSOnline agora opera com autenticação JWT Bearer Token, sistema completo de permissões, proteção de endpoints e controle granular de acesso.
+Guia prático de configuração, operação e testes. Sistema protegido por JWT com controle de acesso baseado em perfis.
 
 ## Documentação Principal
 
@@ -43,121 +42,23 @@
 - [start-wildfly-31.ps1](../scr/start-wildfly-31.ps1) — Script para iniciar o servidor WildFly
 - [stop-wildfly-31.ps1](../scr/stop-wildfly-31.ps1) — Script para parar o servidor WildFly
 
-## Novidades e Funcionalidades Recentes
+## Referências Rápidas
 
-### Suite de Testes JWT 2.0 Automatizados (Agosto 2025)
-O projeto agora conta com uma **suite completa de testes de segurança JWT** localizada em `scr/tests/`:
+### Suite de Testes (JWT e Endpoints)
+Local: `scr/tests/`
+- `test-users.ps1`, `test-customers.ps1`, `test-couriers.ps1`, `test-teams.ps1`, `test-deliveries.ps1`, `test-sms.ps1`, `test-login.ps1`
+- Ferramentas: `test-jwt-security.ps1` (20 testes), `jwt-utility.ps1`, `test-all-endpoints.ps1`, `health-check-endpoints.ps1`, `run-tests.ps1`
+- Documento unificado de testes: [TESTES.md](TESTES.md)
 
-#### Scripts de Teste Individuais com JWT:
-- **`test-users.ps1`** - Testes completos de usuários com autenticação JWT
-- **`test-customers.ps1`** - Testes de clientes com validação de segurança
-- **`test-couriers.ps1`** - Testes de entregadores protegidos por JWT
-- **`test-teams.ps1`** - Testes de equipes com Bearer Token
-- **`test-deliveries.ps1`** - Testes de entregas com autenticação
-- **`test-sms.ps1`** - Testes de SMS com proteção JWT
-- **`test-login.ps1`** - Testes específicos de autenticação JWT
+### URLs Úteis
+- Aplicação: http://localhost:8080/csonline/
+- APIs REST: http://localhost:8080/csonline/api/*
+- Login (público): http://localhost:8080/csonline/api/login
+- Health (público): http://localhost:8080/csonline/api/health
+- Swagger UI: http://localhost:8080/csonline/swagger-ui/
+- Console WildFly: http://localhost:9990
 
-#### Ferramentas de Automação JWT:
-- **`test-jwt-security.ps1`** - **Suite completa de segurança JWT** (20 testes)
-- **`jwt-utility.ps1`** - Utilitários para operações JWT nos testes
-- **`test-all-endpoints.ps1`** - Execução de todos os endpoints com JWT
-- **`health-check-endpoints.ps1`** - Verificação de saúde do sistema
-- **`run-tests.ps1`** - **Script principal JWT 2.0** com opções de segurança
-
-#### Documentação dos Testes JWT:
-- **`README-TESTES.ps1`** - Interface visual dos scripts JWT 2.0
-- **`README.md`** - Documentação técnica dos scripts
-- **`TESTES.md`** - Documento unificado de estado e qualidade de testes
-
-#### Características dos Testes JWT:
-- **Autenticação automática** com credenciais configuráveis
-- **Validação de segurança** com testes de autorização
-- **Logs detalhados** com opção `-Verbose`
-- **Interface profissional** com relatórios estruturados
-- **Taxa de sucesso** de 100% nos testes de segurança
-
-### Configuração Enterprise Completa (3 de Agosto/2025)
-O projeto alcançou **maturidade de produção enterprise** com:
-
-- **Infraestrutura consolidada:** WildFly 31.0.1.Final + HSQLDB 2.7 + Flyway 8.5.13
-- **Deploy automatizado:** Scripts PowerShell para build, deploy e configuração
-- **Configuração JTA:** Transações gerenciadas pelo container para ambiente enterprise
-- **Migrações controladas:** Flyway com histórico de versões V1 (schema) e V2 (dados)
-- **APIs documentadas:** Swagger/OpenAPI com interface web para desenvolvedores
-- **Logging estruturado:** Sistema de logs detalhado para produção e debugging
-
-### Automação de Configuração do Servidor (Atualizado - Agosto 2025)
-Script de configuração WildFly completamente reescrito com sistema avançado de logging:
-
-- **Script principal:** `config-jdbc-driver-wildfly-31.ps1` (versão 2.0) com 7 etapas bem definidas
-- **Sistema de logging:** Logs detalhados com timestamp salvos em `logs/wildfly-config-*.log`
-- **Parâmetros flexíveis:** `-Verbose`, `-CleanStart`, `-SkipBackup` para diferentes cenários
-- **Configuração baseada em módulos:** Evita conflitos de deployment, usa módulos WildFly nativos
-- **Download automático:** Baixa driver HSQLDB automaticamente se não encontrado
-- **Validação completa:** Testes de conectividade e verificação de cada etapa
-- **Documentação completa:** [README-CONFIG-SCRIPT.md](../scr/README-CONFIG-SCRIPT.md) com troubleshooting
-
-### Containerização com Docker (Atualizado - Agosto 2025)
-O banco de dados HSQLDB agora executa tanto em modo arquivo quanto container Docker:
-
-- **Arquivo de configuração:** `docker-compose.yml` na raiz do projeto
-- **Modo arquivo (atual):** HSQLDB executando em modo file para integração WildFly
-- **Persistência de dados:** Arquivos de banco e migrações Flyway
-- **Configuração flexível:** Suporte tanto para desenvolvimento quanto produção
-- **Documentação atualizada:** [MIGRACAO_BANCO_DADOS.md](MIGRACAO_BANCO_DADOS.md) inclui instruções completas
-
-### Status Atual do Sistema (8 de Agosto/2025)
-**Sistema CSOnline 100% Operacional com JWT 2.0 - MARCO HISTÓRICO: Segurança Enterprise Implementada**
-
-**EVOLUÇÃO PARA PRODUÇÃO ENTERPRISE COM SEGURANÇA JWT:**
-
-- **Taxa de Sucesso:** 100% (7/7 endpoints REST protegidos por JWT)
-- **Sistema de Autenticação:** JWT Bearer Token com HMAC SHA-512
-- **Frontend Vue 3 SPA:** Autenticação integrada com Pinia store
-- **Backend Jakarta EE:** APIs REST com filtro de segurança JWT
-- **Testes de Segurança:** Suite completa validando 100% da segurança
-- **Deploy Enterprise:** WildFly 31.0.1.Final com segurança JWT em produção
-
-**URLs Ativas e Sistema de Autenticação:**
-  - Aplicação: http://localhost:8080/csonline/ (com login JWT)
-  - APIs REST Protegidas: http://localhost:8080/csonline/api/{users|customers|couriers|deliveries|teams|sms}
-  - Login público: http://localhost:8080/csonline/api/login (endpoint público)
-  - Swagger UI: http://localhost:8080/csonline/swagger-ui/
-  - Health Check: http://localhost:8080/csonline/api/health (endpoint público)
-
-**Resultados dos Endpoints JWT 2.0 - 100% SEGUROS E FUNCIONAIS:**
-- **Endpoint `/login`** - Autenticação JWT - PÚBLICO (200)
-- **Endpoint `/health`** - Health Check - PÚBLICO (200)
-- **Endpoint `/users`** - Gestão de Usuários - PROTEGIDO JWT (200)
-- **Endpoint `/couriers`** - Gestão de Entregadores - PROTEGIDO JWT (200)
-- **Endpoint `/customers`** - Gestão de Clientes - PROTEGIDO JWT (200)
-- **Endpoint `/teams`** - Gestão de Equipas - PROTEGIDO JWT (200)
-- **Endpoint `/deliveries`** - Gestão de Entregas - PROTEGIDO JWT (200)
-- **Endpoint `/sms`** - Sistema de SMS - PROTEGIDO JWT (200)
-
-**Métricas de Segurança JWT Alcançadas:**
-- **Taxa de Segurança Total:** 100% (20/20 testes de segurança aprovados)
-- **Proteção contra acesso não autorizado:** 401 Unauthorized para endpoints protegidos
-- **Validação de tokens:** Rejeição de tokens inválidos ou expirados
-- **Autenticação automática:** Frontend com interceptors HTTP automáticos
-- **Persistência de sessão:** LocalStorage com validação de expiração
-- **Data do Marco JWT:** 8 de Agosto/2025
-
-### Endpoints Testados e Funcionais (3 de Agosto/2025)
-Através dos testes automatizados e deploy enterprise, foi confirmado:
-- **100% dos endpoints principais funcionando** (users, customers, couriers, deliveries, sms)
-- **Swagger UI operacional** com documentação automática
-- **Migrações Flyway executadas** com dados iniciais carregados
-- **Configuração JTA completa** para transações enterprise
-- **Deploy enterprise finalizado** sem erros ou conflitos
-
-### URLs de Acesso do Sistema
-- **Swagger UI:** http://localhost:8080/csonline/swagger-ui/
-- **Console WildFly:** http://localhost:9990
-
- > **Observação:** Os documentos IMPORT_SQL.md e MIGRATIONS.md foram fundidos no novo arquivo [MIGRACAO_BANCO_DADOS.md](MIGRACAO_BANCO_DADOS.md) para fornecer uma documentação mais completa e unificada sobre o gerenciamento de banco de dados com Flyway e Docker. O documento [MIGRACAO_IMPORT_SQL.md](MIGRACAO_IMPORT_SQL.md) permanece ativo como referência histórica e técnica sobre o processo de migração.
-
-> Relatórios antigos de testes (RELATORIO_TESTES_COMPLETO.md e TESTES_ENDPOINTS.md) foram removidos. Use apenas o documento unificado: [TESTES.md](TESTES.md).
+Observação: Endpoints protegidos exigem JWT. Algumas rotas exigem roles específicas (por exemplo, GET de usuários requer ADMIN).
 
 ## Como Usar Esta Documentação
 
@@ -198,4 +99,4 @@ Através dos testes automatizados e deploy enterprise, foi confirmado:
 
 ---
 
-**Última atualização:** 8 de Agosto de 2025 - Sistema CSOnline com **JWT 2.0 Enterprise Security** implementado. Sistema 100% operacional com autenticação JWT, 20 testes de segurança aprovados, frontend Vue 3 com autenticação integrada, e todos os endpoints protegidos por Bearer Token. Marco histórico: **Segurança Enterprise Completa**.
+**Última atualização:** 9 de Agosto de 2025. Sistema com autenticação JWT ativa, RBAC aplicado em endpoints específicos e suíte de testes automatizados disponível em `scr/tests/`.
