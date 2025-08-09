@@ -261,6 +261,20 @@ export class BackendService {
     return this.get(API_CONFIG.ENDPOINTS.TEAM_BY_ID(id))
   }
 
+  async createTeam(teamData) {
+    const data = formatDataForBackend(teamData)
+    return this.post(API_CONFIG.ENDPOINTS.TEAMS, data)
+  }
+
+  async updateTeam(id, teamData) {
+    const data = formatDataForBackend(teamData)
+    return this.put(API_CONFIG.ENDPOINTS.TEAM_BY_ID(id), data)
+  }
+
+  async deleteTeam(id) {
+    return this.delete(API_CONFIG.ENDPOINTS.TEAM_BY_ID(id))
+  }
+
   /**
    * Deliveries
    */

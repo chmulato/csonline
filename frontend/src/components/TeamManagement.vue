@@ -1,6 +1,17 @@
 <template>
   <div class="team-management">
     <h2>Gestão de Times</h2>
+    
+    <!-- Loading indicator -->
+    <div v-if="loading" class="loading">
+      Carregando...
+    </div>
+    
+    <!-- Error message -->
+    <div v-if="error" class="error">
+      {{ error }}
+    </div>
+    
     <div class="actions">
       <button @click="showForm = true">Novo Time</button>
       <button class="back-btn" @click="goBack">Voltar</button>
@@ -94,9 +105,17 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
+import { backendService } from '../services/backend.js';
 
 const emit = defineEmits(['back']);
+
+// Estado reativo
+const showForm = ref(false);
+const editingTeam = ref(null);
+const businessFilter = ref('');
+const loading = ref(false);
+const error = ref(null);
 
 function goBack() {
   emit('back');
@@ -183,15 +202,48 @@ const teams = ref([
   }
 ]);
 
-const businessFilter = ref('');
-const showForm = ref(false);
-const editingTeam = ref(null);
+// Formulário para criar/editar time
 const form = ref({
   business: { id: '' },
   courier: { id: '' },
   factorCourier: '',
   status: 'active'
 });
+
+// Funções para carregar dados da API
+async function loadTeams() {
+  try {
+    loading.value = true;
+    error.value = null;
+    teams.value = await backendService.getTeams();
+  } catch (err) {
+    error.value = 'Erro ao carregar times: ' + err.message;
+    console.error('Erro ao carregar times:', err);
+  } finally {
+    loading.value = false;
+  }
+}
+
+async function loadBusinesses() {
+  try {
+    const allCustomers = await backendService.getCustomers();
+    // Separar businesses que são customers (CDs) das que são do sistema
+    customerBusinesses.value = allCustomers.filter(c => c.role === 'customer' || !c.role);
+    businesses.value = allCustomers; // Para o filtro mostrar todas
+  } catch (err) {
+    error.value = 'Erro ao carregar empresas: ' + err.message;
+    console.error('Erro ao carregar empresas:', err);
+  }
+}
+
+async function loadCouriers() {
+  try {
+    couriers.value = await backendService.getCouriers();
+  } catch (err) {
+    error.value = 'Erro ao carregar entregadores: ' + err.message;
+    console.error('Erro ao carregar entregadores:', err);
+  }
+}
 
 const filteredTeams = computed(() => {
   if (!businessFilter.value) return teams.value;
@@ -259,49 +311,59 @@ function editTeam(team) {
   showForm.value = true;
 }
 
-function deleteTeam(id) {
+async function deleteTeam(id) {
   if (confirm('Tem certeza que deseja excluir este time?')) {
-    teams.value = teams.value.filter(t => t.id !== id);
+    try {
+      loading.value = true;
+      error.value = null;
+      await backendService.deleteTeam(id);
+      teams.value = teams.value.filter(t => t.id !== id);
+    } catch (err) {
+      error.value = 'Erro ao excluir time: ' + err.message;
+      console.error('Erro ao excluir time:', err);
+    } finally {
+      loading.value = false;
+    }
   }
 }
 
-function saveTeam() {
-  const selectedBusiness = customerBusinesses.value.find(b => b.id == form.value.business.id);
-  const selectedCourierData = couriers.value.find(c => c.id == form.value.courier.id);
-  
-  if (editingTeam.value) {
-    // Editar time existente
-    Object.assign(editingTeam.value, {
+async function saveTeam() {
+  try {
+    loading.value = true;
+    error.value = null;
+    
+    const selectedBusiness = customerBusinesses.value.find(b => b.id == form.value.business.id);
+    const selectedCourierData = couriers.value.find(c => c.id == form.value.courier.id);
+    
+    const teamData = {
       business: selectedBusiness,
-      courier: {
-        id: selectedCourierData.id,
-        name: selectedCourierData.name,
-        email: selectedCourierData.email,
-        mobile: selectedCourierData.mobile
-      },
-      factorCourier: parseFloat(form.value.factorCourier),
-      status: form.value.status
-    });
-    editingTeam.value = null;
-  } else {
-    // Criar novo time
-    const newTeam = {
-      id: Date.now(),
-      business: selectedBusiness,
-      courier: {
-        id: selectedCourierData.id,
-        name: selectedCourierData.name,
-        email: selectedCourierData.email,
-        mobile: selectedCourierData.mobile
-      },
+      courier: selectedCourierData,
       factorCourier: parseFloat(form.value.factorCourier),
       status: form.value.status
     };
-    teams.value.push(newTeam);
+    
+    if (editingTeam.value) {
+      // Editar time existente
+      const updatedTeam = await backendService.updateTeam(editingTeam.value.id, teamData);
+      const index = teams.value.findIndex(t => t.id === editingTeam.value.id);
+      if (index !== -1) {
+        teams.value[index] = updatedTeam;
+      }
+      editingTeam.value = null;
+    } else {
+      // Criar novo time
+      const newTeam = await backendService.createTeam(teamData);
+      teams.value.push(newTeam);
+    }
+    
+    showForm.value = false;
+    resetForm();
+  } catch (err) {
+    error.value = 'Erro ao salvar time: ' + err.message;
+    console.error('Erro ao salvar time:', err);
+  } finally {
+    loading.value = false;
   }
-  
-  showForm.value = false;
-  resetForm();
 }
 
 function cancel() {
@@ -322,6 +384,15 @@ function resetForm() {
 function filterTeams() {
   // Função é chamada automaticamente pelo computed filteredTeams
 }
+
+// Carregar dados quando o componente for montado
+onMounted(async () => {
+  await Promise.all([
+    loadTeams(),
+    loadBusinesses(),
+    loadCouriers()
+  ]);
+});
 </script>
 
 <style scoped>
@@ -489,5 +560,25 @@ select:focus, input:focus {
   th, td {
     padding: 6px;
   }
+}
+
+/* Loading e Error States */
+.loading {
+  background: #e3f2fd;
+  color: #1976d2;
+  padding: 12px;
+  border-radius: 4px;
+  text-align: center;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.error {
+  background: #ffebee;
+  color: #d32f2f;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  border-left: 4px solid #d32f2f;
 }
 </style>
