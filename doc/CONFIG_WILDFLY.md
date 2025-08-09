@@ -1,13 +1,11 @@
 
 # Configuração do WildFly 31 para o projeto CSOnline
 
-Este guia mostra como preparar o WildFly 31 para rodar a aplicação CSOnline com HSQLDB em modo arquivo e migrações Flyway.
+Guia para preparar o WildFly 31 com HSQLDB (modo arquivo) e migrações Flyway.
 
-> **Status:** Sistema 100% operacional e testado em produção enterprise (3 de Agosto/2025)
+## Configuração Atual
 
-## Configuração Atual (Funcionando em Produção)
-
-O projeto CSOnline está **totalmente configurado e operacional** com:
+O projeto está configurado para operar com:
 - **WildFly 31.0.1.Final** - Servidor de aplicação enterprise
 - **HSQLDB 2.7** - Banco de dados em modo arquivo
 - **Flyway 8.5.13** - Controle de migrações de banco
@@ -17,7 +15,7 @@ O projeto CSOnline está **totalmente configurado e operacional** com:
 
 ## 1. Deploy Rápido (Sistema já Configurado)
 
-**Para usar o sistema que já está funcionando:**
+**Para usar o sistema já configurado:**
 
 ```powershell
 # 1. Inicie o WildFly
@@ -33,12 +31,11 @@ cd C:\dev\csonline
 # Swagger: http://localhost:8080/csonline/swagger-ui/
 ```
 
-**O sistema já possui:**
-- ✅ Driver HSQLDB configurado como módulo
-- ✅ Datasource `java:/HSQLDBDatasource` criado
-- ✅ Migrações Flyway V1 (schema) e V2 (dados) aplicadas
-- ✅ Configuração JTA para transações enterprise
-- ✅ Todas as APIs REST funcionais e testadas
+**O sistema inclui:**
+- Driver HSQLDB configurado como módulo
+- Datasource `java:/HSQLDBDatasource`
+- Migrações Flyway V1 (schema) e V2 (dados)
+- JTA para transações
 
 ## 2. Configuração Completa do Ambiente (Se Necessário)
 
@@ -50,7 +47,7 @@ cd C:\dev\csonline
 .\scr\config-wildfly-31.ps1
 ```
 
-Este script realiza automaticamente:
+Este script realiza:
 1. Download do driver HSQLDB 2.7.2
 2. Criação do módulo WildFly para HSQLDB
 3. Configuração do datasource `java:/HSQLDBDatasource`
@@ -123,7 +120,7 @@ Se preferir configurar manualmente, siga os passos abaixo:
    </driver>
    ```
 
-## 5. Configuração do persistence.xml (Ambiente de Produção Atual)
+## 5. Configuração do persistence.xml (Produção)
 
 O sistema CSOnline está configurado para produção usando JTA (Java Transaction API) para integração completa com WildFly. A configuração atual utiliza HSQLDB como banco de dados principal com gerenciamento de transações pelo servidor.
 
@@ -139,7 +136,7 @@ A configuração de produção utiliza JTA para gerenciamento automático de tra
              version="3.0">
     <persistence-unit name="csonlinePU" transaction-type="JTA">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-        <jta-data-source>java:/jdbc/csonlineDS</jta-data-source>
+    <jta-data-source>java:/HSQLDBDatasource</jta-data-source>
         
         <!-- Classes de entidade -->
         <class>com.caracore.cso.entity.User</class>
@@ -157,8 +154,7 @@ A configuração de produção utiliza JTA para gerenciamento automático de tra
             <!-- Configurações específicas para HSQLDB -->
             <property name="eclipselink.target-database" value="HSQL"/>
             
-            <!-- Carga de dados inicial -->
-            <property name="jakarta.persistence.sql-load-script-source" value="import.sql"/>
+            <!-- Flyway cuida das migrações de schema e dados iniciais -->
         </properties>
     </persistence-unit>
 </persistence>

@@ -1,7 +1,7 @@
 # ARQUITETURA.md
 
 ## Visão Geral
-O CSOnline é um sistema completo para gestão de entregas, desenvolvido com frontend Vue 3 SPA e backend Jakarta EE 10. O sistema utiliza HSQLDB containerizado com Docker, migrações controladas pelo Flyway e inclui suite completa de testes automatizados. O projeto segue boas práticas de separação de camadas, responsabilidades bem definidas e arquitetura moderna.
+O CSOnline é um sistema completo para gestão de entregas, desenvolvido com frontend Vue 3 SPA e backend Jakarta EE 10. O sistema utiliza HSQLDB em modo arquivo (com opção de execução via Docker Compose), migrações controladas pelo Flyway e inclui suite completa de testes automatizados. O projeto segue boas práticas de separação de camadas, responsabilidades bem definidas e arquitetura moderna.
 
 
 ## Camadas do Sistema
@@ -36,7 +36,7 @@ O CSOnline é um sistema completo para gestão de entregas, desenvolvido com fro
 - Interface Swagger UI acessível em `/csonline/swagger-ui/index.html`
 
 **Banco de Dados e Migrações:**
-- HSQLDB executando em container Docker para isolamento e portabilidade
+- HSQLDB em modo arquivo integrado ao WildFly (opção Docker disponível)
 - Migrações de banco controladas pelo Flyway com versionamento automático
 - Configuração flexível para desenvolvimento e produção
 
@@ -77,7 +77,7 @@ O CSOnline é um sistema moderno para gestão de entregas construído com tecnol
 **Backend:**
 - **Jakarta EE 10** - Framework enterprise para desenvolvimento Java
 - **WildFly 31** - Servidor de aplicação robusto e otimizado
-- **Hibernate ORM 6.4.4.Final** - Mapeamento objeto-relacional com JPA
+- **EclipseLink (JPA)** - Mapeamento objeto-relacional
 - **JAX-RS (Jersey)** - APIs REST padronizadas
 - **CDI (Contexts and Dependency Injection)** - Injeção de dependências
 
@@ -107,7 +107,7 @@ A arquitetura do CSOnline segue o padrão de camadas bem definidas, proporcionan
 [Services Layer] 
         ↓ Data Access
 [Repository Layer] 
-        ↓ JPA/Hibernate
+        ↓ JPA/EclipseLink
 [HSQLDB Database in Docker]
 ```
 
@@ -128,9 +128,9 @@ A arquitetura do CSOnline segue o padrão de camadas bem definidas, proporcionan
 - Logs estruturados para monitoramento e debug
 
 **Inicialização de Dados:**
-- Dados iniciais carregados automaticamente via `import.sql`
-- Migrações de banco controladas pelo Flyway
-- Ambiente containerizado garante consistência entre deploys
+- Migrações com Flyway (V1/V2) aplicadas no ambiente
+- `import.sql` opcional para cenários de desenvolvimento
+- Ambiente containerizado (opcional) garante consistência entre deploys
 
 **APIs e Documentação:**
 - Especificação OpenAPI disponível em `/api/openapi.json`

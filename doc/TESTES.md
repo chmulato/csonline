@@ -1,6 +1,6 @@
 # Documento Unificado de Testes - CSOnline
 
-Data de atualização: 08/08/2025
+Data de atualização: 09/08/2025
 Branch: `main`
 Sistema: CSOnline JWT 2.0 Enterprise Security
 
@@ -8,7 +8,7 @@ Sistema: CSOnline JWT 2.0 Enterprise Security
 ## 1. Visão Geral
 Este documento consolida todas as informações de testes do projeto (unitários, repositórios, endpoints JWT e segurança) em um único local para facilitar acompanhamento de qualidade, evolução e próximos passos.
 
-**Status Atual:** Sistema 100% operacional com autenticação JWT, 32 testes unitários verdes, e todos os endpoints REST protegidos por Bearer Token.
+**Status Atual:** Autenticação JWT ativa, 32 testes unitários verdes, endpoints REST protegidos por Bearer Token e regras de acesso por perfil aplicadas (403 esperado em rotas restritas).
 
 ---
 ## 2. Ambiente e Infraestrutura
@@ -90,12 +90,12 @@ Removida duplicação de limpeza de banco em cada teste individual; centralizado
 
 ---
 ## 6. Testes de Endpoints JWT (Estado Atual)
-Resumo: 7 de 7 endpoints principais operacionais com autenticação JWT Bearer Token implementada e validada.
+Resumo: 7 de 7 endpoints principais operacionais com autenticação JWT e RBAC.
 
 ### 6.1 Endpoints Funcionando com JWT
 - **`/api/login`** (POST) - Autenticação JWT - PÚBLICO (200)
 - **`/api/health`** (GET) - Health Check - PÚBLICO (200)  
-- **`/api/users`** (GET/POST) - Gestão de Usuários - PROTEGIDO JWT (200)
+- **`/api/users`** (GET/POST) - Gestão de Usuários - PROTEGIDO JWT (GET requer ADMIN; outros perfis 403)
 - **`/api/couriers`** (GET/POST) - Gestão de Entregadores - PROTEGIDO JWT (200)
 - **`/api/customers`** (GET/POST) - Gestão de Clientes - PROTEGIDO JWT (200)
 - **`/api/teams`** (GET/POST) - Gestão de Equipes - PROTEGIDO JWT (200)

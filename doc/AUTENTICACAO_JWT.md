@@ -89,19 +89,15 @@ Controller responsável pela autenticação e geração de tokens.
 
 **Endpoint:** `POST /api/login`
 
-**Resposta:**
+**Resposta (200):**
 
 ```json
 {
   "token": "eyJhbGciOiJIUzUxMiJ9...",
-  "tokenType": "Bearer",
-  "expiresIn": 86400,
-  "user": {
-    "id": 2,
-    "login": "empresa",
-    "name": "Empresa",
-    "role": "BUSINESS"
-  }
+  "id": 2,
+  "name": "Empresa",
+  "login": "empresa",
+  "role": "BUSINESS"
 }
 ```
 
@@ -116,32 +112,33 @@ Gerenciamento de estado de autenticação.
 **Funcionalidades:**
 
 ```javascript
-// Estado
-const token = ref(localStorage.getItem('auth_token'))
-const user = ref(JSON.parse(localStorage.getItem('auth_user') || 'null'))
+// Estado (persistência)
+const token = ref(localStorage.getItem('token') || '')
+const user = ref(JSON.parse(localStorage.getItem('user') || 'null'))
 
 // Ações
-const login = async (credentials)
-const logout = ()
-const validateAuth = ()
-const clearAuth = ()
+async function login(credentials) { /* chama backendService.login e salva { token, id, name, login, role } */ }
+function logout() { /* limpa token/user do estado e localStorage */ }
+function clearAuth() { /* utilitário para limpar estado */ }
+function validateAuth() { /* checa claim exp do JWT e limpa se expirado */ }
 
 // Getters
-const isAuthenticated = computed(() => !!token.value && !isTokenExpired())
-const authHeaders = computed(() => ({ Authorization: `Bearer ${token.value}` }))
+const isAuthenticated = computed(() => !!token.value)
+function getAuthHeaders() { return { Authorization: `Bearer ${token.value}` } }
 ```
 
-### 2. API Client
+### 2. Serviço de Backend
 
-Cliente HTTP com interceptadores automáticos.
+Cliente HTTP com autenticação/retries centralizados.
 
-**Localização:** `frontend/src/utils/api.js`
+**Localização:** `frontend/src/services/backend.js`
 
 **Funcionalidades:**
 
-- Adiciona automaticamente headers de autorização
-- Intercepta respostas 401 para logout automático
-- Fornece métodos convenientes (get, post, put, delete)
+- Adiciona automaticamente Authorization quando autenticado
+- Em 401, limpa sessão (token expirado)
+- Mapeia 403/404/409 para mensagens claras
+- Métodos convenientes (get, post, put, delete)
 
 ### 3. Login Component
 
@@ -181,6 +178,8 @@ Endpoints que NÃO requerem autenticação:
 /api/health       - Health check
 /api/docs         - Documentação
 /api/swagger-ui   - Interface Swagger
+/api/swagger      - Recursos Swagger
+/api/openapi      - Documento OpenAPI (JSON)
 ```
 
 ### Configurações de Segurança
@@ -211,15 +210,11 @@ Autentica usuário e retorna token JWT.
 
 ```json
 {
-  "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlbXByZXNhIiwicm9sZSI6IkJVU0lORVNTIiwidXNlcklkIjoyLCJpYXQiOjE3NTQ2MDQ0NjQsImV4cCI6MTc1NDY5MDg2NH0.yUV2bypcArWbo8kU7ERGHHe80hMEfXxq7Ufj_V4y6UPbI4Dc0IbxFWMTRRPI5",
-  "tokenType": "Bearer",
-  "expiresIn": 86400,
-  "user": {
-    "id": 2,
-    "login": "empresa",
-    "name": "Empresa",
-    "role": "BUSINESS"
-  }
+  "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlbXByZXNhIiwicm9sZSI6IkJVU0lORVNTIiwidXNlcklkIjoyLCJpYXQiOjE3NTQ2MDQ0NjQsImV4cCI6MTc1NDY5MDg2NH0...",
+  "id": 2,
+  "login": "empresa",
+  "name": "Empresa",
+  "role": "BUSINESS"
 }
 ```
 
@@ -258,6 +253,8 @@ curl -X POST "http://localhost:8080/csonline/api/login" \
 curl -X GET "http://localhost:8080/csonline/api/users" \
   -H "Authorization: Bearer YOUR_TOKEN_HERE"
 ```
+
+Observação: com um token que não seja ADMIN, o acesso a `/api/users` deve retornar 403 Forbidden.
 
 ### Teste Frontend
 
@@ -306,6 +303,12 @@ curl -X GET "http://localhost:8080/csonline/api/users" \
 2. Verificar formato do token
 3. Verificar configurações do servidor
 
+### Problema: "403 Forbidden" ao acessar um endpoint
+
+**Causa:** Token é válido, mas a role do usuário não possui permissão para o recurso (@RolesAllowed)
+
+**Solução:** Use um usuário com a role necessária (ex.: GET /api/users requer ADMIN)
+
 ### Problema: "CORS Error"
 
 **Causa:** Configuração de CORS no WildFly
@@ -348,8 +351,8 @@ DEBUG: Token inválido ou expirado
 **Filtro JWT:**
 
 ```
-DEBUG: Aplicando filtro JWT para /api/users
-DEBUG: Token válido para usuario empresa
+JwtAuthenticationFilter - Path: users, Method: GET
+JwtAuthenticationFilter - Token válido para usuário: empresa, role: BUSINESS
 ```
 
 ## Atualizações Futuras
@@ -382,6 +385,6 @@ Para dúvidas sobre a implementação JWT:
 
 ---
 
-*Documentação atualizada em: 7 de agosto de 2025*
+*Documentação atualizada em: 9 de agosto de 2025*
 *Versão: 1.0*
 *Autor: CSOnline Team*
