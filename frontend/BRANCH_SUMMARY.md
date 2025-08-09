@@ -33,14 +33,16 @@ Frontend (Vue.js)
 ├── src/stores/auth.js         → Auth store integrado com JWT
 └── src/components/
     ├── Login.vue             → ✅ Integrado com backend
-    └── CustomerManagement.vue → ✅ Integrado com backend
+    ├── CustomerManagement.vue → ✅ Integrado com backend
+    ├── CourierManagement.vue  → ✅ Integrado com backend
+    └── TeamManagement.vue     → 🔴 Dados mockados (pendente integração)
 
 Backend (JAX-RS + WildFly)
 ├── /api/login                → Autenticação JWT
 ├── /api/customers            → CRUD de clientes
 ├── /api/couriers            → CRUD de entregadores  
 ├── /api/users               → Listagem de usuários
-└── /api/teams               → Gestão de equipes
+└── /api/teams               → Gestão de equipes (TeamController)
 ```
 
 ## 🧪 Como Testar a Integração
@@ -68,7 +70,9 @@ npm run dev
 1. **Login**: Usar credenciais reais do backend
 2. **Dashboard**: Verificar carregamento de dados reais
 3. **Gestão de Clientes**: Testar CRUD operations
-4. **Network Tab**: Verificar chamadas para localhost:8080
+4. **Gestão de Entregadores**: Testar CRUD operations  
+5. **Gestão de Times**: Interface disponível (dados mockados)
+6. **Network Tab**: Verificar chamadas para localhost:8080
 
 ## 📊 Status dos Componentes
 
@@ -77,17 +81,23 @@ npm run dev
 | Login | ✅ Completo | ✅ /api/login | ✅ 20 testes |
 | Logout | ✅ Completo | ⚪ N/A | ✅ 13 testes |
 | CustomerManagement | ✅ Completo | ✅ /api/customers | ✅ 39 testes |
-| CourierManagement | 🔄 Em progresso | ⚪ Pendente | ✅ 32 testes |
+| CourierManagement | ✅ Completo | ✅ /api/couriers | ✅ 32 testes |
+| TeamManagement | 🔴 Mockado | ⚠️ /api/teams pendente | ⚪ Não testado |
 | UserManagement | ⚪ Pendente | ⚪ Pendente | ⚪ Não existe |
 | DeliveryManagement | ⚪ Pendente | ⚪ Pendente | ⚪ Não existe |
 
 ## 🔄 Próximos Passos
 
 ### Integração Pendente
-1. **CourierManagement**: Migrar para backend real
+1. **TeamManagement**: Integrar com /api/teams (dados mockados → backend real)
 2. **UserManagement**: Criar componente e integração
 3. **DeliveryManagement**: Implementar gestão de entregas
-4. **TeamManagement**: Adicionar gestão de equipes
+
+### Componentes Existentes mas Não Integrados
+- **TeamManagement.vue**: Interface completa, mas usa dados simulados
+  - Funcionalidades: Gestão de times, associação courier-business
+  - Acesso: MainLayout → Card "Times"
+  - Pendente: Substituir mocks por backendService
 
 ### Melhorias
 1. **Loading Skeletons**: UI mais polida
@@ -143,13 +153,14 @@ Validar JSON schema
 
 ## 📈 Métricas da Branch
 
-- **Commits**: 3 commits bem estruturados
-- **Files Changed**: 17 arquivos
-- **Lines Added**: 3,578 linhas
-- **Lines Removed**: 71 linhas
+- **Commits**: 4 commits bem estruturados
+- **Files Changed**: 19 arquivos
+- **Lines Added**: 3,600+ linhas
+- **Lines Removed**: 290+ linhas
 - **Tests**: +104 novos testes
-- **Components**: 2 componentes integrados
-- **Services**: 1 novo serviço backend
+- **Components**: 3 componentes integrados + 1 existente
+- **Services**: 1 novo serviço backend completo
+- **Telas Funcionais**: 5 telas (Login, Logout, Customer, Courier, Team)
 
 ---
 
