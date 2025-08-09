@@ -92,6 +92,7 @@
 import { reactive, ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
+import { backendService } from '../services/backend.js'
 import PermissionGuard from './PermissionGuard.vue'
 
 export default {
@@ -154,79 +155,58 @@ export default {
 
     const loadCouriers = async () => {
       try {
-        const response = await fetch('http://localhost:8080/csonline/api/couriers', {
-          headers: {
-            'Authorization': `Bearer ${authStore.token}`,
-            'Content-Type': 'application/json'
-          }
-        })
-        
-        if (response.ok) {
-          couriers.value = await response.json()
-        } else {
-          console.error('Erro ao carregar entregadores:', response.statusText)
-        }
+        console.log('[COURIER] Loading couriers from backend...')
+        couriers.value = await backendService.getCouriers()
+        console.log('[COURIER] Loaded couriers:', couriers.value.length)
       } catch (error) {
-        console.error('Erro na requisição:', error)
+        console.error('[COURIER] Error loading couriers:', error.message)
+        alert('Erro ao carregar entregadores: ' + error.message)
       }
     }
 
     const loadBusinesses = async () => {
       try {
-        const response = await fetch('http://localhost:8080/csonline/api/businesses', {
-          headers: {
-            'Authorization': `Bearer ${authStore.token}`,
-            'Content-Type': 'application/json'
-          }
-        })
-        
-        if (response.ok) {
-          businesses.value = await response.json()
-        } else {
-          console.error('Erro ao carregar empresas:', response.statusText)
-        }
+        console.log('[COURIER] Loading businesses from backend...')
+        const users = await backendService.getUsers()
+        businesses.value = users.filter(user => user.role === 'BUSINESS')
+        console.log('[COURIER] Loaded businesses:', businesses.value.length)
       } catch (error) {
-        console.error('Erro na requisição:', error)
+        console.error('[COURIER] Error loading businesses:', error.message)
       }
     }
 
     const saveCourier = async () => {
       try {
-        const url = editingCourier.value 
-          ? `http://localhost:8080/csonline/api/couriers/${editingCourier.value.id}`
-          : 'http://localhost:8080/csonline/api/couriers'
-        
-        const method = editingCourier.value ? 'PUT' : 'POST'
+        console.log('[COURIER] Saving courier...')
         
         const courierData = {
-          user: { ...form.user },
-          business: { id: form.business.id },
-          factorCourier: parseFloat(form.factorCourier)
+          factorCourier: parseFloat(form.factorCourier),
+          businessId: form.business.id,
+          userId: editingCourier.value?.user?.id || null,
+          user: !editingCourier.value ? {
+            name: form.user.name,
+            email: form.user.email,
+            phone: form.user.mobile,
+            role: 'COURIER',
+            password: form.user.password
+          } : undefined
         }
 
-        // Se estamos editando e a senha está vazia, não enviar password
-        if (editingCourier.value && !courierData.user.password) {
-          delete courierData.user.password
+        if (editingCourier.value) {
+          await backendService.updateCourier(editingCourier.value.id, courierData)
+          console.log('[COURIER] Courier updated successfully')
+          alert('Entregador atualizado com sucesso!')
+        } else {
+          await backendService.createCourier(courierData)
+          console.log('[COURIER] Courier created successfully')
+          alert('Entregador criado com sucesso!')
         }
         
-        const response = await fetch(url, {
-          method,
-          headers: {
-            'Authorization': `Bearer ${authStore.token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(courierData)
-        })
-
-        if (response.ok) {
-          await loadCouriers()
-          cancel()
-          console.log(editingCourier.value ? 'Entregador atualizado com sucesso!' : 'Entregador criado com sucesso!')
-        } else {
-          console.error('Erro ao salvar entregador:', response.statusText)
-        }
+        await loadCouriers()
+        cancel()
       } catch (error) {
-        console.error('Erro na requisição:', error)
+        console.error('[COURIER] Error saving courier:', error.message)
+        alert('Erro ao salvar entregador: ' + error.message)
       }
     }
 
@@ -253,22 +233,14 @@ export default {
       }
 
       try {
-        const response = await fetch(`http://localhost:8080/csonline/api/couriers/${courierId}`, {
-          method: 'DELETE',
-          headers: {
-            'Authorization': `Bearer ${authStore.token}`,
-            'Content-Type': 'application/json'
-          }
-        })
-
-        if (response.ok) {
-          await loadCouriers()
-          console.log('Entregador excluído com sucesso!')
-        } else {
-          console.error('Erro ao excluir entregador:', response.statusText)
-        }
+        console.log('[COURIER] Deleting courier:', courierId)
+        await backendService.deleteCourier(courierId)
+        await loadCouriers()
+        console.log('[COURIER] Courier deleted successfully')
+        alert('Entregador excluído com sucesso!')
       } catch (error) {
-        console.error('Erro na requisição:', error)
+        console.error('[COURIER] Error deleting courier:', error.message)
+        alert('Erro ao excluir entregador: ' + error.message)
       }
     }
 
