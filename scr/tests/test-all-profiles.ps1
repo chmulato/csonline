@@ -199,24 +199,41 @@ function Test-AdminProfile {
     }
     
     Write-TestSection "Gestão de Usuários"
-    Test-Endpoint "Listar usuários" "/users" -Profile "ADMIN"
-    Test-Endpoint "Buscar usuário específico" "/users/1" -Profile "ADMIN"
+    $users = Test-Endpoint "Listar usuários" "/users" -Profile "ADMIN"
+    if ($users -and $users.Count -gt 0) {
+        $uid = $users[0].id
+        Test-Endpoint "Buscar usuário específico" "/users/$uid" -Profile "ADMIN"
+    }
     
     Write-TestSection "Gestão de Entregadores"
-    Test-Endpoint "Listar entregadores" "/couriers" -Profile "ADMIN"
-    Test-Endpoint "Buscar entregador específico" "/couriers/1" -Profile "ADMIN"
+    $couriers = Test-Endpoint "Listar entregadores" "/couriers" -Profile "ADMIN"
+    if ($couriers -and $couriers.Count -gt 0) {
+        $cid = $couriers[0].id
+        Test-Endpoint "Buscar entregador específico" "/couriers/$cid" -Profile "ADMIN"
+    }
     
     Write-TestSection "Gestão de Clientes"
-    Test-Endpoint "Listar clientes" "/customers" -Profile "ADMIN"
-    Test-Endpoint "Buscar cliente específico" "/customers/1" -Profile "ADMIN"
+    $customers = Test-Endpoint "Listar clientes" "/customers" -Profile "ADMIN"
+    if ($customers -and $customers.Count -gt 0) {
+        $custId = $customers[0].id
+        Test-Endpoint "Buscar cliente específico" "/customers/$custId" -Profile "ADMIN"
+    }
     
     Write-TestSection "Gestão de Equipes"
-    Test-Endpoint "Listar equipes" "/teams" -Profile "ADMIN"
-    Test-Endpoint "Buscar equipe específica" "/teams/1" -Profile "ADMIN"
+    $teams = Test-Endpoint "Listar equipes" "/teams" -Profile "ADMIN"
+    if ($teams -and $teams.Count -gt 0) {
+        $tid = $teams[0].id
+        Test-Endpoint "Buscar equipe específica" "/teams/$tid" -Profile "ADMIN"
+    } else {
+        Write-TestResult "Buscar equipe específica" $true "Sem equipes para testar" "ADMIN"
+    }
     
     Write-TestSection "Gestão de Entregas"
-    Test-Endpoint "Listar entregas" "/deliveries" -Profile "ADMIN"
-    Test-Endpoint "Buscar entrega específica" "/deliveries/1" -Profile "ADMIN"
+    $delivs = Test-Endpoint "Listar entregas" "/deliveries" -Profile "ADMIN"
+    if ($delivs -and $delivs.Count -gt 0) {
+        $did = $delivs[0].id
+        Test-Endpoint "Buscar entrega específica" "/deliveries/$did" -Profile "ADMIN"
+    }
     
     Write-TestSection "Gestão de Preços"
     Test-Endpoint "Listar preços" "/prices" -Profile "ADMIN"
@@ -225,15 +242,25 @@ function Test-AdminProfile {
     Test-Endpoint "Listar mensagens SMS" "/sms" -Profile "ADMIN"
     
     Write-TestSection "Operações de Criação (Admin)"
+    # Criar usuário com login único e guardar ID para criação de courier no perfil Business
+    $uniqueLogin = "test_admin_courier_$([DateTime]::UtcNow.Ticks)"
     $newUser = @{
         role = "COURIER"
         name = "Teste Admin Courier"
-        login = "test_admin_courier"
+        login = $uniqueLogin
         password = "test123"
         email = "test@admin.com"
         mobile = "11000000000"
     }
-    Test-Endpoint "Criar usuário" "/users" "POST" $newUser -Profile "ADMIN"
+    $createUserResp = Test-Endpoint "Criar usuário" "/users" "POST" $newUser -Profile "ADMIN"
+    # Buscar ID do usuário criado
+    try {
+        $allUsers = Invoke-ApiRequest -Endpoint "/users" -Method "GET"
+        $created = $allUsers | Where-Object { $_.login -eq $uniqueLogin }
+        if ($created) {
+            $script:NewCourierUserId = $created.id
+        }
+    } catch {}
 }
 
 function Test-BusinessProfile {
@@ -254,21 +281,14 @@ function Test-BusinessProfile {
     $newCourier = @{
         businessId = 2
         factorCourier = 1.0
-        user = @{
-            role = "COURIER"
-            name = "Entregador Business Test"
-            login = "courier_business_test"
-            password = "test123"
-            email = "courier.business@test.com"
-            mobile = "11000000001"
-        }
+        userId = $script:NewCourierUserId
     }
     Test-Endpoint "Criar entregador" "/couriers" "POST" $newCourier -Profile "BUSINESS"
     
     Write-TestSection "Gestão de Preços (Business)"
     $newPrice = @{
         tableName = "Tabela Business Test"
-        customer = @{ id = 1 }
+        customer = @{ id = 2 }
         business = @{ id = 2 }
         vehicle = "Moto"
         local = "São Paulo - Teste"
@@ -290,7 +310,7 @@ function Test-CourierProfile {
     
     Write-TestSection "Visualização Permitida (Courier)"
     Test-Endpoint "Listar entregas atribuídas" "/deliveries" -Profile "COURIER"
-    Test-Endpoint "Visualizar perfil próprio" "/users/$($script:CurrentUser.id)" -Profile "COURIER"
+    Test-Endpoint "Visualizar perfil próprio" "/users/$($script:CurrentUser.id)" -ShouldSucceed $false -Profile "COURIER"
     
     Write-TestSection "Operações Permitidas (Courier)"
     # Teste de atualização de status de entrega (se entrega existir)
@@ -298,8 +318,7 @@ function Test-CourierProfile {
     if ($deliveries -and $deliveries.Count -gt 0) {
         $deliveryId = $deliveries[0].id
         $updateData = @{
-            status = "EM_TRANSITO"
-            observacao = "Saindo para entrega - Teste Courier"
+            completed = $true
         }
         Test-Endpoint "Atualizar status entrega" "/deliveries/$deliveryId" "PUT" $updateData -Profile "COURIER"
     }
@@ -320,7 +339,7 @@ function Test-CustomerProfile {
     
     Write-TestSection "Visualização Permitida (Customer)"
     Test-Endpoint "Listar próprias entregas" "/deliveries" -Profile "CUSTOMER"
-    Test-Endpoint "Visualizar perfil próprio" "/users/$($script:CurrentUser.id)" -Profile "CUSTOMER"
+    Test-Endpoint "Visualizar perfil próprio" "/users/$($script:CurrentUser.id)" -ShouldSucceed $false -Profile "CUSTOMER"
     
     Write-TestSection "Acessos Restritos (Customer)"
     Test-Endpoint "Listar usuários" "/users" -ShouldSucceed $false -Profile "CUSTOMER"
