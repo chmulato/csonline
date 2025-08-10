@@ -1,25 +1,34 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { createPinia, setActivePinia } from 'pinia'
 import UserManagement from '../../components/UserManagement.vue'
-import { useAuthStore } from '../../stores/auth.js'
+import { createMockAuthStore } from '../helpers/testUtils'
 
-// Mock do backend service
-const mockBackendService = {
-  getUsers: vi.fn(),
-  createUser: vi.fn(),
-  updateUser: vi.fn(),
-  deleteUser: vi.fn()
+// Mock backend service
+vi.mock('../../services/backend.js', () => ({
+  backendService: {
+    getUsers: vi.fn(),
+    createUser: vi.fn(),
+    updateUser: vi.fn(),
+    deleteUser: vi.fn()
+  }
+}))
+
+// Import the mocked service after mock declaration
+import { backendService } from '../../services/backend.js'
+
+// Mock vue-router
+const mockRouter = {
+  push: vi.fn(),
+  back: vi.fn(),
+  currentRoute: { value: { path: '/users' } }
 }
 
-// Mock do auth store
-const mockAuthStore = {
-  isAuthenticated: true,
-  canAccessUsers: true,
-  canCreateUsers: true,
-  canEditUsers: true,
-  canDeleteUsers: true
-}
+vi.mock('vue-router', () => ({
+  useRouter: () => mockRouter
+}))
+
+// Mock global confirm
+global.confirm = vi.fn(() => true)
 
 // Mock sample data
 const mockUsers = [
@@ -61,48 +70,36 @@ const mockUsers = [
   }
 ]
 
-// Mock vue-router
-const mockRouter = {
-  push: vi.fn(),
-  go: vi.fn()
-}
-
 describe('UserManagement.vue', () => {
   let wrapper
+  let authStore
   let pinia
 
-  beforeEach(() => {
-    pinia = createPinia()
-    setActivePinia(pinia)
+  beforeEach(async () => {
+    // Configurar auth store
+    const mockAuth = createMockAuthStore({ role: 'ADMIN' })
+    pinia = mockAuth.pinia
+    authStore = mockAuth.authStore
     
-    // Setup mocks
-    mockBackendService.getUsers.mockResolvedValue(mockUsers)
-    mockBackendService.createUser.mockResolvedValue({ id: 5, ...mockUsers[0] })
-    mockBackendService.updateUser.mockResolvedValue(mockUsers[0])
-    mockBackendService.deleteUser.mockResolvedValue()
+    // Setup backend service mocks
+    backendService.getUsers.mockResolvedValue(mockUsers)
+    backendService.createUser.mockResolvedValue({ id: 5, ...mockUsers[0] })
+    backendService.updateUser.mockResolvedValue(mockUsers[0])
+    backendService.deleteUser.mockResolvedValue()
 
-    // Mock global properties
-    const globalProperties = {
-      $backendService: mockBackendService
-    }
+    vi.clearAllMocks()
 
     wrapper = mount(UserManagement, {
       global: {
         plugins: [pinia],
-        properties: globalProperties,
         mocks: {
           $router: mockRouter
-        },
-        stubs: {
-          'router-link': true
         }
       }
     })
 
-    // Mock auth store
-    const authStore = useAuthStore()
-    authStore.token = 'valid-token'  // Isso fará isAuthenticated = true
-    authStore.userRole = 'ADMIN'     // Isso dará todas as permissões
+    // Wait for component to load data
+    await wrapper.vm.$nextTick()
   })
 
   describe('Renderização Inicial', () => {
@@ -114,7 +111,7 @@ describe('UserManagement.vue', () => {
       const loadingWrapper = mount(UserManagement, {
         global: {
           plugins: [pinia],
-          properties: { $backendService: mockBackendService }
+          mocks: { $router: mockRouter }
         },
         data() {
           return { loading: true }
@@ -339,7 +336,7 @@ describe('UserManagement.vue', () => {
       wrapper.vm.form = newUser
       await wrapper.vm.saveUser()
       
-      expect(mockBackendService.createUser).toHaveBeenCalledWith(newUser)
+      expect(backendService.createUser).toHaveBeenCalledWith(newUser)
     })
 
     it('deve editar usuário existente', async () => {
@@ -369,7 +366,7 @@ describe('UserManagement.vue', () => {
       
       await wrapper.vm.saveUser()
       
-      expect(mockBackendService.updateUser).toHaveBeenCalledWith(1, updatedUser)
+      expect(backendService.updateUser).toHaveBeenCalledWith(1, updatedUser)
     })
 
     it('deve excluir usuário com confirmação', async () => {
@@ -377,7 +374,7 @@ describe('UserManagement.vue', () => {
       
       await wrapper.vm.deleteUser(1)
       
-      expect(mockBackendService.deleteUser).toHaveBeenCalledWith(1)
+      expect(backendService.deleteUser).toHaveBeenCalledWith(1)
       expect(window.confirm).toHaveBeenCalledWith('Tem certeza que deseja excluir este usuário?')
     })
 
@@ -386,7 +383,7 @@ describe('UserManagement.vue', () => {
       
       await wrapper.vm.deleteUser(1)
       
-      expect(mockBackendService.deleteUser).not.toHaveBeenCalled()
+      expect(backendService.deleteUser).not.toHaveBeenCalled()
     })
   })
 
@@ -429,12 +426,11 @@ describe('UserManagement.vue', () => {
 
   describe('Tratamento de Erros', () => {
     it('deve exibir erro quando falha ao carregar usuários', async () => {
-      mockBackendService.getUsers.mockRejectedValue(new Error('Erro de API'))
+      backendService.getUsers.mockRejectedValue(new Error('Erro de API'))
       
       const errorWrapper = mount(UserManagement, {
         global: {
           plugins: [pinia],
-          properties: { $backendService: mockBackendService },
           mocks: { $router: mockRouter }
         }
       })
@@ -447,7 +443,7 @@ describe('UserManagement.vue', () => {
     })
 
     it('deve tratar erro ao salvar usuário', async () => {
-      mockBackendService.createUser.mockRejectedValue(new Error('Erro ao criar'))
+      backendService.createUser.mockRejectedValue(new Error('Erro ao criar'))
       
       wrapper.vm.form = {
         name: 'Teste',

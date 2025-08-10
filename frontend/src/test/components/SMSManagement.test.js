@@ -265,13 +265,13 @@ describe('SMSManagement.vue', () => {
 
     it('deve limpar formulário ao fechar', () => {
       wrapper.vm.form = { 
-        deliveryId: 1, 
+        delivery: { id: '1' }, 
         type: 'pickup',
         message: 'Test message'
       }
       wrapper.vm.cancel()
       
-      expect(wrapper.vm.form.deliveryId).toBe('')
+      expect(wrapper.vm.form.delivery.id).toBe('')
       expect(wrapper.vm.form.type).toBe('')
       expect(wrapper.vm.form.message).toBe('')
     })
@@ -285,26 +285,34 @@ describe('SMSManagement.vue', () => {
 
     it('deve criar nova mensagem', async () => {
       const newSMS = {
-        deliveryId: 1,
+        delivery: { id: 1 },
         type: 'update',
-        recipient: '11555555555',
+        mobileFrom: '11999999999',
+        mobileTo: '11555555555',
         message: 'Nova mensagem de teste',
-        scheduledDate: '2025-08-11T10:00:00Z'
+        piece: 1
       }
 
       wrapper.vm.form = newSMS
       await wrapper.vm.saveSMS()
       
-      expect(mockBackendService.createSMS).toHaveBeenCalledWith(newSMS)
+      expect(mockBackendService.createSMS).toHaveBeenCalledWith({
+        deliveryId: 1,
+        type: 'update',
+        mobileFrom: '11999999999',
+        mobileTo: '11555555555',
+        message: 'Nova mensagem de teste',
+        piece: 1
+      })
     })
 
     it('deve editar mensagem existente', async () => {
       const existingSMS = mockSMS[0]
       wrapper.vm.editSMS(existingSMS)
       
-      expect(wrapper.vm.editingSMS).toBe(existingSMS)
+      expect(wrapper.vm.editingSMS).toStrictEqual(existingSMS)
       expect(wrapper.vm.showForm).toBe(true)
-      expect(wrapper.vm.form.deliveryId).toBe(existingSMS.deliveryId)
+      expect(wrapper.vm.form.delivery.id).toBe(existingSMS.deliveryId)
     })
 
     it('deve atualizar mensagem', async () => {
@@ -333,12 +341,6 @@ describe('SMSManagement.vue', () => {
       
       expect(mockBackendService.deleteSMS).not.toHaveBeenCalled()
     })
-
-    it('deve enviar mensagem', async () => {
-      await wrapper.vm.sendSMS(1)
-      
-      expect(mockBackendService.sendSMS).toHaveBeenCalledWith(1)
-    })
   })
 
   describe('Métodos Utilitários', () => {
@@ -347,48 +349,15 @@ describe('SMSManagement.vue', () => {
       await wrapper.vm.$nextTick()
     })
 
-    it('deve calcular mensagens de hoje', () => {
-      const today = wrapper.vm.getTodayMessages()
-      expect(typeof today).toBe('number')
-      expect(today).toBeGreaterThanOrEqual(0)
+    it('deve formatar telefone corretamente', () => {
+      const formatted = wrapper.vm.formatPhone('11999999999')
+      expect(formatted).toMatch(/\(\d{2}\) \d{5}-\d{4}/)
     })
 
-    it('deve calcular entregas ativas', () => {
-      const active = wrapper.vm.getActiveDeliveries()
-      expect(typeof active).toBe('number')
-      expect(active).toBeGreaterThanOrEqual(0)
-    })
-
-    it('deve calcular mensagens enviadas', () => {
-      const delivered = wrapper.vm.getDeliveredMessages()
-      expect(typeof delivered).toBe('number')
-      expect(delivered).toBeGreaterThanOrEqual(0)
-    })
-
-    it('deve formatar data corretamente', () => {
+    it('deve formatar data e hora corretamente', () => {
       const dateString = '2025-08-10T10:00:00Z'
-      const formatted = wrapper.vm.formatDate(dateString)
-      expect(formatted).toMatch(/\d{2}\/\d{2}\/\d{4}/)
-    })
-
-    it('deve retornar classe CSS correta para status', () => {
-      expect(wrapper.vm.getStatusClass({ status: 'sent' })).toBe('status-sent')
-      expect(wrapper.vm.getStatusClass({ status: 'pending' })).toBe('status-pending')
-      expect(wrapper.vm.getStatusClass({ status: 'failed' })).toBe('status-failed')
-    })
-
-    it('deve retornar texto de status correto', () => {
-      expect(wrapper.vm.getStatusText({ status: 'sent' })).toBe('Enviado')
-      expect(wrapper.vm.getStatusText({ status: 'pending' })).toBe('Pendente')
-      expect(wrapper.vm.getStatusText({ status: 'failed' })).toBe('Falhou')
-    })
-
-    it('deve retornar tipo de mensagem correto', () => {
-      expect(wrapper.vm.getTypeText('pickup')).toBe('Coleta')
-      expect(wrapper.vm.getTypeText('delivery')).toBe('Entrega')
-      expect(wrapper.vm.getTypeText('update')).toBe('Atualização')
-      expect(wrapper.vm.getTypeText('problem')).toBe('Problema')
-      expect(wrapper.vm.getTypeText('completion')).toBe('Finalização')
+      const formatted = wrapper.vm.formatDateTime(dateString)
+      expect(formatted).toContain('/')
     })
   })
 

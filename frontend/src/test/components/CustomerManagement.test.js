@@ -1,9 +1,8 @@
 // Testes para o componente CustomerManagement
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { createPinia, setActivePinia } from 'pinia'
 import CustomerManagement from '../../components/CustomerManagement.vue'
-import { useAuthStore } from '../../stores/auth'
+import { createMockAuthStore, mockBackendService } from '../helpers/testUtils'
 
 // Mock vue-router
 const mockRouter = {
@@ -24,6 +23,8 @@ global.fetch = vi.fn()
 describe('CustomerManagement Component', () => {
   let wrapper
   let authStore
+  let pinia
+  let backendService
   let router
 
   const mockCustomers = [
@@ -61,25 +62,23 @@ describe('CustomerManagement Component', () => {
   ]
 
   beforeEach(() => {
-    // Criar nova instância do Pinia para cada teste
-    const pinia = createPinia()
-    setActivePinia(pinia)
-
-    // Inicializar auth store
-    authStore = useAuthStore()
-    authStore.token = 'valid-token'
-    authStore.user = { id: 1, name: 'Admin User', login: 'admin', role: 'ADMIN' }
-    authStore.isAuthenticated = true
-
-    // Mock das funções fetch
-    fetch.mockResolvedValue({
-      ok: true,
-      json: async () => mockCustomers
-    })
+    // Configurar auth store e backend service
+    const mockAuth = createMockAuthStore({ role: 'ADMIN' })
+    pinia = mockAuth.pinia
+    authStore = mockAuth.authStore
+    backendService = mockBackendService()
+    
+    vi.clearAllMocks()
 
     wrapper = mount(CustomerManagement, {
       global: {
-        plugins: [pinia, router]
+        plugins: [pinia],
+        mocks: {
+          $router: mockRouter
+        },
+        provide: {
+          $backendService: backendService
+        }
       }
     })
   })

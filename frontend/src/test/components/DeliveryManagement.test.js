@@ -1,24 +1,35 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { createPinia, setActivePinia } from 'pinia'
 import DeliveryManagement from '../../components/DeliveryManagement.vue'
-import { useAuthStore } from '../../stores/auth.js'
+import { createMockAuthStore } from '../helpers/testUtils'
 
-// Mock do backend service
+// Mock backend service
 vi.mock('../../services/backend.js', () => ({
   backendService: {
     getDeliveries: vi.fn(),
     getCustomers: vi.fn(),
     getCouriers: vi.fn(),
     getUsers: vi.fn(),
+    getBusinesses: vi.fn(),
     createDelivery: vi.fn(),
     updateDelivery: vi.fn(),
     deleteDelivery: vi.fn()
   }
 }))
 
-// Import the mocked service
+// Import the mocked service after mock declaration
 import { backendService } from '../../services/backend.js'
+
+// Mock vue-router
+const mockRouter = {
+  push: vi.fn(),
+  back: vi.fn(),
+  currentRoute: { value: { path: '/deliveries' } }
+}
+
+vi.mock('vue-router', () => ({
+  useRouter: () => mockRouter
+}))
 
 // Mock global confirm
 global.confirm = vi.fn(() => true)
@@ -75,16 +86,14 @@ const mockUsers = [
 
 describe('DeliveryManagement.vue', () => {
   let wrapper
+  let authStore
   let pinia
 
   beforeEach(async () => {
-    pinia = createPinia()
-    setActivePinia(pinia)
-    
-    // Setup auth store
-    const authStore = useAuthStore()
-    authStore.token = 'valid-token'
-    authStore.userRole = 'ADMIN'
+    // Configurar auth store
+    const mockAuth = createMockAuthStore({ role: 'ADMIN' })
+    pinia = mockAuth.pinia
+    authStore = mockAuth.authStore
     
     // Setup backend service mocks
     backendService.getDeliveries.mockResolvedValue(mockDeliveries)
@@ -95,9 +104,14 @@ describe('DeliveryManagement.vue', () => {
     backendService.updateDelivery.mockResolvedValue(mockDeliveries[0])
     backendService.deleteDelivery.mockResolvedValue()
 
+    vi.clearAllMocks()
+
     wrapper = mount(DeliveryManagement, {
       global: {
-        plugins: [pinia]
+        plugins: [pinia],
+        mocks: {
+          $router: mockRouter
+        }
       }
     })
 
