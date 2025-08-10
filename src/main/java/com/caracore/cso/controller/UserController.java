@@ -29,7 +29,7 @@ public class UserController {
     }
 
     @GET
-    @RolesAllowed({"ADMIN"})
+    @RolesAllowed({"ADMIN", "BUSINESS"})
     public List<User> getAll() {
         try {
             return userService.findAll();
@@ -41,7 +41,7 @@ public class UserController {
 
     @GET
     @Path("/{id}")
-    @RolesAllowed({"ADMIN"})
+    @RolesAllowed({"ADMIN", "BUSINESS"})
     public User getById(@PathParam("id") Long id) {
         try {
             return userService.findById(id);
