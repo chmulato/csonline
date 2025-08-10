@@ -2,10 +2,22 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
-import { createRouter, createWebHistory } from 'vue-router'
 import CourierManagement from '../../components/CourierManagement.vue'
 import PermissionGuard from '../../components/PermissionGuard.vue'
 import { useAuthStore } from '../../stores/auth'
+
+// Mock vue-router
+const mockRouter = {
+  push: vi.fn(),
+  back: vi.fn(),
+  currentRoute: { value: { path: '/courier-management' } }
+}
+
+vi.mock('vue-router', () => ({
+  useRouter: () => mockRouter,
+  createRouter: vi.fn(() => mockRouter),
+  createWebHistory: vi.fn(() => ({}))
+}))
 
 // Mock fetch global
 global.fetch = vi.fn()
@@ -39,15 +51,6 @@ describe('CourierManagement Component', () => {
     // Criar nova instância do Pinia para cada teste
     const pinia = createPinia()
     setActivePinia(pinia)
-    
-    // Configurar router
-    router = createRouter({
-      history: createWebHistory(),
-      routes: [
-        { path: '/', name: 'home', component: { template: '<div>Home</div>' } },
-        { path: '/couriers', name: 'couriers', component: CourierManagement }
-      ]
-    })
 
     // Inicializar auth store com usuário ADMIN
     authStore = useAuthStore()

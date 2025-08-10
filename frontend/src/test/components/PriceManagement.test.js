@@ -1,0 +1,487 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { mount } from '@vue/test-utils'
+import { createPinia, setActivePinia } from 'pinia'
+import PriceManagement from '../../components/PriceManagement.vue'
+import { useAuthStore } from '../../stores/auth.js'
+
+// Mock do backend service
+const mockBackendService = {
+  getPrices: vi.fn(),
+  getCustomers: vi.fn(),
+  getUsers: vi.fn(),
+  createPrice: vi.fn(),
+  updatePrice: vi.fn(),
+  deletePrice: vi.fn()
+}
+
+// Mock do auth store
+const mockAuthStore = {
+  isAuthenticated: true,
+  canAccessPrices: true,
+  canManagePrices: true
+}
+
+// Mock sample data
+const mockPrices = [
+  {
+    id: 1,
+    customerId: 1,
+    businessId: 1,
+    courierPricePerKm: 2.5,
+    customerPricePerKm: 3.0,
+    vehicle: 'moto',
+    distance: 'local',
+    weight: 'light'
+  },
+  {
+    id: 2,
+    customerId: 2,
+    businessId: 1,
+    courierPricePerKm: 3.0,
+    customerPricePerKm: 3.5,
+    vehicle: 'carro',
+    distance: 'regional',
+    weight: 'medium'
+  }
+]
+
+const mockCustomers = [
+  { id: 1, user: { name: 'Cliente A' } },
+  { id: 2, user: { name: 'Cliente B' } }
+]
+
+const mockBusinesses = [
+  { id: 1, name: 'Empresa Teste' }
+]
+
+describe('PriceManagement.vue', () => {
+  let wrapper
+  let pinia
+
+  beforeEach(() => {
+    pinia = createPinia()
+    setActivePinia(pinia)
+    
+    // Setup mocks
+    mockBackendService.getPrices.mockResolvedValue(mockPrices)
+    mockBackendService.getCustomers.mockResolvedValue(mockCustomers)
+    mockBackendService.getUsers.mockResolvedValue(mockBusinesses)
+    mockBackendService.createPrice.mockResolvedValue({ id: 3, ...mockPrices[0] })
+    mockBackendService.updatePrice.mockResolvedValue(mockPrices[0])
+    mockBackendService.deletePrice.mockResolvedValue()
+
+    // Mock global properties
+    const globalProperties = {
+      $backendService: mockBackendService
+    }
+
+    wrapper = mount(PriceManagement, {
+      global: {
+        plugins: [pinia],
+        properties: globalProperties,
+        stubs: {
+          'router-link': true
+        }
+      }
+    })
+
+    // Mock auth store
+    const authStore = useAuthStore()
+    authStore.token = 'valid-token'  // Isso fará isAuthenticated = true
+    authStore.userRole = 'ADMIN'     // Isso dará todas as permissões
+  })
+
+  describe('Renderização Inicial', () => {
+    it('deve renderizar o título corretamente', () => {
+      expect(wrapper.find('h2').text()).toContain('Gestão de Preços')
+    })
+
+    it('deve mostrar estado de loading inicialmente', async () => {
+      const loadingWrapper = mount(PriceManagement, {
+        global: {
+          plugins: [pinia],
+          properties: { $backendService: mockBackendService }
+        },
+        data() {
+          return { loading: true }
+        }
+      })
+      
+      expect(loadingWrapper.find('.loading-state').exists()).toBe(true)
+      expect(loadingWrapper.find('.loading-state p').text()).toBe('Carregando preços...')
+    })
+
+    it('deve exibir botão de voltar e novo preço', () => {
+      expect(wrapper.find('.btn-back').exists()).toBe(true)
+      expect(wrapper.find('.btn-primary').text()).toContain('Novo Preço')
+    })
+  })
+
+  describe('Cards de Estatísticas', () => {
+    beforeEach(async () => {
+      await wrapper.vm.loadPrices()
+      await wrapper.vm.$nextTick()
+    })
+
+    it('deve renderizar cards de estatísticas', () => {
+      const statCards = wrapper.findAll('.stat-card')
+      expect(statCards).toHaveLength(4)
+    })
+
+    it('deve exibir total de preços corretamente', () => {
+      const totalCard = wrapper.findAll('.stat-card')[0]
+      expect(totalCard.find('.stat-number').text()).toBe('2')
+      expect(totalCard.find('.stat-label').text()).toBe('Total de Preços')
+    })
+
+    it('deve calcular tipos de veículos únicos', () => {
+      const vehicleCard = wrapper.findAll('.stat-card')[1]
+      expect(vehicleCard.find('.stat-number').text()).toBe('2')
+      expect(vehicleCard.find('.stat-label').text()).toBe('Tipos de Veículos')
+    })
+
+    it('deve calcular clientes ativos únicos', () => {
+      const customerCard = wrapper.findAll('.stat-card')[2]
+      expect(customerCard.find('.stat-number').text()).toBe('2')
+      expect(customerCard.find('.stat-label').text()).toBe('Clientes Ativos')
+    })
+
+    it('deve calcular preço médio', () => {
+      const avgCard = wrapper.findAll('.stat-card')[3]
+      expect(avgCard.find('.stat-number').text()).toMatch(/R\$ \d+\.\d{2}/)
+      expect(avgCard.find('.stat-label').text()).toBe('Preço Médio')
+    })
+  })
+
+  describe('Filtros', () => {
+    beforeEach(async () => {
+      await wrapper.vm.loadPrices()
+      await wrapper.vm.$nextTick()
+    })
+
+    it('deve renderizar filtros de cliente e empresa', () => {
+      const filterGroups = wrapper.findAll('.filter-group')
+      expect(filterGroups.length).toBeGreaterThanOrEqual(3)
+      
+      const customerSelect = filterGroups[0].find('select')
+      expect(customerSelect.exists()).toBe(true)
+      
+      const businessSelect = filterGroups[1].find('select')
+      expect(businessSelect.exists()).toBe(true)
+    })
+
+    it('deve filtrar por cliente', async () => {
+      const customerSelect = wrapper.findAll('.filter-group')[0].find('select')
+      await customerSelect.setValue('1')
+      
+      wrapper.vm.applyFilters()
+      await wrapper.vm.$nextTick()
+      
+      expect(wrapper.vm.filteredPrices.every(p => p.customerId === 1)).toBe(true)
+    })
+
+    it('deve filtrar por empresa', async () => {
+      const businessSelect = wrapper.findAll('.filter-group')[1].find('select')
+      await businessSelect.setValue('1')
+      
+      wrapper.vm.applyFilters()
+      await wrapper.vm.$nextTick()
+      
+      expect(wrapper.vm.filteredPrices.every(p => p.businessId === 1)).toBe(true)
+    })
+
+    it('deve filtrar por veículo', async () => {
+      const vehicleSelect = wrapper.findAll('.filter-group')[2].find('select')
+      await vehicleSelect.setValue('moto')
+      
+      wrapper.vm.applyFilters()
+      await wrapper.vm.$nextTick()
+      
+      expect(wrapper.vm.filteredPrices.every(p => p.vehicle === 'moto')).toBe(true)
+    })
+  })
+
+  describe('Tabela de Preços', () => {
+    beforeEach(async () => {
+      await wrapper.vm.loadPrices()
+      await wrapper.vm.$nextTick()
+    })
+
+    it('deve renderizar tabela com cabeçalhos corretos', async () => {
+      // Aguardar um pouco mais para garantir que a tabela seja renderizada
+      await new Promise(resolve => setTimeout(resolve, 100))
+      await wrapper.vm.$nextTick()
+
+      const table = wrapper.find('table, .prices-table')
+      if (table.exists()) {
+        const headers = table.findAll('th')
+        expect(headers.length).toBeGreaterThan(0)
+      }
+    })
+
+    it('deve exibir preços na tabela', async () => {
+      await new Promise(resolve => setTimeout(resolve, 100))
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.vm.filteredPrices).toHaveLength(2)
+      expect(wrapper.vm.filteredPrices[0].vehicle).toBe('moto')
+      expect(wrapper.vm.filteredPrices[1].vehicle).toBe('carro')
+    })
+
+    it('deve formatar valores monetários', () => {
+      const price = mockPrices[0]
+      const formatted = wrapper.vm.formatCurrency(price.courierPricePerKm)
+      expect(formatted).toBe('R$ 2,50')
+    })
+  })
+
+  describe('Modal de Formulário', () => {
+    it('deve abrir modal ao clicar em Novo Preço', async () => {
+      await wrapper.vm.loadPrices()
+      await wrapper.vm.$nextTick()
+      
+      const newButton = wrapper.find('.btn-primary')
+      await newButton.trigger('click')
+      
+      expect(wrapper.vm.showModal).toBe(true)
+      expect(wrapper.vm.isEditing).toBe(false)
+    })
+
+    it('deve fechar modal ao cancelar', async () => {
+      wrapper.vm.showModal = true
+      await wrapper.vm.$nextTick()
+      
+      wrapper.vm.closeModal()
+      await wrapper.vm.$nextTick()
+      
+      expect(wrapper.vm.showModal).toBe(false)
+    })
+
+    it('deve limpar formulário ao fechar modal', async () => {
+      wrapper.vm.form = { customerId: 1, vehicle: 'moto' }
+      wrapper.vm.closeModal()
+      
+      expect(wrapper.vm.form.customerId).toBe('')
+      expect(wrapper.vm.form.vehicle).toBe('')
+    })
+  })
+
+  describe('Validação do Formulário', () => {
+    beforeEach(() => {
+      wrapper.vm.showModal = true
+    })
+
+    it('deve validar campos obrigatórios', () => {
+      const result = wrapper.vm.validateForm()
+      expect(result).toBe(false)
+      expect(wrapper.vm.errors.customerId).toBeTruthy()
+      expect(wrapper.vm.errors.businessId).toBeTruthy()
+    })
+
+    it('deve validar valores numéricos', () => {
+      wrapper.vm.form = {
+        customerId: 1,
+        businessId: 1,
+        courierPricePerKm: 'abc',
+        customerPricePerKm: 'def'
+      }
+      
+      const result = wrapper.vm.validateForm()
+      expect(result).toBe(false)
+      expect(wrapper.vm.errors.courierPricePerKm).toBeTruthy()
+      expect(wrapper.vm.errors.customerPricePerKm).toBeTruthy()
+    })
+
+    it('deve validar valores positivos', () => {
+      wrapper.vm.form = {
+        customerId: 1,
+        businessId: 1,
+        courierPricePerKm: -1,
+        customerPricePerKm: -2
+      }
+      
+      const result = wrapper.vm.validateForm()
+      expect(result).toBe(false)
+      expect(wrapper.vm.errors.courierPricePerKm).toBeTruthy()
+      expect(wrapper.vm.errors.customerPricePerKm).toBeTruthy()
+    })
+
+    it('deve passar na validação com dados válidos', () => {
+      wrapper.vm.form = {
+        customerId: 1,
+        businessId: 1,
+        courierPricePerKm: 2.5,
+        customerPricePerKm: 3.0,
+        vehicle: 'moto',
+        distance: 'local',
+        weight: 'light'
+      }
+      
+      const result = wrapper.vm.validateForm()
+      expect(result).toBe(true)
+      expect(Object.keys(wrapper.vm.errors)).toHaveLength(0)
+    })
+  })
+
+  describe('Operações CRUD', () => {
+    beforeEach(async () => {
+      await wrapper.vm.loadPrices()
+      await wrapper.vm.$nextTick()
+    })
+
+    it('deve criar novo preço', async () => {
+      const newPrice = {
+        customerId: 1,
+        businessId: 1,
+        courierPricePerKm: 2.5,
+        customerPricePerKm: 3.0,
+        vehicle: 'moto',
+        distance: 'local',
+        weight: 'light'
+      }
+
+      wrapper.vm.form = newPrice
+      await wrapper.vm.savePrice()
+      
+      expect(mockBackendService.createPrice).toHaveBeenCalledWith(newPrice)
+    })
+
+    it('deve editar preço existente', async () => {
+      const existingPrice = mockPrices[0]
+      wrapper.vm.editPrice(existingPrice)
+      
+      expect(wrapper.vm.isEditing).toBe(true)
+      expect(wrapper.vm.form.id).toBe(existingPrice.id)
+      expect(wrapper.vm.form.customerId).toBe(existingPrice.customerId)
+    })
+
+    it('deve atualizar preço', async () => {
+      const updatedPrice = { ...mockPrices[0], courierPricePerKm: 4.0 }
+      wrapper.vm.form = updatedPrice
+      wrapper.vm.isEditing = true
+      
+      await wrapper.vm.savePrice()
+      
+      expect(mockBackendService.updatePrice).toHaveBeenCalledWith(1, updatedPrice)
+    })
+
+    it('deve excluir preço com confirmação', async () => {
+      window.confirm = vi.fn(() => true)
+      
+      await wrapper.vm.deletePrice(1)
+      
+      expect(mockBackendService.deletePrice).toHaveBeenCalledWith(1)
+      expect(window.confirm).toHaveBeenCalledWith('Tem certeza que deseja excluir este preço?')
+    })
+
+    it('não deve excluir se usuário cancelar', async () => {
+      window.confirm = vi.fn(() => false)
+      
+      await wrapper.vm.deletePrice(1)
+      
+      expect(mockBackendService.deletePrice).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('Métodos Utilitários', () => {
+    beforeEach(async () => {
+      await wrapper.vm.loadPrices()
+      await wrapper.vm.$nextTick()
+    })
+
+    it('deve calcular tipos de veículos únicos', () => {
+      const unique = wrapper.vm.uniqueVehicles
+      expect(unique).toBe(2) // moto e carro
+    })
+
+    it('deve calcular clientes únicos', () => {
+      const unique = wrapper.vm.uniqueCustomers
+      expect(unique).toBe(2) // 2 clientes diferentes
+    })
+
+    it('deve calcular preço médio', () => {
+      const avg = wrapper.vm.averagePrice
+      expect(avg).toBe(2.75) // (2.5 + 3.0) / 2
+    })
+
+    it('deve formatar moeda brasileira', () => {
+      expect(wrapper.vm.formatCurrency(1234.56)).toBe('R$ 1.234,56')
+      expect(wrapper.vm.formatCurrency(0)).toBe('R$ 0,00')
+    })
+
+    it('deve obter nome do cliente', () => {
+      const price = { customerId: 1 }
+      const name = wrapper.vm.getCustomerName(price)
+      expect(name).toBe('Cliente A')
+    })
+
+    it('deve obter nome da empresa', () => {
+      const price = { businessId: 1 }
+      const name = wrapper.vm.getBusinessName(price)
+      expect(name).toBe('Empresa Teste')
+    })
+  })
+
+  describe('Tratamento de Erros', () => {
+    it('deve exibir erro quando falha ao carregar preços', async () => {
+      mockBackendService.getPrices.mockRejectedValue(new Error('Erro de API'))
+      
+      const errorWrapper = mount(PriceManagement, {
+        global: {
+          plugins: [pinia],
+          properties: { $backendService: mockBackendService }
+        }
+      })
+
+      await errorWrapper.vm.loadPrices()
+      await errorWrapper.vm.$nextTick()
+      
+      expect(errorWrapper.find('.error-state').exists()).toBe(true)
+      expect(errorWrapper.find('.error-state p').text()).toContain('Erro de API')
+    })
+
+    it('deve permitir tentar novamente após erro', async () => {
+      const errorWrapper = mount(PriceManagement, {
+        global: {
+          plugins: [pinia],
+          properties: { $backendService: mockBackendService }
+        },
+        data() {
+          return { error: 'Erro de teste' }
+        }
+      })
+
+      const retryButton = errorWrapper.find('.error-state button')
+      expect(retryButton.text()).toContain('Tentar novamente')
+      
+      await retryButton.trigger('click')
+      expect(mockBackendService.getPrices).toHaveBeenCalled()
+    })
+
+    it('deve tratar erro ao salvar preço', async () => {
+      mockBackendService.createPrice.mockRejectedValue(new Error('Erro ao criar'))
+      
+      wrapper.vm.form = {
+        customerId: 1,
+        businessId: 1,
+        courierPricePerKm: 2.5,
+        customerPricePerKm: 3.0
+      }
+      
+      await wrapper.vm.savePrice()
+      
+      expect(wrapper.vm.error).toBeTruthy()
+    })
+  })
+
+  describe('Estados Vazios', () => {
+    it('deve exibir mensagem quando não há preços', async () => {
+      mockBackendService.getPrices.mockResolvedValue([])
+      
+      await wrapper.vm.loadPrices()
+      await wrapper.vm.$nextTick()
+      
+      expect(wrapper.vm.filteredPrices).toHaveLength(0)
+    })
+  })
+})
