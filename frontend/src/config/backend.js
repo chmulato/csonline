@@ -125,7 +125,17 @@ export function formatDataForBackend(data, type) {
         id: data.id || null,
         factorCourier: parseFloat(data.factorCourier) || 0,
         businessId: data.businessId || null,
-        userId: data.userId || null
+        userId: data.userId || null,
+        // Inclui dados de usuário quando criação (user presente). Backend deve ignorar se null.
+        user: data.user ? {
+          id: data.user.id || null,
+            name: data.user.name || '',
+            login: data.user.login || data.user.email || '',
+            email: data.user.email || '',
+            phone: data.user.phone || data.user.mobile || '',
+            role: data.user.role || USER_ROLES.COURIER,
+            password: data.user.password || null
+        } : undefined
       }
       
     case 'customer':

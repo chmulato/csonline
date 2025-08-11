@@ -93,6 +93,7 @@ import { reactive, ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { backendService } from '../services/backend.js'
+import { formatDataForBackend } from '../config/backend.js'
 import PermissionGuard from './PermissionGuard.vue'
 
 export default {
@@ -178,19 +179,23 @@ export default {
     const saveCourier = async () => {
       try {
         console.log('[COURIER] Saving courier...')
-        
-        const courierData = {
+        const baseData = {
+          id: editingCourier.value?.id || null,
           factorCourier: parseFloat(form.factorCourier),
           businessId: form.business.id,
           userId: editingCourier.value?.user?.id || null,
           user: !editingCourier.value ? {
+            id: null,
             name: form.user.name,
             email: form.user.email,
+            login: form.user.email,
             phone: form.user.mobile,
+            mobile: form.user.mobile,
             role: 'COURIER',
             password: form.user.password
           } : undefined
         }
+        const courierData = formatDataForBackend(baseData, 'courier')
 
         if (editingCourier.value) {
           await backendService.updateCourier(editingCourier.value.id, courierData)
@@ -210,13 +215,13 @@ export default {
       }
     }
 
-    const editCourier = (courier) => {
+  const editCourier = (courier) => {
       editingCourier.value = courier
       Object.assign(form, {
         user: {
           name: courier.user.name,
           email: courier.user.email,
-          mobile: courier.user.mobile,
+      mobile: courier.user.mobile || courier.user.phone || '',
           password: ''
         },
         business: {
