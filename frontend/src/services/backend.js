@@ -251,12 +251,12 @@ export class BackendService {
   }
 
   async createUser(userData) {
-    const data = formatDataForBackend(userData)
+  const data = formatDataForBackend(userData, 'user')
     return this.post(API_CONFIG.ENDPOINTS.USERS, data)
   }
 
   async updateUser(id, userData) {
-    const data = formatDataForBackend(userData)
+  const data = formatDataForBackend(userData, 'user')
     return this.put(API_CONFIG.ENDPOINTS.USER_BY_ID(id), data)
   }
 
