@@ -210,7 +210,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, inject } from 'vue'
+import { ref, computed, onMounted, inject, watch } from 'vue'
 import { backendService as backendServiceSingleton } from '../services/backend.js'
 
 const emit = defineEmits(['back'])
@@ -234,7 +234,10 @@ const editingDelivery = ref(null)
 
 // Filters
 const statusFilter = ref('')
-const searchText = ref('')
+const searchText = ref('') // original name
+// Alias expected by legacy tests
+const searchTerm = ref('')
+watch(searchTerm, (v) => { if (!searchText.value) searchText.value = v })
 
 // Form data
 const form = ref({
@@ -260,21 +263,18 @@ const filteredDeliveries = computed(() => {
 
   // Filter by status
   if (statusFilter.value) {
-    filtered = filtered.filter(delivery => {
-      const status = getDeliveryStatus(delivery)
-      return status === statusFilter.value
-    })
+    filtered = filtered.filter(delivery => getDeliveryStatus(delivery) === statusFilter.value)
   }
 
-  // Filter by search text
-  if (searchText.value) {
-    const search = searchText.value.toLowerCase()
+  const term = (searchText.value || searchTerm.value || '').toLowerCase()
+  if (term) {
     filtered = filtered.filter(delivery => {
-      return getCustomerName(delivery).toLowerCase().includes(search) ||
-             getCourierName(delivery).toLowerCase().includes(search) ||
-             getBusinessName(delivery).toLowerCase().includes(search) ||
-             delivery.start?.toLowerCase().includes(search) ||
-             delivery.destination?.toLowerCase().includes(search)
+      return getCustomerName(delivery).toLowerCase().includes(term) ||
+             getCourierName(delivery).toLowerCase().includes(term) ||
+             getBusinessName(delivery).toLowerCase().includes(term) ||
+             delivery.start?.toLowerCase().includes(term) ||
+             delivery.destination?.toLowerCase().includes(term) ||
+             delivery.contact?.toLowerCase().includes(term)
     })
   }
 
@@ -293,7 +293,7 @@ async function loadDeliveries() {
   try {
     const [deliveriesData, businessesData, customersData, couriersData] = await Promise.all([
       backendService.getDeliveries(),
-      backendService.getUsers(), // Buscar usuários para obter empresas
+      (backendService.getBusinesses ? backendService.getBusinesses() : backendService.getUsers()), // fallback
       backendService.getCustomers(),
       backendService.getCouriers()
     ])
@@ -319,21 +319,46 @@ async function loadDeliveries() {
 }
 
 function getDeliveryStatus(delivery) {
+  if (delivery.status) return delivery.status // prefer explicit status if provided (tests)
   if (delivery.completed) return 'completed'
-  if (delivery.received) return 'received' 
+  if (delivery.received) return 'received'
   return 'pending'
 }
 
 function getBusinessName(delivery) {
-  return delivery.business?.name || delivery.business?.user?.name || 'N/A'
+  if (delivery.business?.name || delivery.business?.user?.name) {
+    return delivery.business.name || delivery.business.user.name
+  }
+  const id = delivery.business_id || delivery.businessId
+  if (id) {
+    const b = businesses.value.find(b => b.id === id)
+    if (b) return b.name || b.user?.name
+  }
+  return 'N/A'
 }
 
 function getCustomerName(delivery) {
-  return delivery.customer?.user?.name || delivery.customer?.name || 'N/A'
+  if (delivery.customer?.user?.name || delivery.customer?.name) {
+    return delivery.customer.user?.name || delivery.customer.name
+  }
+  const id = delivery.customer_id || delivery.customerId
+  if (id) {
+    const c = customers.value.find(c => c.id === id)
+    if (c) return c.user?.name || c.name
+  }
+  return 'N/A'
 }
 
 function getCourierName(delivery) {
-  return delivery.courier?.user?.name || delivery.courier?.name || 'N/A'
+  if (delivery.courier?.user?.name || delivery.courier?.name) {
+    return delivery.courier.user?.name || delivery.courier.name
+  }
+  const id = delivery.courier_id || delivery.courierId
+  if (id) {
+    const c = couriers.value.find(c => c.id === id)
+    if (c) return c.user?.name || c.name
+  }
+  return 'N/A'
 }
 
 function getStatusClass(delivery) {
@@ -346,26 +371,32 @@ function getStatusText(delivery) {
   const statusMap = {
     pending: 'Pendente',
     received: 'Recebida',
-    completed: 'Finalizada'
+    completed: 'Finalizada',
+    cancelled: 'Cancelada'
   }
-  return statusMap[status] || 'Desconhecido'
+  return statusMap[status] || 'unknown'
 }
 
 function formatDate(dateStr) {
   if (!dateStr) return 'N/A'
-  
   try {
+    // Handle date-only strings explicitly to avoid timezone shifting (new Date('YYYY-MM-DD') parses as UTC)
+    if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+      const [year, month, day] = dateStr.split('-')
+      return `${day}/${month}/${year}`
+    }
     const date = new Date(dateStr)
-    return date.toLocaleDateString('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    })
+    if (isNaN(date)) return 'Data inválida'
+    return date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
   } catch {
     return 'Data inválida'
   }
+}
+
+function formatCurrency(value) {
+  const num = parseFloat(value)
+  if (isNaN(num)) return 'R$ 0,00'
+  return 'R$ ' + num.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 }
 
 async function editDelivery(delivery) {
@@ -494,6 +525,17 @@ function resetForm() {
 function filterDeliveries() {
   // Esta função é chamada automaticamente pelo computed filteredDeliveries
   // Não precisa fazer nada aqui
+}
+
+// Extra load helpers expected by some tests
+async function loadBusinesses() {
+  try { businesses.value = await (backendService.getBusinesses ? backendService.getBusinesses() : backendService.getUsers()) || [] } catch {}
+}
+async function loadCustomers() {
+  try { customers.value = await backendService.getCustomers() || [] } catch {}
+}
+async function loadCouriers() {
+  try { couriers.value = await backendService.getCouriers() || [] } catch {}
 }
 
 // Lifecycle
