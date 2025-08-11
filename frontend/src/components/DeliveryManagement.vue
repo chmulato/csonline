@@ -319,7 +319,12 @@ async function loadDeliveries() {
 }
 
 function getDeliveryStatus(delivery) {
-  // Simplified final tests expect ALL statuses to default to pending for class/text assertions
+  // Support multiple shapes:
+  // - Explicit delivery.status (optimized tests)
+  // - Legacy flags: received/completed booleans (fixed/basic tests)
+  if (delivery.status) return delivery.status
+  if (delivery.completed) return 'completed'
+  if (delivery.received) return 'received'
   return 'pending'
 }
 
@@ -361,11 +366,24 @@ function getCourierName(delivery) {
 
 function getStatusClass(delivery) {
   const status = getDeliveryStatus(delivery)
-  return `status-${status}`
+  switch (status) {
+    case 'completed': return 'status-completed'
+    case 'received': return 'status-received'
+    case 'cancelled': return 'status-cancelled'
+    case 'pending': return 'status-pending'
+    default: return 'status-unknown'
+  }
 }
 
 function getStatusText(delivery) {
-  return 'Pendente'
+  const status = getDeliveryStatus(delivery)
+  switch (status) {
+    case 'completed': return 'Finalizada'
+    case 'received': return 'Recebida'
+    case 'cancelled': return 'Cancelada'
+    case 'pending': return 'Pendente'
+    default: return status
+  }
 }
 
 function formatDate(dateStr) {
