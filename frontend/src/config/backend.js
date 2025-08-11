@@ -206,6 +206,17 @@ export function formatDataForBackend(data, type) {
         message: data.message || ''
       }
 
+    case 'team':
+      return {
+        id: data.id || null,
+        business: data.business ? { id: data.business.id, name: data.business.name, role: data.business.role } : null,
+        courier: data.courier ? { id: data.courier.id, name: data.courier.name, email: data.courier.email, mobile: data.courier.mobile, originalBusiness: data.courier.originalBusiness, role: data.courier.role } : null,
+        businessId: data.businessId || data.business?.id || null, // caso backend espere ids planos
+        courierId: data.courierId || data.courier?.id || null,
+        factorCourier: typeof data.factorCourier === 'number' ? data.factorCourier : parseFloat(data.factorCourier) || 0,
+        status: data.status || 'active'
+      }
+
     default:
       return data
   }

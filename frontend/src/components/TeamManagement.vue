@@ -107,6 +107,7 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue';
 import { backendService } from '../services/backend.js';
+import { formatDataForBackend } from '../config/backend.js';
 
 const emit = defineEmits(['back']);
 
@@ -331,31 +332,35 @@ async function saveTeam() {
   try {
     loading.value = true;
     error.value = null;
-    
+
     const selectedBusiness = customerBusinesses.value.find(b => b.id == form.value.business.id);
     const selectedCourierData = couriers.value.find(c => c.id == form.value.courier.id);
-    
-    const teamData = {
+
+    const raw = {
+      id: editingTeam.value?.id || null,
       business: selectedBusiness,
       courier: selectedCourierData,
-      factorCourier: parseFloat(form.value.factorCourier),
+      factorCourier: form.value.factorCourier,
       status: form.value.status
-    };
-    
+    }
+    const formatted = formatDataForBackend(raw, 'team')
+    const teamData = {
+      business: formatted.business,
+      courier: formatted.courier,
+      factorCourier: formatted.factorCourier,
+      status: formatted.status
+    }
+
     if (editingTeam.value) {
-      // Editar time existente
       const updatedTeam = await backendService.updateTeam(editingTeam.value.id, teamData);
       const index = teams.value.findIndex(t => t.id === editingTeam.value.id);
-      if (index !== -1) {
-        teams.value[index] = updatedTeam;
-      }
+      if (index !== -1) teams.value[index] = updatedTeam;
       editingTeam.value = null;
     } else {
-      // Criar novo time
       const newTeam = await backendService.createTeam(teamData);
       teams.value.push(newTeam);
     }
-    
+
     showForm.value = false;
     resetForm();
   } catch (err) {
