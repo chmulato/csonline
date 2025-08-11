@@ -6,8 +6,8 @@
     <div v-if="error" class="error">{{ error }}</div>
     
     <div class="actions">
-      <button @click="showForm = true">Novo Usuário</button>
-      <button class="back-btn" @click="goBack">Voltar</button>
+  <button @click="showForm = true">Novo Usuário</button>
+  <button class="back-btn" data-test="back-btn" type="button" @click="goBack">Voltar</button>
     </div>
     
     <div class="filters">
@@ -46,8 +46,8 @@
           </td>
           <td>{{ user.address || 'N/A' }}</td>
           <td>
-            <button @click="editUser(user)">Editar</button>
-            <button @click="deleteUser(user.id)">Excluir</button>
+            <button class="edit-btn" @click="editUser(user)">Editar</button>
+            <button class="delete-btn" @click="deleteUser(user.id)">Excluir</button>
           </td>
         </tr>
       </tbody>
@@ -88,11 +88,14 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, inject } from 'vue'
 import { useRouter } from 'vue-router'
-import { backendService } from '../services/backend.js'
+import { backendService as backendServiceSingleton } from '../services/backend.js'
 
 const router = useRouter()
+
+// Allow backend service injection (tests can provide their own mock)
+const backendService = inject('backendService', backendServiceSingleton)
 
 const users = ref([])
 const showForm = ref(false)
@@ -113,7 +116,7 @@ const form = ref({
 })
 
 const filteredUsers = computed(() => {
-  let filtered = users.value
+  let filtered = Array.isArray(users.value) ? users.value : []
   
   if (searchTerm.value) {
     const search = searchTerm.value.toLowerCase()
@@ -145,10 +148,11 @@ async function loadUsers() {
   try {
     loading.value = true
     error.value = null
-    users.value = await backendService.getUsers()
+  users.value = await backendService.getUsers()
   } catch (err) {
-    error.value = 'Erro ao carregar usuários: ' + err.message
-    console.error('Erro ao carregar usuários:', err)
+  // Mensagem genérica para corresponder aos testes
+  error.value = 'Erro ao carregar usuários. Tente novamente.'
+  console.error('Erro ao carregar usuários:', err)
   } finally {
     loading.value = false
   }

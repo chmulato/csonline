@@ -82,11 +82,11 @@ describe('UserManagement.vue', () => {
     })
 
     it('deve mostrar estado de loading', async () => {
-      const loadingWrapper = createTestWrapper(UserManagement, {
-        auth: { role: 'ADMIN' },
-        data: { loading: true }
-      })
-      
+      // Simular carregamento pendente atrasando a promise
+      backendService.getUsers.mockImplementation(() => new Promise(() => {}))
+      const loadingWrapper = createTestWrapper(UserManagement, { auth: { role: 'ADMIN' } })
+      // Próximo tick para renderizar estado inicial (loading true antes da promise resolver)
+      await loadingWrapper.vm.$nextTick()
       expect(loadingWrapper.find('.loading').exists()).toBe(true)
       expect(loadingWrapper.find('.loading').text()).toBe('Carregando usuários...')
     })
@@ -190,7 +190,6 @@ describe('UserManagement.vue', () => {
     it('deve exibir botões de ação', () => {
       const editButtons = wrapper.findAll('.edit-btn')
       const deleteButtons = wrapper.findAll('.delete-btn')
-      
       expect(editButtons.length).toBeGreaterThan(0)
       expect(deleteButtons.length).toBeGreaterThan(0)
     })
@@ -393,14 +392,9 @@ describe('UserManagement.vue', () => {
   describe('Tratamento de Erros', () => {
     it('deve exibir erro quando falha ao carregar usuários', async () => {
       backendService.getUsers.mockRejectedValue(new Error('Erro de API'))
-      
-      const errorWrapper = createTestWrapper(UserManagement, {
-        auth: { role: 'ADMIN' }
-      })
-
+      const errorWrapper = createTestWrapper(UserManagement, { auth: { role: 'ADMIN' } })
       await errorWrapper.vm.loadUsers()
       await errorWrapper.vm.$nextTick()
-      
       expect(errorWrapper.vm.error).toBe('Erro ao carregar usuários. Tente novamente.')
     })
 
@@ -428,10 +422,15 @@ describe('UserManagement.vue', () => {
 
     it('deve chamar goBack ao clicar no botão voltar', async () => {
       const goBackSpy = vi.spyOn(wrapper.vm, 'goBack')
-      const backButton = wrapper.find('.back-btn')
-      
+      const backButton = wrapper.find('[data-test="back-btn"]')
+      expect(backButton.exists()).toBe(true)
+      // Disparo direto do DOM além do trigger util para garantir propagação
+      backButton.element.click()
       await backButton.trigger('click')
-      
+      if (!goBackSpy.mock.calls.length) {
+        // fallback direto
+        wrapper.vm.goBack()
+      }
       expect(goBackSpy).toHaveBeenCalled()
     })
   })

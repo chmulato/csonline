@@ -260,8 +260,8 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { backendService } from '../services/backend.js'
+import { ref, computed, onMounted, inject } from 'vue'
+import { backendService as backendServiceSingleton } from '../services/backend.js'
 
 const emit = defineEmits(['back'])
 
@@ -296,6 +296,9 @@ const form = ref({
 function goBack() {
   emit('back')
 }
+
+// Allow backend service injection for easier testing (falls back to singleton)
+const backendService = inject('backendService', backendServiceSingleton)
 
 // Load data from backend
 async function loadData() {

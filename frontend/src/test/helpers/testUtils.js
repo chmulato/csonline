@@ -116,6 +116,9 @@ export function createTestWrapper(component, propsData = {}, options = {}) {
     props: propsData,
     global: {
       plugins: [pinia],
+      provide: {
+        backendService
+      },
       properties: {
         $backendService: backendService
       },

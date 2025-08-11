@@ -210,10 +210,13 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { backendService } from '../services/backend.js'
+import { ref, computed, onMounted, inject } from 'vue'
+import { backendService as backendServiceSingleton } from '../services/backend.js'
 
 const emit = defineEmits(['back'])
+
+// Allow backend service injection (tests can provide a mock)
+const backendService = inject('backendService', backendServiceSingleton)
 
 // Reactive state
 const deliveries = ref([])
@@ -498,155 +501,6 @@ onMounted(() => {
   loadDeliveries()
 })
 </script>
-  {
-    id: 2,
-    user: { id: 6, name: 'Logística Sul' },
-    business: { id: 1 }
-  },
-  {
-    id: 3,
-    user: { id: 7, name: 'Centro de Distribuição ABC' },
-    business: { id: 4 }
-  }
-]);
-
-const couriers = ref([
-  {
-    id: 1,
-    user: { id: 2, name: 'João Silva' },
-    business: { id: 1 }
-  },
-  {
-    id: 2,
-    user: { id: 5, name: 'Carlos Santos' },
-    business: { id: 1 }
-  }
-]);
-
-const deliveries = ref([
-  {
-    id: 1,
-    business: { id: 1, name: 'CSOnline Delivery' },
-    customer: { id: 1, user: { name: 'Distribuidora Norte' } },
-    courier: { id: 1, user: { name: 'João Silva' } },
-    start: 'Rua das Flores, 123 - Centro, Curitiba/PR',
-    destination: 'Av. Brasil, 456 - Batel, Curitiba/PR',
-    contact: '41987654321',
-    description: 'Entrega de documentos urgentes',
-    volume: '1m³',
-    weight: '5kg',
-    km: '12',
-    additionalCost: 0.00,
-    cost: 25.00,
-    received: true,
-    completed: false,
-    datatime: new Date('2025-08-01T08:30:00')
-  },
-  {
-    id: 2,
-    business: { id: 1, name: 'CSOnline Delivery' },
-    customer: { id: 2, user: { name: 'Logística Sul' } },
-    courier: { id: 2, user: { name: 'Carlos Santos' } },
-    start: 'Av. Industrial, 789 - CIC, Curitiba/PR',
-    destination: 'Rua Comercial, 321 - Centro, São José dos Pinhais/PR',
-    contact: '41976543210',
-    description: 'Entrega de equipamentos eletrônicos',
-    volume: '3m³',
-    weight: '25kg',
-    km: '18',
-    additionalCost: 5.00,
-    cost: 45.00,
-    received: true,
-    completed: true,
-    datatime: new Date('2025-08-01T10:15:00')
-  },
-  {
-    id: 3,
-    business: { id: 4, name: 'Gestão Empresarial' },
-    customer: { id: 3, user: { name: 'Centro de Distribuição ABC' } },
-    courier: { id: 1, user: { name: 'João Silva' } },
-    start: 'Rua Logística, 555 - Araucária/PR',
-    destination: 'Av. das Indústrias, 888 - Fazenda Rio Grande/PR',
-    contact: '41965432109',
-    description: 'Transporte de mercadorias diversas',
-    volume: '5m³',
-    weight: '80kg',
-    km: '25',
-    additionalCost: 10.00,
-    cost: 75.00,
-    received: false,
-    completed: false,
-    datatime: new Date('2025-08-01T14:20:00')
-  }
-]);
-
-const statusFilter = ref('');
-const showForm = ref(false);
-const editingDelivery = ref(null);
-const form = ref({
-  business: { id: '' },
-  customer: { id: '' },
-  courier: { id: '' },
-  start: '',
-  destination: '',
-  contact: '',
-  description: '',
-  volume: '',
-  weight: '',
-  km: '',
-  additionalCost: '',
-  cost: '',
-  received: false,
-  completed: false
-});
-
-const filteredDeliveries = computed(() => {
-  if (!statusFilter.value) return deliveries.value;
-  
-  return deliveries.value.filter(delivery => {
-    switch (statusFilter.value) {
-      case 'pending':
-        return !delivery.received && !delivery.completed;
-      case 'received':
-        return delivery.received && !delivery.completed;
-      case 'completed':
-        return delivery.completed;
-      default:
-        return true;
-    }
-  });
-});
-
-function getStatusClass(delivery) {
-  if (delivery.completed) return 'status-completed';
-  if (delivery.received) return 'status-received';
-  return 'status-pending';
-}
-
-function getStatusText(delivery) {
-  if (delivery.completed) return 'Finalizada';
-  if (delivery.received) return 'Recebida';
-  return 'Pendente';
-}
-
-function formatDate(date) {
-  if (!date) return '';
-  return new Date(date).toLocaleString('pt-BR');
-}
-
-function editDelivery(delivery) {
-  editingDelivery.value = delivery;
-  form.value = {
-    business: { id: delivery.business.id },
-    customer: { id: delivery.customer.id },
-    courier: { id: delivery.courier.id },
-    start: delivery.start,
-    destination: delivery.destination,
-    contact: delivery.contact,
-    description: delivery.description,
-    volume: delivery.volume,
-    weight: delivery.weight,
-    km: delivery.km,
 <style scoped>
 .delivery-management {
   background: #fff;

@@ -132,7 +132,11 @@ export function createTestWrapper(component, options = {}) {
     ...options,
     global: {
       ...defaultOptions.global,
-      ...(options.global || {})
+      ...(options.global || {}),
+      provide: {
+        backendService,
+        ...(options.global && options.global.provide ? options.global.provide : {})
+      }
     }
   }
   

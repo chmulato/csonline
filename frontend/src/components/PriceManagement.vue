@@ -98,10 +98,11 @@
             <label>Veículo:</label>
             <select v-model="filters.vehicle" @change="applyFilters">
               <option value="">Todos os Veículos</option>
-              <option value="Moto">Moto</option>
-              <option value="Carro">Carro</option>
-              <option value="Van">Van</option>
-              <option value="Caminhão">Caminhão</option>
+              <!-- Use lowercase values to ensure consistent filtering with test data -->
+              <option value="moto">Moto</option>
+              <option value="carro">Carro</option>
+              <option value="van">Van</option>
+              <option value="caminhão">Caminhão</option>
             </select>
           </div>
           <div class="filter-group">
@@ -169,7 +170,7 @@
               <td>
                 <span class="vehicle-badge" :class="getVehicleClass(price.vehicle)">
                   <i :class="getVehicleIcon(price.vehicle)"></i>
-                  {{ price.vehicle }}
+                  {{ (price.vehicle && price.vehicle.charAt(0).toUpperCase() + price.vehicle.slice(1)) || '' }}
                 </span>
               </td>
               <td>{{ price.local }}</td>
@@ -245,10 +246,10 @@
               <label for="vehicle">Tipo de Veículo *</label>
               <select id="vehicle" v-model="currentPrice.vehicle" required>
                 <option value="">Selecione o veículo</option>
-                <option value="Moto">Moto</option>
-                <option value="Carro">Carro</option>
-                <option value="Van">Van</option>
-                <option value="Caminhão">Caminhão</option>
+                <option value="moto">Moto</option>
+                <option value="carro">Carro</option>
+                <option value="van">Van</option>
+                <option value="caminhão">Caminhão</option>
               </select>
             </div>
 
@@ -324,7 +325,7 @@
             <label>Veículo:</label>
             <span class="vehicle-badge" :class="getVehicleClass(viewingPrice?.vehicle)">
               <i :class="getVehicleIcon(viewingPrice?.vehicle)"></i>
-              {{ viewingPrice?.vehicle }}
+              {{ viewingPrice?.vehicle && viewingPrice.vehicle.charAt(0).toUpperCase() + viewingPrice.vehicle.slice(1) }}
             </span>
           </div>
           <div class="detail-group">
@@ -409,7 +410,8 @@ const filteredPrices = computed(() => {
   }
 
   if (filters.value.vehicle) {
-    filtered = filtered.filter(price => price.vehicle === filters.value.vehicle)
+    const sel = filters.value.vehicle.toLowerCase()
+    filtered = filtered.filter(price => (price.vehicle || '').toLowerCase() === sel)
   }
 
   if (filters.value.search) {
@@ -493,23 +495,27 @@ function getBusinessName(price) {
 }
 
 function getVehicleClass(vehicle) {
+  if (!vehicle) return 'vehicle-default'
+  const v = vehicle.toLowerCase()
   const classes = {
-    'Moto': 'vehicle-moto',
-    'Carro': 'vehicle-car',
-    'Van': 'vehicle-van',
-    'Caminhão': 'vehicle-truck'
+    'moto': 'vehicle-moto',
+    'carro': 'vehicle-car',
+    'van': 'vehicle-van',
+    'caminhão': 'vehicle-truck'
   }
-  return classes[vehicle] || 'vehicle-default'
+  return classes[v] || 'vehicle-default'
 }
 
 function getVehicleIcon(vehicle) {
+  if (!vehicle) return 'fas fa-vehicle'
+  const v = vehicle.toLowerCase()
   const icons = {
-    'Moto': 'fas fa-motorcycle',
-    'Carro': 'fas fa-car',
-    'Van': 'fas fa-shuttle-van',
-    'Caminhão': 'fas fa-truck'
+    'moto': 'fas fa-motorcycle',
+    'carro': 'fas fa-car',
+    'van': 'fas fa-shuttle-van',
+    'caminhão': 'fas fa-truck'
   }
-  return icons[vehicle] || 'fas fa-vehicle'
+  return icons[v] || 'fas fa-vehicle'
 }
 
 function formatPrice(price) {
