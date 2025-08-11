@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { mount } from '@vue/test-utils'
 import DeliveryManagement from '../../components/DeliveryManagement.vue'
-import { createMockAuthStore } from '../helpers/testUtils'
+import { createTestWrapper, mockRouter, backendService } from '../helpers/testUtils'
 
 // Mock backend service
 vi.mock('../../services/backend.js', () => ({
@@ -15,20 +14,6 @@ vi.mock('../../services/backend.js', () => ({
     updateDelivery: vi.fn(),
     deleteDelivery: vi.fn()
   }
-}))
-
-// Import the mocked service after mock declaration
-import { backendService } from '../../services/backend.js'
-
-// Mock vue-router
-const mockRouter = {
-  push: vi.fn(),
-  back: vi.fn(),
-  currentRoute: { value: { path: '/deliveries' } }
-}
-
-vi.mock('vue-router', () => ({
-  useRouter: () => mockRouter
 }))
 
 // Mock global confirm
@@ -86,15 +71,10 @@ const mockUsers = [
 
 describe('DeliveryManagement.vue', () => {
   let wrapper
-  let authStore
-  let pinia
 
   beforeEach(async () => {
-    // Configurar auth store
-    const mockAuth = createMockAuthStore({ role: 'ADMIN' })
-    pinia = mockAuth.pinia
-    authStore = mockAuth.authStore
-    
+    vi.clearAllMocks()
+
     // Setup backend service mocks
     backendService.getDeliveries.mockResolvedValue(mockDeliveries)
     backendService.getCustomers.mockResolvedValue(mockCustomers)
@@ -104,18 +84,10 @@ describe('DeliveryManagement.vue', () => {
     backendService.updateDelivery.mockResolvedValue(mockDeliveries[0])
     backendService.deleteDelivery.mockResolvedValue()
 
-    vi.clearAllMocks()
+    wrapper = createTestWrapper(DeliveryManagement)
 
-    wrapper = mount(DeliveryManagement, {
-      global: {
-        plugins: [pinia],
-        mocks: {
-          $router: mockRouter
-        }
-      }
-    })
-
-    // Wait for component to load data
+    // Manually load deliveries data
+    await wrapper.vm.loadDeliveries()
     await wrapper.vm.$nextTick()
   })
 
@@ -125,12 +97,8 @@ describe('DeliveryManagement.vue', () => {
     })
 
     it('deve mostrar estado de loading inicialmente', async () => {
-      // Cria um wrapper com loading = true
-      const loadingWrapper = mount(DeliveryManagement, {
-        global: {
-          plugins: [pinia],
-          properties: { $backendService: mockBackendService }
-        },
+      // Cria um wrapper com loading = true modificando a data durante a montagem
+      const loadingWrapper = createTestWrapper(DeliveryManagement, {
         data() {
           return { loading: true }
         }
@@ -282,7 +250,7 @@ describe('DeliveryManagement.vue', () => {
 
       await wrapper.vm.saveDelivery(newDelivery)
       
-      expect(mockBackendService.createDelivery).toHaveBeenCalledWith(newDelivery)
+      expect(backendService.createDelivery).toHaveBeenCalledWith(newDelivery)
     })
 
     it('deve chamar API para atualizar entrega', async () => {
@@ -291,7 +259,7 @@ describe('DeliveryManagement.vue', () => {
       
       await wrapper.vm.saveDelivery(updatedDelivery)
       
-      expect(mockBackendService.updateDelivery).toHaveBeenCalledWith(1, updatedDelivery)
+      expect(backendService.updateDelivery).toHaveBeenCalledWith(1, updatedDelivery)
     })
 
     it('deve chamar API para excluir entrega', async () => {
@@ -299,7 +267,7 @@ describe('DeliveryManagement.vue', () => {
       
       await wrapper.vm.deleteDelivery(1)
       
-      expect(mockBackendService.deleteDelivery).toHaveBeenCalledWith(1)
+      expect(backendService.deleteDelivery).toHaveBeenCalledWith(1)
       expect(window.confirm).toHaveBeenCalledWith('Tem certeza que deseja excluir esta entrega?')
     })
 
@@ -308,7 +276,7 @@ describe('DeliveryManagement.vue', () => {
       
       await wrapper.vm.deleteDelivery(1)
       
-      expect(mockBackendService.deleteDelivery).not.toHaveBeenCalled()
+      expect(backendService.deleteDelivery).not.toHaveBeenCalled()
     })
   })
 
@@ -357,14 +325,9 @@ describe('DeliveryManagement.vue', () => {
 
   describe('Tratamento de Erros', () => {
     it('deve exibir erro quando falha ao carregar entregas', async () => {
-      mockBackendService.getDeliveries.mockRejectedValue(new Error('Erro de API'))
+      backendService.getDeliveries.mockRejectedValue(new Error('Erro de API'))
       
-      const errorWrapper = mount(DeliveryManagement, {
-        global: {
-          plugins: [pinia],
-          properties: { $backendService: mockBackendService }
-        }
-      })
+      const errorWrapper = createTestWrapper(DeliveryManagement)
 
       await errorWrapper.vm.loadDeliveries()
       await errorWrapper.vm.$nextTick()
@@ -374,11 +337,7 @@ describe('DeliveryManagement.vue', () => {
     })
 
     it('deve permitir tentar novamente após erro', async () => {
-      const errorWrapper = mount(DeliveryManagement, {
-        global: {
-          plugins: [pinia],
-          properties: { $backendService: mockBackendService }
-        },
+      const errorWrapper = createTestWrapper(DeliveryManagement, {
         data() {
           return { error: 'Erro de teste' }
         }
@@ -388,13 +347,13 @@ describe('DeliveryManagement.vue', () => {
       expect(retryButton.text()).toBe('Tentar novamente')
       
       await retryButton.trigger('click')
-      expect(mockBackendService.getDeliveries).toHaveBeenCalled()
+      expect(backendService.getDeliveries).toHaveBeenCalled()
     })
   })
 
   describe('Estados Vazios', () => {
     it('deve exibir mensagem quando não há entregas', async () => {
-      mockBackendService.getDeliveries.mockResolvedValue([])
+      backendService.getDeliveries.mockResolvedValue([])
       
       await wrapper.vm.loadDeliveries()
       await wrapper.vm.$nextTick()
