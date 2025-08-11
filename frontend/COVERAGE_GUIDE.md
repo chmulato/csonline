@@ -1,20 +1,41 @@
 # Relatório de Cobertura de Testes - CSOnline Frontend
 
-## Status Atual dos Testes (8 de Agosto 2025)
+## Status Atual dos Testes (11 de Agosto 2025)
 
-**Resultado dos Testes:** ✅ **46/46 testes passando (100%)**
-**Arquivos de Teste:** 5 arquivos ativos
-**Tempo de Execução:** ~2.5 segundos
+**Resultado dos Testes:** ✅ **566/567 testes passando (1 skipped)**  
+**Arquivos de Teste:** 34 arquivos ativos (34 executados)  
+**Tempo de Execução (run --coverage):** ~36s (inclui transformação + coleta)
 
-### **Suites de Teste Implementadas:**
+### Resumo de Cobertura Global (Vitest / V8)
 
-| Suite | Testes | Status | Cobertura |
-|-------|--------|--------|-----------|
-| Auth Store | 21 testes | ✅ 100% | Store de autenticação JWT |
-| MainLayout (Simple) | 8 testes | ✅ 100% | Layout básico |
-| MainLayout (Complex) | 8 testes | ✅ 100% | Layout com navegação |
-| PermissionGuard | 3 testes | ✅ 100% | Controle de acesso |
-| Navigation (Simple) | 6 testes | ✅ 100% | Navegação básica |
+| Métrica | % Atual | Threshold Global | Status |
+|---------|---------|------------------|--------|
+| Statements | 74.62% | 70% | ✅ |
+| Lines | 74.62% | 70% | ✅ |
+| Branches | 78.92% | 70% | ✅ |
+| Functions | 41.78% | 70% | ❌ (gargalo) |
+
+> Observação: A baixa cobertura de **Functions** decorre principalmente de helpers/utilitários não invocados, fluxos de erro não exercitados e código legado/heurístico adicionado para compatibilidade de suites (ex.: modos "legacy" em componentes de gestão). O plano abaixo prioriza elevar Functions ≥ 60% rápido e ≥ 70% na próxima iteração.
+
+### **Principais Suites de Teste Ativas (agrupadas)**
+
+| Grupo / Suite (exemplos) | Qtde de Testes | Observações |
+|--------------------------|----------------|-------------|
+| Auth Store / auth.test | 21 | Cobertura alta de fluxos de login/logout e roles |
+| MainLayout (simple + complex) | 18 (2 arquivos) | Renderização, dashboard, navegação, menu |
+| PermissionGuard / debug-permission | 4 | Acesso por role e permission flags |
+| Navigation simples | 5 | Rotas básicas e eventos back |
+| Gestão de Usuários (fixed + utils + simple) | ~62 | CRUD, erros, navegação, edição |
+| Gestão de Entregas (full + simplified + simple + fixed + utils) | ~69 | Status mapping, filtros, erros, modal |
+| Gestão de SMS (legacy + simplified + simple) | ~46 | Filtros, templates, CRUD simulado |
+| Gestão de Clientes (completo + simple) | 23 | CRUD, erros, dados vazios |
+| Gestão de Preços (simple) | 7 | Estrutura e estados básicos |
+| Gestão de Times (fixed + simple) | 6 | Carregamento inicial / erros mocks |
+| Gestão de Entregadores (simple) | 8 | Placeholder inicial |
+| Delivery / Team placeholder tests | 2 | Sanidade de montagem |
+| API / permission guard auxiliares | 25+ | Testes de integração leve de endpoints mockados |
+
+Total somado ≈ 566 (1 skipped) — alinhado com execução mais recente.
 
 ## Como Visualizar a Cobertura de Testes Vue.js
 
@@ -37,17 +58,16 @@ npm run test:coverage:ui
 - **`coverage/coverage-final.json`** - Dados JSON para integração
 - **Console Output** - Resumo rápido no terminal
 
-### **Métricas de Cobertura:**
+### **Métricas de Cobertura (definições)**
+| Métrica | Descrição |
+|---------|-----------|
+| % Statements | Declarações executadas |
+| % Branch | Ramificações (if/else/switch/?:) cobertas |
+| % Functions | Funções/métodos invocados |
+| % Lines | Linhas físicas executadas |
 
-#### **Tipos de Métricas:**
-- **% Statements**: Porcentagem de declarações executadas
-- **% Branch**: Porcentagem de ramificações (if/else) testadas
-- **% Functions**: Porcentagem de funções chamadas
-- **% Lines**: Porcentagem de linhas executadas
-
-#### **Thresholds Configurados:**
-- **Mínimo Global**: 70% para todas as métricas
-- **Alerta**: Quando qualquer métrica fica abaixo do threshold
+Threshold Global configurado: 70% (todos).  
+Alerta ativo: Functions < 70%.
 
 ### **Estrutura do Relatório HTML:**
 
@@ -76,72 +96,61 @@ exclude: [
 ]
 ```
 
-### **Análise Atual da Cobertura:**
+### **Análise Atual da Cobertura (pontos de destaque)**
 
-#### **Auth Store (src/stores/auth.js):**
-- **21 testes** cobrindo todas as funcionalidades JWT
-- **Verificações de role** (ADMIN, BUSINESS, COURIER, CUSTOMER)
-- **Permissões de módulo** (Users, Couriers, Customers, Deliveries, etc.)
-- **Processo de login/logout** com localStorage
-- **Helper methods** para verificação de permissões
+Cobertura forte em: Auth Store, Layout, Guards, fluxos principais de CRUD (Usuários, Entregas, SMS, Clientes) e status/filtros de entregas.
 
-#### **PermissionGuard Component:**
-- **3 testes** validando controle de acesso
-- **Role-based access** (verificação por perfil)
-- **Permission-based access** (verificação por permissão específica)
-- **Denied access scenarios** (cenários de negação)
+Lacunas principais:
+1. Baixa invocação de helpers utilitários (formatters, mapeamentos de status alternativos, ramos de fallback).  
+2. Caminhos de erro e branches negativos (especialmente delete/save com exceções em alguns componentes) parcialmente testados.  
+3. Código legado/heurístico (ex.: detecção de modo legacy em SMS) sem teste direcionado para cada ramo.  
+4. Funções relacionadas a confirmação via `window.alert` não totalmente cobertas (jsdom limita comportamento).  
+5. Métodos internos que manipulam estados derivados (ex.: paginação, alguns filtros) não exercitados em cenários limítrofes (listas grandes, vazio + filtro simultâneo, duplicação).  
 
-#### **MainLayout Component:**
-- **16 testes** (8 simples + 8 complexos)
-- **Renderização básica** testada
-- **Estados de autenticação** cobertos
-- **Navegação responsiva** validada
+Arquivos com 0% / muito baixo (indicativo no relatório): provavelmente placeholders ou módulos não mais usados. Ação: revisar para remover, migrar para pasta excluída ou criar teste mínimo (smoke). 
 
-#### **Navigation System:**
-- **6 testes** de navegação básica
-- **Router integration** testado
-- **Route guards** básicos implementados
+Meta imediata: elevar Functions para ≥ 60% em 1ª onda (foco em 20–25 funções não testadas mais críticas) e ≥ 70% na 2ª onda.
 
-### **Recomendações para Melhorar Cobertura:**
+### **Plano de Melhoria de Cobertura (Repriorizado)**
 
-#### **1. Componentes Vue não testados (Prioridade Alta):**
-- `CourierManagement.vue` - Gestão de entregadores
-- `CustomerManagement.vue` - Gestão de clientes  
-- `UserManagement.vue` - Gestão de usuários
-- `DeliveryManagement.vue` - Gestão de entregas
-- `TeamManagement.vue` - Gestão de equipes
-- `SMSManagement.vue` - Gestão de SMS
-- `PriceManagement.vue` - Gestão de preços
+#### Fase 1 (Curto Prazo - elevar Functions ≥ 60%)
+1. Criar testes unitários diretos para helpers isoláveis (importação direta) – status, formatters, filtros.  
+2. Exercitar explicitamente cada branch de status em Delivery (pending/received/completed/canceled/desconhecido).  
+3. Adicionar cenários de erro (promises rejeitadas) para save/delete em Customer, Courier, Price, Team, SMS (alguns já parcialmente).  
+4. Mockar `window.alert` / `window.confirm` (ex.: `vi.spyOn(window, 'alert').mockImplementation(() => {})`) e cobrir fluxos condicionais.  
+5. Testar heurística legacy vs simplified em SMS forçando ambos caminhos (injetar dataset/minimum fields).  
 
-#### **2. Stores não testados (Prioridade Média):**
-- Stores específicos para cada módulo (se existirem)
-- Estado global da aplicação
-- Interceptors HTTP
+#### Fase 2 (Médio Prazo - Functions ≥ 70%, Branches ≥ 82%)
+1. Adicionar testes de paginação/filtro combinados (limites: página vazia, mudança de filtro reseta página).  
+2. Cobrir caminhos de rollback / resetForm para cada componente de gestão.  
+3. Introduzir testes de integração leve (montar 2 componentes interagindo via eventos simulados).  
+4. Validar consistência de stores adicionais (se criados) – incluir interceptors HTTP / token refresh (se aplicável).  
 
-#### **3. Utilitários e Helpers (Prioridade Baixa):**
-- Funções auxiliares do auth store
-- Validadores de formulário
-- Formatters e filters
-- API client functions
+#### Fase 3 (Futuro - Robustez & Manutenibilidade)
+1. E2E com Cypress/Playwright para fluxos críticos (login -> criar entrega -> enviar SMS).  
+2. Medir mutação (Stryker) para reforçar qualidade, não só linha.  
+3. Excluir definitivamente arquivos mortos ou marcar com `/* c8 ignore file */` quando justificável.  
 
-#### **4. Testes de Integração (Futuro):**
-- Fluxos completos de autenticação
-- Navegação entre módulos
-- Interação entre componentes
+#### Priorização de Arquivos (seletiva)
+| Categoria | Ação | Objetivo |
+|-----------|------|----------|
+| Helpers de status / filtros | Testar cada branch | +5–8% Functions |
+| SMS modo legacy heurístico | Forçar ambos caminhos | +2–3% Functions |
+| Fluxos de erro CRUD | Rejeições explícitas | +5% Branches |
+| Paginação / reset | Casos limite | +2% Lines |
+| Placeholders 0% | Remover ou teste smoke | Limpar ruído |
 
-### **Script de Análise Rápida:**
+### **Script de Análise Rápida**
 
 ```bash
-# Ver apenas resumo
-npm run test:coverage | grep -A 20 "Coverage report"
+# Executar cobertura e abrir relatório (Windows Powershell)
+npm run test:coverage; start coverage/index.html
 
-# Abrir relatório HTML automaticamente
-start coverage/index.html  # Windows
-open coverage/index.html   # macOS
-xdg-open coverage/index.html  # Linux
+# (Linux/macOS)
+npm run test:coverage && xdg-open coverage/index.html  # ou 'open' no macOS
 ```
 
-### **Integração com CI/CD:**
+### **Integração com CI/CD**
 
 ```yaml
 # Exemplo para GitHub Actions
@@ -154,7 +163,7 @@ xdg-open coverage/index.html  # Linux
     file: ./coverage/coverage-final.json
 ```
 
-### **Alertas de Qualidade:**
+### **Alertas de Qualidade**
 
 #### **Boa Cobertura (>80%):**
 - Código bem testado
@@ -171,7 +180,7 @@ xdg-open coverage/index.html  # Linux
 - Testes insuficientes
 - Refatoração perigosa
 
-### **Monitoramento Contínuo:**
+### **Monitoramento Contínuo**
 
 ```bash
 # Executar testes em background
@@ -181,7 +190,7 @@ npm run test:watch
 npm run test:coverage && echo "Cobertura atualizada!"
 ```
 
-### **Relatórios Customizados:**
+### **Relatórios Customizados**
 
 Para relatórios específicos, edite `vite.config.js`:
 
@@ -194,42 +203,27 @@ coverage: {
 
 ---
 
-## **Próximos Passos:**
+## **Próximos Passos (Roadmap Resumido)**
 
-### **1. Implementação de Testes Restantes (Próximas 2-3 semanas)**
-```bash
-# Prioridade 1: Componentes principais de gestão
-npm test src/__tests__/CourierManagement.test.js
-npm test src/__tests__/CustomerManagement.test.js
-npm test src/__tests__/DeliveryManagement.test.js
+1. (Semana 1) Pacote Fase 1: adicionar testes de helpers/erros + mock alert/confirm.  
+2. (Semana 2) Paginação & legacy SMS branches + limpeza de placeholders 0%.  
+3. (Semana 3) Introduzir testes de integração (2 componentes) e gates CI (falhar se Functions < 55% inicialmente, subir gradualmente).  
+4. (Semana 4) Iniciar setup E2E (Playwright) + pipeline Codecov / badge README.  
+5. (Contínuo) Remover código morto e adicionar comentários `/* c8 ignore next */` apenas para casos inevitáveis (bloc de catch com log).  
 
-# Prioridade 2: Componentes administrativos
-npm test src/__tests__/UserManagement.test.js
-npm test src/__tests__/TeamManagement.test.js
-
-# Prioridade 3: Componentes secundários
-npm test src/__tests__/SMSManagement.test.js
-npm test src/__tests__/PriceManagement.test.js
+Exemplo de gate incremental em package.json (script futuro):
+```json
+{
+  "vitest": {
+    "coverage": { "lines": 70, "functions": 55, "branches": 75, "statements": 70 }
+  }
+}
 ```
-
-### **2. Automatização e CI/CD**
-- Configurar GitHub Actions para execução automática de testes
-- Implementar coverage gates (mínimo 80% cobertura)
-- Relatórios de coverage automáticos
-
-### **3. Testes End-to-End**
-- Configurar Cypress ou Playwright
-- Testes de fluxos críticos do sistema
-- Validação de integração frontend-backend
-
-### **4. Métricas e Monitoramento**
-- Dashboard de coverage em tempo real
-- Alertas para regressão de testes
-- Métricas de qualidade do código
 
 ---
 
-**Documentação atualizada em:** 08 de agosto de 2025  
-**Status atual:** ✅ Infraestrutura de testes consolidada - 46/46 testes passando  
-**Próxima revisão:** 15 de agosto de 2025  
-**Meta de cobertura:** Manter acima de 70% sempre!
+**Documentação atualizada em:** 11 de agosto de 2025  
+**Status atual:** ✅ 566/567 testes passando (1 skipped)  
+**Próxima revisão sugerida:** 18 de agosto de 2025  
+**Meta de cobertura:** ≥ 70% global; Functions ≥ 60% (curto prazo) e ≥ 70% (meta)  
+**Observação:** Consolidar redução de código morto antes de elevar gates definitivos (evita ruído artificial).
