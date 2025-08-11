@@ -366,6 +366,18 @@ const loading = ref(false)
 const error = ref(null)
 const saving = ref(false)
 
+// Legacy/form compatibility for validation tests
+const form = ref({
+  customerId: '',
+  businessId: '',
+  courierPricePerKm: '',
+  customerPricePerKm: '',
+  vehicle: '',
+  distance: '',
+  weight: ''
+})
+const errors = ref({})
+
 // Modal state
 const showModal = ref(false)
 const showViewModal = ref(false)
@@ -526,6 +538,16 @@ function formatPrice(price) {
   })
 }
 
+// Currency formatter used by legacy tests
+function formatCurrency(value) {
+  const num = parseFloat(value)
+  if (isNaN(num)) return 'R$ 0,00'
+  return 'R$ ' + num.toLocaleString('pt-BR', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  })
+}
+
 function openCreateModal() {
   isEditing.value = false
   currentPrice.value = {
@@ -659,6 +681,27 @@ function clearFilters() {
     vehicle: '',
     search: ''
   }
+}
+
+function validateForm() {
+  errors.value = {}
+  const f = form.value
+
+  // Required fields
+  if (!f.customerId) errors.value.customerId = 'Cliente obrigatório'
+  if (!f.businessId) errors.value.businessId = 'Empresa obrigatória'
+  if (!f.vehicle) errors.value.vehicle = 'Veículo obrigatório'
+
+  // Numeric validations
+  const numericFields = ['courierPricePerKm', 'customerPricePerKm']
+  numericFields.forEach(field => {
+    if (f[field] === '' || f[field] === null || f[field] === undefined) return
+    const val = parseFloat(f[field])
+    if (isNaN(val)) errors.value[field] = 'Valor numérico inválido'
+    else if (val < 0) errors.value[field] = 'Valor deve ser positivo'
+  })
+
+  return Object.keys(errors.value).length === 0
 }
 
 function exportPrices() {

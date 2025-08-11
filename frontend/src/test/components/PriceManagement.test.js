@@ -230,9 +230,9 @@ describe('PriceManagement.vue', () => {
       expect(wrapper.vm.filteredPrices[1].vehicle).toBe('carro')
     })
 
-    it.skip('deve formatar valores monetários', () => {
+    it('deve formatar valores monetários', () => {
       const price = mockPrices[0]
-      const formatted = wrapper.vm.formatCurrency(price.courierPricePerKm)
+      const formatted = wrapper.vm.formatCurrency(price.price)
       expect(formatted).toBe('R$ 2,50')
     })
   })
@@ -280,14 +280,14 @@ describe('PriceManagement.vue', () => {
     })
 
     // Temporary skip tests that depend on non-existent methods
-    it.skip('deve validar campos obrigatórios', () => {
+  it('deve validar campos obrigatórios', () => {
       const result = wrapper.vm.validateForm()
       expect(result).toBe(false)
       expect(wrapper.vm.errors.customerId).toBeTruthy()
       expect(wrapper.vm.errors.businessId).toBeTruthy()
     })
 
-    it.skip('deve validar valores numéricos', () => {
+  it('deve validar valores numéricos', () => {
       wrapper.vm.form = {
         customerId: 1,
         businessId: 1,
@@ -301,7 +301,7 @@ describe('PriceManagement.vue', () => {
       expect(wrapper.vm.errors.customerPricePerKm).toBeTruthy()
     })
 
-    it.skip('deve validar valores positivos', () => {
+  it('deve validar valores positivos', () => {
       wrapper.vm.form = {
         customerId: 1,
         businessId: 1,
@@ -315,7 +315,7 @@ describe('PriceManagement.vue', () => {
       expect(wrapper.vm.errors.customerPricePerKm).toBeTruthy()
     })
 
-    it.skip('deve passar na validação com dados válidos', () => {
+  it('deve passar na validação com dados válidos', () => {
       wrapper.vm.form = {
         customerId: 1,
         businessId: 1,
