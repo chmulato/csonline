@@ -142,12 +142,14 @@ export function formatDataForBackend(data, type) {
       return {
         id: data.id || null,
         factorCustomer: parseFloat(data.factorCustomer) || 0,
+        priceTable: data.priceTable || null,
         user: data.user ? {
           id: data.user.id || null,
           name: data.user.name || '',
-          login: data.user.login || '',
+          login: data.user.login || data.user.email || '',
           email: data.user.email || '',
-          phone: data.user.phone || '',
+          phone: data.user.phone || data.user.mobile || '',
+          address: data.user.address || '',
           role: data.user.role || USER_ROLES.CUSTOMER
         } : null
       }

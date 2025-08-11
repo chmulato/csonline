@@ -2,7 +2,7 @@
   <div class="customer-management">
     <h2>Gestão de Empresas (Centro de Distribuições)</h2>
     <div class="actions">
-      <button @click="showForm = true">Nova Empresa</button>
+      <button @click="openNewCustomerModal">Nova Empresa</button>
       <button class="back-btn" @click="goBack">Voltar</button>
     </div>
     <table>
@@ -33,23 +33,16 @@
       </tbody>
     </table>
 
-    <div v-if="showForm" class="modal">
+  <div v-if="showModal" class="modal">
       <div class="modal-content">
         <h3>{{ editingCustomer ? 'Editar Empresa' : 'Nova Empresa' }}</h3>
         <form @submit.prevent="saveCustomer">
-          <input v-model="form.user.name" type="text" placeholder="Nome da Empresa" required />
-          <input v-model="form.user.email" type="email" placeholder="Email" required />
-          <input v-model="form.user.mobile" type="tel" placeholder="WhatsApp (ex: 41999887766)" required />
-          <input v-model="form.user.address" type="text" placeholder="Endereço Completo" required />
-          <select v-model="form.business.id" required>
-            <option value="">Selecione a Empresa Controladora</option>
-            <option v-for="business in businesses" :key="business.id" :value="business.id">
-              {{ business.name }}
-            </option>
-          </select>
-          <input v-model="form.factorCustomer" type="number" step="0.01" min="0" max="100" placeholder="Fator de Comissão (%)" required />
-          <input v-model="form.priceTable" type="text" placeholder="Tabela de Preço (ex: STANDARD, PREMIUM)" required />
-          <input v-model="form.user.password" type="password" placeholder="Senha" required />
+      <input v-model="form.user.name" type="text" placeholder="Nome da Empresa" required />
+      <input v-model="form.user.email" type="email" placeholder="Email" required />
+      <input v-model="form.user.phone" type="tel" placeholder="WhatsApp (ex: 41999887766)" required />
+      <input v-model="form.user.address" type="text" placeholder="Endereço Completo" required />
+      <input v-model="form.factorCustomer" type="number" step="0.01" min="0" max="100" placeholder="Fator de Comissão (%)" required />
+      <input v-model="form.priceTable" type="text" placeholder="Tabela de Preço (ex: STANDARD, PREMIUM)" required />
           <div class="form-actions">
             <button type="submit">Salvar</button>
             <button type="button" @click="cancel">Cancelar</button>
@@ -77,6 +70,7 @@ const businesses = ref([])
 const showModal = ref(false)
 const editingCustomer = ref(null)
 const isLoading = ref(false)
+const error = ref(null)
 
 // Form data
 const form = ref({
@@ -87,6 +81,7 @@ const form = ref({
     address: ''
   },
   factorCustomer: '',
+  priceTable: '',
   businessId: ''
 })
 
@@ -95,7 +90,7 @@ const loadCustomers = async () => {
   try {
     console.log('[CUSTOMER] Loading customers from backend...')
     isLoading.value = true
-    customers.value = await backendService.getCustomers()
+  customers.value = await backendService.getCustomers()
     console.log('[CUSTOMER] Loaded customers:', customers.value.length)
   } catch (error) {
     console.error('[CUSTOMER] Error loading customers:', error.message)
@@ -108,8 +103,8 @@ const loadCustomers = async () => {
 const loadBusinesses = async () => {
   try {
     console.log('[CUSTOMER] Loading businesses from backend...')
-    const users = await backendService.getUsers()
-    businesses.value = users.filter(user => user.role === 'BUSINESS')
+  const users = await backendService.getUsers()
+  businesses.value = users.filter(user => user.role === 'BUSINESS')
     console.log('[CUSTOMER] Loaded businesses:', businesses.value.length)
   } catch (error) {
     console.error('[CUSTOMER] Error loading businesses:', error.message)
@@ -121,9 +116,12 @@ const saveCustomer = async () => {
   try {
     console.log('[CUSTOMER] Saving customer...')
     
-    const customerData = {
+    const rawData = {
+      id: editingCustomer.value?.id || null,
       factorCustomer: parseFloat(form.value.factorCustomer),
+      priceTable: form.value.priceTable || null,
       user: {
+        id: editingCustomer.value?.user?.id || null,
         name: form.value.user.name,
         email: form.value.user.email,
         phone: form.value.user.phone,
@@ -131,6 +129,7 @@ const saveCustomer = async () => {
         role: 'CUSTOMER'
       }
     }
+    const customerData = formatDataForBackend(rawData, 'customer')
 
     if (editingCustomer.value) {
       await backendService.updateCustomer(editingCustomer.value.id, customerData)
@@ -157,10 +156,11 @@ const editCustomer = (customer) => {
     user: {
       name: customer.user?.name || '',
       email: customer.user?.email || '',
-      phone: customer.user?.phone || '',
+      phone: customer.user?.phone || customer.user?.mobile || '',
       address: customer.user?.address || ''
     },
     factorCustomer: customer.factorCustomer || '',
+    priceTable: customer.priceTable || '',
     businessId: customer.businessId || ''
   }
   showModal.value = true
@@ -193,6 +193,7 @@ const openNewCustomerModal = () => {
       address: ''
     },
     factorCustomer: '',
+    priceTable: '',
     businessId: ''
   }
   showModal.value = true
@@ -212,6 +213,8 @@ onMounted(() => {
   loadCustomers()
   loadBusinesses()
 })
+
+import { formatDataForBackend } from '../config/backend.js'
 </script>
 
 <style scoped>
