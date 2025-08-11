@@ -49,6 +49,9 @@ export const mockRouter = {
   options: {}
 }
 
+// Tornar acessível globalmente para componentes que procurem por globalThis.$router
+try { globalThis.$router = mockRouter } catch(_) {}
+
 // Backend service mock singleton
 export const backendService = {
   // Customer methods

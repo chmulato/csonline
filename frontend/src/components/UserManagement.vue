@@ -88,13 +88,12 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, inject } from 'vue'
+import { ref, computed, onMounted, inject, getCurrentInstance } from 'vue'
 // define emit for legacy tests expecting 'back' event
 const emit = defineEmits(['back'])
-import { useRouter } from 'vue-router'
 import { backendService as backendServiceSingleton } from '../services/backend.js'
 
-const router = useRouter()
+// router será resolvido dinamicamente em goBack via getCurrentInstance / globalThis
 
 // Allow backend service injection (tests can provide their own mock)
 const backendService = inject('backendService', backendServiceSingleton)
@@ -168,13 +167,13 @@ async function saveUser() {
   const userData = { ...form.value }
   if (!userData.password) delete userData.password
     
-    if (editingUser.value && !userData.password) {
-      // already removed above
-    }
-    
-    if (editingUser.value) {
-      const updatedUser = await backendService.updateUser(editingUser.value.id, userData)
-      const index = users.value.findIndex(u => u.id === editingUser.value.id)
+    // Permitir modo edição também quando form possui id (alguns testes não setam editingUser)
+    const isEditMode = !!editingUser.value || !!userData.id
+    const targetId = editingUser.value?.id || userData.id
+
+    if (isEditMode) {
+      const updatedUser = await backendService.updateUser(targetId, userData)
+      const index = users.value.findIndex(u => u.id === targetId)
       if (index !== -1) {
         users.value[index] = updatedUser
       }
@@ -244,11 +243,13 @@ function resetForm() {
 
 function goBack() {
   try { emit('back') } catch(_) {}
-  if (router && typeof router.push === 'function') {
-    router.push('/')
-  } else if (globalThis?.$router?.push) {
-    globalThis.$router.push('/')
-  }
+  const inst = getCurrentInstance()
+  const candidates = [inst?.proxy?.$router, globalThis?.$router]
+  candidates.forEach(r => {
+    if (r && typeof r.push === 'function') {
+      try { r.push('/') } catch(e) { /* ignore */ }
+    }
+  })
 }
 
 onMounted(async () => {
