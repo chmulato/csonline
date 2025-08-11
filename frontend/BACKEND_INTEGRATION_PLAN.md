@@ -1,9 +1,9 @@
 # Plano de Integração Frontend-Backend
 
-## 📋 Overview
+## Overview
 Este documento descreve o plano para integrar o frontend Vue.js com o backend JAX-RS (CSOnline).
 
-## 🎯 Objetivos
+## Objetivos
 - [x] Criar serviço de backend abstrato (`BackendService`)
 - [x] Configurar endpoints e URLs da API
 - [x] Atualizar store de autenticação para usar backend real
@@ -12,7 +12,7 @@ Este documento descreve o plano para integrar o frontend Vue.js com o backend JA
 - [ ] Adicionar loading states e feedback visual
 - [ ] Testar integração completa
 
-## 🏗️ Arquitetura da Integração
+## Arquitetura da Integração
 
 ### Backend API Endpoints
 ```
@@ -64,7 +64,7 @@ src/
     └── auth.js ✅ (Atualizado para backend real)
 ```
 
-## 🔄 Migração por Componente
+## Migração por Componente
 
 ### 1. Login Component ✅
 - [x] Store de auth atualizado
@@ -95,7 +95,7 @@ src/
 - [ ] Gestão de equipes
 - [ ] Associação de entregadores
 
-## 🛠️ Implementação por Fases
+## Implementação por Fases
 
 ### Fase 1: Infraestrutura ✅
 - [x] BackendService class
@@ -120,7 +120,7 @@ src/
 - [ ] Retry automático
 - [ ] Offline support
 
-## ⚙️ Configurações Específicas
+## Configurações Específicas
 
 ### Desenvolvimento
 ```javascript
@@ -136,7 +136,7 @@ DEBUG: false
 TIMEOUT: 10000ms
 ```
 
-## 🧪 Estratégia de Testes
+## Estratégia de Testes
 
 ### Testes Unitários
 - [ ] BackendService métodos
@@ -152,7 +152,7 @@ TIMEOUT: 10000ms
 - [ ] User workflows
 - [ ] Cross-browser compatibility
 
-## 📝 Checklist de Migração
+## Checklist de Migração
 
 ### Para cada componente:
 - [ ] Substituir fetch direto por BackendService
@@ -163,7 +163,7 @@ TIMEOUT: 10000ms
 - [ ] Verificar permissões
 - [ ] Documentar mudanças
 
-## 🚨 Possíveis Problemas e Soluções
+## Possíveis Problemas e Soluções
 
 ### CORS Issues
 ```javascript
@@ -189,7 +189,7 @@ TIMEOUT: 10000ms
 // Validação de response do backend
 ```
 
-## 📊 Métricas de Sucesso
+## Métricas de Sucesso
 
 - [ ] 100% dos componentes migrados
 - [ ] 0 chamadas fetch diretas restantes
@@ -197,7 +197,7 @@ TIMEOUT: 10000ms
 - [ ] Error rate < 1%
 - [ ] Cobertura de testes > 80%
 
-## 🔍 Monitoramento
+## Monitoramento
 
 ### Logs de Desenvolvimento
 ```javascript
@@ -212,7 +212,7 @@ TIMEOUT: 10000ms
 - Success rates por endpoint
 - User experience metrics
 
-## 📚 Documentação
+## Documentação
 
 - [ ] API endpoints documentation
 - [ ] Frontend service documentation  
@@ -222,10 +222,10 @@ TIMEOUT: 10000ms
 
 ---
 
-**Status Atual**: 🟡 Em Progresso
-- ✅ Infraestrutura base criada
-- 🔄 Migrando componentes principais
-- ⏳ Aguardando testes de integração
+**Status Atual**: Em Progresso
+- Infraestrutura base criada
+- Migração de componentes principais em andamento
+- Testes de integração pendentes
 
 **Próximos Passos**:
 1. Migrar CourierManagement e CustomerManagement
