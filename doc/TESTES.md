@@ -10,7 +10,7 @@ Este documento consolida todas as informações de testes do projeto (unitários
 
 **Status Atual:** 
 - **Backend**: Autenticação JWT ativa, 32 testes unitários verdes, endpoints REST protegidos por Bearer Token
-- **Frontend**: 360/405 testes Vue.js passando (88.9% de sucesso), metodologia testUtils.js com 7 componentes em 97%+ de taxa de sucesso
+- **Frontend**: 339/386 testes Vue.js passando (87.8% de sucesso), metodologia testUtils.js com 8 componentes em 95%+ de taxa de sucesso
 
 ---
 ## 2. Ambiente e Infraestrutura
@@ -46,8 +46,8 @@ Este documento consolida todas as informações de testes do projeto (unitários
 | **Backend** Testes Unitários/Serviço | 32             | 100%         | Todos verdes na branch main |
 | **Backend** Testes de Endpoints JWT  | 7 / 7          | 100%         | Todos endpoints protegidos e funcionais |
 | **Backend** Testes de Segurança JWT  | 20 / 20        | 100%         | Validação de segurança completa |
-| **Frontend** Testes Vue.js Components | 360 / 405      | 88.9%        | testUtils.js pattern com alto sucesso |
-| **Frontend** Arquivos com 97%+ sucesso | 7 arquivos     | 97%+         | Metodologia testUtils.js comprovadamente eficaz |
+| **Frontend** Testes Vue.js Components | 339 / 386      | 87.8%        | testUtils.js pattern com alto sucesso |
+| **Frontend** Arquivos com 95%+ sucesso | 8 arquivos     | 95%+         | Metodologia testUtils.js comprovadamente eficaz |
 | Scripts de Teste Automatizados   | 8              | 100%         | Suite completa de testes JWT 2.0 |
 
 ---
@@ -298,9 +298,9 @@ Total: 9 usuários
 
 ### 12.1 Frontend Vue.js Testing
 - ✅ **Metodologia testUtils.js estabelecida** com comprovação de eficácia
-- ✅ **7 componentes alcançaram 97%+ de taxa de sucesso**
-- ✅ **360/405 testes passando (88.9% de sucesso geral)**
-- ✅ **Conversão sistemática de UserManagement e DeliveryManagement**
+- ✅ **8 componentes alcançaram 95%+ de taxa de sucesso**
+- ✅ **339/386 testes passando (87.8% de sucesso geral)**
+- ✅ **Conversão sistemática de SMSManagement com testUtils.js**
 - ✅ **Padrão centralizado de mocks e setup de testes**
 - ✅ **Documentação completa do progresso e metodologia**
 
@@ -313,10 +313,10 @@ Total: 9 usuários
 ## 13. Métricas de Qualidade
 
 ### 13.1 Frontend Vue.js
-- **Taxa de Sucesso Geral**: 88.9% (360/405 testes)
-- **Componentes 100% Funcionais**: 5 
-- **Componentes 97%+ Funcionais**: 7
-- **Componentes em Melhoria**: 2 (UserManagement 69%, DeliveryManagement 35%)
+- **Taxa de Sucesso Geral**: 87.8% (339/386 testes)
+- **Componentes 100% Funcionais**: 1 (CourierManagement)
+- **Componentes 95%+ Funcionais**: 8
+- **SMSManagement**: 82.4% (14/17 testes) - convertido para testUtils.js
 - **Metodologia Eficácia**: testUtils.js comprovadamente eficaz
 
 ### 13.2 Backend
