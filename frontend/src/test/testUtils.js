@@ -134,8 +134,11 @@ export function createTestWrapper(component, options = {}) {
       ...defaultOptions.global,
       ...(options.global || {}),
       provide: {
-        backendService,
-        ...(options.global && options.global.provide ? options.global.provide : {})
+  backendService,
+  // merge global.provide passed in mount options
+  ...(options.global && options.global.provide ? options.global.provide : {}),
+  // also merge top-level provide (used by some legacy tests)
+  ...(options.provide || {})
       }
     }
   }
