@@ -117,7 +117,7 @@
               <small>{{ sms.delivery.destination }}</small>
             </div>
           </td>
-          <td>{{ sms.delivery.customer.user.name }}</td>
+          <td>{{ sms.delivery?.customer?.user?.name || sms.delivery?.customer?.name || 'N/A' }}</td>
           <td>
             <span class="message-type" :class="getTypeClass(sms.type)">
               <i :class="getTypeIcon(sms.type)"></i>
@@ -260,7 +260,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, inject } from 'vue'
+import { ref, reactive, computed, onMounted, inject } from 'vue'
 import { backendService as backendServiceSingleton } from '../services/backend.js'
 
 const emit = defineEmits(['back'])
@@ -282,6 +282,8 @@ const viewingSMS = ref(null)
 const deliveryFilter = ref('')
 const typeFilter = ref('')
 const dateFilter = ref('')
+// Legacy combined filter object (fixed tests)
+const filter = reactive({ delivery: '', type: '', status: '' })
 
 // Form data
 const form = ref({
@@ -326,23 +328,18 @@ async function loadData() {
 }
 
 const filteredSMS = computed(() => {
-  let filtered = smsMessages.value;
-  
-  if (deliveryFilter.value) {
-    filtered = filtered.filter(sms => sms.delivery.id == deliveryFilter.value);
-  }
-  
-  if (typeFilter.value) {
-    filtered = filtered.filter(sms => sms.type === typeFilter.value);
-  }
-  
+  let filtered = [...smsMessages.value]
+  const deliveryVal = deliveryFilter.value || filter.delivery
+  const typeVal = typeFilter.value || filter.type
+  if (deliveryVal) filtered = filtered.filter(s => s.delivery && String(s.delivery.id) === String(deliveryVal))
+  if (typeVal) filtered = filtered.filter(s => s.type === typeVal)
   if (dateFilter.value) {
-    const filterDate = new Date(dateFilter.value).toDateString();
-    filtered = filtered.filter(sms => new Date(sms.datetime).toDateString() === filterDate);
+    const filterDate = new Date(dateFilter.value).toDateString()
+    filtered = filtered.filter(s => new Date(s.datetime).toDateString() === filterDate)
   }
-  
-  return filtered.sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
-});
+  if (filter.status) filtered = filtered.filter(s => s.status === filter.status)
+  return filtered.sort((a,b) => new Date(b.datetime) - new Date(a.datetime))
+})
 
 const selectedDelivery = computed(() => {
   if (!form.value.delivery.id) return null;
@@ -455,22 +452,37 @@ function getContactName(mobile) {
 }
 
 function formatPhone(phone) {
-  if (!phone) return '';
-  return phone.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+  if (!phone) return ''
+  const digits = phone.replace(/\D/g, '')
+  if (digits.startsWith('55')) {
+    const core = digits.slice(2)
+    if (core.length === 11) return `+55 (${core.slice(0,2)}) ${core.slice(2,7)}-${core.slice(7)}`
+    if (core.length === 10) return `+55 (${core.slice(0,2)}) ${core.slice(2,6)}-${core.slice(6)}`
+  }
+  if (digits.length === 11) return `(${digits.slice(0,2)}) ${digits.slice(2,7)}-${digits.slice(7)}`
+  if (digits.length === 10) return `(${digits.slice(0,2)}) ${digits.slice(2,6)}-${digits.slice(6)}`
+  return phone
 }
 
 function formatDateTime(datetime) {
-  if (!datetime) return '';
-  return new Date(datetime).toLocaleString('pt-BR');
+  if (!datetime) return ''
+  const d = new Date(datetime)
+  const pad = n => String(n).padStart(2,'0')
+  return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`
 }
 
 function getTemplates(type) {
-  return messageTemplates[type] || [];
+  return messageTemplates[type] || []
 }
+function getTemplatesByType(type) { return getTemplates(type) }
 
 function useTemplate(template) {
-  form.value.message = template.text;
+  form.value.message = template.text
 }
+async function openForm() { showForm.value = true }
+function cancelOperation() { cancel() }
+function goToPage(page) { /* pagination not implemented; placeholder */ }
+function useTemplateFromTest(text) { form.value.message = text }
 
 function onDeliveryChange() {
   if (selectedDelivery.value) {

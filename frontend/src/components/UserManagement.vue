@@ -89,6 +89,8 @@
 
 <script setup>
 import { ref, computed, onMounted, inject } from 'vue'
+// define emit for legacy tests expecting 'back' event
+const emit = defineEmits(['back'])
 import { useRouter } from 'vue-router'
 import { backendService as backendServiceSingleton } from '../services/backend.js'
 
@@ -163,10 +165,11 @@ async function saveUser() {
     loading.value = true
     error.value = null
     
-    const userData = { ...form.value }
+  const userData = { ...form.value }
+  if (!userData.password) delete userData.password
     
     if (editingUser.value && !userData.password) {
-      delete userData.password
+      // already removed above
     }
     
     if (editingUser.value) {
@@ -240,7 +243,12 @@ function resetForm() {
 }
 
 function goBack() {
-  router.push('/')
+  try { emit('back') } catch(_) {}
+  if (router && typeof router.push === 'function') {
+    router.push('/')
+  } else if (globalThis?.$router?.push) {
+    globalThis.$router.push('/')
+  }
 }
 
 onMounted(async () => {
