@@ -354,6 +354,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { backendService } from '../services/backend.js'
+import { formatDataForBackend } from '../config/backend.js'
 
 // Emits
 const emit = defineEmits(['back'])
@@ -590,14 +591,23 @@ async function savePrice() {
   saving.value = true
   
   try {
-    // Preparar dados para envio
-    const priceData = {
+    const raw = {
+      id: currentPrice.value.id,
       tableName: currentPrice.value.tableName,
-      customer: { id: parseInt(currentPrice.value.customerId) },
-      business: { id: parseInt(currentPrice.value.businessId) },
+      customerId: parseInt(currentPrice.value.customerId),
+      businessId: parseInt(currentPrice.value.businessId),
       vehicle: currentPrice.value.vehicle,
       local: currentPrice.value.local,
-      price: parseFloat(currentPrice.value.price)
+      price: currentPrice.value.price
+    }
+    const formatted = formatDataForBackend(raw, 'price')
+    const priceData = {
+      tableName: formatted.tableName,
+      customer: { id: formatted.customerId },
+      business: { id: formatted.businessId },
+      vehicle: formatted.vehicle,
+      local: formatted.local,
+      price: formatted.price
     }
     
     let savedPrice

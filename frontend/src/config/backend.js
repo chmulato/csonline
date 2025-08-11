@@ -184,6 +184,17 @@ export function formatDataForBackend(data, type) {
         completed: !!data.completed
       }
 
+    case 'price':
+      return {
+        id: data.id || null,
+        tableName: data.tableName || '',
+        customerId: data.customerId || data.customer?.id || null,
+        businessId: data.businessId || data.business?.id || null,
+        vehicle: (data.vehicle || '').toLowerCase(),
+        local: data.local || '',
+        price: typeof data.price === 'number' ? data.price : parseFloat(data.price) || 0
+      }
+
     default:
       return data
   }
