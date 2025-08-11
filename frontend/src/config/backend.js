@@ -165,6 +165,25 @@ export function formatDataForBackend(data, type) {
         password: data.password || null // Apenas para criação
       }
       
+    case 'delivery':
+      return {
+        id: data.id || null,
+        businessId: data.businessId || data.business?.id || null,
+        customerId: data.customerId || data.customer?.id || null,
+        courierId: data.courierId || data.courier?.id || null,
+        start: data.start || '',
+        destination: data.destination || '',
+        contact: data.contact || '',
+        description: data.description || '',
+        volume: data.volume || '',
+        weight: data.weight || '',
+        km: typeof data.km === 'number' ? data.km : parseFloat(data.km) || 0,
+        additionalCost: typeof data.additionalCost === 'number' ? data.additionalCost : parseFloat(data.additionalCost) || 0,
+        cost: typeof data.cost === 'number' ? data.cost : parseFloat(data.cost) || 0,
+        received: !!data.received,
+        completed: !!data.completed
+      }
+
     default:
       return data
   }

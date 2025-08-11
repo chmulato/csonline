@@ -212,6 +212,7 @@
 <script setup>
 import { ref, computed, onMounted, inject, watch } from 'vue'
 import { backendService as backendServiceSingleton } from '../services/backend.js'
+import { formatDataForBackend } from '../config/backend.js'
 
 const emit = defineEmits(['back'])
 
@@ -443,12 +444,10 @@ function formatCurrency(value) {
 
 async function editDelivery(delivery) {
   editingDelivery.value = delivery
-  
-  // Mapear os dados para o formulário
   form.value = {
-    businessId: delivery.business?.id || '',
-    customerId: delivery.customer?.id || '',
-    courierId: delivery.courier?.id || '',
+    businessId: delivery.business?.id || delivery.businessId || '',
+    customerId: delivery.customer?.id || delivery.customerId || '',
+    courierId: delivery.courier?.id || delivery.courierId || '',
     start: delivery.start || '',
     destination: delivery.destination || '',
     contact: delivery.contact || '',
@@ -458,10 +457,9 @@ async function editDelivery(delivery) {
     km: delivery.km || '',
     additionalCost: delivery.additionalCost || '',
     cost: delivery.cost || '',
-    received: delivery.received || false,
-    completed: delivery.completed || false
+    received: !!delivery.received,
+    completed: !!delivery.completed
   }
-  
   showForm.value = true
 }
 
@@ -487,44 +485,53 @@ async function saveDelivery() {
   saving.value = true
   
   try {
-    // Preparar dados para envio
-    const deliveryData = {
-      business: { id: parseInt(form.value.businessId) },
-      customer: { id: parseInt(form.value.customerId) },
-      courier: { id: parseInt(form.value.courierId) },
+    // Construir dados brutos e formatar (mantendo estrutura esperada pelos testes: business/customer/courier objetos)
+    const raw = {
+      id: editingDelivery.value?.id || null,
+      businessId: parseInt(form.value.businessId),
+      customerId: parseInt(form.value.customerId),
+      courierId: parseInt(form.value.courierId),
       start: form.value.start,
       destination: form.value.destination,
       contact: form.value.contact,
       description: form.value.description,
       volume: form.value.volume,
       weight: form.value.weight,
-      km: parseFloat(form.value.km) || 0,
-      additionalCost: parseFloat(form.value.additionalCost) || 0,
-      cost: parseFloat(form.value.cost),
+      km: form.value.km,
+      additionalCost: form.value.additionalCost,
+      cost: form.value.cost,
       received: form.value.received,
       completed: form.value.completed
     }
+    const formatted = formatDataForBackend(raw, 'delivery')
+    // Payload final compatível com testes existentes
+    const deliveryData = {
+      business: { id: formatted.businessId },
+      customer: { id: formatted.customerId },
+      courier: { id: formatted.courierId },
+      start: formatted.start,
+      destination: formatted.destination,
+      contact: formatted.contact,
+      description: formatted.description,
+      volume: formatted.volume,
+      weight: formatted.weight,
+      km: formatted.km,
+      additionalCost: formatted.additionalCost,
+      cost: formatted.cost,
+      received: formatted.received,
+      completed: formatted.completed
+    }
     
-    let savedDelivery
+  let savedDelivery
     
     if (editingDelivery.value) {
-      // Editar entrega existente
       savedDelivery = await backendService.updateDelivery(editingDelivery.value.id, deliveryData)
-      
-      // Atualizar na lista local
-      const index = deliveries.value.findIndex(d => d.id === editingDelivery.value.id)
-      if (index !== -1) {
-        deliveries.value[index] = { ...editingDelivery.value, ...savedDelivery }
-      }
-      
+      const idx = deliveries.value.findIndex(d => d.id === editingDelivery.value.id)
+      if (idx !== -1) deliveries.value[idx] = { ...deliveries.value[idx], ...savedDelivery }
       console.log('Entrega atualizada com sucesso')
     } else {
-      // Criar nova entrega
       savedDelivery = await backendService.createDelivery(deliveryData)
-      
-      // Adicionar à lista local
       deliveries.value.push(savedDelivery)
-      
       console.log('Entrega criada com sucesso')
     }
     
