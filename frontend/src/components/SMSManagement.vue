@@ -262,6 +262,7 @@
 <script setup>
 import { ref, reactive, computed, onMounted, inject } from 'vue'
 import { backendService as backendServiceSingleton } from '../services/backend.js'
+import { formatDataForBackend } from '../config/backend.js'
 
 const emit = defineEmits(['back'])
 
@@ -556,14 +557,23 @@ async function saveSMS() {
   saving.value = true
   
   try {
-    // Preparar dados para envio
-    const smsData = {
-  deliveryId: parseInt(form.value.deliveryId || form.value.delivery?.id),
-      piece: parseInt(form.value.piece),
+    const raw = {
+      id: editingSMS.value?.id || null,
+      deliveryId: parseInt(form.value.deliveryId || form.value.delivery?.id),
+      piece: form.value.piece,
       type: form.value.type,
       mobileFrom: form.value.mobileFrom,
       mobileTo: form.value.mobileTo,
       message: form.value.message
+    }
+    const formatted = formatDataForBackend(raw, 'sms')
+    const smsData = {
+      deliveryId: formatted.deliveryId,
+      piece: formatted.piece,
+      type: formatted.type,
+      mobileFrom: formatted.mobileFrom,
+      mobileTo: formatted.mobileTo,
+      message: formatted.message
     }
     
     let savedSMS

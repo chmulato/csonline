@@ -195,6 +195,17 @@ export function formatDataForBackend(data, type) {
         price: typeof data.price === 'number' ? data.price : parseFloat(data.price) || 0
       }
 
+    case 'sms':
+      return {
+        id: data.id || null,
+        deliveryId: data.deliveryId || data.delivery?.id || null,
+        piece: parseInt(data.piece) || 1,
+        type: data.type || '',
+        mobileFrom: data.mobileFrom || '',
+        mobileTo: data.mobileTo || '',
+        message: data.message || ''
+      }
+
     default:
       return data
   }
