@@ -205,15 +205,138 @@ sequenceDiagram
 - **Frontend SPA**: [http://localhost:5173](http://localhost:5173) (desenvolvimento com proxy JWT)
 - **Sistema Enterprise**: [http://localhost:8080/csonline/](http://localhost:8080/csonline/) *(login JWT obrigatório)*
 - **Login JWT**: [http://localhost:8080/csonline/api/login](http://localhost:8080/csonline/api/login) *(endpoint público)*
-- **Swagger UI**: [http://localhost:8080/csonline/swagger-ui/index.html](http://localhost:8080/csonline/swagger-ui/index.html)
+- **Swagger UI**: [http://localhost:8080/csonline/swagger-ui/](http://localhost:8080/csonline/swagger-ui/) *(mapa completo da API)*
+- **OpenAPI JSON**: [http://localhost:8080/csonline/api/openapi.json](http://localhost:8080/csonline/api/openapi.json) *(especificação da API)*
 - **APIs Protegidas**: `http://localhost:8080/csonline/api/*` *(Bearer Token obrigatório)*
-- **Health Check**: `http://localhost:8080/csonline/api/health` *(endpoint público)*
+- **Health Check**: [http://localhost:8080/csonline/api/health](http://localhost:8080/csonline/api/health) *(endpoint público)*
 
-### **Interface Swagger UI**
+### **Interface Swagger UI - Mapa Completo da API**
 
 ![Swagger UI - CSOnline API](img/swagger-ui.png)
 
-*Interface Swagger UI mostrando todos os endpoints da API REST com documentação interativa e suporte para autenticação JWT.*
+*Interface Swagger UI totalmente funcional mostrando **todos os endpoints da API REST** com documentação interativa completa e suporte para autenticação JWT.*
+
+#### **Recursos do Swagger UI:**
+- **Mapeamento Completo**: Todos os 35+ endpoints da aplicação documentados
+- **Autenticação JWT**: Botão "Authorize" para inserir Bearer Token
+- **Teste Interativo**: Execute qualquer endpoint diretamente na interface
+- **Documentação Automática**: Schemas, modelos e validações em tempo real
+- **Exploração de API**: Navegue por todos os módulos e operações CRUD
+- **Download OpenAPI**: Especificação completa em JSON/YAML
+
+#### **Endpoints Mapeados no Swagger UI:**
+
+**Autenticação & Segurança:**
+- `POST /api/login` - Autenticação JWT (público)
+- `GET /api/health` - Health Check (público)
+
+**Gestão de Usuários (CRUD Completo):**
+- `GET /api/users` - Listar usuários
+- `POST /api/users` - Criar usuário
+- `GET /api/users/{id}` - Buscar por ID
+- `PUT /api/users/{id}` - Atualizar usuário
+- `DELETE /api/users/{id}` - Remover usuário
+
+**Gestão de Entregadores (CRUD Completo):**
+- `GET /api/couriers` - Listar entregadores
+- `POST /api/couriers` - Criar entregador
+- `GET /api/couriers/{id}` - Buscar por ID
+- `PUT /api/couriers/{id}` - Atualizar entregador
+- `DELETE /api/couriers/{id}` - Remover entregador
+
+**Centros de Distribuição (CRUD Completo):**
+- `GET /api/customers` - Listar centros
+- `POST /api/customers` - Criar centro
+- `GET /api/customers/{id}` - Buscar por ID
+- `PUT /api/customers/{id}` - Atualizar centro
+- `DELETE /api/customers/{id}` - Remover centro
+
+**Gestão de Entregas (CRUD Completo):**
+- `GET /api/deliveries` - Listar entregas
+- `POST /api/deliveries` - Criar entrega
+- `GET /api/deliveries/{id}` - Buscar por ID
+- `PUT /api/deliveries/{id}` - Atualizar entrega
+- `DELETE /api/deliveries/{id}` - Remover entrega
+
+**Gestão de Equipes (CRUD Completo):**
+- `GET /api/teams` - Listar equipes
+- `POST /api/teams` - Criar equipe
+- `GET /api/teams/{id}` - Buscar por ID
+- `PUT /api/teams/{id}` - Atualizar equipe
+- `DELETE /api/teams/{id}` - Remover equipe
+
+**Gestão de Preços (CRUD + Consultas):**
+- `GET /api/prices` - Listar preços
+- `POST /api/prices` - Criar preço
+- `GET /api/prices/{id}` - Buscar por ID
+- `PUT /api/prices/{id}` - Atualizar preço
+- `DELETE /api/prices/{id}` - Remover preço
+- `GET /api/prices/business/{businessId}` - Preços por empresa
+
+**Sistema SMS/WhatsApp (Gestão + Envio):**
+- `GET /api/sms` - Listar mensagens
+- `POST /api/sms` - Criar mensagem
+- `GET /api/sms/{id}` - Buscar por ID
+- `DELETE /api/sms/{id}` - Remover mensagem
+- `GET /api/sms/delivery/{deliveryId}` - Mensagens por entrega
+- `POST /api/sms/{id}/send` - Enviar mensagem
+
+**Documentação OpenAPI:**
+- `GET /api/openapi.json` - Especificação OpenAPI em JSON
+- `GET /api/openapi.yaml` - Especificação OpenAPI em YAML
+
+#### **Como Usar o Swagger UI:**
+
+1. **Acesse a Interface:**
+   ```
+   http://localhost:8080/csonline/swagger-ui/
+   ```
+
+2. **Autentique-se:**
+   - Clique no botão **"Authorize"**
+   - Obtenha um token JWT no endpoint `/api/login`
+   - Insira o token no formato: `Bearer {seu_token_jwt}`
+
+3. **Explore e Teste:**
+   - Navegue pelos módulos na interface
+   - Clique em qualquer endpoint para expandir
+   - Use **"Try it out"** para testar em tempo real
+   - Veja exemplos de request/response
+
+4. **Modelos de Dados:**
+   - Role até a seção **"Models"** no final
+   - Explore os schemas de todas as entidades
+   - Veja validações e tipos de campos
+
+#### **Obtendo Token JWT para Swagger UI:**
+
+**Opção 1: Via Swagger UI**
+1. Acesse o endpoint `POST /api/login` no Swagger UI
+2. Clique em "Try it out"
+3. Use as credenciais:
+   ```json
+   {
+     "login": "admin",
+     "password": "admin123"
+   }
+   ```
+4. Execute e copie o token da resposta
+5. Clique em "Authorize" e cole o token
+
+**Opção 2: Via PowerShell**
+```powershell
+# Obter token JWT
+$response = Invoke-RestMethod -Uri "http://localhost:8080/csonline/api/login" -Method POST -Headers @{"Content-Type"="application/json"} -Body '{"login":"admin","password":"admin123"}'
+Write-Host "Token JWT: Bearer $($response.token)"
+```
+
+**Opção 3: Via curl**
+```bash
+# Obter token JWT
+curl -X POST "http://localhost:8080/csonline/api/login" \
+     -H "Content-Type: application/json" \
+     -d '{"login":"admin","password":"admin123"}'
+```
 
 ### **Módulos Disponíveis no Frontend JWT:**
 - **Login** → Autenticação JWT obrigatória
@@ -320,13 +443,20 @@ Consulte o arquivo [doc/INDEX.md](doc/INDEX.md) para documentação detalhada do
 
 ## Próximos Passos
 
-### **Com Segurança JWT 2.0 Enterprise Implementada, o foco agora é:**
+### **Com Segurança JWT 2.0 Enterprise e Swagger UI Implementados, o foco agora é:**
 
 #### **Autenticação JWT Enterprise - CONCLUÍDA:**
 - **Sistema JWT completo** implementado e testado com 20 testes de segurança
 - **Integração frontend-backend** com autenticação seamless Vue 3 + Jakarta EE
 - **Proteção automática** de todos os endpoints `/api/*` com filtro de segurança
 - **Tokens HMAC SHA-512** com expiração de 24 horas e validação robusta
+
+#### **Documentação API Interativa - CONCLUÍDA:**
+- **Swagger UI completo** com mapeamento de todos os 35+ endpoints
+- **Interface interativa** para teste e exploração da API
+- **Autenticação JWT integrada** no Swagger UI com botão "Authorize"
+- **Documentação automática** de schemas, modelos e validações
+- **Download de especificação** OpenAPI em JSON/YAML
 
 #### **Próximas Evoluções de Produção:**
 - **Operações CRUD Completas**: POST, PUT, DELETE com validação JWT em todos os módulos
@@ -342,9 +472,10 @@ Consulte o arquivo [doc/INDEX.md](doc/INDEX.md) para documentação detalhada do
 
 ### **Roadmap Estratégico JWT 2.0:**
 1. **Segurança Enterprise** CONCLUÍDA (7 de Agosto/2025)
-2. **Operações CRUD Autenticadas** (próxima milestone)
-3. **Autorização Granular** (controle de permissões)
-4. **Deploy Produção Seguro** (HTTPS + JWT enterprise)
+2. **Documentação API Swagger UI** CONCLUÍDA (12 de Agosto/2025)
+3. **Operações CRUD Autenticadas** (próxima milestone)
+4. **Autorização Granular** (controle de permissões)
+5. **Deploy Produção Seguro** (HTTPS + JWT enterprise)
 
 ## Contato
 
