@@ -16,7 +16,7 @@ O **CSOnline** representa mais que um sistema - é uma **jornada de superação 
 
 **A consolidação** (2014-2024): Uma década de operação validou regras de negócio sólidas e arquitetura funcional. O sistema atendia às necessidades operacionais, mas permanecia tecnicamente limitado pela stack legacy.
 
-**O impasse** (2024): O sistema estava **funcionalmente completo e validado pelo mercado**, mas a modernização para padrões enterprise exigia uma **equipe de desenvolvimento substancial**. Permaneceu **público no GitHub** como repositório open-source, aguardando colaboradores que nunca chegaram.
+**O impasse** (2024): O sistema estava **funcionalmente completo**, mas a modernização para padrões enterprise exigia uma **equipe de desenvolvimento substancial**. Permaneceu **público no GitHub** como repositório open-source, aguardando colaboradores que nunca chegaram.
 
 **A transformação** (2025): O advento das **IAs assistentes de desenvolvimento** quebrou completamente essa limitação. Agora é possível combinar **uma década de experiência de negócio consolidada** com **inteligência artificial como força de trabalho especializada**, eliminando definitivamente a barreira de recursos humanos.
 
