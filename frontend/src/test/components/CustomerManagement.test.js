@@ -79,7 +79,7 @@ describe('CustomerManagement Component', () => {
       await wrapper.vm.$nextTick()
 
       expect(wrapper.find('button').text()).toContain('Nova Empresa')
-      expect(wrapper.find('.back-btn').text()).toBe('Voltar')
+      expect(wrapper.find('.btn-secondary').text()).toBe('Voltar')
     })
 
     it('should not show form modal initially', async () => {

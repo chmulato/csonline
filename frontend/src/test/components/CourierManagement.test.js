@@ -151,7 +151,7 @@ describe('CourierManagement Component', () => {
     })
 
     it('should render back button', () => {
-      expect(wrapper.find('.back-btn').text()).toBe('Voltar')
+      expect(wrapper.find('.btn-secondary').text()).toBe('Voltar')
     })
   })
 
@@ -269,13 +269,12 @@ describe('CourierManagement Component', () => {
   })
 
   describe('Navegação', () => {
-    it('should call router push when back button is clicked', async () => {
-      const routerSpy = vi.spyOn(mockRouter, 'push')
-      
-      const backButton = wrapper.find('.back-btn')
+    it('should emit back event when back button is clicked', async () => {
+      const backButton = wrapper.find('.btn-secondary')
       await backButton.trigger('click')
       
-      expect(routerSpy).toHaveBeenCalledWith('/dashboard')
+      expect(wrapper.emitted()).toHaveProperty('back')
+      expect(wrapper.emitted('back')).toHaveLength(1)
     })
   })
 
