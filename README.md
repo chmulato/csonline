@@ -1,6 +1,6 @@
 # CSOnline - Gestão CD (Centro de Distribuição) JWT 2.0
 
-Sistema completo para gestão de centros de distribuição, entregas, entregadores, equipes, preços e comunicação via SMS/WhatsApp. Desenvolvido com Jakarta EE 10 no backend, Vue 3 + Vite no frontend e **autenticação JWT enterprise**.
+Sistema completo para gestão de centros de distribuição, entregas, entregadores, equipes, preços e comunicação via SMS/WhatsApp. Desenvolvido com Jakarta EE 10 no backend, Vue 3 + Vite no frontend e autenticação JWT enterprise.
 
  
 
@@ -38,6 +38,7 @@ O projeto inclui scripts de teste para validar autenticação JWT e endpoints da
 - **`test-deliveries.ps1`** - Testa endpoints de entregas protegidas
 - **`test-sms.ps1`** - Testa endpoints de SMS/WhatsApp com JWT
 - **`test-login.ps1`** - Testa endpoint de autenticação JWT
+- **`test-frontend-integration.ps1`** - Teste integrado de múltiplos módulos (lista + shape + GET by ID + seeding de Teams)
 
 ### Ferramentas de Suporte
 
@@ -46,6 +47,7 @@ O projeto inclui scripts de teste para validar autenticação JWT e endpoints da
 - **`test-all-endpoints.ps1`** - Executa todos os testes com autenticação JWT
 - **`health-check-endpoints.ps1`** - Verificação de saúde sem autenticação
 - **`run-tests.ps1`** - **Script principal JWT 2.0** com opções de segurança
+ - **`test-frontend-integration.ps1`** - Execução única ponta a ponta (users, couriers, customers, deliveries, teams, prices, sms)
 
 ### Como Executar os Testes
 
@@ -64,6 +66,9 @@ O projeto inclui scripts de teste para validar autenticação JWT e endpoints da
 
 # Testes verbosos com logs detalhados
 .\run-tests.ps1 -JWTSecurity -Verbose -Login "admin" -Password "admin123"
+
+# Integração completa (script unificado)
+pwsh ./scr/tests/test-frontend-integration.ps1 -BaseUrl "http://localhost:8080/csonline" -Login "admin" -Password "admin123"
 ```
 
 ### Credenciais de Teste
@@ -284,6 +289,7 @@ Consulte o arquivo [doc/INDEX.md](doc/INDEX.md) para documentação detalhada do
 - `scr/tests/` - **Suite completa de testes automatizados**
   - `test-*.ps1` - Scripts individuais para cada endpoint
   - `test-all-endpoints.ps1` - Script master para todos os testes
+   - `test-frontend-integration.ps1` - Teste consolidado frontend-backend
   - `health-check-endpoints.ps1` - Verificação de saúde
   - `README-TESTES.ps1` - Documentação interativa dos testes
 - `doc/` - Documentação completa do projeto

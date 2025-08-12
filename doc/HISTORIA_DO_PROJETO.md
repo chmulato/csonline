@@ -143,11 +143,14 @@
 3. **Transações JTA vs RESOURCE_LOCAL**: Configuração flexível para múltiplos ambientes
 4. **Migrações Flyway**: Implementação de controle de versão do banco de dados
 5. **IDs de Teste Inválidos**: Alinhamento entre dados reais e scripts de validação
-5. **Endpoint Teams 404**: Correção do path `/team` para `/teams` no controller
-6. **Implementação JWT**: Integração completa de autenticação em frontend e backend
-7. **Filtro de Segurança**: Proteção automática de endpoints com configuração flexível
-8. **Correção Scripts JWT**: Atualização de 5 scripts de teste para incluir Bearer Token nos cabeçalhos
-9. **Consolidação Branch Main**: Merge completo da branch de testes para main com 64 arquivos atualizados
+6. **Endpoint Teams 404**: Correção do path `/team` para `/teams` no controller
+7. **Implementação JWT**: Integração completa de autenticação em frontend e backend
+8. **Filtro de Segurança**: Proteção automática de endpoints com configuração flexível
+9. **Correção Scripts JWT**: Atualização de 5 scripts de teste para incluir Bearer Token nos cabeçalhos
+10. **Consolidação Branch Main**: Merge completo da branch de testes para main com 64 arquivos atualizados
+11. **Seeding de Equipes**: Lógica de geração automática de equipes quando base vazia
+12. **Correção Path Duplicado /api**: Ajuste em scripts que montavam `/api/api/teams` gerando 404
+13. **Token Admin Padrão**: Ajustes no utilitário PowerShell garantindo execução com perfil ADMIN
 
 ### **Evolução da Arquitetura de Segurança**
 - **Autenticação Centralizada**: Sistema JWT com Pinia store e interceptors HTTP
@@ -256,3 +259,36 @@ O CSOnline agora combina **funcionalidade completa com segurança enterprise**, 
 ---
 
 **Sistema CSOnline - Gestão CD: Da Visão à Realidade Enterprise Segura - Atualizado em 9 de agosto de 2025**
+
+## X. Integração Frontend-Backend e Testes E2E (10-12 Agosto 2025)
+
+### Consolidação Pós-Segurança
+Após a consolidação da segurança JWT 2.0, o foco voltou-se para a validação ponta a ponta entre a SPA Vue 3 e os endpoints Jakarta EE sob WildFly, garantindo que o fluxo real de autenticação, listagem, criação e leitura individual estivesse consistente.
+
+### Principais Entregas Técnicas
+- **Script de Integração Unificado**: `scr/tests/test-frontend-integration.ps1` executa bateria de chamadas autenticadas (users, couriers, customers, deliveries, teams, prices, sms) validando formato, contagem e recuperando entidades por ID.
+- **Utilitário JWT Refinado**: `scr/tests/jwt-utility.ps1` passou a retornar o token diretamente e a aplicar defaults administrativos seguros (admin/admin123) com aviso quando perfil não-admin é usado.
+- **Seeding de Equipes**: Implementada função idempotente para criação de equipes caso a base esteja vazia, relacionando usuários (perfil BUSINESS) e couriers disponíveis.
+- **Correção de Caminhos**: Removido prefixo duplicado /api em chamadas a /teams que produzia 404 intermitente.
+- **Padronização de Payloads**: Ajuste definitivo para uso de `businessId` e `courierId` planos em vez de objetos aninhados, alinhando frontend, scripts e controller.
+- **Execução Garantida com Role ADMIN**: Scripts agora validam e reforçam uso de credenciais administrativas quando necessário (ex.: Teams CRUD restrito).
+
+### Problemas Identificados e Sanados
+- 403 em Teams por uso de token não-admin → ajustado para token administrativo padrão.
+- 404 em Teams por path composto incorretamente (`/api/api/teams`) → lógica de montagem de URL revisada.
+- Seed silencioso sem persistência aparente quando banco estava offline → verificação explícita e inicialização do container HSQLDB antes dos testes.
+- Param block fora do topo em script PowerShell causando parsing inconsistente → refatorado para conformidade.
+
+### Resultado
+Todos os módulos críticos respondem com sucesso sob autenticação JWT, incluindo validação de obtenção de entidade por ID após listagem e (quando aplicável) criação inicial via seeding. A base técnica para ativar operações POST/PUT/DELETE diretamente a partir do frontend está consolidada.
+
+### Próximos Refinamentos Imediatos
+1. Expandir testes de integração para validar mutações (POST/PUT/DELETE) com verificação de efeitos colaterais.
+2. Introduzir geração de dados únicos (UUID) em scripts para evitar conflitos em execuções repetidas.
+3. Adicionar métricas de cobertura de testes backend (Jacoco) ao relatório de integração.
+4. Incluir validação de claims JWT (exp, roles) nos scripts de integração além do simples uso do token.
+5. Pipeline CI: empacotar, subir WildFly em modo efêmero, rodar suíte de integração completa e publicar artefatos.
+
+---
+
+**Sistema CSOnline - Gestão CD: Da Visão à Realidade Enterprise Segura - Atualizado em 12 de agosto de 2025**

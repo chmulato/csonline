@@ -3,11 +3,15 @@
 # Data: 7 de agosto de 2025
 
 param(
-    [string]$Login = "empresa",
-    [string]$Password = "empresa123",
+    [string]$Login = "admin",
+    [string]$Password = "admin123",
     [string]$BaseUrl = "http://localhost:8080/csonline",
     [switch]$Verbose
 )
+
+if ($Login -ne 'admin') {
+    Write-Host "⚠️ jwt-utility.ps1: Recomendado usar ADMIN para cobertura total. Recebido '$Login'." -ForegroundColor Yellow
+}
 
 # Função para obter token JWT
 function Get-JWTToken {
@@ -155,7 +159,7 @@ function Test-EndpointWithoutJWT {
 }
 
 # Exportar funções se executado como módulo
-if ($MyInvocation.InvocationName -ne "&") {
+if ($MyInvocation.InvocationName -eq "jwt-utility.ps1" -or $MyInvocation.InvocationName -like "*jwt-utility.ps1") {
     # Se executado diretamente, fazer um teste básico
     Write-Host "=== TESTE BÁSICO JWT UTILITY ===" -ForegroundColor Magenta
     
@@ -180,6 +184,11 @@ if ($MyInvocation.InvocationName -ne "&") {
             Write-Host "✅ Teste de segurança: SUCESSO" -ForegroundColor Green
         } else {
             Write-Host "❌ Teste de segurança: FALHA" -ForegroundColor Red
+        }
+        
+        # Retorna o token para uso em outros scripts
+        return @{
+            token = $token
         }
     } else {
         Write-Host "❌ Falha ao obter token JWT" -ForegroundColor Red
