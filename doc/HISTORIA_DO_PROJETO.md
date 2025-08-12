@@ -164,24 +164,27 @@
 - **Testes Automatizados**: Suite com 9 scripts especializados e relatórios estruturados
 - **Correção de Autenticação**: Resolução de problemas de headers Authorization em ambiente de produção
 
-## VIII. Estado Atual e Capacidades JWT 2.0
+## VIII. Estado Atual e Capacidades JWT 2.0 + Swagger UI
 
-### **Sistema Enterprise Seguro Completo**
+### **Sistema Enterprise Seguro e Documentado Completo**
 - **Frontend Vue 3 SPA**: 7 módulos com autenticação JWT integrada
 - **Backend Jakarta EE**: 7 endpoints REST protegidos por Bearer Token
-- **Infraestrutura**: WildFly 31.0.1.Final + HSQLDB 2.7 + Flyway + JWT Security
+- **Swagger UI Completo**: Interface interativa com mapeamento de 35+ endpoints
+- **Infraestrutura**: WildFly 31.0.1.Final + HSQLDB 2.7 + Flyway + JWT Security + Swagger UI
 - **Qualidade**: 100% de endpoints funcionais com 20 testes de segurança aprovados
 
-### **URLs de Produção Seguras**
+### **URLs de Produção Seguras e Documentadas**
 - **Aplicação**: http://localhost:8080/csonline/ (com login JWT obrigatório)
 - **Login**: http://localhost:8080/csonline/api/login (endpoint público)
 - **APIs Protegidas**: http://localhost:8080/csonline/api/* (Bearer Token obrigatório)
-- **Swagger UI**: http://localhost:8080/csonline/swagger-ui/
+- **Swagger UI**: http://localhost:8080/csonline/swagger-ui/ (documentação interativa completa)
+- **OpenAPI JSON**: http://localhost:8080/csonline/api/openapi.json (especificação da API)
 - **Console Admin**: http://localhost:9990
 
-### **Métricas de Segurança e Qualidade**
+### **Métricas de Segurança, Qualidade e Documentação**
 - **Taxa de Sucesso**: 100% (7/7 endpoints protegidos)
 - **Taxa de Segurança**: 100% (20/20 testes de segurança aprovados)
+- **Documentação API**: 100% (35+ endpoints mapeados no Swagger UI)
 - **Tempo de Resposta**: < 100ms com validação JWT
 - **Disponibilidade**: 99.9% com proteção contra acesso não autorizado
 - **Cobertura de Testes**: 100% incluindo cenários de segurança
@@ -196,17 +199,20 @@
 ### **Próximas Fases de Evolução**
 1. **Autenticação JWT**: CONCLUÍDO - Sistema completo implementado e testado
 2. **Scripts de Teste JWT**: CONCLUÍDO - Todos os scripts corrigidos com Bearer Token
-3. **Integração Frontend-Backend**: Substituição de dados simulados por APIs reais autenticadas
-4. **Autorização por Perfis**: Extensão do JWT para controle granular de permissões
-5. **Operações Avançadas**: Implementação completa de operações POST/PUT/DELETE com validação JWT
-6. **Deploy Produção**: HTTPS, SSL, certificados e monitoramento avançado com segurança JWT
+3. **Swagger UI Interativo**: CONCLUÍDO - Documentação completa com 35+ endpoints mapeados
+4. **Integração Frontend-Backend**: Substituição de dados simulados por APIs reais autenticadas
+5. **Autorização por Perfis**: Extensão do JWT para controle granular de permissões
+6. **Operações Avançadas**: Implementação completa de operações POST/PUT/DELETE com validação JWT
+7. **Deploy Produção**: HTTPS, SSL, certificados e monitoramento avançado com segurança JWT
 
 ### **Capacidades Estratégicas Alcançadas**
 - **Segurança Enterprise**: Sistema JWT completo com proteção automática
+- **Documentação Interativa**: Swagger UI com mapeamento completo da API e teste integrado
 - **Escalabilidade**: Arquitetura modular preparada para crescimento com autenticação
 - **Manutenibilidade**: Código limpo, documentação viva, padrões de segurança consistentes
 - **Flexibilidade**: Suporte a múltiplos ambientes com configuração de segurança flexível
 - **Qualidade**: Testes automatizados garantindo segurança e confiabilidade contínua
+- **Developer Experience**: Interface visual para exploração, teste e validação da API
 
 ---
 
@@ -219,8 +225,9 @@ O CSOnline - Gestão CD representa mais que um projeto de software - é uma **jo
 **Agosto 2025**: Maturidade enterprise com WildFly, Flyway, testes automatizados e **100% de funcionalidade**
 **7 de Agosto 2025**: **Marco de Segurança Enterprise** - JWT 2.0 implementado com 100% de proteção
 **8 de Agosto 2025**: **Consolidação Main Branch** - Merge completo e correção de scripts JWT para produção
+**12 de Agosto 2025**: **Marco de Documentação** - Swagger UI completo com mapeamento interativo de 35+ endpoints
 
-Hoje, o CSOnline é um **sistema completo de gestão de centros de distribuição com segurança JWT enterprise** pronto para produção, testado, documentado, seguro e escalável. Uma história de excelência técnica escrita commit a commit, onde cada linha de código conta uma história de problemas enfrentados, soluções elegantes encontradas e **segurança implementada sem comprometer a usabilidade**.
+Hoje, o CSOnline é um **sistema completo de gestão de centros de distribuição com segurança JWT enterprise e documentação interativa** pronto para produção, testado, documentado, seguro e escalável. Uma história de excelência técnica escrita commit a commit, onde cada linha de código conta uma história de problemas enfrentados, soluções elegantes encontradas e **segurança implementada sem comprometer a usabilidade**.
 
 ### **O Marco JWT 2.0: Uma Conquista Técnica**
 
@@ -288,6 +295,72 @@ Todos os módulos críticos respondem com sucesso sob autenticação JWT, inclui
 3. Adicionar métricas de cobertura de testes backend (Jacoco) ao relatório de integração.
 4. Incluir validação de claims JWT (exp, roles) nos scripts de integração além do simples uso do token.
 5. Pipeline CI: empacotar, subir WildFly em modo efêmero, rodar suíte de integração completa e publicar artefatos.
+
+## XI. Documentação API Interativa - Swagger UI Completo (12 Agosto 2025)
+
+### Marco de Documentação: Mapeamento Completo da API
+O dia 12 de agosto marcou a **implementação completa do Swagger UI**, proporcionando documentação interativa e mapeamento visual de todos os endpoints da aplicação.
+
+### Implementação Técnica do Swagger UI
+
+#### **Dependências e Configuração**
+- **WebJar Swagger UI**: Adicionado `org.webjars:swagger-ui:4.15.5` ao pom.xml
+- **SwaggerUIConfig.java**: ServletContextListener customizado para servir interface Swagger UI
+- **OpenApiController.java**: Controller REST para servir especificação OpenAPI em JSON/YAML
+- **Configuração OpenAPI**: Anotações @OpenAPIDefinition com informações da API e esquema de segurança JWT
+
+#### **Componentes Implementados**
+- **SwaggerUIServlet**: Servlet customizado servindo recursos WebJar e HTML personalizado
+- **Configuração JWT**: Integração do esquema bearerAuth na documentação OpenAPI
+- **Interface Personalizada**: HTML customizado com configuração otimizada para a API CSOnline
+- **Mapeamento de URLs**: Servlet configurado para `/swagger-ui/*` com tratamento de recursos estáticos
+
+### Funcionalidades do Swagger UI
+
+#### **Interface Completa**
+- **35+ Endpoints Documentados**: Todos os endpoints REST da aplicação mapeados
+- **Autenticação JWT Integrada**: Botão "Authorize" para inserir Bearer Token
+- **Teste Interativo**: Execução de endpoints diretamente na interface
+- **Documentação Automática**: Schemas, modelos e validações em tempo real
+- **Download OpenAPI**: Especificação completa em JSON/YAML
+
+#### **Módulos Mapeados**
+- **Autenticação & Segurança**: Login JWT e Health Check
+- **Gestão de Usuários**: CRUD completo com autenticação
+- **Gestão de Entregadores**: Operações completas com validação JWT
+- **Centros de Distribuição**: CRUD empresarial com proteção
+- **Gestão de Entregas**: Sistema completo de delivery management
+- **Gestão de Equipes**: Operações de team management
+- **Sistema de Preços**: CRUD + consultas especializadas
+- **SMS/WhatsApp**: Sistema de mensagens com envio
+- **Documentação OpenAPI**: Endpoints para especificação da API
+
+### Desafios Técnicos Superados
+
+#### **Problemas de Configuração**
+1. **404 Error Initial**: Swagger UI retornando 404 devido à falta de dependencies WebJar
+2. **Servlet Mapping**: Configuração do servlet para interceptar corretamente as URLs
+3. **Java 11 Compatibility**: Substituição de text blocks por string concatenation
+4. **Resource Serving**: Implementação de lógica para servir recursos estáticos do WebJar
+
+#### **Soluções Implementadas**
+1. **Dependência WebJar**: Adição de `swagger-ui:4.15.5` para recursos estáticos
+2. **Servlet Customizado**: Criação de SwaggerUIServlet para servir interface personalizada
+3. **HTML Personalizado**: Geração dinâmica de HTML com configuração específica da API
+4. **URL do OpenAPI**: Configuração correta da URL para especificação JSON
+
+### Resultado Final
+**Swagger UI Completamente Funcional** em `http://localhost:8080/csonline/swagger-ui/` proporcionando:
+- **Mapeamento Visual Completo**: Todos os endpoints organizados por módulo
+- **Teste Direto na Interface**: Execução de APIs com autenticação JWT
+- **Documentação Viva**: Sempre atualizada com o código-fonte
+- **Experiência Developer-Friendly**: Interface intuitiva para exploração da API
+
+### Impacto no Desenvolvimento
+- **Documentação Automática**: Eliminação de documentação manual desatualizada
+- **Teste Integrado**: Redução de ferramentas externas para teste de API
+- **Onboarding Facilitado**: Novos desenvolvedores podem explorar a API visualmente
+- **Validação de Contratos**: Verificação em tempo real de schemas e validações
 
 ---
 
