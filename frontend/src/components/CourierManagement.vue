@@ -1,19 +1,21 @@
 <template>
   <div class="courier-management">
     <PermissionGuard :require-any="['canAccessCouriers']">
-      <h2>Gestão de Entregadores</h2>
-      
-      <div class="role-indicator">
-        <span class="role-badge" :class="authStore.userRole.toLowerCase()">
-          {{ authStore.userRole }} - {{ getRoleDescription() }}
-        </span>
+      <div class="page-header">
+        <h2 class="h2">Gestão de Entregadores</h2>
+        
+        <div class="role-indicator">
+          <span class="role-badge" :class="authStore.userRole.toLowerCase()">
+            {{ authStore.userRole }} - {{ getRoleDescription() }}
+          </span>
+        </div>
       </div>
 
       <div class="actions">
         <PermissionGuard :require-any="['canCreateCouriers']" :show-denied="false">
-          <button @click="showForm = true" class="btn-primary">Novo Entregador</button>
+          <button @click="showForm = true" class="btn btn-primary">Novo Entregador</button>
         </PermissionGuard>
-        <button class="back-btn" @click="goBack">Voltar</button>
+        <button class="btn btn-secondary" @click="goBack">Voltar</button>
       </div>
 
       <div class="filters">
@@ -41,10 +43,10 @@
         <tbody>
           <tr v-for="courier in filteredCouriers" :key="courier.id">
             <td>{{ courier.id }}</td>
-            <td>{{ courier.user.name }}</td>
-            <td>{{ courier.user.email }}</td>
-            <td>{{ courier.user.mobile }}</td>
-            <td>{{ courier.business.name }}</td>
+            <td>{{ courier.user?.name || 'N/A' }}</td>
+            <td>{{ courier.user?.email || 'N/A' }}</td>
+            <td>{{ courier.user?.mobile || 'N/A' }}</td>
+            <td>{{ courier.business?.name || 'N/A' }}</td>
             <td>{{ courier.factorCourier }}%</td>
             <td v-if="authStore.canEditCouriers || authStore.canDeleteCouriers">
               <PermissionGuard :require-any="['canEditCouriers']" :show-denied="false">
@@ -90,7 +92,6 @@
 
 <script>
 import { reactive, ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { backendService } from '../services/backend.js'
 import { formatDataForBackend } from '../config/backend.js'
@@ -101,8 +102,8 @@ export default {
   components: {
     PermissionGuard
   },
-  setup() {
-    const router = useRouter()
+  emits: ['back'],
+  setup(props, { emit }) {
     const authStore = useAuthStore()
     
     const couriers = ref([])
@@ -131,14 +132,14 @@ export default {
       if (searchTerm.value) {
         const search = searchTerm.value.toLowerCase()
         filtered = filtered.filter(courier =>
-          courier.user.name.toLowerCase().includes(search) ||
-          courier.user.email.toLowerCase().includes(search) ||
-          courier.business.name.toLowerCase().includes(search)
+          courier.user?.name?.toLowerCase().includes(search) ||
+          courier.user?.email?.toLowerCase().includes(search) ||
+          courier.business?.name?.toLowerCase().includes(search)
         )
       }
 
       if (businessFilter.value) {
-        filtered = filtered.filter(courier => courier.business.id == businessFilter.value)
+        filtered = filtered.filter(courier => courier.business?.id == businessFilter.value)
       }
 
       return filtered
@@ -216,18 +217,19 @@ export default {
     }
 
   const editCourier = (courier) => {
+      console.log('[COURIER] Editing courier:', courier)
       editingCourier.value = courier
       Object.assign(form, {
         user: {
-          name: courier.user.name,
-          email: courier.user.email,
-      mobile: courier.user.mobile || courier.user.phone || '',
+          name: courier.user?.name || '',
+          email: courier.user?.email || '',
+          mobile: courier.user?.mobile || courier.user?.phone || '',
           password: ''
         },
         business: {
-          id: courier.business.id
+          id: courier.business?.id || ''
         },
-        factorCourier: courier.factorCourier
+        factorCourier: courier.factorCourier || ''
       })
       showForm.value = true
     }
@@ -267,7 +269,8 @@ export default {
     }
 
     const goBack = () => {
-      router.push('/dashboard')
+      console.log('[COURIER] Emitting back event')
+      emit('back')
     }
 
     onMounted(() => {

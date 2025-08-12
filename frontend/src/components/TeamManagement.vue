@@ -42,10 +42,10 @@
       <tbody>
         <tr v-for="team in filteredTeams" :key="team.id">
           <td>{{ team.id }}</td>
-          <td>{{ team.business.name }}</td>
-          <td>{{ team.courier.name }}</td>
-          <td>{{ team.courier.email }}</td>
-          <td>{{ team.courier.mobile }}</td>
+          <td>{{ team.business?.name || 'N/A' }}</td>
+          <td>{{ team.courier?.name || 'N/A' }}</td>
+          <td>{{ team.courier?.email || 'N/A' }}</td>
+          <td>{{ team.courier?.mobile || 'N/A' }}</td>
           <td>{{ team.factorCourier }}%</td>
           <td>
             <span :class="getStatusClass(team)">{{ getStatusText(team) }}</span>
@@ -217,6 +217,8 @@ async function loadTeams() {
     loading.value = true;
     error.value = null;
     teams.value = await backendService.getTeams();
+    console.log('Teams carregados:', teams.value.length);
+    console.log('Estrutura Team exemplo:', teams.value[0]);
   } catch (err) {
     error.value = 'Erro ao carregar times: ' + err.message;
     console.error('Erro ao carregar times:', err);
@@ -247,23 +249,33 @@ async function loadCouriers() {
 }
 
 const filteredTeams = computed(() => {
-  if (!businessFilter.value) return teams.value;
-  return teams.value.filter(team => team.business.id == businessFilter.value);
+  try {
+    if (!businessFilter.value) return teams.value;
+    return teams.value.filter(team => team.business?.id == businessFilter.value);
+  } catch (err) {
+    console.error('Erro no filteredTeams computed:', err);
+    return [];
+  }
 });
 
 const availableCouriers = computed(() => {
-  // Mostra todos os entregadores, mas indica se já estão em um time
-  return couriers.value.map(courier => {
-    const inTeam = teams.value.find(team => 
-      team.courier.id === courier.id && 
-      team.business.id == form.value.business.id &&
-      (!editingTeam.value || team.id !== editingTeam.value.id)
-    );
-    return {
-      ...courier,
-      inTeam: !!inTeam
-    };
-  });
+  try {
+    // Mostra todos os entregadores, mas indica se já estão em um time
+    return couriers.value.map(courier => {
+      const inTeam = teams.value.find(team => 
+        team.courier?.id === courier.id && 
+        team.business?.id == form.value.business?.id &&
+        (!editingTeam.value || team.id !== editingTeam.value.id)
+      );
+      return {
+        ...courier,
+        inTeam: !!inTeam
+      };
+    });
+  } catch (err) {
+    console.error('Erro no availableCouriers computed:', err);
+    return [];
+  }
 });
 
 const selectedCourier = computed(() => {
@@ -304,8 +316,8 @@ function onBusinessChange() {
 function editTeam(team) {
   editingTeam.value = team;
   form.value = {
-    business: { id: team.business.id },
-    courier: { id: team.courier.id },
+    business: { id: team.business?.id || '' },
+    courier: { id: team.courier?.id || '' },
     factorCourier: team.factorCourier,
     status: team.status
   };

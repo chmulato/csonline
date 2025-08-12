@@ -4,6 +4,10 @@
     <div v-if="authStore.isAuthenticated" class="user-info">
       Bem-vindo, {{ authStore.userName }} ({{ authStore.userRole }})
     </div>
+    <!-- Debug info -->
+    <div v-if="authStore.isAuthenticated" style="font-size: 10px; background: rgba(255,255,255,0.1); padding: 4px; border-radius: 2px;">
+      Debug: SMS={{ isSMSMgmt }}, Users={{ isUserMgmt }}, Teams={{ isTeamMgmt }}
+    </div>
   </header>
   
   <Login v-if="!authStore.isAuthenticated && !isUserMgmt && !isCourierMgmt && !isCustomerMgmt && !isDeliveryMgmt && !isTeamMgmt && !isSMSMgmt && !isPriceMgmt && !isLogout" @login="onLogin" />
@@ -65,6 +69,7 @@ function onLogout() {
 }
 
 function resetAllViews() {
+  console.log('[App] resetAllViews called');
   isLogout.value = false;
   isUserMgmt.value = false;
   isCourierMgmt.value = false;
@@ -76,36 +81,44 @@ function resetAllViews() {
 }
 
 function onUserMgmt() {
+  console.log('[App] onUserMgmt triggered');
   resetAllViews();
   isUserMgmt.value = true;
 }
 
 function onCourierMgmt() {
+  console.log('[App] onCourierMgmt triggered');
   resetAllViews();
   isCourierMgmt.value = true;
 }
 
 function onCustomerMgmt() {
+  console.log('[App] onCustomerMgmt triggered');
   resetAllViews();
   isCustomerMgmt.value = true;
 }
 
 function onDeliveryMgmt() {
+  console.log('[App] onDeliveryMgmt triggered');
   resetAllViews();
   isDeliveryMgmt.value = true;
 }
 
 function onTeamMgmt() {
+  console.log('[App] onTeamMgmt triggered');
   resetAllViews();
   isTeamMgmt.value = true;
 }
 
 function onSMSMgmt() {
+  console.log('[App] onSMSMgmt triggered - setting isSMSMgmt to true');
   resetAllViews();
   isSMSMgmt.value = true;
+  console.log('[App] isSMSMgmt now set to:', isSMSMgmt.value);
 }
 
 function onPriceMgmt() {
+  console.log('[App] onPriceMgmt triggered');
   resetAllViews();
   isPriceMgmt.value = true;
 }
@@ -145,35 +158,48 @@ function onBackToLogin() {
 </script>
 
 <style scoped>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
 .app-header {
-  background: #1976d2;
-  color: #fff;
-  padding: 16px;
+  background: var(--primary-700);
+  color: var(--text-white);
+  padding: var(--spacing-md);
   text-align: center;
   font-size: 2rem;
-  font-family: Arial, sans-serif;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: var(--shadow-md);
 }
 
 .user-info {
   font-size: 0.9rem;
   background: rgba(255, 255, 255, 0.1);
-  padding: 8px 12px;
-  border-radius: 4px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  font-weight: 500;
 }
 
 .app-footer {
-  background: #f5f5f5;
-  color: #444;
+  background: var(--bg-paper);
+  color: var(--text-secondary);
   text-align: center;
-  padding: 16px;
-  font-size: 1rem;
+  padding: var(--spacing-md);
+  font-size: 0.9rem;
   position: fixed;
   left: 0; 
   right: 0; 
   bottom: 0;
-  font-family: Arial, sans-serif;
+  border-top: 1px solid var(--divider);
 }
 </style>

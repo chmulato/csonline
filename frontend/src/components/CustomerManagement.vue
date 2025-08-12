@@ -1,9 +1,12 @@
 <template>
   <div class="customer-management">
-    <h2>Gestão de Empresas (Centro de Distribuições)</h2>
+    <div class="page-header">
+      <h2 class="h2">Gestão de Empresas (Centro de Distribuições)</h2>
+    </div>
+    
     <div class="actions">
-      <button @click="openNewCustomerModal">Nova Empresa</button>
-      <button class="back-btn" @click="goBack">Voltar</button>
+      <button @click="openNewCustomerModal" class="btn btn-primary">Nova Empresa</button>
+      <button class="btn btn-secondary" @click="goBack">Voltar</button>
     </div>
     <table>
       <thead>
@@ -26,8 +29,10 @@
           <td>{{ customer.factorCustomer }}%</td>
           <td>{{ customer.priceTable }}</td>
           <td>
-            <button @click="editCustomer(customer)">Editar</button>
-            <button @click="deleteCustomer(customer.id)">Excluir</button>
+            <div class="action-buttons">
+              <button class="btn-primary" @click="editCustomer(customer)">Editar</button>
+              <button class="btn-danger" @click="deleteCustomer(customer.id)">Excluir</button>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -55,11 +60,9 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth.js'
 import { backendService } from '../services/backend.js'
 
-const router = useRouter()
 const authStore = useAuthStore()
 
 const emit = defineEmits(['back'])
@@ -205,7 +208,8 @@ const closeModal = () => {
 }
 
 function goBack() {
-  router.push('/dashboard')
+  console.log('[CUSTOMER] Emitting back event')
+  emit('back')
 }
 
 // Load data on mount
@@ -219,57 +223,48 @@ import { formatDataForBackend } from '../config/backend.js'
 
 <style scoped>
 .customer-management {
-  padding: 20px;
+  padding: var(--spacing-lg);
+  background: var(--bg-secondary);
+  min-height: 100vh;
+}
+
+.page-header {
+  margin-bottom: var(--spacing-xl);
 }
 
 .actions {
-  margin: 20px 0;
+  margin: var(--spacing-lg) 0;
   display: flex;
-  gap: 12px;
-}
-
-.btn-primary {
-  background: #1976d2;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.btn-secondary {
-  background: #f5f5f5;
-  color: #333;
-  border: 1px solid #ddd;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.back-btn {
-  background: #424242;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
+  gap: var(--spacing-md);
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
+  margin-top: var(--spacing-lg);
+  background: var(--bg-paper);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
 }
 
 th, td {
-  border: 1px solid #ddd;
-  padding: 12px;
+  border: 1px solid var(--border-light);
+  padding: var(--spacing-md);
   text-align: left;
+  font-size: var(--font-size-sm);
 }
 
 th {
-  background-color: #f5f5f5;
-  font-weight: bold;
+  background-color: var(--gray-100);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+}
+
+.action-buttons {
+  display: flex;
+  gap: var(--spacing-sm);
+  justify-content: flex-start;
 }
 
 .modal-overlay {
@@ -286,29 +281,37 @@ th {
 }
 
 .modal-content {
-  background: #fff;
-  padding: 32px;
-  border-radius: 8px;
+  background: var(--bg-paper);
+  padding: var(--spacing-2xl);
+  border-radius: var(--radius-lg);
   min-width: 500px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  box-shadow: var(--shadow-lg);
+}
+
+.modal-content h3 {
+  margin-bottom: var(--spacing-lg);
 }
 
 .form-actions {
-  margin-top: 16px;
+  margin-top: var(--spacing-md);
   display: flex;
-  gap: 8px;
+  gap: var(--spacing-sm);
 }
 
 select, input[type="text"], input[type="email"], input[type="tel"], input[type="password"], input[type="number"] {
   width: 100%;
-  margin-bottom: 12px;
-  padding: 8px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+  margin-bottom: var(--spacing-md);
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-light);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+  transition: border-color var(--transition-fast);
 }
 
 select:focus, input:focus {
   outline: none;
-  border-color: #1976d2;
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px var(--primary-50);
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <h2>CSOnline - Login</h2>
+    <h2 class="h2">CSOnline - Login</h2>
     <form @submit.prevent="login">
       <input 
         v-model="username" 
@@ -8,6 +8,7 @@
         placeholder="Usuário" 
         required 
         :disabled="loading"
+        class="input-field"
       />
       <input 
         v-model="password" 
@@ -15,14 +16,15 @@
         placeholder="Senha" 
         required 
         :disabled="loading"
+        class="input-field"
       />
-      <button type="submit" :disabled="loading">
+      <button type="submit" :disabled="loading" class="btn btn-primary btn-lg">
         {{ loading ? 'Entrando...' : 'Entrar' }}
       </button>
     </form>
     
     <!-- Mensagens de erro/sucesso -->
-    <div v-if="message" :class="messageType">
+    <div v-if="message" :class="messageType" class="message">
       {{ message }}
     </div>
   </div>
@@ -110,66 +112,56 @@ function showMessage(text, type) {
 
 <style scoped>
 .login-container {
-  max-width: 320px;
+  max-width: 400px;
   margin: 80px auto;
-  padding: 32px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  background: #fff;
+  padding: var(--spacing-2xl);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  background: var(--bg-paper);
   text-align: center;
 }
-.login-container h2 {
-  margin-bottom: 24px;
-  color: #1976d2;
-}
-.login-container input {
+
+.input-field {
   display: block;
   width: 100%;
-  margin-bottom: 16px;
-  padding: 12px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  font-size: 14px;
+  margin-bottom: var(--spacing-md);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-light);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+  transition: border-color var(--transition-fast);
 }
-.login-container input:disabled {
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px var(--primary-50);
+}
+
+.input-field:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  background-color: var(--bg-disabled);
 }
-.login-container button {
-  width: 100%;
-  padding: 12px;
-  background: #1976d2;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  font-weight: bold;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s;
-}
-.login-container button:hover:not(:disabled) {
-  background: #1565c0;
-}
-.login-container button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+
+.message {
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
 }
 
 .success {
-  margin-top: 16px;
-  padding: 12px;
-  background: #e8f5e8;
-  color: #2e7d32;
-  border-radius: 4px;
-  border: 1px solid #c8e6c9;
+  background: var(--success-50);
+  color: var(--success-700);
+  border: 1px solid var(--success-500);
 }
 
 .error {
-  margin-top: 16px;
-  padding: 12px;
-  background: #ffeaea;
-  color: #c62828;
-  border-radius: 4px;
-  border: 1px solid #ffcdd2;
+  background: var(--error-50);
+  color: var(--error-700);
+  border: 1px solid var(--error-500);
 }
 </style>

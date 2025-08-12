@@ -17,6 +17,7 @@
     <div v-if="loading" class="loading-state">
       <div class="loading-spinner"></div>
       <p>Carregando mensagens...</p>
+      <p style="font-size: 12px; color: #666;">Debug: loading={{ loading }}, error={{ error }}, smsMessages.length={{ smsMessages.length }}</p>
     </div>
 
     <!-- Error state -->
@@ -38,7 +39,7 @@
       <select v-model="deliveryFilter" @change="filterSMS">
         <option value="">Todas as Entregas</option>
         <option v-for="delivery in deliveries" :key="delivery.id" :value="delivery.id">
-          Entrega #{{ delivery.id }} - {{ delivery.customer.user.name }}
+          Entrega #{{ delivery.id }} - {{ delivery.customer?.user?.name || delivery.customer?.name || 'Cliente' }}
         </option>
       </select>
       <select v-model="typeFilter" @change="filterSMS">
@@ -113,18 +114,18 @@
           <td>{{ sms.id }}</td>
           <td>
             <div class="delivery-info">
-              <strong>#{{ sms.delivery.id }}</strong>
-              <small>{{ sms.delivery.destination }}</small>
+              <strong>#{{ getDeliveryForSMS(sms).id }}</strong>
+              <small>{{ getDeliveryForSMS(sms).destination }}</small>
             </div>
           </td>
-          <td>{{ sms.delivery?.customer?.user?.name || sms.delivery?.customer?.name || 'N/A' }}</td>
+          <td>{{ getDeliveryForSMS(sms).customer?.user?.name || getDeliveryForSMS(sms).customer?.name || 'N/A' }}</td>
           <td>
             <span class="message-type" :class="getTypeClass(sms.type)">
               <i :class="getTypeIcon(sms.type)"></i>
               {{ getTypeText(sms.type) }}
             </span>
           </td>
-          <td>{{ sms.piece }}/{{ sms.delivery.totalPieces || 1 }}</td>
+          <td>{{ sms.piece }}/{{ getDeliveryForSMS(sms).totalPieces || 1 }}</td>
           <td>
             <div class="contact-info">
               <strong>{{ getContactName(sms.mobileFrom) }}</strong>
@@ -165,7 +166,7 @@
             <select v-model="form.delivery.id" @change="onDeliveryChange" required>
               <option value="">Selecione a Entrega</option>
               <option v-for="delivery in deliveries" :key="delivery.id" :value="delivery.id">
-                #{{ delivery.id }} - {{ delivery.customer.user.name }} ({{ delivery.destination }})
+                #{{ delivery.id }} - {{ delivery.customer?.user?.name || delivery.customer?.name || 'Cliente' }} ({{ delivery.destination }})
               </option>
             </select>
             <select v-model="form.type" required>
@@ -186,8 +187,8 @@
 
           <div class="delivery-context" v-if="selectedDelivery">
             <h4>Contexto da Entrega:</h4>
-            <p><strong>Cliente:</strong> {{ selectedDelivery.customer.user.name }}</p>
-            <p><strong>Entregador:</strong> {{ selectedDelivery.courier.user.name }}</p>
+            <p><strong>Cliente:</strong> {{ selectedDelivery.customer?.user?.name || selectedDelivery.customer?.name || 'Cliente' }}</p>
+            <p><strong>Entregador:</strong> {{ selectedDelivery.courier?.user?.name || selectedDelivery.courier?.name || 'Entregador' }}</p>
             <p><strong>Origem:</strong> {{ selectedDelivery.start }}</p>
             <p><strong>Destino:</strong> {{ selectedDelivery.destination }}</p>
             <p><strong>Contato:</strong> {{ formatPhone(selectedDelivery.contact) }}</p>
@@ -227,9 +228,9 @@
         <div class="sms-details">
           <div class="detail-section">
             <h4>Informações da Entrega</h4>
-            <p><strong>ID:</strong> #{{ viewingSMS.delivery.id }}</p>
-            <p><strong>Cliente:</strong> {{ viewingSMS.delivery.customer.user.name }}</p>
-            <p><strong>Destino:</strong> {{ viewingSMS.delivery.destination }}</p>
+            <p><strong>ID:</strong> #{{ viewingSMS.delivery?.id || 'N/A' }}</p>
+            <p><strong>Cliente:</strong> {{ viewingSMS.delivery?.customer?.user?.name || viewingSMS.delivery?.customer?.name || 'Cliente' }}</p>
+            <p><strong>Destino:</strong> {{ viewingSMS.delivery?.destination || 'N/A' }}</p>
           </div>
           
           <div class="detail-section">
@@ -326,39 +327,56 @@ async function loadData() {
     
     console.log('SMS carregadas:', smsMessages.value.length)
     console.log('Entregas carregadas:', deliveries.value.length)
+    console.log('Estrutura SMS exemplo:', smsMessages.value[0])
+    console.log('Estrutura Delivery exemplo:', deliveries.value[0])
     
   } catch (err) {
     console.error('Erro ao carregar dados:', err)
     error.value = err.message || 'Erro ao conectar com o servidor'
   } finally {
     loading.value = false
+    console.log('Estado final - loading:', loading.value, 'error:', error.value)
   }
 }
 
 const filteredSMS = computed(() => {
-  // Clone ensuring we only keep truthy sms objects
-  let filtered = smsMessages.value.filter(Boolean)
-  const deliveryVal = deliveryFilter.value || filter.delivery
-  const typeVal = typeFilter.value || filter.type
-  if (deliveryVal) {
-    filtered = filtered.filter(s => {
-      const smsDeliveryId = s.deliveryId || (s.delivery && s.delivery.id)
-      return String(smsDeliveryId) === String(deliveryVal)
-    })
+  try {
+    // Clone ensuring we only keep truthy sms objects
+    let filtered = smsMessages.value.filter(Boolean)
+    const deliveryVal = deliveryFilter.value || filter.delivery
+    const typeVal = typeFilter.value || filter.type
+    if (deliveryVal) {
+      filtered = filtered.filter(s => {
+        const smsDeliveryId = s.deliveryId || (s.delivery && s.delivery.id)
+        return String(smsDeliveryId) === String(deliveryVal)
+      })
+    }
+    if (typeVal) filtered = filtered.filter(s => s.type === typeVal)
+    if (dateFilter.value) {
+      const filterDate = new Date(dateFilter.value).toDateString()
+      filtered = filtered.filter(s => s.datetime && new Date(s.datetime).toDateString() === filterDate)
+    }
+    if (filter.status) filtered = filtered.filter(s => s.status === filter.status)
+    return filtered.sort((a,b) => new Date(b.datetime) - new Date(a.datetime))
+  } catch (err) {
+    console.error('Erro no filteredSMS computed:', err)
+    return []
   }
-  if (typeVal) filtered = filtered.filter(s => s.type === typeVal)
-  if (dateFilter.value) {
-    const filterDate = new Date(dateFilter.value).toDateString()
-    filtered = filtered.filter(s => s.datetime && new Date(s.datetime).toDateString() === filterDate)
-  }
-  if (filter.status) filtered = filtered.filter(s => s.status === filter.status)
-  return filtered.sort((a,b) => new Date(b.datetime) - new Date(a.datetime))
 })
 
 const selectedDelivery = computed(() => {
   if (!form.value.delivery.id) return null;
   return deliveries.value.find(d => d.id == form.value.delivery.id);
 });
+
+// Function to get delivery data for an SMS
+function getDeliveryForSMS(sms) {
+  if (sms.delivery && sms.delivery.id) return sms.delivery;
+  if (sms.deliveryId) {
+    return deliveries.value.find(d => d.id == sms.deliveryId) || { id: sms.deliveryId, destination: 'N/A' };
+  }
+  return { id: 'N/A', destination: 'N/A' };
+}
 
 // Templates de mensagem por tipo
 const messageTemplates = {

@@ -116,4 +116,4 @@ INSERT INTO sms (id, iddelivery, piece, type, mobileTo, mobileFrom, message, dat
 VALUES (4, 3, 1, 'INFO', '11666666666', '11555555555', 'Entrega especial concluída', CURRENT_TIMESTAMP);
 
 INSERT INTO sms (id, iddelivery, piece, type, mobileTo, mobileFrom, message, datetime)
-VALUES (5, 4, 1, 'INFO', '11111111111', '11222222222', 'Entrega frágil a caminho', CURRENT_TIMESTAMP);
+VALUES (5, 4, 1, 'INFO', '11111111111', '11222222222', 'Entrega especial a caminho', CURRENT_TIMESTAMP);

@@ -90,7 +90,7 @@ VALUES (
 INSERT INTO sms (iddelivery, piece, type, mobileTo, mobileFrom, message, datetime)
 VALUES (
     (SELECT id FROM delivery WHERE description = 'Entrega frágil'),
-    1, 'INFO', '11111111111', '11222222222', 'Entrega frágil a caminho', CURRENT_TIMESTAMP
+    1, 'INFO', '11111111111', '11222222222', 'Entrega especial a caminho', CURRENT_TIMESTAMP
 );
 
 -- Mais preços para testes
