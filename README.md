@@ -2,11 +2,9 @@
 
 Sistema completo para gestão de centros de distribuição, entregas, entregadores, equipes, preços e comunicação via SMS/WhatsApp. Desenvolvido com Jakarta EE 10 no backend, Vue 3 + Vite no frontend e autenticação JWT enterprise.
 
- 
-
 ## Pré-requisitos
 
-- Java 17+ e Maven 3.9+
+- Java 11+ e Maven 3.9+
 - Node.js 18+ e npm
 - PowerShell 7+ (pwsh)
 - WildFly 31 (já incluso em `server/`)
@@ -211,6 +209,12 @@ sequenceDiagram
 - **APIs Protegidas**: `http://localhost:8080/csonline/api/*` *(Bearer Token obrigatório)*
 - **Health Check**: `http://localhost:8080/csonline/api/health` *(endpoint público)*
 
+### **Interface Swagger UI**
+
+![Swagger UI - CSOnline API](img/swagger-ui.png)
+
+*Interface Swagger UI mostrando todos os endpoints da API REST com documentação interativa e suporte para autenticação JWT.*
+
 ### **Módulos Disponíveis no Frontend JWT:**
 - **Login** → Autenticação JWT obrigatória
 - **Dashboard Principal** → Menu de navegação protegido
@@ -223,10 +227,22 @@ sequenceDiagram
 - **Preços** → Tabelas de preços (JWT)
 - **Logout** → Saída segura do sistema
 
+### **Dashboard Principal do Sistema**
+
+![Dashboard Principal - CSOnline](img/front-end_csonline.png)
+
+*Tela principal do sistema CSOnline após login bem-sucedido, mostrando o dashboard com todos os módulos disponíveis e navegação por cards.*
+
 ### **Credenciais de Teste JWT:**
 
 - **admin/admin123** - Perfil administrativo completo
 - **empresa/empresa123** - Perfil centro de distribuição
+
+### **Tela de Login do Sistema**
+
+![Tela de Login - CSOnline](img/front-end_csonline_admin.png)
+
+*Interface de login do sistema CSOnline com autenticação JWT. Utilize as credenciais de teste acima para acessar o sistema.*
 
 ## Logging e Monitoramento
 
