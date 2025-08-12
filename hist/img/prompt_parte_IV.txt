@@ -10,15 +10,15 @@ LEFT SIDE - LEGACY FOUNDATION (2014-2024):
 - Warm golden tones representing 11 years of business experience
 
 RIGHT SIDE - AI-POWERED FUTURE (2025):
-- Modern computer displaying Swagger UI with glowing interactive elements
-- AI assistant visual metaphors (neural networks, flowing data streams)
+- Modern computer displaying Swagger UI with subtle interactive elements
+- AI assistant visual metaphors (neural networks, smooth data streams)
 - Cool blue/cyan tones representing innovation and AI partnership
 
 CENTER CONVERGENCE:
 - Swagger UI interface as the bridge between legacy and future
-- API endpoints flowing like data streams: /api/users, /api/deliveries, /api/couriers
+- API endpoints flowing like smooth data streams: /api/users, /api/deliveries, /api/couriers
 - JWT security shields protecting the data flow
-- Interactive "Try it out" buttons with futuristic glow effects
+- Interactive "Try it out" buttons with clean, professional highlighting
 
 VISUAL METAPHORS:
 - Human brain icon connected to AI neural network
@@ -40,12 +40,12 @@ IMPORTANT TEXT REQUIREMENTS:
 - Test text rendering to ensure no character corruption or missing accents
 
 COLOR PALETTE:
-- Gradient from warm gold (legacy) to cool cyan (AI future)
+- Smooth gradient from warm gold (legacy) to cool cyan (AI future)
 - Professional blues and whites for Swagger UI elements
-- Subtle neon accents for AI elements
-- High contrast for readability
+- Subtle, matte accents for AI elements
+- High contrast for readability without harsh lighting effects
 
-STYLE: Inspirational tech transformation aesthetic - showing evolution, innovation, and the powerful combination of human experience with AI assistance. Modern, dynamic, forward-looking but grounded in real business value.
+STYLE: Inspirational tech transformation aesthetic - showing evolution, innovation, and the powerful combination of human experience with AI assistance. Modern, clean, professional with subtle visual effects rather than dramatic lighting. Corporate-appropriate design that emphasizes substance over flashy effects.
 
 CRITICAL REQUIREMENTS FOR PORTUGUESE TEXT:
 - MANDATORY: Use fonts with full Portuguese character support (UTF-8 compatible)
@@ -55,4 +55,10 @@ CRITICAL REQUIREMENTS FOR PORTUGUESE TEXT:
 - CONFIRM: No text distortion, corruption, or missing characters
 - QUALITY: Professional typography standards for business presentation
 
-FORMAT: Landscape 1920x1080, LinkedIn professional standard, high visual impact.
+LIGHTING AND EFFECTS GUIDELINES:
+- AVOID: Lightning bolts, neon flashes, dramatic light beams, or harsh glowing effects
+- PREFER: Soft ambient lighting, subtle gradients, clean professional highlights
+- USE: Matte finishes, soft shadows, and gentle transitions between elements
+- MAINTAIN: Corporate sophistication with understated visual elegance
+
+FORMAT: Landscape 1920x1080, LinkedIn professional standard, high visual impact through composition rather than flashy effects.
