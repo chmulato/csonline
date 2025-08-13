@@ -1,0 +1,97 @@
+## Prompt para Geração de Imagem - Artigo Final (ChatGPT - 1920x1080)
+
+Create a professional and trustworthy software development banner image in 1920x1080 resolution showing:
+
+MAIN CONCEPT: TRANSPARENCY AND REAL EXPERIENCE vs. SUPERFICIAL PROMISES
+Split composition emphasizing substance over hype:
+
+LEFT SIDE - REAL EXPERIENCE FOUNDATION:
+- Timeline visualization showing 11 years of development (2014-2025)
+- Subtle representations of real business operations (delivery trucks, actual workflows)
+- Warm, reliable tones (deep blues, professional grays) representing stability and trust
+- Code snippets and actual system architecture diagrams
+- GitHub repository visual elements showing open-source transparency
+
+RIGHT SIDE - MODERN MVP ACHIEVEMENT:
+- Clean, functional interface screenshots of CSOnline system
+- Swagger UI documentation panels showing real API endpoints
+- Enterprise architecture diagrams (Jakarta EE, Vue 3, JWT)
+- Performance metrics and test results displaying real data
+- Professional dashboard elements with actual functionality
+
+CENTER BRIDGE - TRANSPARENCY THEME:
+- Open book or transparent glass effect symbolizing honesty
+- "MVP" badge with clear, professional typography
+- Real validation checkmarks (not promises, but actual achievements)
+- GitHub octocat or open-source symbols
+- Subtle handshake imagery representing community collaboration
+
+VISUAL METAPHORS:
+- Solid foundation stones representing 11 years of experience
+- Building blocks showing incremental, honest development
+- Magnifying glass over code representing transparency
+- Professional certificate or validation stamps
+- Clock/calendar showing real timeline progression
+
+TEXT OVERLAY:
+- "CSOnline: 11 Anos de Experiência Real" (top, confident font)
+- "MVP Enterprise - Transparência Total" (center, professional font)
+- "Código Aberto | Validação Real | Desenvolvimento Honesto" (bottom, clean font)
+
+CRITICAL PORTUGUESE TEXT REQUIREMENTS:
+- MANDATORY: Use fonts with FULL Portuguese character support (UTF-8 compatible)
+- VERIFY: All accents and special characters render perfectly (ã, ç, ê, í, á, ú, ô, õ, â, à)
+- DOUBLE-CHECK spelling and grammar:
+  * "Anos" (NOT "Anõs" or "Anus")
+  * "Experiência" (NOT "Experiencia" or "Experîencia") 
+  * "Transparência" (NOT "Transparencia" or "Transparênça")
+  * "Código" (NOT "Codigo" or "Còdigo")
+  * "Validação" (NOT "Validacao" or "Validacão")
+  * "Desenvolvimento" (NOT "Desenvolvimento" with wrong accents)
+- ENSURE: Perfect text legibility with high contrast against all backgrounds
+- TEST: Character rendering before finalizing to prevent corruption
+- QUALITY: Professional Portuguese typography meeting business presentation standards
+
+ADDITIONAL TEXT VALIDATION:
+- Use only STANDARD Portuguese characters and accents
+- NO special symbols that might not render correctly
+- CONFIRM all text appears clean and professional
+- VALIDATE proper spacing and kerning for Portuguese text
+- GUARANTEE no character substitution or corruption occurs
+
+COLOR PALETTE:
+- Deep professional blues and grays (trust, stability)
+- Clean whites for clarity and transparency
+- Subtle accent colors for highlights (no flashy effects)
+- Corporate color scheme emphasizing reliability over excitement
+
+STYLE GUIDELINES:
+- Professional corporate aesthetic emphasizing trustworthiness
+- Clean, modern design without flashy or superficial elements
+- Substance over style - functionality visible and prominent
+- Conservative, mature visual approach suitable for serious business content
+- Emphasis on credibility, experience, and proven results
+
+AVOID COMPLETELY:
+- Flashy neon effects or dramatic lighting
+- Superficial "revolutionary" imagery
+- Marketing-heavy visual elements
+- Overly colorful or attention-grabbing effects
+- Any elements suggesting "get-rich-quick" or unrealistic promises
+
+EMPHASIZE:
+- Solid engineering and development practices
+- Open-source transparency and community values
+- Real business experience and proven results
+- Professional maturity and honest communication
+- Sustainable, long-term development approach
+
+FINAL TEXT QUALITY ASSURANCE:
+- MANDATORY VERIFICATION: All Portuguese text must be spelled correctly
+- FONT COMPATIBILITY: Only use fonts that support full Portuguese character set
+- CHARACTER ENCODING: UTF-8 encoding must be maintained throughout
+- ACCENT VERIFICATION: Double-check every accent mark (á, â, ã, à, ç, é, ê, í, ó, ô, õ, ú)
+- READABILITY TEST: Ensure text is perfectly legible at 1920x1080 resolution
+- PROFESSIONAL STANDARD: Typography must meet corporate presentation quality
+
+FORMAT: Landscape 1920x1080, LinkedIn professional standard optimized for business credibility and trust-building.
